@@ -125,6 +125,32 @@ public class Inventory : MonoBehaviour
     }
 
 
+    public List<KeyValuePair<SpriteRenderer, int>> Get3ItemsToDisplayInHUD()
+    {
+        int i = indexOfSelectedInventorySlot;
+        int n = numberOfInventorySlots;
+
+        List<KeyValuePair<SpriteRenderer, int>> itemsToDisplay = new List<KeyValuePair<SpriteRenderer, int>>();
+
+        itemsToDisplay.Add(inventory[(i - 1) % n].GetStackItemSpriteRendererAndUnitsPair());
+        itemsToDisplay.Add(inventory[i].GetStackItemSpriteRendererAndUnitsPair());
+        itemsToDisplay.Add(inventory[(i + 1) % n].GetStackItemSpriteRendererAndUnitsPair());
+
+        return itemsToDisplay;
+    }
+
+
+    // This function might belong to another script
+    public void UpdateItemsToDisplayInHUD()
+    {
+        List<KeyValuePair<SpriteRenderer, int>> itemsToDisplay = Get3ItemsToDisplayInHUD();
+
+        // Show 1st Item
+        // Show 2nd Item (Central)
+        // Show 3rd Item
+
+    }
+
 
 
 }

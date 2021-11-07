@@ -11,6 +11,14 @@ public class Item : MonoBehaviour
     public bool isMineral;
     public bool isConsumible;
 
+    private SpriteRenderer spriteRenderer;
+
+
+
+    private void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public static bool operator== (Item itemA, Item itemB)
     {
@@ -26,6 +34,9 @@ public class Item : MonoBehaviour
     public int GetID() { return ID; }
 
     public int GetStackSize() { return stackSize; }
+
+    public SpriteRenderer GetItemSpriteRenderer() { return spriteRenderer; }
+
 
     public virtual void DoFunctionality() { }
 }

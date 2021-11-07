@@ -56,4 +56,15 @@ public class ItemStack : MonoBehaviour
     {
         itemStack.Value.Equals(itemStack.Value - 1);
     }
+
+
+    public SpriteRenderer GetStackItemSpriteRenderer()
+    {
+        return itemStack.Key.GetItemSpriteRenderer();
+    }
+
+    public KeyValuePair<SpriteRenderer, int> GetStackItemSpriteRendererAndUnitsPair()
+    {
+        return new KeyValuePair<SpriteRenderer, int>(itemStack.Key.GetItemSpriteRenderer(), itemStack.Value);
+    }
 }
