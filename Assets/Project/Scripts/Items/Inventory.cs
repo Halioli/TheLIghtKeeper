@@ -201,17 +201,15 @@ public class Inventory : MonoBehaviour
     }
 
 
-    // This function might belong to another script
-    public void UpdateItemsToDisplayInHUD()
+    public void CycleLeftSelectedItemIndex()
     {
-        List<ItemStack.itemStackToDisplay> itemsToDisplay = Get3ItemsToDisplayInHUD();
-
-        // Show 1st Item
-        // Show 2nd Item (Central)
-        // Show 3rd Item
-
+        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot - 1) % numberOfInventorySlots;
     }
 
+    public void CycleRightSelectedItemIndex()
+    {
+        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
+    }
 
 
 }

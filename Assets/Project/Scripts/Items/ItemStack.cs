@@ -17,6 +17,10 @@ public class ItemStack : MonoBehaviour
         public string name;
     }
 
+    private void Awake()
+    {
+        InitEmptyStack();
+    }
 
 
     // Methods
