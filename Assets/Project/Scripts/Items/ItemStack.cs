@@ -11,7 +11,8 @@ public class ItemStack : MonoBehaviour
 
 
     // Methods
-    public void InitStack(Item item) {
+    public void InitStack(Item item) 
+    {
         itemStack = new KeyValuePair<Item, int>(item, 1);
     }
 
@@ -23,7 +24,8 @@ public class ItemStack : MonoBehaviour
 
     public bool StackIsFull() { return itemStack.Value == itemStack.Key.GetStackSize(); }
 
-    public bool StackIsEmpty() {
+    public bool StackIsEmpty() 
+    {
         return itemStack.Key == itemNull;
     }
 
@@ -47,12 +49,12 @@ public class ItemStack : MonoBehaviour
 
     public int GetItemStackSize() { return itemStack.Key.GetStackSize(); }
 
-    public void AddOneItem()
+    public void AddOneItemToStack()
     {
         itemStack.Value.Equals(itemStack.Value + 1);
     }
 
-    public void SubstractOneItem()
+    public void SubstractOneItemFromStack()
     {
         itemStack.Value.Equals(itemStack.Value - 1);
     }

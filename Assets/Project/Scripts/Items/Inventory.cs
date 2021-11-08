@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
     private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
     private int indexOfSelectedInventorySlot;
+    private bool inventoryIsEmpty;
 
 
     // Methods
@@ -17,6 +18,7 @@ public class Inventory : MonoBehaviour
         numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
+        inventoryIsEmpty = false;
 
         inventory.Capacity = numberOfInventorySlots;
     }
@@ -24,7 +26,7 @@ public class Inventory : MonoBehaviour
 
     public bool InventoryIsEmpty()
     {
-        return inventory.Capacity == 0;
+        return inventoryIsEmpty;
     }
 
     public bool InventoryContainsItem(Item itemToCompare)
@@ -72,6 +74,7 @@ public class Inventory : MonoBehaviour
             {
                 inventory[0] = newItemStackToAdd;
                 numberOfOccuppiedInventorySlots++;
+                inventoryIsEmpty = false;
                 couldAddItem = true;
             }
 
@@ -86,14 +89,15 @@ public class Inventory : MonoBehaviour
                     // Add to empty slot
                     if (inventory[index].StackIsEmpty())
                     {
-                        inventory[index] = newItemStackToAdd; 
+                        inventory[index] = newItemStackToAdd;
+                        numberOfOccuppiedInventorySlots++;
                     }
                     // Add to slot in use
                     else
                     {
-                        inventory[index].AddOneItem();
+                        inventory[index].AddOneItemToStack();
                     }
-                    numberOfOccuppiedInventorySlots++;
+                    
                     couldAddItem = true;
                 }
             }
@@ -111,12 +115,18 @@ public class Inventory : MonoBehaviour
         if (InventoryContainsItem(itemToSubstract))
         {
             int index = NextInventorySlotWithAvailableSpaceToAddItem(itemToSubstract);
-            inventory[index].SubstractOneItem();
+            inventory[index].SubstractOneItemFromStack();
 
             // Set slot to empty if the last unit of the item was substracted
             if (inventory[index].StackHasNoItemsLeft())
             {
                 inventory[index].InitEmptyStack();
+                numberOfOccuppiedInventorySlots--;
+
+                if (numberOfOccuppiedInventorySlots == 0)
+                {
+                    inventoryIsEmpty = true;
+                }
             }
             couldRemoveItem = true;
         }
