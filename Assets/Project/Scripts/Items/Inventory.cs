@@ -11,6 +11,8 @@ public class Inventory : MonoBehaviour
     private int indexOfSelectedInventorySlot;
     private bool inventoryIsEmpty;
 
+    private const int MAX_NUMBER_OF_SLOTS = 9;
+
 
     // Methods
     protected void Start()
@@ -20,8 +22,31 @@ public class Inventory : MonoBehaviour
         indexOfSelectedInventorySlot = 0;
         inventoryIsEmpty = false;
 
-        inventory.Capacity = numberOfInventorySlots;
+        InitInventory();
     }
+
+
+    public void InitInventory()
+    {
+        ItemStack newItemStackToAdd = new ItemStack();
+        newItemStackToAdd.InitEmptyStack();
+        for (int i = 0; i < numberOfInventorySlots; i++)
+        {
+            inventory.Add(newItemStackToAdd);
+        }
+    }
+
+    public void UpgradeInventory()
+    {
+        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
+        {
+            numberOfInventorySlots++;
+            ItemStack newItemStackToAdd = new ItemStack();
+            newItemStackToAdd.InitEmptyStack();
+            inventory.Add(newItemStackToAdd);
+        }
+    }
+
 
 
     public bool InventoryIsEmpty()
@@ -46,8 +71,36 @@ public class Inventory : MonoBehaviour
         int i = 0;
         while (i < numberOfInventorySlots)
         {
-            if ((inventory[i].StackContainsItem(itemToCompare) && inventory[i].StackHasSpaceLeft()) ||
-                inventory[i].StackIsEmpty())
+            if (inventory[i].StackContainsItem(itemToCompare) && inventory[i].StackHasSpaceLeft())
+            {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
+    public int NextInventorySlotWithAvailableItemToSubstract(Item itemToCompare)
+    {
+        int i = 0;
+        while (i < numberOfInventorySlots)
+        {
+            if (inventory[i].StackContainsItem(itemToCompare))
+            {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
+
+    public int NextEmptyInventorySlot()
+    {
+        int i = 0;
+        while (i < numberOfInventorySlots)
+        {
+            if (inventory[i].StackIsEmpty())
             {
                 return i;
             }
@@ -62,42 +115,34 @@ public class Inventory : MonoBehaviour
     {
         bool couldAddItem = false;
 
-        // Check if there are empty slots
-        if (numberOfOccuppiedInventorySlots < numberOfInventorySlots)
+        // Instantiate and initialize the item to add
+        ItemStack newItemStackToAdd = new ItemStack();
+        newItemStackToAdd.InitStack(itemToAdd);
+
+        // Check if the inventory is empty, to add item directly
+        if (InventoryIsEmpty())
         {
-            // Instantiate and initialize the item to add
-            ItemStack newItemStackToAdd = new ItemStack();
-            newItemStackToAdd.InitStack(itemToAdd);
-            
-            // Check if the inventory is empty, to add item directly
-            if (InventoryIsEmpty())
+            inventory[0] = newItemStackToAdd;
+            numberOfOccuppiedInventorySlots++;
+            inventoryIsEmpty = false;
+            couldAddItem = true;
+        }
+        else
+        {
+            int index = NextInventorySlotWithAvailableSpaceToAddItem(itemToAdd);
+            if (index != -1)
             {
-                inventory[0] = newItemStackToAdd;
-                numberOfOccuppiedInventorySlots++;
-                inventoryIsEmpty = false;
+                // Add to slot in use
+                inventory[index].AddOneItemToStack();
                 couldAddItem = true;
             }
-
-            // Find if there is an available slot to add the item
             else
             {
-                int index = NextInventorySlotWithAvailableSpaceToAddItem(itemToAdd);
-
-                // If an adequate slot is found..
+                index = NextEmptyInventorySlot();
                 if (index != -1)
                 {
-                    // Add to empty slot
-                    if (inventory[index].StackIsEmpty())
-                    {
-                        inventory[index] = newItemStackToAdd;
-                        numberOfOccuppiedInventorySlots++;
-                    }
-                    // Add to slot in use
-                    else
-                    {
-                        inventory[index].AddOneItemToStack();
-                    }
-                    
+                    inventory[index] = newItemStackToAdd;
+                    numberOfOccuppiedInventorySlots++;
                     couldAddItem = true;
                 }
             }
@@ -107,14 +152,17 @@ public class Inventory : MonoBehaviour
     }
 
 
+
+
     public bool SubstractItemToInventory(Item itemToSubstract)
     {
         bool couldRemoveItem = false;
 
         // Check if the inventory contains an item to substract 
-        if (InventoryContainsItem(itemToSubstract))
+        int index = NextInventorySlotWithAvailableItemToSubstract(itemToSubstract);
+
+        if (index != -1)
         {
-            int index = NextInventorySlotWithAvailableSpaceToAddItem(itemToSubstract);
             inventory[index].SubstractOneItemFromStack();
 
             // Set slot to empty if the last unit of the item was substracted
@@ -133,6 +181,8 @@ public class Inventory : MonoBehaviour
 
         return couldRemoveItem;
     }
+
+
 
 
     public List<KeyValuePair<SpriteRenderer, int>> Get3ItemsToDisplayInHUD()
