@@ -20,7 +20,7 @@ public class HUDBar : MonoBehaviour
         slider.value = value;
     }
 
-    private void UpdateText(string text)
+    public void UpdateText(string text)
     {
         textToShow.text = text;
     }
