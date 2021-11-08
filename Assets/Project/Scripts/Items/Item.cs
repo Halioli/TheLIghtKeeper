@@ -12,7 +12,7 @@ public class Item : MonoBehaviour
     public bool isConsumible;
 
     private SpriteRenderer spriteRenderer;
-
+    public string itemName;
 
 
     private void Start()

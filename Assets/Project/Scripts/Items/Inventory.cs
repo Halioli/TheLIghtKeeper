@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour
     private const int MAX_NUMBER_OF_SLOTS = 9;
 
 
+
     // Methods
     protected void Start()
     {
@@ -185,16 +186,16 @@ public class Inventory : MonoBehaviour
 
 
 
-    public List<KeyValuePair<SpriteRenderer, int>> Get3ItemsToDisplayInHUD()
+    public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
     {
         int i = indexOfSelectedInventorySlot;
         int n = numberOfInventorySlots;
 
-        List<KeyValuePair<SpriteRenderer, int>> itemsToDisplay = new List<KeyValuePair<SpriteRenderer, int>>();
+        List<ItemStack.itemStackToDisplay> itemsToDisplay = new List<ItemStack.itemStackToDisplay>();
 
-        itemsToDisplay.Add(inventory[(i - 1) % n].GetStackItemSpriteRendererAndUnitsPair());
-        itemsToDisplay.Add(inventory[i].GetStackItemSpriteRendererAndUnitsPair());
-        itemsToDisplay.Add(inventory[(i + 1) % n].GetStackItemSpriteRendererAndUnitsPair());
+        itemsToDisplay.Add(inventory[(i - 1) % n].GetStackToDisplay());
+        itemsToDisplay.Add(inventory[i].GetStackToDisplay());
+        itemsToDisplay.Add(inventory[(i + 1) % n].GetStackToDisplay());
 
         return itemsToDisplay;
     }
@@ -203,7 +204,7 @@ public class Inventory : MonoBehaviour
     // This function might belong to another script
     public void UpdateItemsToDisplayInHUD()
     {
-        List<KeyValuePair<SpriteRenderer, int>> itemsToDisplay = Get3ItemsToDisplayInHUD();
+        List<ItemStack.itemStackToDisplay> itemsToDisplay = Get3ItemsToDisplayInHUD();
 
         // Show 1st Item
         // Show 2nd Item (Central)

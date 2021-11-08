@@ -10,6 +10,15 @@ public class ItemStack : MonoBehaviour
     public Item itemNull;
 
 
+    public struct itemStackToDisplay
+    {
+        public SpriteRenderer spriteRenderer;
+        public int quantity;
+        public string name;
+    }
+
+
+
     // Methods
     public void InitStack(Item item) 
     {
@@ -65,8 +74,10 @@ public class ItemStack : MonoBehaviour
         return itemStack.Key.GetItemSpriteRenderer();
     }
 
-    public KeyValuePair<SpriteRenderer, int> GetStackItemSpriteRendererAndUnitsPair()
+    public itemStackToDisplay GetStackToDisplay()
     {
-        return new KeyValuePair<SpriteRenderer, int>(itemStack.Key.GetItemSpriteRenderer(), itemStack.Value);
+        return new itemStackToDisplay { spriteRenderer = itemStack.Key.GetItemSpriteRenderer(), 
+                                        quantity = itemStack.Value, 
+                                        name = itemStack.Key.itemName };
     }
 }
