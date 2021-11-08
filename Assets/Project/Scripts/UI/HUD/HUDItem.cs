@@ -15,12 +15,12 @@ public class HUDItem : MonoBehaviour
         image.sprite = itemSprite;
     }
 
-    public void UpdateTextQuantity(string text)
+    public void SetTextQuantity(string text)
     {
         textQuantity.text = text;
     }
 
-    public void UpdateTextName(string text)
+    public void SetTextName(string text)
     {
         textName.text = text;
     }

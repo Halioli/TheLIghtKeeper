@@ -12,7 +12,7 @@ public class ItemStack : MonoBehaviour
 
     public struct itemStackToDisplay
     {
-        public SpriteRenderer spriteRenderer;
+        public Sprite sprite;
         public int quantity;
         public string name;
     }
@@ -69,14 +69,14 @@ public class ItemStack : MonoBehaviour
     }
 
 
-    public SpriteRenderer GetStackItemSpriteRenderer()
+    public Sprite GetStackItemSprite()
     {
-        return itemStack.Key.GetItemSpriteRenderer();
+        return itemStack.Key.GetItemSprite();
     }
 
     public itemStackToDisplay GetStackToDisplay()
     {
-        return new itemStackToDisplay { spriteRenderer = itemStack.Key.GetItemSpriteRenderer(), 
+        return new itemStackToDisplay { sprite = itemStack.Key.GetItemSprite(), 
                                         quantity = itemStack.Value, 
                                         name = itemStack.Key.itemName };
     }
