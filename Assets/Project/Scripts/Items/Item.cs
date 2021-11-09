@@ -26,17 +26,21 @@ public abstract class Item : ScriptableObject
     //    sprite = GetComponent<Sprite>();
     //}
 
-    public static bool operator== (Item itemA, Item itemB)
-    {
-        return itemA.ID == itemB.ID;
-    }
 
-    public static bool operator!= (Item itemA, Item itemB)
-    {
-        return itemA.ID != itemB.ID;
-    }
+
+
 
     // Methods
+    public bool SameID(Item other)
+    {
+        return ID == other.ID;
+    }
+
+    public bool DifferentID(Item other)
+    {
+        return ID != other.ID;
+    }
+
     public int GetID() { return ID; }
 
     public int GetStackSize() { return stackSize; }
