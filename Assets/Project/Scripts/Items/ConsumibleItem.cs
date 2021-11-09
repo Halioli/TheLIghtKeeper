@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Consumible : Item
+
+[CreateAssetMenu(fileName = "New Consumible Item", menuName = "Inventory System/Items/Consumible")]
+
+public class ConsumibleItem : Item
 {
-    private void Start()
+    private void Awake()
     {
-        isMineral = false;
-        isConsumible = true;
+        itemType = ItemType.CONSUMIBLE;
     }
 
 

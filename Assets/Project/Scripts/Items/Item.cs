@@ -2,23 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+
+public enum ItemType { NULL, MINERAL, CONSUMIBLE }
+
+public abstract class Item : ScriptableObject
 {
-    // Protected attributes
-    public int ID; // item identifier ("type")
+    // Attributes
+    public GameObject prefab;
+    private Sprite sprite;
+
+
+    public string itemName;
+    [TextArea(5, 20)] public string description;
+
+    public int ID; // item identifier
+    public ItemType itemType;
     public int stackSize;
 
-    public bool isMineral;
-    public bool isConsumible;
-
-    private Sprite sprite;
-    public string itemName;
 
 
-    private void Start()
-    {
-        sprite = GetComponent<Sprite>();
-    }
+    //private void Start()
+    //{
+    //    sprite = GetComponent<Sprite>();
+    //}
 
     public static bool operator== (Item itemA, Item itemB)
     {
