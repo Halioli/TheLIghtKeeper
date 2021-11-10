@@ -1242,8 +1242,8 @@ GameObject:
   - component: {fileID: 1990935997}
   - component: {fileID: 1990935996}
   - component: {fileID: 1990935995}
+  - component: {fileID: 1990936000}
   - component: {fileID: 1990935994}
-  - component: {fileID: 1990935993}
   - component: {fileID: 1990935992}
   - component: {fileID: 1990935999}
   m_Layer: 3
@@ -1283,34 +1283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d0d9f5d14125c459008a174c8fc4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  insideLightCollider: {fileID: 1990935993}
+  insideLightCollider: {fileID: 0}
   lamp: {fileID: 1709642906}
---- !u!61 &1990935993
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1990935990}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.32, y: 2.64}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
-  m_EdgeRadius: 0
 --- !u!114 &1990935994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1331,7 +1305,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990935990}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 571396735e83b0843a755ca57dc4755f, type: 3}
   m_Name: 
@@ -1357,7 +1331,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.32, y: 2.64}
+    oldSize: {x: 1.6571429, y: 1.8857143}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1457,3 +1431,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1990936000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990935990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b846a591734c24b8dae2a601287881, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  facingRight: 0
