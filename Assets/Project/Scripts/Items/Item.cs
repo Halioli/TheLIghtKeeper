@@ -7,11 +7,9 @@ public enum ItemType { NULL, MINERAL, CONSUMIBLE }
 
 public abstract class Item : ScriptableObject
 {
-    // Attributes
+    // Public Attributes
     public GameObject prefab;
-    private Sprite sprite;
-
-
+    
     public string itemName;
     [TextArea(5, 20)] public string description;
 
@@ -19,6 +17,9 @@ public abstract class Item : ScriptableObject
     public ItemType itemType;
     public int stackSize;
 
+
+    // Private Attributes
+    private Sprite sprite;
 
 
     //private void Start()
@@ -28,9 +29,15 @@ public abstract class Item : ScriptableObject
 
 
 
+    // Getter Methods
+    public int GetID() { return ID; }
+
+    public int GetStackSize() { return stackSize; }
+
+    public Sprite GetItemSprite() { return sprite; }
 
 
-    // Methods
+    // Bool Methods 
     public bool SameID(Item other)
     {
         return ID == other.ID;
@@ -41,12 +48,7 @@ public abstract class Item : ScriptableObject
         return ID != other.ID;
     }
 
-    public int GetID() { return ID; }
 
-    public int GetStackSize() { return stackSize; }
-
-    public Sprite GetItemSprite() { return sprite; }
-
-
+    // Virtual Methods
     public virtual void DoFunctionality() { }
 }

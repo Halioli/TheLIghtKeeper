@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemStack : MonoBehaviour
+public class ItemStack
 {
-    // Attributes
-    private Item itemInStack;
-    private int amountInStack;
-
-    public Item itemNull;
-
+    // Public Attributes
+    public Item itemInStack;
+    public int amountInStack;
 
     public struct itemStackToDisplay
     {
@@ -18,32 +15,43 @@ public class ItemStack : MonoBehaviour
         public string name;
     }
 
-    private void Awake()
-    {
-        InitEmptyStack();
-    }
 
-
-    // Methods
-    public void InitStack(Item item) 
+    // Setter Methods
+    public void InitStack(Item item)
     {
         itemInStack = item;
         amountInStack = 1;
     }
 
-    public void InitEmptyStack()
+    public void InitEmptyNullStack(Item item)
     {
-        itemInStack = itemNull;
+        itemInStack = item;
         amountInStack = 0;
     }
 
 
-    public bool StackIsFull() { return amountInStack == itemInStack.GetStackSize(); }
+    // Getter Methods
+    public int GetItemID() { return itemInStack.GetID(); }
 
-    public bool StackIsEmpty() 
+    public int GetItemStackSize() { return itemInStack.GetStackSize(); }
+    public Sprite GetStackItemSprite()
     {
-        return itemInStack.SameID(itemNull);
+        return itemInStack.GetItemSprite();
     }
+
+    public itemStackToDisplay GetStackToDisplay()
+    {
+        return new itemStackToDisplay
+        {
+            sprite = itemInStack.GetItemSprite(),
+            quantity = amountInStack,
+            name = itemInStack.itemName
+        };
+    }
+
+
+    // Bool Methods
+    public bool StackIsFull() { return amountInStack == itemInStack.GetStackSize(); }
 
     public bool StackHasNoItemsLeft()
     {
@@ -61,10 +69,7 @@ public class ItemStack : MonoBehaviour
     }
 
 
-    public int GetItemID() { return itemInStack.GetID(); }
-
-    public int GetItemStackSize() { return itemInStack.GetStackSize(); }
-
+    // Modifier Methods
     public void AddOneItemToStack()
     {
         amountInStack++;
@@ -76,15 +81,4 @@ public class ItemStack : MonoBehaviour
     }
 
 
-    public Sprite GetStackItemSprite()
-    {
-        return itemInStack.GetItemSprite();
-    }
-
-    public itemStackToDisplay GetStackToDisplay()
-    {
-        return new itemStackToDisplay { sprite = itemInStack.GetItemSprite(), 
-                                        quantity = amountInStack, 
-                                        name = itemInStack.itemName };
-    }
 }

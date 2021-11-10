@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "New Mineral Item", menuName = "Inventory System/Items/Mineral")]
+[CreateAssetMenu(fileName = "NewMineralItem", menuName = "Inventory System/Items/Mineral")]
 
 public class MineralItem : Item
 {

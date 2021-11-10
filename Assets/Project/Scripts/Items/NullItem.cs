@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "New Null Item", menuName = "Inventory System/Items/Default")]
+[CreateAssetMenu(fileName = "NullItem", menuName = "Inventory System/Items/Null")]
 
 public class NullItem : Item
 {

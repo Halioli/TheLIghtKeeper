@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "New Consumible Item", menuName = "Inventory System/Items/Consumible")]
+[CreateAssetMenu(fileName = "NewConsumibleItem", menuName = "Inventory System/Items/Consumible")]
 
 public class ConsumibleItem : Item
 {
@@ -13,6 +13,7 @@ public class ConsumibleItem : Item
     }
 
 
+    // Overrided Methods
     public override void DoFunctionality()
     {
         // Consumible does functionality

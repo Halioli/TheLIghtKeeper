@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+
+[CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
+
+public class Inventory : ScriptableObject
 {
-    // Attributes
-    private List<ItemStack> inventory;
+    // Public Attributes
+    public List<ItemStack> inventory = new List<ItemStack>();
+    public Item itemNull;
+
+    // Private Attributes
     private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
     private int indexOfSelectedInventorySlot;
@@ -15,8 +21,8 @@ public class Inventory : MonoBehaviour
 
 
 
-    // Methods
-    protected void Start()
+    // Constructors and Initializer Methods
+    public Inventory()
     {
         numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
@@ -26,47 +32,18 @@ public class Inventory : MonoBehaviour
         InitInventory();
     }
 
-
     public void InitInventory()
     {
         ItemStack newItemStackToAdd = new ItemStack();
-        newItemStackToAdd.InitEmptyStack();
+        newItemStackToAdd.InitEmptyNullStack(itemNull);
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
             inventory.Add(newItemStackToAdd);
         }
     }
 
-    public void UpgradeInventory()
-    {
-        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
-        {
-            numberOfInventorySlots++;
-            ItemStack newItemStackToAdd = new ItemStack();
-            newItemStackToAdd.InitEmptyStack();
-            inventory.Add(newItemStackToAdd);
-        }
-    }
 
-
-
-    public bool InventoryIsEmpty()
-    {
-        return inventoryIsEmpty;
-    }
-
-    public bool InventoryContainsItem(Item itemToCompare)
-    {
-        bool wasFound = false;
-        int i = 0;
-        while (!wasFound && i < numberOfInventorySlots)
-        {
-            wasFound = inventory[i].StackContainsItem(itemToCompare);
-            i++;
-        }
-        return wasFound;
-    }
-
+    // Getter Methods
     public int NextInventorySlotWithAvailableSpaceToAddItem(Item itemToCompare)
     {
         int i = 0;
@@ -101,7 +78,7 @@ public class Inventory : MonoBehaviour
         int i = 0;
         while (i < numberOfInventorySlots)
         {
-            if (inventory[i].StackIsEmpty())
+            if (inventory[i].StackHasNoItemsLeft())
             {
                 return i;
             }
@@ -110,6 +87,38 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
+
+
+    // Modifier Methods
+    public void UpgradeInventory()
+    {
+        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
+        {
+            numberOfInventorySlots++;
+            ItemStack newItemStackToAdd = new ItemStack();
+            newItemStackToAdd.InitEmptyNullStack(itemNull);
+            inventory.Add(newItemStackToAdd);
+        }
+    }
+
+
+    // Bool Methods
+    public bool InventoryIsEmpty()
+    {
+        return inventoryIsEmpty;
+    }
+
+    public bool InventoryContainsItem(Item itemToCompare)
+    {
+        bool wasFound = false;
+        int i = 0;
+        while (!wasFound && i < numberOfInventorySlots)
+        {
+            wasFound = inventory[i].StackContainsItem(itemToCompare);
+            i++;
+        }
+        return wasFound;
+    }
 
 
     public bool AddItemToInventory(Item itemToAdd)
@@ -153,8 +162,6 @@ public class Inventory : MonoBehaviour
     }
 
 
-
-
     public bool SubstractItemToInventory(Item itemToSubstract)
     {
         bool couldRemoveItem = false;
@@ -169,7 +176,7 @@ public class Inventory : MonoBehaviour
             // Set slot to empty if the last unit of the item was substracted
             if (inventory[index].StackHasNoItemsLeft())
             {
-                inventory[index].InitEmptyStack();
+                inventory[index].InitEmptyNullStack(itemNull);
                 numberOfOccuppiedInventorySlots--;
 
                 if (numberOfOccuppiedInventorySlots == 0)
@@ -185,7 +192,7 @@ public class Inventory : MonoBehaviour
 
 
 
-
+    // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
     {
         int i = indexOfSelectedInventorySlot;
