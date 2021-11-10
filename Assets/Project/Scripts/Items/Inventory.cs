@@ -5,11 +5,14 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 
-public class Inventory : ScriptableObject
+public class Inventory : MonoBehaviour
 {
     // Public Attributes
-    public List<ItemStack> inventory = new List<ItemStack>();
     public Item itemNull;
+    public ItemStack emptyStack;
+
+    public List<ItemStack> inventory = new List<ItemStack>();
+
 
     // Private Attributes
     private int numberOfInventorySlots;
@@ -19,6 +22,11 @@ public class Inventory : ScriptableObject
 
     private const int MAX_NUMBER_OF_SLOTS = 9;
 
+
+    public void Awake()
+    {
+        emptyStack = GetComponent<ItemStack>();
+    }
 
 
     // Constructors and Initializer Methods
@@ -34,12 +42,19 @@ public class Inventory : ScriptableObject
 
     public void InitInventory()
     {
-        ItemStack newItemStackToAdd = new ItemStack();
-        newItemStackToAdd.InitEmptyNullStack(itemNull);
+        //ItemStack newItemStackToAdd = new ItemStack();
+        //newItemStackToAdd.InitEmptyNullStack(itemNull);
+        //for (int i = 0; i < numberOfInventorySlots; i++)
+        //{
+        //    inventory.Add(newItemStackToAdd);
+        //}
+
+
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
-            inventory.Add(newItemStackToAdd);
+            inventory.Add(Instantiate(emptyStack));
         }
+        
     }
 
 
@@ -95,9 +110,10 @@ public class Inventory : ScriptableObject
         if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
         {
             numberOfInventorySlots++;
-            ItemStack newItemStackToAdd = new ItemStack();
-            newItemStackToAdd.InitEmptyNullStack(itemNull);
-            inventory.Add(newItemStackToAdd);
+            //ItemStack newItemStackToAdd = new ItemStack();
+            //newItemStackToAdd.InitEmptyNullStack(itemNull);
+            //inventory.Add(newItemStackToAdd);
+            inventory.Add(Instantiate(emptyStack));
         }
     }
 
@@ -126,7 +142,9 @@ public class Inventory : ScriptableObject
         bool couldAddItem = false;
 
         // Instantiate and initialize the item to add
-        ItemStack newItemStackToAdd = new ItemStack();
+        //ItemStack newItemStackToAdd = new ItemStack();
+
+        ItemStack newItemStackToAdd = Instantiate(emptyStack);
         newItemStackToAdd.InitStack(itemToAdd);
 
         // Check if the inventory is empty, to add item directly

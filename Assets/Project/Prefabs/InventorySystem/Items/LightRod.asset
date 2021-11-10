@@ -9,7 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8ffeb2e8eb1e17468abb16d8ec51714, type: 3}
-  m_Name: PlayerInventory
+  m_Script: {fileID: 11500000, guid: b69bf5647856226448733f6dfdba890c, type: 3}
+  m_Name: LightRod
   m_EditorClassIdentifier: 
-  itemNull: {fileID: 11400000, guid: 56ea98fd605d8bb4eac0b03cc45dc452, type: 2}
+  prefab: {fileID: 0}
+  itemName: Light Rod
+  description: Light Rod is used to generate a light source that lasts 3 seconds.
+  ID: 20
+  itemType: 2
+  stackSize: 8

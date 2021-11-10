@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemStack
+public class ItemStack : MonoBehaviour
 {
     // Public Attributes
     public Item itemInStack;
@@ -13,6 +13,13 @@ public class ItemStack
         public Sprite sprite;
         public int quantity;
         public string name;
+    }
+
+
+    public ItemStack(Item item, int amount)
+    {
+        itemInStack = item;
+        amountInStack = amount;
     }
 
 
