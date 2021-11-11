@@ -23,19 +23,15 @@ public class Inventory : MonoBehaviour
     private const int MAX_NUMBER_OF_SLOTS = 9;
 
 
-    public void Awake()
-    {
-        emptyStack = GetComponent<ItemStack>();
-    }
 
-
-    // Constructors and Initializer Methods
-    public Inventory()
+    // Initializer Methods
+    public void Start()
     {
         numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
         inventoryIsEmpty = false;
+
 
         InitInventory();
     }
@@ -52,7 +48,7 @@ public class Inventory : MonoBehaviour
 
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
-            inventory.Add(Instantiate(emptyStack));
+            inventory.Add(Instantiate(emptyStack, transform));
         }
         
     }
@@ -113,7 +109,7 @@ public class Inventory : MonoBehaviour
             //ItemStack newItemStackToAdd = new ItemStack();
             //newItemStackToAdd.InitEmptyNullStack(itemNull);
             //inventory.Add(newItemStackToAdd);
-            inventory.Add(Instantiate(emptyStack));
+            inventory.Add(Instantiate(emptyStack, transform));
         }
     }
 
@@ -144,7 +140,7 @@ public class Inventory : MonoBehaviour
         // Instantiate and initialize the item to add
         //ItemStack newItemStackToAdd = new ItemStack();
 
-        ItemStack newItemStackToAdd = Instantiate(emptyStack);
+        ItemStack newItemStackToAdd = Instantiate(emptyStack, transform);
         newItemStackToAdd.InitStack(itemToAdd);
 
         // Check if the inventory is empty, to add item directly
