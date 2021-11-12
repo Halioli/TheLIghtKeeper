@@ -9,7 +9,7 @@ public class InventoryMenu : MonoBehaviour
     public ItemCell referenceItemCell;
 
     // Private
-    public List<ItemCell> itemCellsList;
+    public List<ItemCell> itemCellsList = new List<ItemCell>();
 
 
     private void Awake()
@@ -32,21 +32,21 @@ public class InventoryMenu : MonoBehaviour
     {
         for (int i = 0; i < inventory.GetInventorySize(); i++)
         {
-            AddNewEmptyCell(i);
+            AddNewEmptyCell();
         }
     }
 
 
-    public void AddNewEmptyCell(int listIndex)
+    public void AddNewEmptyCell()
     {
-        SpriteRenderer sr = inventory.inventory[listIndex].itemInStack.prefab.GetComponent<SpriteRenderer>();
+        itemCellsList.Add(Instantiate(referenceItemCell, transform).GetComponent<ItemCell>());
+       
+        SpriteRenderer sr = inventory.inventory[itemCellsList.Count - 1].itemInStack.prefab.GetComponent<SpriteRenderer>();
         referenceItemCell.SetItemImage(sr.sprite);
 
-        int amount = inventory.inventory[listIndex].amountInStack;
+        int amount = inventory.inventory[itemCellsList.Count - 1].amountInStack;
         referenceItemCell.SetItemAmount(amount);
 
-        itemCellsList.Add(referenceItemCell);
-        itemCellsList[listIndex] = Instantiate(itemCellsList[listIndex], transform);
     }
 
 
@@ -56,7 +56,7 @@ public class InventoryMenu : MonoBehaviour
         {
             for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); i++)
             {
-                AddNewEmptyCell(i);
+                AddNewEmptyCell();
             }
         }
 
