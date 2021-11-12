@@ -9,9 +9,9 @@ public class ItemCell : MonoBehaviour
     public Text itemAmount;
     public Button button;
 
-    public void SetItemImage(Image image)
+    public void SetItemImage(Sprite sprite)
     {
-        itemImage = image;
+        itemImage.sprite = sprite;
     }
 
     public void SetItemAmount(int amount)
