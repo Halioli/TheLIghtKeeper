@@ -2,10 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Inventory : MonoBehaviour
 {
-    // Attributes
-    private List<ItemStack> inventory;
+    // Public Attributes
+    public Item itemNull;
+    public ItemStack emptyStack;
+
+    public List<ItemStack> inventory = new List<ItemStack>();
+
+
+    // Private Attributes
     private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
     private int indexOfSelectedInventorySlot;
@@ -15,58 +23,37 @@ public class Inventory : MonoBehaviour
 
 
 
-    // Methods
-    protected void Start()
+    // Initializer Methods
+    public void Start()
     {
         numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
-        inventoryIsEmpty = false;
+        inventoryIsEmpty = true;
+
 
         InitInventory();
     }
 
-
     public void InitInventory()
     {
-        ItemStack newItemStackToAdd = new ItemStack();
-        newItemStackToAdd.InitEmptyStack();
+        //ItemStack newItemStackToAdd = new ItemStack();
+        //newItemStackToAdd.InitEmptyNullStack(itemNull);
+        //for (int i = 0; i < numberOfInventorySlots; i++)
+        //{
+        //    inventory.Add(newItemStackToAdd);
+        //}
+
+
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
-            inventory.Add(newItemStackToAdd);
+            inventory.Add(Instantiate(emptyStack, transform));
         }
-    }
-
-    public void UpgradeInventory()
-    {
-        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
-        {
-            numberOfInventorySlots++;
-            ItemStack newItemStackToAdd = new ItemStack();
-            newItemStackToAdd.InitEmptyStack();
-            inventory.Add(newItemStackToAdd);
-        }
+        
     }
 
 
-
-    public bool InventoryIsEmpty()
-    {
-        return inventoryIsEmpty;
-    }
-
-    public bool InventoryContainsItem(Item itemToCompare)
-    {
-        bool wasFound = false;
-        int i = 0;
-        while (!wasFound && i < numberOfInventorySlots)
-        {
-            wasFound = inventory[i].StackContainsItem(itemToCompare);
-            i++;
-        }
-        return wasFound;
-    }
-
+    // Getter Methods
     public int NextInventorySlotWithAvailableSpaceToAddItem(Item itemToCompare)
     {
         int i = 0;
@@ -101,7 +88,7 @@ public class Inventory : MonoBehaviour
         int i = 0;
         while (i < numberOfInventorySlots)
         {
-            if (inventory[i].StackIsEmpty())
+            if (inventory[i].StackHasNoItemsLeft())
             {
                 return i;
             }
@@ -112,18 +99,49 @@ public class Inventory : MonoBehaviour
 
 
 
+    // Modifier Methods
+    public void UpgradeInventory()
+    {
+        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
+        {
+            numberOfInventorySlots++;
+            //ItemStack newItemStackToAdd = new ItemStack();
+            //newItemStackToAdd.InitEmptyNullStack(itemNull);
+            //inventory.Add(newItemStackToAdd);
+            inventory.Add(Instantiate(emptyStack, transform));
+        }
+    }
+
+
+    // Bool Methods
+    public bool InventoryIsEmpty()
+    {
+        return inventoryIsEmpty;
+    }
+
+    public bool InventoryContainsItem(Item itemToCompare)
+    {
+        bool wasFound = false;
+        int i = 0;
+        while (!wasFound && i < numberOfInventorySlots)
+        {
+            wasFound = inventory[i].StackContainsItem(itemToCompare);
+            i++;
+        }
+        return wasFound;
+    }
+
+
     public bool AddItemToInventory(Item itemToAdd)
     {
         bool couldAddItem = false;
 
-        // Instantiate and initialize the item to add
-        ItemStack newItemStackToAdd = new ItemStack();
-        newItemStackToAdd.InitStack(itemToAdd);
-
         // Check if the inventory is empty, to add item directly
         if (InventoryIsEmpty())
         {
-            inventory[0] = newItemStackToAdd;
+            Debug.Log("Inventory is EMPTY");
+            inventory[0].InitStack(itemToAdd);
+
             numberOfOccuppiedInventorySlots++;
             inventoryIsEmpty = false;
             couldAddItem = true;
@@ -142,7 +160,7 @@ public class Inventory : MonoBehaviour
                 index = NextEmptyInventorySlot();
                 if (index != -1)
                 {
-                    inventory[index] = newItemStackToAdd;
+                    inventory[index].InitStack(itemToAdd);
                     numberOfOccuppiedInventorySlots++;
                     couldAddItem = true;
                 }
@@ -151,8 +169,6 @@ public class Inventory : MonoBehaviour
 
         return couldAddItem;
     }
-
-
 
 
     public bool SubstractItemToInventory(Item itemToSubstract)
@@ -169,7 +185,7 @@ public class Inventory : MonoBehaviour
             // Set slot to empty if the last unit of the item was substracted
             if (inventory[index].StackHasNoItemsLeft())
             {
-                inventory[index].InitEmptyStack();
+                inventory[index].InitEmptyNullStack(itemNull);
                 numberOfOccuppiedInventorySlots--;
 
                 if (numberOfOccuppiedInventorySlots == 0)
@@ -185,7 +201,7 @@ public class Inventory : MonoBehaviour
 
 
 
-
+    // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
     {
         int i = indexOfSelectedInventorySlot;
@@ -201,17 +217,15 @@ public class Inventory : MonoBehaviour
     }
 
 
-    // This function might belong to another script
-    public void UpdateItemsToDisplayInHUD()
+    public void CycleLeftSelectedItemIndex()
     {
-        List<ItemStack.itemStackToDisplay> itemsToDisplay = Get3ItemsToDisplayInHUD();
-
-        // Show 1st Item
-        // Show 2nd Item (Central)
-        // Show 3rd Item
-
+        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot - 1) % numberOfInventorySlots;
     }
 
+    public void CycleRightSelectedItemIndex()
+    {
+        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
+    }
 
 
 }

@@ -2,35 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+
+public enum ItemType { NULL, MINERAL, CONSUMIBLE }
+
+public abstract class Item : ScriptableObject
 {
-    // Protected attributes
-    public int ID; // item identifier ("type")
+    // Public Attributes
+    public GameObject prefab;
+    
+    public string itemName;
+    [TextArea(5, 20)] public string description;
+
+    public int ID; // item identifier
+    public ItemType itemType;
     public int stackSize;
 
-    public bool isMineral;
-    public bool isConsumible;
 
+    // Private Attributes
     private Sprite sprite;
-    public string itemName;
 
 
-    private void Start()
-    {
-        sprite = GetComponent<Sprite>();
-    }
+    //private void Start()
+    //{
+    //    sprite = GetComponent<Sprite>();
+    //}
 
-    public static bool operator== (Item itemA, Item itemB)
-    {
-        return itemA.ID == itemB.ID;
-    }
 
-    public static bool operator!= (Item itemA, Item itemB)
-    {
-        return itemA.ID != itemB.ID;
-    }
 
-    // Methods
+    // Getter Methods
     public int GetID() { return ID; }
 
     public int GetStackSize() { return stackSize; }
@@ -38,5 +37,18 @@ public class Item : MonoBehaviour
     public Sprite GetItemSprite() { return sprite; }
 
 
+    // Bool Methods 
+    public bool SameID(Item other)
+    {
+        return ID == other.ID;
+    }
+
+    public bool DifferentID(Item other)
+    {
+        return ID != other.ID;
+    }
+
+
+    // Virtual Methods
     public virtual void DoFunctionality() { }
 }
