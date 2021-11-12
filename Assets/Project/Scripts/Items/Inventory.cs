@@ -141,7 +141,6 @@ public class Inventory : MonoBehaviour
         // Check if the inventory is empty, to add item directly
         if (InventoryIsEmpty())
         {
-            Debug.Log("Inventory is EMPTY");
             inventory[0].InitStack(itemToAdd);
 
             numberOfOccuppiedInventorySlots++;

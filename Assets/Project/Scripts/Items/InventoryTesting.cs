@@ -32,10 +32,7 @@ public class InventoryTesting : MonoBehaviour
         {
             inventory.SubstractItemToInventory(ironItemGameObject.item);
         }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            inventory.UpgradeInventory();
-        }
+
     }
 
 

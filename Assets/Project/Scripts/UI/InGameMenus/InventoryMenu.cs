@@ -9,32 +9,64 @@ public class InventoryMenu : MonoBehaviour
     public ItemCell referenceItemCell;
 
     // Private
-    private List<ItemCell> itemCellsList;
+    public List<ItemCell> itemCellsList;
 
 
+    private void Start()
+    {
+        InitInventoryCellsList();
+    }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.U))
         {
-            CreateInventory();
+            UpdateInventory();
         }
     }
 
-    public void CreateInventory()
+
+
+    private void InitInventoryCellsList()
     {
         for (int i = 0; i < inventory.GetInventorySize(); i++)
         {
+            AddNewEmptyCell(i);
+        }
+    }
+
+
+    public void AddNewEmptyCell(int listIndex)
+    {
+        SpriteRenderer sr = inventory.inventory[listIndex].itemInStack.prefab.GetComponent<SpriteRenderer>();
+        referenceItemCell.SetItemImage(sr.sprite);
+
+        int amount = inventory.inventory[listIndex].amountInStack;
+        referenceItemCell.SetItemAmount(amount);
+
+        itemCellsList.Add(referenceItemCell);
+        itemCellsList[listIndex] = Instantiate(itemCellsList[listIndex], transform);
+    }
+
+
+    public void UpdateInventory()
+    {
+        if (itemCellsList.Count < inventory.GetInventorySize())
+        {
+            for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); i++)
+            {
+                AddNewEmptyCell(i);
+            }
+        }
+
+        for (int i = 0; i < inventory.GetInventorySize(); i++)
+        {
             SpriteRenderer sr = inventory.inventory[i].itemInStack.prefab.GetComponent<SpriteRenderer>();
-            referenceItemCell.SetItemImage(sr.sprite);
+            itemCellsList[i].SetItemImage(sr.sprite);
 
             int amount = inventory.inventory[i].amountInStack;
-            referenceItemCell.SetItemAmount(amount);
-
-            //Instantiate(inventory.inventory[i].itemInStack.prefab, transform);
-
-            Instantiate(referenceItemCell, transform);
+            itemCellsList[i].SetItemAmount(amount);
         }
     }
 }
