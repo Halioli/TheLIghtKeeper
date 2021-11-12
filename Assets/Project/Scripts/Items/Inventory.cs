@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 
 public class Inventory : MonoBehaviour
 {
@@ -30,7 +29,7 @@ public class Inventory : MonoBehaviour
         numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
-        inventoryIsEmpty = false;
+        inventoryIsEmpty = true;
 
 
         InitInventory();
@@ -137,16 +136,12 @@ public class Inventory : MonoBehaviour
     {
         bool couldAddItem = false;
 
-        // Instantiate and initialize the item to add
-        //ItemStack newItemStackToAdd = new ItemStack();
-
-        ItemStack newItemStackToAdd = Instantiate(emptyStack, transform);
-        newItemStackToAdd.InitStack(itemToAdd);
-
         // Check if the inventory is empty, to add item directly
         if (InventoryIsEmpty())
         {
-            inventory[0] = newItemStackToAdd;
+            Debug.Log("Inventory is EMPTY");
+            inventory[0].InitStack(itemToAdd);
+
             numberOfOccuppiedInventorySlots++;
             inventoryIsEmpty = false;
             couldAddItem = true;
@@ -165,7 +160,7 @@ public class Inventory : MonoBehaviour
                 index = NextEmptyInventorySlot();
                 if (index != -1)
                 {
-                    inventory[index] = newItemStackToAdd;
+                    inventory[index].InitStack(itemToAdd);
                     numberOfOccuppiedInventorySlots++;
                     couldAddItem = true;
                 }

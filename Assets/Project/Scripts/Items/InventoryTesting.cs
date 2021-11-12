@@ -6,16 +6,8 @@ public class InventoryTesting : MonoBehaviour
 {
     public Inventory inventory;
 
-    public Item coalItem;
-
-    public ItemsInHUD itemsInHUD;
-
-
-    private void Start()
-    {
-        itemsInHUD.GetItemsToDisplay();
-    }
-
+    public ItemGameObject coalItemGameObject;
+    public ItemGameObject ironItemGameObject;
 
     void Update()
     {
@@ -27,22 +19,32 @@ public class InventoryTesting : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             inventory.CycleLeftSelectedItemIndex();
-            itemsInHUD.UpdateHUDItemsToDisplay();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             inventory.CycleRightSelectedItemIndex();
-            itemsInHUD.UpdateHUDItemsToDisplay();
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.C))
         {
-            inventory.AddItemToInventory(coalItem);
-            itemsInHUD.UpdateHUDItemsToDisplay();
+            inventory.SubstractItemToInventory(coalItemGameObject.item);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.I))
         {
-            inventory.SubstractItemToInventory(coalItem);
-            itemsInHUD.UpdateHUDItemsToDisplay();
+            inventory.SubstractItemToInventory(ironItemGameObject.item);
+        }
+        else if (Input.GetKeyDown(KeyCode.K))
+        {
+            inventory.UpgradeInventory();
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Item"))
+        {
+            ItemGameObject itemGameObject = collider.GetComponent<ItemGameObject>();
+            inventory.AddItemToInventory(itemGameObject.item);
         }
     }
 
