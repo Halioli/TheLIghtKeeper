@@ -2,12 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum EnemyState
-{
-    WANDERING,
-    AGGRO
-}
-
 enum AttackState
 {
     MOVING_TOWARDS_PLAYER,
@@ -15,7 +9,7 @@ enum AttackState
     RECOVERING
 }
 
-public class EnemyCharger : MonoBehaviour
+public class EnemyCharger : BaseEnemy
 {
     // Public
     public const float ATTACK_RECOVER_TIME = 2f;
@@ -28,6 +22,7 @@ public class EnemyCharger : MonoBehaviour
     public AttackSystem attackSystem;
     public Rigidbody2D rigidbody;
     public SpriteRenderer spriteRenderer;
+    public BaseEnemy baseEnemy;
     public float attackForce = 8f;
     public float distanceToCharge = 4f;
 
