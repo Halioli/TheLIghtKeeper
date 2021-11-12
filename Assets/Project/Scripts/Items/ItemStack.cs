@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class ItemStack : MonoBehaviour
 {
-    // Attributes
-    private KeyValuePair<Item, int> itemStack;
-
-    public Item itemNull;
-
+    // Public Attributes
+    public Item itemInStack;
+    public int amountInStack;
 
     public struct itemStackToDisplay
     {
@@ -18,66 +16,76 @@ public class ItemStack : MonoBehaviour
     }
 
 
-
-    // Methods
-    public void InitStack(Item item) 
+    public ItemStack(Item item, int amount)
     {
-        itemStack = new KeyValuePair<Item, int>(item, 1);
-    }
-
-    public void InitEmptyStack()
-    {
-        itemStack = new KeyValuePair<Item, int>(itemNull, 0);
+        itemInStack = item;
+        amountInStack = amount;
     }
 
 
-    public bool StackIsFull() { return itemStack.Value == itemStack.Key.GetStackSize(); }
-
-    public bool StackIsEmpty() 
+    // Setter Methods
+    public void InitStack(Item item)
     {
-        return itemStack.Key == itemNull;
+        itemInStack = item;
+        amountInStack = 1;
     }
 
-    public bool StackHasNoItemsLeft()
+    public void InitEmptyNullStack(Item item)
     {
-        return itemStack.Value == 0;
-    }
-
-    public bool StackContainsItem(Item itemToCompare)
-    {
-        return itemStack.Key == itemToCompare;
-    }
-
-    public bool StackHasSpaceLeft()
-    {
-        return itemStack.Value < itemStack.Key.GetStackSize();
+        itemInStack = item;
+        amountInStack = 0;
     }
 
 
-    public int GetItemID() { return itemStack.Key.GetID(); }
+    // Getter Methods
+    public int GetItemID() { return itemInStack.GetID(); }
 
-    public int GetItemStackSize() { return itemStack.Key.GetStackSize(); }
-
-    public void AddOneItemToStack()
-    {
-        itemStack.Value.Equals(itemStack.Value + 1);
-    }
-
-    public void SubstractOneItemFromStack()
-    {
-        itemStack.Value.Equals(itemStack.Value - 1);
-    }
-
-
+    public int GetItemStackSize() { return itemInStack.GetStackSize(); }
     public Sprite GetStackItemSprite()
     {
-        return itemStack.Key.GetItemSprite();
+        return itemInStack.GetItemSprite();
     }
 
     public itemStackToDisplay GetStackToDisplay()
     {
-        return new itemStackToDisplay { sprite = itemStack.Key.GetItemSprite(), 
-                                        quantity = itemStack.Value, 
-                                        name = itemStack.Key.itemName };
+        return new itemStackToDisplay
+        {
+            sprite = itemInStack.GetItemSprite(),
+            quantity = amountInStack,
+            name = itemInStack.itemName
+        };
     }
+
+
+    // Bool Methods
+    public bool StackIsFull() { return amountInStack == itemInStack.GetStackSize(); }
+
+    public bool StackHasNoItemsLeft()
+    {
+        return amountInStack == 0;
+    }
+
+    public bool StackContainsItem(Item itemToCompare)
+    {
+        return itemInStack.SameID(itemToCompare);
+    }
+
+    public bool StackHasSpaceLeft()
+    {
+        return amountInStack < itemInStack.GetStackSize();
+    }
+
+
+    // Modifier Methods
+    public void AddOneItemToStack()
+    {
+        amountInStack++;
+    }
+
+    public void SubstractOneItemFromStack()
+    {
+        amountInStack--;
+    }
+
+
 }
