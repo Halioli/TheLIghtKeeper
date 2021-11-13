@@ -97,18 +97,15 @@ public class Ore : MonoBehaviour
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         Color transparentColor = spriteRenderer.material.color;
-        transparentColor.a = 0;
+        transparentColor.a = 0.0f;
 
-        Color visibleColor = spriteRenderer.material.color;
-        visibleColor.a = 1;
-
-        for (int i = 0; i < 3; i++)
-        {
-            spriteRenderer.material.color = transparentColor;
-            yield return new WaitForSeconds(0.1f);
-            spriteRenderer.material.color = visibleColor;
-            yield return new WaitForSeconds(0.1f);
-        }
+        Color semiTransparentColor = spriteRenderer.material.color;
+        semiTransparentColor.a = 0.5f;
+        
+        spriteRenderer.material.color = semiTransparentColor;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.material.color = transparentColor;
+        yield return new WaitForSeconds(0.2f);
 
         Destroy(gameObject);
     }
