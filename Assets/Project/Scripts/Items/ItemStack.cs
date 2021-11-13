@@ -41,6 +41,7 @@ public class ItemStack : MonoBehaviour
     public int GetItemID() { return itemInStack.GetID(); }
 
     public int GetItemStackSize() { return itemInStack.GetStackSize(); }
+
     public Sprite GetStackItemSprite()
     {
         return itemInStack.GetItemSprite();
