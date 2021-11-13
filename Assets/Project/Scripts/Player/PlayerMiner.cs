@@ -44,7 +44,9 @@ public class PlayerMiner : MonoBehaviour
 
                     // 5. Mine the Ore
                     Debug.Log("Clicked an Ore\n");
-                    oreToMineCollider.gameObject.GetComponent<Ore>().GetMined();
+                    Ore oreToMine = oreToMineCollider.gameObject.GetComponent<Ore>();
+                    if (oreToMine.CanBeMined())
+                        oreToMine.GetsMined(1);
 
                 }
             }
