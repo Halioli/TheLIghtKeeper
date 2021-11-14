@@ -29,21 +29,6 @@ public class Ore : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (CanBeMined())
-                GetsMined(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.B))
-        {
-            if (CanBeMined())
-                GetsMined(2);
-        }
-    }
-
-
 
     public bool CanBeMined() { return breakState == OreState.WHOLE; }
 
