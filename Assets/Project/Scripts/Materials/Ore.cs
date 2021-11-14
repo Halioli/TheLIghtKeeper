@@ -33,7 +33,13 @@ public class Ore : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetsMined(1);
+            if (CanBeMined())
+                GetsMined(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (CanBeMined())
+                GetsMined(2);
         }
     }
 
@@ -79,7 +85,8 @@ public class Ore : MonoBehaviour
 
     private void DropMineralItem()
     {
-        Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
+        ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
+        droppedMineralItem.DropsDown();
     }
 
     private Vector2 GetDropSpawnPosition()
