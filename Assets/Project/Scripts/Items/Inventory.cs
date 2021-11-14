@@ -54,6 +54,8 @@ public class Inventory : MonoBehaviour
 
 
     // Getter Methods
+    public int GetInventorySize() { return numberOfInventorySlots; }
+
     public int NextInventorySlotWithAvailableSpaceToAddItem(Item itemToCompare)
     {
         int i = 0;
@@ -139,7 +141,6 @@ public class Inventory : MonoBehaviour
         // Check if the inventory is empty, to add item directly
         if (InventoryIsEmpty())
         {
-            Debug.Log("Inventory is EMPTY");
             inventory[0].InitStack(itemToAdd);
 
             numberOfOccuppiedInventorySlots++;
@@ -226,6 +227,4 @@ public class Inventory : MonoBehaviour
     {
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
     }
-
-
 }

@@ -6,8 +6,14 @@ public class InventoryTesting : MonoBehaviour
 {
     public Inventory inventory;
 
+    public Canvas inventoryCanvas;
+    public InventoryMenu inventoryMenu;
+    private bool inventoryIsOpen = false;
+
     public ItemGameObject coalItemGameObject;
     public ItemGameObject ironItemGameObject;
+
+
 
     void Update()
     {
@@ -16,14 +22,14 @@ public class InventoryTesting : MonoBehaviour
         {
             inventory.UpgradeInventory();
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            inventory.CycleLeftSelectedItemIndex();
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            inventory.CycleRightSelectedItemIndex();
-        }
+        //else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        //{
+        //    inventory.CycleLeftSelectedItemIndex();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.RightArrow))
+        //{
+        //    inventory.CycleRightSelectedItemIndex();
+        //}
         else if (Input.GetKeyDown(KeyCode.C))
         {
             inventory.SubstractItemToInventory(coalItemGameObject.item);
@@ -32,10 +38,19 @@ public class InventoryTesting : MonoBehaviour
         {
             inventory.SubstractItemToInventory(ironItemGameObject.item);
         }
-        else if (Input.GetKeyDown(KeyCode.K))
+
+        else if (Input.GetKeyDown(KeyCode.E))
         {
-            inventory.UpgradeInventory();
+            if (inventoryIsOpen)
+            {
+                CloseInventory();
+            }
+            else
+            {
+                OpenInventory();
+            }
         }
+
     }
 
 
@@ -44,8 +59,25 @@ public class InventoryTesting : MonoBehaviour
         if (collider.gameObject.CompareTag("Item"))
         {
             ItemGameObject itemGameObject = collider.GetComponent<ItemGameObject>();
-            inventory.AddItemToInventory(itemGameObject.item);
+            bool couldAddItem = inventory.AddItemToInventory(itemGameObject.item);
+            if (couldAddItem)
+            {
+                Destroy(itemGameObject.gameObject);
+            }
         }
     }
 
+
+    private void OpenInventory()
+    {
+        inventoryIsOpen = true;
+        inventoryCanvas.gameObject.SetActive(true);
+        inventoryMenu.UpdateInventory();
+    }
+
+    private void CloseInventory()
+    {
+        inventoryIsOpen = false;
+        inventoryCanvas.gameObject.SetActive(false);
+    }
 }
