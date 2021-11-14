@@ -87,6 +87,7 @@ public class Ore : MonoBehaviour
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsDown();
+        droppedMineralItem.StartDespawning();
     }
 
     private Vector2 GetDropSpawnPosition()
