@@ -1,25 +1,37 @@
 fileFormatVersion: 2
-guid: 940c3735e9d30164097fedc0421fb234
+guid: 78ef4efddc58b4246883c8de08be483b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7586732983070668599
-    second: IDL LEFT(2)_0
+      213: 7693362801341128142
+    second: PickAxe_0
   - first:
-      213: -5175829038604957184
-    second: IDL LEFT(2)_1
+      213: -1040917805783339606
+    second: PickAxe_1
   - first:
-      213: 544897204513353133
-    second: IDL LEFT(2)_2
+      213: 1764724670935981546
+    second: PickAxe_2
   - first:
-      213: -4870933963220007923
-    second: IDL LEFT(2)_3
+      213: 3654255497116070978
+    second: PickAxe_3
   - first:
-      213: -867328975759471530
-    second: IDL LEFT(2)_4
+      213: 35587192040191607
+    second: PickAxe_4
   - first:
-      213: 6440099010357190498
-    second: IDL LEFT(2)_5
+      213: -6105635093663949098
+    second: PickAxe_5
+  - first:
+      213: -1212397244076143576
+    second: PickAxe_6
+  - first:
+      213: -7624903377491136614
+    second: PickAxe_7
+  - first:
+      213: -21147386356208394
+    second: PickAxe_8
+  - first:
+      213: -6999043488078861857
+    second: PickAxe_9
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -50,7 +62,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -64,7 +76,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -86,7 +98,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -98,7 +110,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -109,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: IDL LEFT(2)_0
+      name: PickAxe_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 264
-        width: 232
-        height: 264
+        y: 200
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,20 +135,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 737baada37d794960800000000000000
-      internalID: 7586732983070668599
+      spriteID: ecd5426e4b054ca60800000000000000
+      internalID: 7693362801341128142
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IDL LEFT(2)_1
+      name: PickAxe_1
       rect:
         serializedVersion: 2
-        x: 232
-        y: 264
-        width: 232
-        height: 264
+        x: 100
+        y: 200
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 00acccf79e2cb28b0800000000000000
-      internalID: -5175829038604957184
+      spriteID: aada7e945caed81f0800000000000000
+      internalID: -1040917805783339606
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IDL LEFT(2)_2
+      name: PickAxe_2
       rect:
         serializedVersion: 2
-        x: 464
-        y: 264
-        width: 232
-        height: 264
+        x: 200
+        y: 200
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,20 +177,125 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dad2f1ade1ddf8700800000000000000
-      internalID: 544897204513353133
+      spriteID: aedd1810dbf8d7810800000000000000
+      internalID: 1764724670935981546
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IDL LEFT(2)_3
+      name: PickAxe_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2443f18730686b230800000000000000
+      internalID: 3654255497116070978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PickAxe_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 776fb14dc5e6e7000800000000000000
+      internalID: 35587192040191607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PickAxe_5
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6de500a3b3d644ba0800000000000000
+      internalID: -6105635093663949098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PickAxe_6
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82ccd2c4123bc2fe0800000000000000
+      internalID: -1212397244076143576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PickAxe_7
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9fe6f1d6c6ee2690800000000000000
+      internalID: -7624903377491136614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PickAxe_8
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 232
-        height: 264
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -186,20 +303,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d04c2e52e57f66cb0800000000000000
-      internalID: -4870933963220007923
+      spriteID: 6fc6f4c609ed4bff0800000000000000
+      internalID: -21147386356208394
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IDL LEFT(2)_4
+      name: PickAxe_9
       rect:
         serializedVersion: 2
-        x: 232
+        x: 100
         y: 0
-        width: 232
-        height: 264
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -207,29 +324,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 65c047054e0a6f3f0800000000000000
-      internalID: -867328975759471530
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: IDL LEFT(2)_5
-      rect:
-        serializedVersion: 2
-        x: 464
-        y: 0
-        width: 232
-        height: 264
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 26f5fa6cde3df5950800000000000000
-      internalID: 6440099010357190498
+      spriteID: fd96c85b7076ede90800000000000000
+      internalID: -6999043488078861857
       vertices: []
       indices: 
       edges: []
