@@ -2,31 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrosshairCursor : MonoBehaviour
+public class CrosshairCursor : PlayerInputs
 {
-    public GameObject pickAxe;
-    // Start is called before the first frame update
+    // Private Attributes
+    private SpriteRenderer crosshairSpriteRenderer;
+
+    // Public Attributes
+    //public GameObject pickAxe;
+
+    public Sprite crosshairNormal;
+    public Sprite crosshairPickaxe;
+    public Sprite crosshairPickaxeX;
+    public Sprite crosshairSword;
+    public Sprite crosshairSwordX;
+
+
     private void Awake()
     {
+        crosshairSpriteRenderer = GetComponent<SpriteRenderer>();
         Cursor.visible = false;
     }
 
-    // Update is called once per frame
+    
     private void Update()
     {
-        Vector2 mouseCursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = mouseCursorPos;
+        SetNewMousePosition();
+        transform.position = mouseWorldPosition;
     }
 
-    /*private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null && collision.gameObject.CompareTag("Ore"))
         {
-            pickAxe.SetActive(true);
+            GetComponent<SpriteRenderer>().sprite = crosshairPickaxe;
         }
-        else
+        else if (collision != null && collision.gameObject.CompareTag("Enemy"))
         {
-            pickAxe.SetActive(false);
+            GetComponent<SpriteRenderer>().sprite = crosshairSword;
         }
-    }*/
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ore")|| (collision != null && collision.gameObject.CompareTag("Enemy")))
+        {
+            GetComponent<SpriteRenderer>().sprite = crosshairNormal;
+        }
+    }
 }
