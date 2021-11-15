@@ -31,6 +31,7 @@ public class ItemGameObject : MonoBehaviour
 
     public void DropsDown()
     {
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         rigidbody2D.AddForce(transform.up * DROP_DOWN_FORCE_Y, ForceMode2D.Impulse);
 
         StartCoroutine("StopDroping", DROP_DOWN_TIME);
@@ -38,6 +39,7 @@ public class ItemGameObject : MonoBehaviour
 
     public void DropsForward(int directionX)
     {
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         rigidbody2D.AddForce(new Vector2(directionX * DROP_FORWARD_FORCE_X, DROP_FORWARD_FORCE_Y), ForceMode2D.Impulse);
 
         StartCoroutine("StopDroping", DROP_FORWARD_TIME);
