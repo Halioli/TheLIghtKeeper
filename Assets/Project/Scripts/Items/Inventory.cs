@@ -133,6 +133,23 @@ public class Inventory : MonoBehaviour
         return wasFound;
     }
 
+    public bool InventoryContainsItemAndAmount(Item itemToCompare, int requiredAmount)
+    {
+        bool hasEnough = false;
+        int i = 0;
+        int amountInInventory = 0;
+        while (!hasEnough && i < numberOfInventorySlots)
+        {
+            if (inventory[i].StackContainsItem(itemToCompare))
+            {
+                amountInInventory += inventory[i].GetAmountInStack();
+            }
+            hasEnough = amountInInventory >= requiredAmount;
+            i++;
+        }
+        return hasEnough;
+    }
+
 
     public bool AddItemToInventory(Item itemToAdd)
     {
