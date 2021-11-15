@@ -21,4 +21,33 @@ public class PlayerInputs : MonoBehaviour
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
+    public bool PlayerPressedInteractButton()
+    {
+        return Input.GetKeyDown(KeyCode.E);
+    }
+
+    public bool PlayerPressedUseButton()
+    {
+        return Input.GetKeyDown(KeyCode.Q);
+    }
+
+    public bool PlayerPressedInventoryButton()
+    {
+        return Input.GetKeyDown(KeyCode.Tab);
+    }
+
+    public bool PlayerPressedAttackButton()
+    {
+        return Input.GetKeyDown(KeyCode.Mouse1);
+    }
+
+    public Vector2 PlayerPressedMovementButtons()
+    {
+        return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+    }
+
+    public Vector2 PlayerMouseScroll()
+    {
+        return Input.mouseScrollDelta;
+    }
 }
