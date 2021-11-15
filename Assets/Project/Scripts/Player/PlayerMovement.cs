@@ -20,7 +20,7 @@ public class PlayerMovement : PlayerInputs
 
     private void Update()
     {
-        moveDirection = PlayerClickedMovementButtons();
+        moveDirection = PlayerPressedMovementButtons();
         rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
         FlipSprite();
     }
