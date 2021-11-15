@@ -9,7 +9,6 @@ public class PlayerLightChecker : MonoBehaviour
     private int numberOfLights;
 
     // Public Attributes
-    public Collider2D insideLightCollider;
     public Lamp lamp;
 
     private void Start()
@@ -33,15 +32,6 @@ public class PlayerLightChecker : MonoBehaviour
         {
             SetPlayerInLightToTrue();
         }
-
-        if (playerInLight)
-        {
-            Debug.Log("The player inside LIGHT");
-        }
-        else
-        {
-            Debug.Log("The player inside DARKNESS");
-        }
     }
 
     // Method that checks if the player enters an area with light
@@ -62,7 +52,6 @@ public class PlayerLightChecker : MonoBehaviour
                 lamp.FullyRefillLampTime();
             }
 
-            //Debug.Log("The player is now inside a lit up area\n");
             SetPlayerInLightToTrue();
         }
 
@@ -82,7 +71,6 @@ public class PlayerLightChecker : MonoBehaviour
             }
             else
             {
-                //Debug.Log("The player is now inside a dark area\n");
                 SetPlayerInLightToFalse();
             }
         }

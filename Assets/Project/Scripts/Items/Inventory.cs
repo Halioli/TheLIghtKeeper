@@ -54,6 +54,8 @@ public class Inventory : MonoBehaviour
 
 
     // Getter Methods
+    public int GetInventorySize() { return numberOfInventorySlots; }
+
     public int NextInventorySlotWithAvailableSpaceToAddItem(Item itemToCompare)
     {
         int i = 0;
@@ -131,6 +133,23 @@ public class Inventory : MonoBehaviour
         return wasFound;
     }
 
+    public bool InventoryContainsItemAndAmount(Item itemToCompare, int requiredAmount)
+    {
+        bool hasEnough = false;
+        int i = 0;
+        int amountInInventory = 0;
+        while (!hasEnough && i < numberOfInventorySlots)
+        {
+            if (inventory[i].StackContainsItem(itemToCompare))
+            {
+                amountInInventory += inventory[i].GetAmountInStack();
+            }
+            hasEnough = amountInInventory >= requiredAmount;
+            i++;
+        }
+        return hasEnough;
+    }
+
 
     public bool AddItemToInventory(Item itemToAdd)
     {
@@ -139,7 +158,6 @@ public class Inventory : MonoBehaviour
         // Check if the inventory is empty, to add item directly
         if (InventoryIsEmpty())
         {
-            Debug.Log("Inventory is EMPTY");
             inventory[0].InitStack(itemToAdd);
 
             numberOfOccuppiedInventorySlots++;
@@ -226,6 +244,4 @@ public class Inventory : MonoBehaviour
     {
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
     }
-
-
 }
