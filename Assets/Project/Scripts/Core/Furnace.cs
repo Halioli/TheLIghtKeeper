@@ -7,6 +7,7 @@ public class Furnace : InteractStation
     //TextMesh gameobjects
     public GameObject InteractText;
     public GameObject coalAddedText;
+    public GameObject warning;
 
     //Text references
     public Text numCoalAddedText;
@@ -36,6 +37,11 @@ public class Furnace : InteractStation
         if(currentFuel < maxFuel / 3)
         {
             Debug.Log("Warning Low Fuel");
+            warning.SetActive(true);
+        }
+        else
+        {
+            warning.SetActive(false);
         }
         //If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
