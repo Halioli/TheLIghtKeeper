@@ -2,36 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum AttackState
+
+
+public class EnemyCharger : Enemy
 {
-    MOVING_TOWARDS_PLAYER,
-    CHARGING,
-    RECOVERING
-}
-
-public class EnemyCharger : BaseEnemy
-{
-    // Public
-    public const float ATTACK_RECOVER_TIME = 2f;
-    public const float CHARGE_SPEED = 12f;
-    public const float CHARGE_TIME = 0.5f;
-    public const float MAX_SPEED = 7f;
-    public const float ACCELERATION = 0.25f;
-
-    public GameObject player;
-    public AttackSystem attackSystem;
-    public Rigidbody2D rigidbody;
-    public SpriteRenderer spriteRenderer;
-    public BaseEnemy baseEnemy;
-    public float attackForce = 8f;
-    public float distanceToCharge = 4f;
-
-    // Private
-    private EnemyState enemyState;
-    private AttackState attackState;
-
-    private Vector2 playerPosition;
-    private Vector2 directionTowardsPlayerPosition;
+    // Private Attributes
     private Vector2 directionOnChargeStart;
 
     private float currentSpeed;
@@ -39,6 +14,16 @@ public class EnemyCharger : BaseEnemy
     private float currentChargeTime;
     private bool hasRecovered;
     private bool collidedWithPlayer;
+
+    // Public Attributes
+    public const float ATTACK_RECOVER_TIME = 2f;
+    public const float CHARGE_SPEED = 12f;
+    public const float CHARGE_TIME = 0.5f;
+    public const float MAX_SPEED = 7f;
+    public const float ACCELERATION = 0.25f;
+
+    public float attackForce = 8f;
+    public float distanceToCharge = 4f;
 
     private void Start()
     {
@@ -74,7 +59,7 @@ public class EnemyCharger : BaseEnemy
                 // Change to CHARGE
                 if (Vector2.Distance(transform.position, player.transform.position) <= distanceToCharge)
                 {
-                    playerPosition = player.transform.position;
+                    UpdatePlayerPosition();
                     directionOnChargeStart = (playerPosition - rigidbody.position).normalized;
                     attackState = AttackState.CHARGING; // Change state
                 }
@@ -131,8 +116,8 @@ public class EnemyCharger : BaseEnemy
 
     private void MoveTowardsPlayer()
     {
-        playerPosition = player.transform.position;
-        directionTowardsPlayerPosition = (playerPosition - rigidbody.position).normalized;
+        UpdatePlayerPosition();
+        UpdateDirectionTowardsPlayerPosition();
 
         rigidbody.MovePosition((Vector2)transform.position + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
     }
