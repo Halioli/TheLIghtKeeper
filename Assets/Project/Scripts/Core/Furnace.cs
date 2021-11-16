@@ -2,24 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 public class Furnace : InteractStation
 {
     //TextMesh gameobjects
     public GameObject InteractText;
-    public GameObject coalAddedText;
     public GameObject warning;
     public ParticleSystem addCoalParticleSystem;
 
     //Text references
-    public Text numCoalAddedText;
-    public Text currentFuelText;
+    public TextMeshProUGUI numCoalAddedText;
+    public TextMeshProUGUI currentFuelText;
 
     //Core light 
     public GameObject coreLight;
     private int lightLevel = 0;
 
     //Fuel vars
-    private int currentFuel = 25;
+    private int currentFuel = 35;
     private int numCoalAdded = 0;
     private int maxFuel = 250;
     
@@ -34,13 +35,18 @@ public class Furnace : InteractStation
     private void Start()
     {
         addCoalParticleSystem.Stop();
+        numCoalAddedText.text = "";
+        InteractText.SetActive(false);
+        warning.SetActive(false);
     }
-    // Update is called once per frame
+
+    
     void Update()
     {
         ConsumesFuel();
+        
         //Warning if currentFuel is low
-        if(currentFuel < maxFuel / 3)
+        if(currentFuel <= 30)//< maxFuel / 3)
         {
             Debug.Log("Warning Low Fuel");
             warning.SetActive(true);
@@ -49,9 +55,11 @@ public class Furnace : InteractStation
         {
             warning.SetActive(false);
         }
+
         //If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
         {
+            Debug.Log("playerInsideTriggerArea");
             GetInput();            //Waits the input from interactStation 
             PopUpAppears();        
         }
@@ -87,11 +95,9 @@ public class Furnace : InteractStation
     {
         currentFuel += 1;
         numCoalAdded += 1;
-        numCoalAddedText.text = numCoalAdded.ToString();
+        numCoalAddedText.text = "Added " + numCoalAdded.ToString() + " Coal";
         addCoalParticleSystem.Play();
-        //Debug.Log(currentFuel);
-        //Debug.Log(numCoalAdded);
-        coalAddedText.SetActive(true);
+        
         if (!couroutineStartedAddCoal)
         {
             StartCoroutine(UsingYieldAddCoal(1));
@@ -106,7 +112,7 @@ public class Furnace : InteractStation
 
         yield return new WaitForSeconds(seconds);
         
-        coalAddedText.SetActive(false);
+        numCoalAddedText.text = "";
         addCoalParticleSystem.Stop();
 
         couroutineStartedAddCoal = false;
@@ -133,7 +139,6 @@ public class Furnace : InteractStation
         {
             StartCoroutine(UsingYieldCosumeCoal(2));
         }
-        currentFuelText.text = currentFuel.ToString() + "/" + maxFuel.ToString();
     }
 
     public override void UpgradeFunction()
@@ -146,4 +151,13 @@ public class Furnace : InteractStation
         }
     }
 
+    public int GetMaxFuel()
+    {
+        return maxFuel;
+    }
+
+    public int GetCurrentFuel()
+    {
+        return currentFuel;
+    }
 }
