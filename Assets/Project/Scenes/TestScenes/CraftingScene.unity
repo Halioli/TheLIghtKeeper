@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!224 &61671175 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2270476362255799655, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-  m_PrefabInstance: {fileID: 2270476362210906720}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +234,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2108863524}
-  - {fileID: 61671175}
+  - {fileID: 2131108213}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -439,45 +434,13 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1665166768439323779, guid: c82b4845fa3932348bf5cfa9601c28c9, type: 3}
   m_PrefabInstance: {fileID: 2108863523}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &2270476362210906720
+--- !u!1001 &2131108212
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 519550482}
     m_Modifications:
-    - target: {fileID: 2270476360876977944, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2270476360876977944, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2270476360876977944, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2270476360876977944, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2270476361285584917, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2270476361285584917, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2270476361285584917, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2270476361285584917, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2270476362255799654, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
       propertyPath: m_Name
       value: Canvas_CraftingMenu
@@ -566,9 +529,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2270476362268329940, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
+--- !u!224 &2131108213 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2270476362255799655, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
+  m_PrefabInstance: {fileID: 2131108212}
+  m_PrefabAsset: {fileID: 0}
