@@ -20,6 +20,7 @@ public class HUDHandler : MonoBehaviour
 
     public HealthSystem playerhealthSystem;
     public Lamp lamp;
+    public Furnace furnace;
 
     // Start is called before the first frame update
     private void Start()
@@ -35,7 +36,7 @@ public class HUDHandler : MonoBehaviour
         lampBar.UpdateText(CheckTextForZeros(lampTimeValue.ToString()));
 
         // Initialize core variables
-        coreTimeValue = 60;
+        coreTimeValue = furnace.GetMaxFuel();
         coreBar.SetMaxValue(coreTimeValue);
         coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
     }
@@ -49,6 +50,7 @@ public class HUDHandler : MonoBehaviour
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         ChangeValueInHUD(lampBar, lampTimeValue, lampTimeValue.ToString());
 
+        coreTimeValue = furnace.GetCurrentFuel();
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
     }
 
