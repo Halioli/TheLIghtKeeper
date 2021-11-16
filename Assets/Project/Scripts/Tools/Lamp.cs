@@ -12,11 +12,12 @@ public class Lamp : MonoBehaviour
 
     // Public Attributes
     public GameObject lampLight;
+    public GameObject lampSpriteObject;
     public Sprite lampSprite;
 
-    private void Start()
+    private void Awake()
     {
-        lampTime = maxLampTime = 3f;
+        lampTime = maxLampTime = 5f;
         turnedOn = false;
         lampSpriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -58,15 +59,20 @@ public class Lamp : MonoBehaviour
 
     public void ActivateLampLight()
     {
-        //turnedOn = true;
-        //lampLight.SetActive(true);
-        //lampSpriteRenderer.sprite = lampSprite;
+        turnedOn = true;
+        lampLight.SetActive(true);
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
-        //turnedOn = false;
-        //lampLight.SetActive(false);
-        //lampSpriteRenderer.sprite = null;
+        turnedOn = false;
+        lampLight.SetActive(false);
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = null;
+    }
+
+    public float GetLampTimeRemaining()
+    {
+        return lampTime;
     }
 }
