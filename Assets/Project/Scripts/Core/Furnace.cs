@@ -94,7 +94,7 @@ public class Furnace : InteractStation
         coalAddedText.SetActive(true);
         if (!couroutineStartedAddCoal)
         {
-            StartCoroutine(UsingYieldAddCoal(3));
+            StartCoroutine(UsingYieldAddCoal(1));
         }
 
     }
