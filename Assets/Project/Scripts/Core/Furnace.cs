@@ -8,6 +8,7 @@ public class Furnace : InteractStation
     public GameObject InteractText;
     public GameObject coalAddedText;
     public GameObject warning;
+    public ParticleSystem addCoalParticleSystem;
 
     //Text references
     public Text numCoalAddedText;
@@ -29,6 +30,11 @@ public class Furnace : InteractStation
     //Scalation vars
     private Vector3 scaleChange = new Vector3(5, 5, 5);
 
+
+    private void Start()
+    {
+        addCoalParticleSystem.Stop();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -82,8 +88,9 @@ public class Furnace : InteractStation
         currentFuel += 1;
         numCoalAdded += 1;
         numCoalAddedText.text = numCoalAdded.ToString();
-        Debug.Log(currentFuel);
-        Debug.Log(numCoalAdded);
+        addCoalParticleSystem.Play();
+        //Debug.Log(currentFuel);
+        //Debug.Log(numCoalAdded);
         coalAddedText.SetActive(true);
         if (!couroutineStartedAddCoal)
         {
@@ -100,6 +107,7 @@ public class Furnace : InteractStation
         yield return new WaitForSeconds(seconds);
         
         coalAddedText.SetActive(false);
+        addCoalParticleSystem.Stop();
 
         couroutineStartedAddCoal = false;
     }
