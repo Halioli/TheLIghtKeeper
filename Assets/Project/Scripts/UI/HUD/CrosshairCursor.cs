@@ -31,23 +31,23 @@ public class CrosshairCursor : PlayerInputs
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision != null && collision.gameObject.CompareTag("Ore"))
-        {
-            GetComponent<SpriteRenderer>().sprite = crosshairPickaxe;
-        }
-        else if (collision != null && collision.gameObject.CompareTag("Enemy"))
-        {
-            GetComponent<SpriteRenderer>().sprite = crosshairSword;
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision != null && collision.gameObject.CompareTag("Ore"))
+    //    {
+    //        GetComponent<SpriteRenderer>().sprite = crosshairPickaxe;
+    //    }
+    //    else if (collision != null && collision.gameObject.CompareTag("Enemy"))
+    //    {
+    //        GetComponent<SpriteRenderer>().sprite = crosshairSword;
+    //    }
+    //}
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ore")|| (collision != null && collision.gameObject.CompareTag("Enemy")))
-        {
-            GetComponent<SpriteRenderer>().sprite = crosshairNormal;
-        }
-    }
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Ore")|| (collision != null && collision.gameObject.CompareTag("Enemy")))
+    //    {
+    //        GetComponent<SpriteRenderer>().sprite = crosshairNormal;
+    //    }
+    //}
 }

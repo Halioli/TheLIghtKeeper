@@ -26,7 +26,6 @@ public class PlayerMiner : PlayerInputs
     private const float UPPER_INTERVAL_CRITICAL_MINING = 0.7f;
 
 
-
     void Update()
     {
         if (PlayerClickedMineButton() && !isMining)
@@ -45,6 +44,8 @@ public class PlayerMiner : PlayerInputs
 
 
     // METHODS
+
+    public bool IsMining() { return isMining; }
 
     private bool PlayerIsInReachToMine(Vector2 mousePosition)
     {
@@ -110,15 +111,9 @@ public class PlayerMiner : PlayerInputs
         {
             CheckCriticalMining();
 
-            if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-            {
-                miningTime = 0.0f;
-            }
-            else
-            {
-                yield return new WaitForSeconds(Time.deltaTime);
-                miningTime -= Time.deltaTime;
-            }
+            yield return new WaitForSeconds(Time.deltaTime);
+            miningTime -= Time.deltaTime;
+
         }
 
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)

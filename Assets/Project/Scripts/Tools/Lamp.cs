@@ -58,15 +58,15 @@ public class Lamp : MonoBehaviour
 
     public void ActivateLampLight()
     {
-        turnedOn = true;
-        lampLight.SetActive(true);
-        lampSpriteRenderer.sprite = lampSprite;
+        //turnedOn = true;
+        //lampLight.SetActive(true);
+        //lampSpriteRenderer.sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
-        turnedOn = false;
-        lampLight.SetActive(false);
-        lampSpriteRenderer.sprite = null;
+        //turnedOn = false;
+        //lampLight.SetActive(false);
+        //lampSpriteRenderer.sprite = null;
     }
 }
