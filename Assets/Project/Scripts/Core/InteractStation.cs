@@ -30,9 +30,18 @@ public class InteractStation : MonoBehaviour
         {
             StationFunction();
         }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            UpgradeFunction();
+        }
     }
 
     virtual public void StationFunction()
+    {
+        //Code from child
+    }
+
+    virtual public void UpgradeFunction()
     {
         //Code from child
     }

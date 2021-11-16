@@ -12,14 +12,21 @@ public class Furnace : InteractStation
     public Text numCoalAddedText;
     public Text currentFuelText;
 
+    //Core light 
+    public GameObject coreLight;
+    private int lightLevel = 0;
+
     //Fuel vars
     private int currentFuel = 25;
     private int numCoalAdded = 0;
     private int maxFuel = 250;
     
-    //Allways false from here
+    //Allways false here
     private bool couroutineStartedAddCoal = false;
     private bool couroutineStartedConsumeCoal = false;
+
+    //Scalation vars
+    private Vector3 scaleChange = new Vector3(5, 5, 5);
 
     // Update is called once per frame
     void Update()
@@ -113,6 +120,16 @@ public class Furnace : InteractStation
             StartCoroutine(UsingYieldCosumeCoal(2));
         }
         currentFuelText.text = currentFuel.ToString() + "/" + maxFuel.ToString();
+    }
+
+    public override void UpgradeFunction()
+    {
+        if(lightLevel < 3)
+        {
+            Debug.Log("Core upgraded");
+            coreLight.transform.localScale += scaleChange;
+            lightLevel += 1;
+        }
     }
 
 }
