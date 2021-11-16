@@ -237,7 +237,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 844c654a83299ea4ba9c8cb83b6e5749, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.6603774, g: 0.5575828, b: 0.5575828, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -426,7 +426,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 844c654a83299ea4ba9c8cb83b6e5749, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.4811321, g: 0.4807114, b: 0.4561677, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -987,7 +987,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: -2852443166016097488, guid: 4674ec309c8c8cf4a8e611f724c8049e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 216e41fe44603de42a84c7d9593da2c4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1006,8 +1006,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1205298645}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.07, y: 1.75, z: 0}
-  m_LocalScale: {x: 0.1266885, y: 0.1266885, z: 0.1266885}
+  m_LocalPosition: {x: 0.5, y: 1.48, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -1024,7 +1024,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7815d11fdf09d488f6200490cc3c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickAxe: {fileID: 0}
+  crosshairNormal: {fileID: 21300000, guid: 216e41fe44603de42a84c7d9593da2c4, type: 3}
+  crosshairPickaxe: {fileID: 21300000, guid: f11909a56f2f66040af78c5a157705ff, type: 3}
+  crosshairPickaxeX: {fileID: 21300000, guid: 317073a869a94284eb64319188389cd4, type: 3}
+  crosshairSword: {fileID: 21300000, guid: 5dc4e63c245b6ae49a2854539ad5a205, type: 3}
+  crosshairSwordX: {fileID: 21300000, guid: 80f358e1f3000e24bbc0f990f749084e, type: 3}
 --- !u!61 &1205298650
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1042,7 +1046,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.5, y: 5.5}
+    oldSize: {x: 1, y: 0.9375}
     newSize: {x: 2.75, y: 2.75}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1287,6 +1291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lampLight: {fileID: 1166803923}
+  lampSprite: {fileID: 0}
 --- !u!1 &1776781861
 GameObject:
   m_ObjectHideFlags: 0
@@ -1551,7 +1556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d0d9f5d14125c459008a174c8fc4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  insideLightCollider: {fileID: 0}
   lamp: {fileID: 1709642906}
 --- !u!114 &1990935994
 MonoBehaviour:
@@ -1711,4 +1715,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  facingRight: 0
