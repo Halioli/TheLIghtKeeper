@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 226577133}
   - component: {fileID: 226577129}
   - component: {fileID: 226577134}
+  - component: {fileID: 226577130}
   - component: {fileID: 226577125}
   m_Layer: 3
   m_Name: Player
@@ -325,6 +326,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackValue: 3
+--- !u!114 &226577130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226577123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77463adef3b9bf3468c2bcb4676c9a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 226577125}
 --- !u!50 &226577131
 Rigidbody2D:
   serializedVersion: 4
