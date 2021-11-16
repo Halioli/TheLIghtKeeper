@@ -14,9 +14,9 @@ public class Lamp : MonoBehaviour
     public GameObject lampLight;
     public Sprite lampSprite;
 
-    private void Start()
+    private void Awake()
     {
-        lampTime = maxLampTime = 3f;
+        lampTime = maxLampTime = 5f;
         turnedOn = false;
         lampSpriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -68,5 +68,10 @@ public class Lamp : MonoBehaviour
         turnedOn = false;
         lampLight.SetActive(false);
         lampSpriteRenderer.sprite = null;
+    }
+
+    public float GetLampTimeRemaining()
+    {
+        return lampTime;
     }
 }
