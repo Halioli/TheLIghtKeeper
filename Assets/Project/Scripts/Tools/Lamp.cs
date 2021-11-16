@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class Lamp : MonoBehaviour
 {
+    // Private Attributes
     private float maxLampTime;
     private float lampTime;
     private bool turnedOn;
+    private SpriteRenderer lampSpriteRenderer;
 
+    // Public Attributes
     public GameObject lampLight;
+    public Sprite lampSprite;
 
-    // Start is called before the first frame update
     private void Start()
     {
         lampTime = maxLampTime = 3f;
         turnedOn = false;
+        lampSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -56,11 +60,13 @@ public class Lamp : MonoBehaviour
     {
         turnedOn = true;
         lampLight.SetActive(true);
+        lampSpriteRenderer.sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
         lampLight.SetActive(false);
+        lampSpriteRenderer.sprite = null;
     }
 }
