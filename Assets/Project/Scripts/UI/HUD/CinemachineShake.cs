@@ -5,9 +5,7 @@ using Cinemachine;
 
 public class CinemachineShake : MonoBehaviour
 {
-
     //Private Atributes
-
     private CinemachineVirtualCamera cinemachineVirtualCamera;
     private float shakeTimer;
     private float shakeTimerTotal;    
@@ -39,12 +37,11 @@ public class CinemachineShake : MonoBehaviour
         if(shakeTimer > 0)
         {
             shakeTimer -= Time.deltaTime;
-                CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
-                    cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
+                cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
-                cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 
                 Mathf.Lerp(startingIntensity, 0f, 1 - (shakeTimer / shakeTimerTotal));
-            
         }
     }
 }
