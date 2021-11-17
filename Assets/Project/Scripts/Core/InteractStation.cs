@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractStation : MonoBehaviour
+public class InteractStation : PlayerInputs
 {
     public BoxCollider2D triggerArea;
 
     protected bool playerInsideTriggerArea;
+    protected Inventory playerInventory;
+
+    private void Awake()
+    {
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -26,13 +32,9 @@ public class InteractStation : MonoBehaviour
 
     public void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (PlayerPressedInteractButton())
         {
             StationFunction();
-        }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            UpgradeFunction();
         }
     }
 

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class CraftingRecepiesCollection : MonoBehaviour
 {
-    public List<CraftingRecepie> listoOfRecepies;
-
+    public List<CraftingRecepie> listoOfRecepies = new List<CraftingRecepie>();
 
 
     public int GetNumberOfRecepies()

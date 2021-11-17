@@ -17,7 +17,7 @@ public class Lamp : MonoBehaviour
 
     private void Awake()
     {
-        lampTime = maxLampTime = 5f;
+        lampTime = maxLampTime = 20f;
         turnedOn = false;
         lampSpriteRenderer = GetComponent<SpriteRenderer>();
     }
