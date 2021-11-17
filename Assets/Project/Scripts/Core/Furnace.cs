@@ -9,6 +9,7 @@ public class Furnace : InteractStation
     // Public Attributes
     public Item fuelItem;
     public Item upgradeItem;
+    public GameObject player;
 
     //TextMesh gameobjects
     public GameObject interactText;
@@ -127,7 +128,6 @@ public class Furnace : InteractStation
     private void NoFuelToAdd()
     {
         numCoalAddedText.text = "No coal to add";
-
         if (!couroutineStartedAddCoal)
         {
             StartCoroutine(UsingYieldAddCoal(1));
@@ -200,4 +200,5 @@ public class Furnace : InteractStation
     {
         return currentFuel;
     }
+
 }

@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 226577134}
   - component: {fileID: 226577130}
   - component: {fileID: 226577125}
+  - component: {fileID: 226577136}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -549,6 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b846a591734c24b8dae2a601287881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMiner: {fileID: 0}
   moveSpeed: 5
   walkingParticleSystem: {fileID: 1190155695}
 --- !u!114 &226577129
@@ -692,6 +694,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -1}
   serializedVersion: 2
   m_Radius: 0.48374164
+--- !u!114 &226577136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226577123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b566151a264762940ba814cba2fc5c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealthSystem: {fileID: 226577133}
+  playerRigidbody2D: {fileID: 226577131}
 --- !u!4 &241577620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 842936017497849178, guid: fbf0df33eed58d447b5007ec5a469558, type: 3}
@@ -8795,6 +8811,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2323532056043903548, guid: 832a9bd14edf5b14fb480ad87aec7408, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 226577123}
     - target: {fileID: 2323532056043903548, guid: 832a9bd14edf5b14fb480ad87aec7408, type: 3}
       propertyPath: warning
       value: 

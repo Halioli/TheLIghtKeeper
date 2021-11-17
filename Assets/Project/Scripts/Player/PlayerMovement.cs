@@ -8,6 +8,7 @@ public class PlayerMovement : PlayerInputs
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
     private bool facingRight;
+    public PlayerMiner playerMiner;
 
     // Public attributes
     public float moveSpeed;
@@ -18,15 +19,20 @@ public class PlayerMovement : PlayerInputs
         rigidbody2D = GetComponent<Rigidbody2D>();
         facingRight = false;
         walkingParticleSystem.Stop();
+        playerMiner = GetComponent<PlayerMiner>();
     }
 
     private void Update()
     {
-        moveDirection = PlayerPressedMovementButtons();
-        rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
-        FlipSprite();
+        if (!playerMiner.IsMining())
+        {
+            moveDirection = PlayerPressedMovementButtons();
+            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
+            FlipSprite();
 
-        CheckPartlicleSystemActive();
+            CheckPartlicleSystemActive();
+        }
+        
     }
 
     private void FlipSprite()

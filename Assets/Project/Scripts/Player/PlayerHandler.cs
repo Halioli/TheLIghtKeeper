@@ -13,6 +13,8 @@ public class PlayerHandler : MonoBehaviour
         if (playerHealthSystem.IsDead())
         {
             // Teleport to starting position (0, 0)
+            playerRigidbody2D.transform.position = Vector3.zero;
+            playerHealthSystem.RevivePlayer();
         }
     }
 
