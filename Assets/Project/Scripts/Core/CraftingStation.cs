@@ -9,6 +9,8 @@ public class CraftingStation : InteractStation
     public GameObject craftingCanvasGameObject;
     public GameObject playerHUDGameObject;
 
+    public InventoryMenu inventoryMenu;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,7 @@ public class CraftingStation : InteractStation
         {
             playerHUDGameObject.SetActive(false);
             craftingCanvasGameObject.SetActive(true);
+            inventoryMenu.UpdateInventory();
         }
         else
         {

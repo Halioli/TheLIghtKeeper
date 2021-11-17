@@ -90,6 +90,10 @@ public class Furnace : InteractStation
         {
             FuelAdded();
         }
+        else
+        {
+            NoFuelToAdd();
+        }
     }
 
     //Interactive pop up disappears
@@ -113,6 +117,17 @@ public class Furnace : InteractStation
         numCoalAddedText.text = "Added " + numCoalAdded.ToString() + " Coal";
         addCoalParticleSystem.Play();
         
+        if (!couroutineStartedAddCoal)
+        {
+            StartCoroutine(UsingYieldAddCoal(1));
+        }
+
+    }
+
+    private void NoFuelToAdd()
+    {
+        numCoalAddedText.text = "No coal to add";
+
         if (!couroutineStartedAddCoal)
         {
             StartCoroutine(UsingYieldAddCoal(1));

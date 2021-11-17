@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractStation : MonoBehaviour
+public class InteractStation : PlayerInputs
 {
     public BoxCollider2D triggerArea;
 
@@ -32,7 +32,7 @@ public class InteractStation : MonoBehaviour
 
     public void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (PlayerPressedInteractButton())
         {
             StationFunction();
         }
