@@ -8,9 +8,10 @@ public class Furnace : InteractStation
 {
     // Public Attributes
     public Item fuelItem;
+    public Item upgradeItem;
 
     //TextMesh gameobjects
-    public GameObject InteractText;
+    public GameObject interactText;
     public GameObject warning;
     public ParticleSystem addCoalParticleSystem;
 
@@ -38,13 +39,13 @@ public class Furnace : InteractStation
 
     private float fuelDurationInSeconds = 2f;
     private int fuelConsumedByTime = 1;
-    private int fuelAmountPerCoalUnit = 5;
+    private int fuelAmountPerCoalUnit = 10;
 
     private void Start()
     {
         addCoalParticleSystem.Stop();
         numCoalAddedText.text = "";
-        InteractText.SetActive(false);
+        interactText.SetActive(false);
         warning.SetActive(false);
     }
 
@@ -66,6 +67,11 @@ public class Furnace : InteractStation
         //If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
         {
+            if (CheckPlayerInventoryForLuxinite())
+            {
+                UpgradeFunction();
+            }
+
             GetInput();            //Waits the input from interactStation 
             PopUpAppears();        
         }
@@ -89,13 +95,13 @@ public class Furnace : InteractStation
     //Interactive pop up disappears
     private void PopUpAppears()
     {
-        InteractText.SetActive(true);
+        interactText.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
-        InteractText.SetActive(false);
+        interactText.SetActive(false);
     }
 
 
@@ -154,10 +160,20 @@ public class Furnace : InteractStation
     {
         if(lightLevel < 3)
         {
-            Debug.Log("Core upgraded");
+            numCoalAddedText.text = "Luxinite Added";
             coreLight.transform.localScale += scaleChange;
             lightLevel += 1;
+
+            if (!couroutineStartedAddCoal)
+            {
+                StartCoroutine(UsingYieldAddCoal(1));
+            }
         }
+    }
+
+    private bool CheckPlayerInventoryForLuxinite()
+    {
+        return playerInventory.SubstractItemToInventory(upgradeItem);
     }
 
     public int GetMaxFuel()
