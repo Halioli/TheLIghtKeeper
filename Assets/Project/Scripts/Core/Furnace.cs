@@ -6,6 +6,9 @@ using TMPro;
 
 public class Furnace : InteractStation
 {
+    // Public Attributes
+    public Item fuelItem;
+
     //TextMesh gameobjects
     public GameObject InteractText;
     public GameObject warning;
@@ -19,8 +22,10 @@ public class Furnace : InteractStation
     public GameObject coreLight;
     private int lightLevel = 0;
 
-    //Fuel vars
-    private int currentFuel = 35;
+    //Fuel variables
+    private const int STARTING_FUEL_AMOUNT = 35;
+    private const int LOW_FUEL_AMOUNT = 30;
+    private int currentFuel = STARTING_FUEL_AMOUNT;
     private int numCoalAdded = 0;
     private int maxFuel = 250;
     
@@ -28,9 +33,12 @@ public class Furnace : InteractStation
     private bool couroutineStartedAddCoal = false;
     private bool couroutineStartedConsumeCoal = false;
 
-    //Scalation vars
+    //Scalation variables
     private Vector3 scaleChange = new Vector3(5, 5, 5);
 
+    private float fuelDurationInSeconds = 2f;
+    private int fuelConsumedByTime = 1;
+    private int fuelAmountPerCoalUnit = 5;
 
     private void Start()
     {
@@ -46,9 +54,8 @@ public class Furnace : InteractStation
         ConsumesFuel();
         
         //Warning if currentFuel is low
-        if(currentFuel <= 30)//< maxFuel / 3)
+        if(currentFuel <= LOW_FUEL_AMOUNT)
         {
-            Debug.Log("Warning Low Fuel");
             warning.SetActive(true);
         }
         else
@@ -59,7 +66,6 @@ public class Furnace : InteractStation
         //If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
         {
-            Debug.Log("playerInsideTriggerArea");
             GetInput();            //Waits the input from interactStation 
             PopUpAppears();        
         }
@@ -74,7 +80,10 @@ public class Furnace : InteractStation
     //From InteractStation script
     public override void StationFunction()
     {
-        CoalAdded();
+        if (playerInventory.SubstractItemToInventory(fuelItem))
+        {
+            FuelAdded();
+        }
     }
 
     //Interactive pop up disappears
@@ -91,9 +100,9 @@ public class Furnace : InteractStation
 
 
     //Ads coal and show pop up
-    private void CoalAdded()
+    private void FuelAdded()
     {
-        currentFuel += 1;
+        currentFuel += fuelAmountPerCoalUnit;
         numCoalAdded += 1;
         numCoalAddedText.text = "Added " + numCoalAdded.ToString() + " Coal";
         addCoalParticleSystem.Play();
@@ -119,14 +128,14 @@ public class Furnace : InteractStation
     }
 
     //Waits x seconds to consume coal
-    IEnumerator UsingYieldCosumeCoal(int seconds)
+    IEnumerator UsingYieldCosumeCoal(float seconds)
     {
         couroutineStartedConsumeCoal = true;
 
         yield return new WaitForSeconds(seconds);
         if(currentFuel > 0)
         {
-            currentFuel -= 1;
+            currentFuel -= fuelConsumedByTime;
 
         }
         couroutineStartedConsumeCoal = false;
@@ -137,7 +146,7 @@ public class Furnace : InteractStation
     {
         if (!couroutineStartedConsumeCoal)
         {
-            StartCoroutine(UsingYieldCosumeCoal(2));
+            StartCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
         }
     }
 
