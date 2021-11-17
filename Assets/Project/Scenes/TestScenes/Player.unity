@@ -7589,6 +7589,7 @@ MonoBehaviour:
   lampLight: {fileID: 35421538}
   lampSpriteObject: {fileID: 334110412}
   lampSprite: {fileID: 21300000, guid: 73c91967fa39ffa42bd803a2c90e325c, type: 3}
+  lightRodItem: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
 --- !u!212 &1515090062
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8689,6 +8690,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 226577124}
+    - target: {fileID: 55427215653021470, guid: 51eaec783805a2a40a25bc13b8a091f5, type: 3}
+      propertyPath: maximumFollowSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51eaec783805a2a40a25bc13b8a091f5, type: 3}
 --- !u!1001 &2323532057095496177
