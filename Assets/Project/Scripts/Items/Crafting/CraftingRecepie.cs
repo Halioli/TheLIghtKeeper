@@ -14,6 +14,8 @@ public class CraftingRecepie : MonoBehaviour
     public Item resultingItem;
     public int resultingItemAmount;
 
+    public ItemStack emptyItemStack;
+
 
     // Private Attributes
     private List<ItemStack> requiredItemStacks;
@@ -24,10 +26,15 @@ public class CraftingRecepie : MonoBehaviour
     {
         // Initialize the required items List of ItemStacks
         requiredItemStacks = new List<ItemStack>();
-        requiredItemStacks.Capacity = requiredItems.Count;
+        //requiredItemStacks.Capacity = requiredItems.Count;
         for (int i = 0; i < requiredItems.Count; i++)
         {
-            requiredItemStacks[i] = new ItemStack(requiredItems[i], requiredAmounts[i]);
+            //requiredItemStacks[i] = new ItemStack(requiredItems[i], requiredAmounts[i]);
+            //ItemStack(requiredItems[i], requiredAmounts[i])
+            emptyItemStack.itemInStack = requiredItems[i];
+            emptyItemStack.amountInStack = requiredAmounts[i];
+
+            requiredItemStacks.Add(Instantiate(emptyItemStack, transform));
         }
 
         // Initialize the resulting item ItemStack

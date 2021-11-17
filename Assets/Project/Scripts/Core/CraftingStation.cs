@@ -11,12 +11,6 @@ public class CraftingStation : InteractStation
 
     public InventoryMenu inventoryMenu;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         // If player enters the trigger area the interactionText will appears
@@ -28,6 +22,11 @@ public class CraftingStation : InteractStation
         else
         {
             PopUpDisappears();
+            if (craftingCanvasGameObject.activeInHierarchy)
+            {
+                playerHUDGameObject.SetActive(true);
+                craftingCanvasGameObject.SetActive(false);
+            }
         }
     }
 
