@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
-    // Public Attributes
-    public HealthSystem playerHealthSystem;
-    public Rigidbody2D playerRigidbody2D;
+    // Private Attributes
+    private HealthSystem playerHealthSystem;
+    private Rigidbody2D playerRigidbody2D;
+
+    private void Start()
+    {
+        playerHealthSystem = GetComponent<HealthSystem>();
+        playerRigidbody2D = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
