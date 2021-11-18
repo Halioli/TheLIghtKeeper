@@ -9,7 +9,7 @@ public class PlayerMiner : PlayerInputs
 {
     // Private Attributes
     private Collider2D colliderDetectedByMouse = null;
-    Ore oreToMine;
+    private Ore oreToMine;
 
     private float miningReachRadius = 3f;
 
@@ -19,12 +19,11 @@ public class PlayerMiner : PlayerInputs
     private int criticalMiningDamage = START_CRITICAL_MINING_DAMAGE;
 
     private bool isMining = false;
-    CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
+    private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
     private const float START_MINING_TIME = 1.0f;
     private float miningTime = START_MINING_TIME;
     private const float LOWER_INTERVAL_CRITICAL_MINING = 0.5f;
     private const float UPPER_INTERVAL_CRITICAL_MINING = 0.7f;
-
 
 
     void Update()
@@ -45,6 +44,8 @@ public class PlayerMiner : PlayerInputs
 
 
     // METHODS
+
+    public bool IsMining() { return isMining; }
 
     private bool PlayerIsInReachToMine(Vector2 mousePosition)
     {
@@ -110,15 +111,9 @@ public class PlayerMiner : PlayerInputs
         {
             CheckCriticalMining();
 
-            if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-            {
-                miningTime = 0.0f;
-            }
-            else
-            {
-                yield return new WaitForSeconds(Time.deltaTime);
-                miningTime -= Time.deltaTime;
-            }
+            yield return new WaitForSeconds(Time.deltaTime);
+            miningTime -= Time.deltaTime;
+
         }
 
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)

@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HUDItem : MonoBehaviour
 {
     // Public
     public Image image;
-    public Text textQuantity;
-    public Text textName;
+    public TextMeshProUGUI textQuantity;
+    public TextMeshProUGUI textName;
 
     public void SetImage (Sprite itemSprite)
     {

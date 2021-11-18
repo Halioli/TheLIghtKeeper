@@ -37,14 +37,6 @@ public class Inventory : MonoBehaviour
 
     public void InitInventory()
     {
-        //ItemStack newItemStackToAdd = new ItemStack();
-        //newItemStackToAdd.InitEmptyNullStack(itemNull);
-        //for (int i = 0; i < numberOfInventorySlots; i++)
-        //{
-        //    inventory.Add(newItemStackToAdd);
-        //}
-
-
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
             inventory.Add(Instantiate(emptyStack, transform));
@@ -107,9 +99,6 @@ public class Inventory : MonoBehaviour
         if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
         {
             numberOfInventorySlots++;
-            //ItemStack newItemStackToAdd = new ItemStack();
-            //newItemStackToAdd.InitEmptyNullStack(itemNull);
-            //inventory.Add(newItemStackToAdd);
             inventory.Add(Instantiate(emptyStack, transform));
         }
     }

@@ -2,33 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerInputs
 {
-    // Start is called before the first frame update
+    // Private attributes
+    private Vector2 moveDirection;
+    private Rigidbody2D rigidbody2D;
+    public PlayerMiner playerMiner;
 
-    Vector2 playerInput;
-    Rigidbody2D rb;
-
+    // Public attributes
     public float moveSpeed;
-    public bool facingRight;
-    void Start()
+    public ParticleSystem walkingParticleSystem;
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        facingRight = false;
+        walkingParticleSystem.Stop();
+        playerMiner = GetComponent<PlayerMiner>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        rb.velocity = playerInput.normalized * moveSpeed;
-        flip();
+        if (!playerMiner.IsMining())
+        {
+            moveDirection = PlayerPressedMovementButtons();
+            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
+            FlipSprite();
+
+            CheckPartlicleSystemActive();
+        }
+        
     }
 
-    void flip()
+    private void FlipSprite()
     {
-        if((Input.GetAxisRaw("Horizontal") > 0 && facingRight) || Input.GetAxisRaw("Horizontal") < 0 && !facingRight){
+        if((moveDirection.x > 0 && facingRight) || moveDirection.x < 0 && !facingRight){
             facingRight = !facingRight;
             transform.Rotate(new Vector3(0, 180, 0));
+        }
+    }
+
+    private void CheckPartlicleSystemActive()
+    {
+        if (rigidbody2D.velocity.x != 0f || rigidbody2D.velocity.y != 0f)
+        {
+            if (!walkingParticleSystem.isPlaying)
+            {
+                walkingParticleSystem.Play();
+            }
+        }
+        else
+        {
+            walkingParticleSystem.Stop();
         }
     }
 }
