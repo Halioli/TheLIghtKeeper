@@ -7,12 +7,17 @@ public class PlayerInputs : MonoBehaviour
     // Public Attributes
     protected Vector2 mousePosition = new Vector2();
     protected Vector2 mouseWorldPosition = new Vector2();
-
+    protected bool facingRight;
 
     // Methods
     public bool PlayerClickedMineButton()
     {
         return Input.GetKeyDown(KeyCode.Mouse0);
+    }
+
+    public bool PlayerClickedAttackButton()
+    {
+        return Input.GetKeyDown(KeyCode.Mouse1);
     }
 
     public void SetNewMousePosition()
@@ -21,4 +26,28 @@ public class PlayerInputs : MonoBehaviour
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
+    public bool PlayerPressedInteractButton()
+    {
+        return Input.GetKeyDown(KeyCode.E);
+    }
+
+    public bool PlayerPressedUseButton()
+    {
+        return Input.GetKeyDown(KeyCode.Q);
+    }
+
+    public bool PlayerPressedInventoryButton()
+    {
+        return Input.GetKeyDown(KeyCode.Tab);
+    }
+
+    public Vector2 PlayerPressedMovementButtons()
+    {
+        return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+    }
+
+    public Vector2 PlayerMouseScroll()
+    {
+        return Input.mouseScrollDelta;
+    }
 }

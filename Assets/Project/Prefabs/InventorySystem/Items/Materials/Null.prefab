@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def6dfbc6bb1e144996da31c569eeda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentDespawnTimeInSeconds: 10
   item: {fileID: 11400000, guid: 56ea98fd605d8bb4eac0b03cc45dc452, type: 2}
 --- !u!212 &3954130275104740621
 SpriteRenderer:
@@ -90,7 +91,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
