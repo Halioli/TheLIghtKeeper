@@ -8,7 +8,7 @@ public class HealthSystem : MonoBehaviour
     public int maxHealth;
 
     // Private Attributes
-    private int health;
+    public int health;
 
 
     void Start()
@@ -24,7 +24,7 @@ public class HealthSystem : MonoBehaviour
 
     public void ReceiveDamage(int damageValueToSubstract)
     {
-        health -= damageValueToSubstract;
+        health = (health - damageValueToSubstract < 0 ? 0 : health -= damageValueToSubstract);
     }
 
     public bool IsDead() { return health <= 0; }

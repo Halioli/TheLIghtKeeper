@@ -27,9 +27,11 @@ public class EnemyCharger : Enemy
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        attackSystem = GetComponent<AttackSystem>();
+        healthSystem = GetComponent<HealthSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
         currentAttackRecoverTime = ATTACK_RECOVER_TIME;
         currentChargeTime = CHARGE_TIME;
@@ -103,13 +105,12 @@ public class EnemyCharger : Enemy
         }
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.collider);
-        if (collision.collider.GetComponent<HealthSystem>() != null && attackState == AttackState.CHARGING)
+        if (collision.collider.gameObject.CompareTag("Player"))
         {
-            attackSystem.DamageHealthSystemWithAttackValue(collision.collider.GetComponent<HealthSystem>());
-
+            DamagePlayer();
             collidedWithPlayer = true;
         }
     }

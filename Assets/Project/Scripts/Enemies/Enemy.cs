@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Enemy : MonoBehaviour
+abstract public class Enemy : MonoBehaviour
 {
     protected enum EnemyState
     {
@@ -31,7 +31,20 @@ public class Enemy : MonoBehaviour
     protected Rigidbody2D rigidbody;
 
     protected AttackSystem attackSystem;
+    protected HealthSystem healthSystem;
     protected SpriteRenderer spriteRenderer;
+
+    protected int damageToDeal;
+
+
+    //private void Start()
+    //{
+    //    attackSystem = GetComponent<AttackSystem>();
+    //    healthSystem = GetComponent<HealthSystem>();
+    //    rigidbody = GetComponent<Rigidbody2D>();
+    //    spriteRenderer = GetComponent<SpriteRenderer>();
+    //    player = GameObject.FindGameObjectWithTag("Player");
+    //}
 
 
 
@@ -43,5 +56,10 @@ public class Enemy : MonoBehaviour
     protected void UpdateDirectionTowardsPlayerPosition()
     {
         directionTowardsPlayerPosition = (playerPosition - rigidbody.position).normalized;
+    }
+
+    protected void DamagePlayer()
+    {
+        attackSystem.DamageHealthSystemWithAttackValue(player.GetComponent<HealthSystem>());        
     }
 }

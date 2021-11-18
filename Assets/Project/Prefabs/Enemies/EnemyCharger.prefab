@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe77c0808617b846a3acbadd13161d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackValue: 3
+  attackValue: 6
 --- !u!114 &4708902000198877501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,10 +172,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbaa1492be1ea95498fd3bcd1a83820d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  attackSystem: {fileID: 4708902000198877503}
-  rigidbody: {fileID: 4708902000198877499}
-  spriteRenderer: {fileID: 4708902000198877489}
-  baseEnemy: {fileID: 0}
   attackForce: 3
   distanceToCharge: 4
