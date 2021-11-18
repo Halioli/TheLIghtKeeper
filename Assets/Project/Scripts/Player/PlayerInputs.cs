@@ -17,7 +17,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerClickedAttackButton()
     {
-        return Input.GetKeyDown(KeyCode.Mouse1);
+        return Input.GetKeyDown(KeyCode.Mouse0);
     }
 
     public void SetNewMousePosition()
