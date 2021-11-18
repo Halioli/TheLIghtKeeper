@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
+    // Protected Attributes
+    protected int health;
+    protected bool canBeDamaged;
+
     // Public Attributes
     public int maxHealth;
 
-    // Private Attributes
-    public int health;
 
 
     void Start()
     {
         health = maxHealth;
+        canBeDamaged = true;
     }
 
     public void RevivePlayer() { health = maxHealth; }
@@ -22,11 +25,17 @@ public class HealthSystem : MonoBehaviour
 
     public int GetHealth() { return health; }
 
-    public void ReceiveDamage(int damageValueToSubstract)
+    virtual public void ReceiveDamage(int damageValueToSubstract)
     {
-        health = (health - damageValueToSubstract < 0 ? 0 : health -= damageValueToSubstract);
+        if (canBeDamaged)
+        {
+            health = (health - damageValueToSubstract < 0 ? 0 : health -= damageValueToSubstract);
+        }
     }
 
     public bool IsDead() { return health <= 0; }
  
+
+
+
 }

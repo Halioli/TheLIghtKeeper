@@ -7,7 +7,6 @@ public class PlayerMovement : PlayerInputs
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
-    private bool facingRight;
     public PlayerMiner playerMiner;
 
     // Public attributes
