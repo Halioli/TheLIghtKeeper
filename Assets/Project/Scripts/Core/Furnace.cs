@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Furnace : InteractStation
@@ -14,6 +15,7 @@ public class Furnace : InteractStation
     //TextMesh gameobjects
     public GameObject interactText;
     public GameObject warning;
+    public GameObject endGameMessage;
     public ParticleSystem addCoalParticleSystem;
 
     //Text references
@@ -22,11 +24,17 @@ public class Furnace : InteractStation
 
     //Core light 
     public GameObject coreLight;
+
+    // Private Attributes
+    private const int STARTING_FUEL_AMOUNT = 35;
+    private const int LOW_FUEL_AMOUNT = 30;
+    private const int MAX_CORE_LEVEL = 3;
+    private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f;
+
+    //Core light 
     private int lightLevel = 0;
 
     //Fuel variables
-    private const int STARTING_FUEL_AMOUNT = 35;
-    private const int LOW_FUEL_AMOUNT = 30;
     private int currentFuel = STARTING_FUEL_AMOUNT;
     private int numCoalAdded = 0;
     private int maxFuel = 250;
@@ -41,6 +49,7 @@ public class Furnace : InteractStation
     private float fuelDurationInSeconds = 2f;
     private int fuelConsumedByTime = 1;
     private int fuelAmountPerCoalUnit = 10;
+    private float currentTextTime = 0f;
 
     private void Start()
     {
@@ -48,15 +57,17 @@ public class Furnace : InteractStation
         numCoalAddedText.text = "";
         interactText.SetActive(false);
         warning.SetActive(false);
+        endGameMessage.SetActive(false);
     }
 
     
     void Update()
     {
         ConsumesFuel();
-        
+        CheckForEndGame();
+
         //Warning if currentFuel is low
-        if(currentFuel <= LOW_FUEL_AMOUNT)
+        if (currentFuel <= LOW_FUEL_AMOUNT)
         {
             warning.SetActive(true);
         }
@@ -135,13 +146,61 @@ public class Furnace : InteractStation
 
     }
 
+    //Function that consumes fuel
+    private void ConsumesFuel()
+    {
+        if (!couroutineStartedConsumeCoal)
+        {
+            StartCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
+        }
+    }
+
+    private bool CheckPlayerInventoryForLuxinite()
+    {
+        return playerInventory.SubstractItemToInventory(upgradeItem);
+    }
+
+    private bool CheckIfNoFuelLeft()
+    {
+        return currentFuel <= 0;
+    }
+
+    private bool CheckIfMaxCoreLevel()
+    {
+        return lightLevel >= MAX_CORE_LEVEL;
+    }
+
+    private void CheckForEndGame()
+    {
+        if (CheckIfNoFuelLeft())
+        {
+            endGameMessage.SetActive(true);
+            endGameMessage.GetComponent<TextMeshProUGUI>().text = "GAME OVER";
+            currentTextTime += Time.deltaTime;
+            if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
+            {
+                SceneManager.LoadScene("PrototypeBuildScene");
+            }
+        }
+        else if (CheckIfMaxCoreLevel())
+        {
+            endGameMessage.SetActive(true);
+            endGameMessage.GetComponent<TextMeshProUGUI>().text = "YOU WIN";
+            currentTextTime += Time.deltaTime;
+            if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
+            {
+                SceneManager.LoadScene("PrototypeBuildScene");
+            }
+        }
+    }
+
     //Waits x seconds to pop up disappear
     IEnumerator UsingYieldAddCoal(int seconds)
     {
         couroutineStartedAddCoal = true;
 
         yield return new WaitForSeconds(seconds);
-        
+
         numCoalAddedText.text = "";
         addCoalParticleSystem.Stop();
 
@@ -154,7 +213,7 @@ public class Furnace : InteractStation
         couroutineStartedConsumeCoal = true;
 
         yield return new WaitForSeconds(seconds);
-        if(currentFuel > 0)
+        if (currentFuel > 0)
         {
             currentFuel -= fuelConsumedByTime;
 
@@ -162,18 +221,10 @@ public class Furnace : InteractStation
         couroutineStartedConsumeCoal = false;
     }
 
-    //Function that consumes fuel
-    private void ConsumesFuel()
-    {
-        if (!couroutineStartedConsumeCoal)
-        {
-            StartCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
-        }
-    }
-
+    // Public Methods
     public override void UpgradeFunction()
     {
-        if(lightLevel < 3)
+        if(lightLevel < MAX_CORE_LEVEL)
         {
             numCoalAddedText.text = "Luxinite Added";
             coreLight.transform.localScale += scaleChange;
@@ -184,11 +235,6 @@ public class Furnace : InteractStation
                 StartCoroutine(UsingYieldAddCoal(1));
             }
         }
-    }
-
-    private bool CheckPlayerInventoryForLuxinite()
-    {
-        return playerInventory.SubstractItemToInventory(upgradeItem);
     }
 
     public int GetMaxFuel()
