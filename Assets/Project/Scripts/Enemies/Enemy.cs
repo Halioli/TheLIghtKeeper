@@ -36,15 +36,7 @@ abstract public class Enemy : MonoBehaviour
 
     protected int damageToDeal;
 
-
-    //private void Start()
-    //{
-    //    attackSystem = GetComponent<AttackSystem>();
-    //    healthSystem = GetComponent<HealthSystem>();
-    //    rigidbody = GetComponent<Rigidbody2D>();
-    //    spriteRenderer = GetComponent<SpriteRenderer>();
-    //    player = GameObject.FindGameObjectWithTag("Player");
-    //}
+    public ItemGameObject dropOnDeathItem;
 
 
 
@@ -61,5 +53,18 @@ abstract public class Enemy : MonoBehaviour
     protected void DamagePlayer()
     {
         attackSystem.DamageHealthSystemWithAttackValue(player.GetComponent<HealthSystem>());        
+    }
+
+    protected void Die()
+    {
+        // Play death animation
+        DropItem();
+        Destroy(gameObject);
+    }
+
+    protected void DropItem()
+    {
+        ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
+        item.DropsDown();
     }
 }

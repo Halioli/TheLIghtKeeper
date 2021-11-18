@@ -45,6 +45,12 @@ public class EnemyCharger : Enemy
     // Update is called once per frame
     void Update()
     {
+        if (healthSystem.IsDead())
+        {
+            Die();
+        }
+
+
         if (enemyState == EnemyState.AGGRO)
         {
             if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
@@ -85,6 +91,8 @@ public class EnemyCharger : Enemy
             }
         }
     }
+
+
 
     private void FixedUpdate()
     {

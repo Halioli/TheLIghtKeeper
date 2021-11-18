@@ -33,7 +33,7 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
-    public bool IsDead() { return health <= 0; }
+    virtual public bool IsDead() { return health <= 0; }
  
 
 
