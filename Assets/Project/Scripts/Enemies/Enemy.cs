@@ -19,7 +19,6 @@ abstract public class Enemy : MonoBehaviour
     }
 
 
-
     // Protected Attributes
     protected EnemyState enemyState;
     protected AttackState attackState;
@@ -35,7 +34,14 @@ abstract public class Enemy : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected int damageToDeal;
+    protected bool startedBanishing = false;
 
+    protected const float BANISH_TIME = 2f;
+    protected float currentBanishTime;
+
+
+
+    // Public Attributes
     public ItemGameObject dropOnDeathItem;
 
 
@@ -66,5 +72,26 @@ abstract public class Enemy : MonoBehaviour
     {
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
         item.DropsDown();
+    }
+
+    public void Banish()
+    {
+        startedBanishing = true;
+        StartCoroutine("StartBanishing");
+    }
+
+    IEnumerator StartBanishing()
+    {
+        Color fadeColor = spriteRenderer.material.color;
+        fadeColor.a = 0.5f;
+
+        spriteRenderer.material.color = fadeColor;
+
+        while (currentBanishTime > 0f)
+        {
+            currentBanishTime -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        Destroy(gameObject);
     }
 }

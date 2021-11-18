@@ -7,8 +7,6 @@ public class DarknessSystem : MonoBehaviour
     // Private Attributes
     private PlayerLightChecker playerLightChecker;
     private bool playerInLight;
-
-    // Public attributes
     private List<GameObject> enemySpawners = new List<GameObject>();
     
     void Start()
@@ -25,6 +23,7 @@ public class DarknessSystem : MonoBehaviour
         {
             playerInLight = true;
             DisableEnemySpawners();
+            MakeAllEnemiesBanish();
         }
         else if (playerInLight && !playerLightChecker.IsPlayerInLight())
         {
@@ -57,6 +56,15 @@ public class DarknessSystem : MonoBehaviour
         for (int i = 0; i < enemySpawners.Count; i++)
         {
             enemySpawners[i].SetActive(false);
+        }
+    }
+
+    private void MakeAllEnemiesBanish()
+    {
+        List<GameObject> spawnedEnemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
+        for (int i = 0; i < spawnedEnemies.Count; i++)
+        {
+            spawnedEnemies[i].GetComponent<Enemy>().Banish();
         }
     }
 
