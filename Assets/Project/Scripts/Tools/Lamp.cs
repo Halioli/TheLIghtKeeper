@@ -9,16 +9,24 @@ public class Lamp : MonoBehaviour
     private float lampTime;
     private bool turnedOn;
     private SpriteRenderer lampSpriteRenderer;
+    private Inventory playerInventory;
 
     // Public Attributes
     public GameObject lampLight;
+    public GameObject lampSpriteObject;
     public Sprite lampSprite;
+    public Item lightRodItem;
 
     private void Awake()
     {
-        lampTime = maxLampTime = 5f;
+        lampTime = maxLampTime = 20f;
         turnedOn = false;
         lampSpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
     }
 
     private void Update()
@@ -33,7 +41,7 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            DeactivateLampLight();
+            CheckPlayerInventoryForLightRods();
         }
         else
         {
@@ -58,20 +66,33 @@ public class Lamp : MonoBehaviour
 
     public void ActivateLampLight()
     {
-        //turnedOn = true;
-        //lampLight.SetActive(true);
-        //lampSpriteRenderer.sprite = lampSprite;
+        turnedOn = true;
+        lampLight.SetActive(true);
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
-        //turnedOn = false;
-        //lampLight.SetActive(false);
-        //lampSpriteRenderer.sprite = null;
+        turnedOn = false;
+        lampLight.SetActive(false);
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = null;
     }
 
     public float GetLampTimeRemaining()
     {
         return lampTime;
+    }
+
+    private void CheckPlayerInventoryForLightRods()
+    {
+        if (playerInventory.InventoryContainsItem(lightRodItem))
+        {
+            playerInventory.SubstractItemToInventory(lightRodItem);
+            FullyRefillLampTime();
+        }
+        else
+        {
+            DeactivateLampLight();
+        }
     }
 }

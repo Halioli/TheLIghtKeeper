@@ -7,12 +7,17 @@ public class PlayerInputs : MonoBehaviour
     // Public Attributes
     protected Vector2 mousePosition = new Vector2();
     protected Vector2 mouseWorldPosition = new Vector2();
-
+    protected bool facingRight;
 
     // Methods
     public bool PlayerClickedMineButton()
     {
         return Input.GetKeyDown(KeyCode.Mouse0);
+    }
+
+    public bool PlayerClickedAttackButton()
+    {
+        return Input.GetKeyDown(KeyCode.Mouse1);
     }
 
     public void SetNewMousePosition()
@@ -34,11 +39,6 @@ public class PlayerInputs : MonoBehaviour
     public bool PlayerPressedInventoryButton()
     {
         return Input.GetKeyDown(KeyCode.Tab);
-    }
-
-    public bool PlayerPressedAttackButton()
-    {
-        return Input.GetKeyDown(KeyCode.Mouse1);
     }
 
     public Vector2 PlayerPressedMovementButtons()
