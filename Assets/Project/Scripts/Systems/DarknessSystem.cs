@@ -21,27 +21,27 @@ public class DarknessSystem : MonoBehaviour
 
     void Update()
     {
-        //if (!playerInLight && playerLightChecker.IsPlayerInLight())
-        //{
-        //    playerInLight = true;
-        //    DisableEnemySpawners();
-        //}
-        //else if (playerInLight && !playerLightChecker.IsPlayerInLight()) 
-        //{
-        //    playerInLight = false;
-        //    EnableEnemySpawners();
-        //}
-
-        if (Input.GetKeyDown(KeyCode.N))
+        if (!playerInLight && playerLightChecker.IsPlayerInLight())
         {
             playerInLight = true;
             DisableEnemySpawners();
         }
-        else if (Input.GetKeyDown(KeyCode.Y))
+        else if (playerInLight && !playerLightChecker.IsPlayerInLight())
         {
             playerInLight = false;
             EnableEnemySpawners();
         }
+
+        //if (Input.GetKeyDown(KeyCode.N))
+        //{
+        //    playerInLight = true;
+        //    DisableEnemySpawners();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Y))
+        //{
+        //    playerInLight = false;
+        //    EnableEnemySpawners();
+        //}
     }
 
     private void EnableEnemySpawners()
