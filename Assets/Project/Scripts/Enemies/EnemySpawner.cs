@@ -7,10 +7,10 @@ public class EnemySpawner : Spawner
     // Private Attributes
     private GameObject playerGameObject;
     private Vector2 playerPosition;
-    private float spawnerRadiusRange;
     private bool spawnerIsActive;
 
     // Public Attributes
+    public float spawnerRadiusRange;
     public float enemySpawnCooldown;
     public List<GameObject> enemies;
 
@@ -20,7 +20,6 @@ public class EnemySpawner : Spawner
         spawnTimer = spawnCooldown;
         canSpawn = false;
 
-        spawnerRadiusRange = 10f;
         playerGameObject = GameObject.FindGameObjectWithTag("Player");
         UpdatePlayerPosition();
 
