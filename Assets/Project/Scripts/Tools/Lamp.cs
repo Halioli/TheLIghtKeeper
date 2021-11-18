@@ -91,10 +91,12 @@ public class Lamp : MonoBehaviour
         {
             playerInventory.SubstractItemToInventory(lightRodItem);
             lampTime += LIGHT_ROD_REFUEL_AMOUNT;
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToTrue();
         }
         else
         {
             DeactivateLampLight();
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
         }
     }
 }

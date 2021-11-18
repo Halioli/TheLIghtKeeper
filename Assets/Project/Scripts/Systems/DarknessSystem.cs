@@ -30,17 +30,6 @@ public class DarknessSystem : MonoBehaviour
             playerInLight = false;
             EnableEnemySpawners();
         }
-
-        //if (Input.GetKeyDown(KeyCode.N))
-        //{
-        //    playerInLight = true;
-        //    DisableEnemySpawners();
-        //}
-        //else if (Input.GetKeyDown(KeyCode.Y))
-        //{
-        //    playerInLight = false;
-        //    EnableEnemySpawners();
-        //}
     }
 
     private void EnableEnemySpawners()
