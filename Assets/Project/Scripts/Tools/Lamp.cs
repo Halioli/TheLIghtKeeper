@@ -5,6 +5,8 @@ using UnityEngine;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
+    private const float LIGHT_ROD_REFUEL_AMOUNT = 5f;
+
     private float maxLampTime;
     private float lampTime;
     private bool turnedOn;
@@ -88,7 +90,7 @@ public class Lamp : MonoBehaviour
         if (playerInventory.InventoryContainsItem(lightRodItem))
         {
             playerInventory.SubstractItemToInventory(lightRodItem);
-            FullyRefillLampTime();
+            lampTime += LIGHT_ROD_REFUEL_AMOUNT;
         }
         else
         {

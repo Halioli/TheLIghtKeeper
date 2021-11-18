@@ -36,6 +36,7 @@ public abstract class Spawner : MonoBehaviour
         if (spawnTimer <= 0.0f)
         {
             canSpawn = true;
+            spawnTimer = spawnCooldown;
         }
     }
 
