@@ -5,42 +5,49 @@ using UnityEngine;
 public class CraftingCentre : MonoBehaviour
 {
     // Private Attributes
-    private CraftingRecepiesCollection availableRecepies;
+    public CraftingRecepiesCollection availableRecepies;
+    private Inventory playerInventory;
 
     // Public Attributes
-    int currentLevel;
+    public int currentLevel;
     public List<CraftingRecepiesCollection> listoOfRecepiesByLevel;
 
 
     private void Awake()
     {
-        availableRecepies.AddAllRecepiesFromOtherCollection(listoOfRecepiesByLevel[0]);
+        availableRecepies = new CraftingRecepiesCollection();
 
         currentLevel = 1;
     }
 
+    private void Start()
+    {
+        availableRecepies.AddAllRecepiesFromOtherCollection(listoOfRecepiesByLevel[0]);
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+    }
 
-    public void PlayerChoosesRecepie(Inventory playerInventory, int selectedRecepieIndex)
+    public void PlayerChoosesRecepie(int selectedRecepieIndex)
     {
         // Get player inventory
         // Show available recepies
 
-        if (PlayerHasEnoughMaterials(playerInventory, selectedRecepieIndex))
+        if (PlayerHasEnoughMaterials(selectedRecepieIndex))
         {
             Item resultingItem = availableRecepies.GetRecepieWithIndex(selectedRecepieIndex).resultingItem;
             int resultingAmount = availableRecepies.GetRecepieWithIndex(selectedRecepieIndex).resultingItemAmount;
 
-            if (PlayerHasInventorySpace(playerInventory, resultingItem, resultingAmount))
+            if (PlayerHasInventorySpace(resultingItem, resultingAmount))
             {
+                Debug.Log("Has inventory space");
                 // Player can craft!
-                CraftSelectedRecepie(playerInventory, selectedRecepieIndex);
+                CraftSelectedRecepie(selectedRecepieIndex);
             }
         }
 
     }
 
 
-    private bool PlayerHasEnoughMaterials(Inventory playerInventory, int selectedRecepieIndex)
+    private bool PlayerHasEnoughMaterials(int selectedRecepieIndex)
     {
         // Define the recepie that the player wants to craft
         CraftingRecepie recepieToCraft = availableRecepies.GetRecepieWithIndex(selectedRecepieIndex);
@@ -54,13 +61,14 @@ public class CraftingCentre : MonoBehaviour
 
         bool enoughMaterials = true;
         int i = 0;
+
         while (enoughMaterials && i < listOfRequiredItems.Count)
         {
             itemToSearch = listOfRequiredItems[i].GetItemInStack();
             amountOfItemToSearch = listOfRequiredItems[i].GetAmountInStack();
-
             // The player DOES NOT have that material and its required amount
-            if (!playerInventory.InventoryContainsItemAndAmount(itemToSearch, amountOfItemToSearch)) {
+            if (!playerInventory.InventoryContainsItemAndAmount(itemToSearch, amountOfItemToSearch))
+            {
                 enoughMaterials = false;
             }
 
@@ -79,7 +87,7 @@ public class CraftingCentre : MonoBehaviour
         return enoughMaterials;
     }
 
-    private bool PlayerHasInventorySpace(Inventory playerInventory, Item itemToAdd, int amountOfItemsToAdd)
+    private bool PlayerHasInventorySpace(Item itemToAdd, int amountOfItemsToAdd)
     {
         bool hasInventorySpace = true;
 
@@ -116,16 +124,16 @@ public class CraftingCentre : MonoBehaviour
     }
 
 
-    private void CraftSelectedRecepie(Inventory playerInventory, int selectedRecepieIndex)
+    private void CraftSelectedRecepie(int selectedRecepieIndex)
     {
         // First remove player materials
-        RemovePlayerRequiredItems(playerInventory, selectedRecepieIndex);
+        RemovePlayerRequiredItems(selectedRecepieIndex);
 
         // Second give player items
-        GivePlayerResultingItems(playerInventory, selectedRecepieIndex);
+        GivePlayerResultingItems(selectedRecepieIndex);
     }
     
-    private void RemovePlayerRequiredItems(Inventory playerInventory, int selectedRecepieIndex)
+    private void RemovePlayerRequiredItems(int selectedRecepieIndex)
     {
         // Define the recepie that the player wants to craft
         CraftingRecepie recepieToCraft = availableRecepies.GetRecepieWithIndex(selectedRecepieIndex);
@@ -142,7 +150,7 @@ public class CraftingCentre : MonoBehaviour
         }
     }
 
-    private void GivePlayerResultingItems(Inventory playerInventory, int selectedRecepieIndex)
+    private void GivePlayerResultingItems(int selectedRecepieIndex)
     {
         // Define the recepie that the player wants to craft
         CraftingRecepie recepieToCraft = availableRecepies.GetRecepieWithIndex(selectedRecepieIndex);

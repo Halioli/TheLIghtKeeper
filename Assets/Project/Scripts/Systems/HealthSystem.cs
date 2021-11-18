@@ -16,7 +16,7 @@ public class HealthSystem : MonoBehaviour
         health = maxHealth;
     }
 
-
+    public void RevivePlayer() { health = maxHealth; }
 
     public int GetMaxHealth() { return maxHealth; }
 
