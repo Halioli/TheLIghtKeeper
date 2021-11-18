@@ -5,21 +5,30 @@ using UnityEngine;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
+    private const float LIGHT_ROD_REFUEL_AMOUNT = 5f;
+
     private float maxLampTime;
     private float lampTime;
     private bool turnedOn;
     private SpriteRenderer lampSpriteRenderer;
+    private Inventory playerInventory;
 
     // Public Attributes
     public GameObject lampLight;
     public GameObject lampSpriteObject;
     public Sprite lampSprite;
+    public Item lightRodItem;
 
     private void Awake()
     {
-        lampTime = maxLampTime = 5f;
+        lampTime = maxLampTime = 20f;
         turnedOn = false;
         lampSpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
     }
 
     private void Update()
@@ -34,7 +43,7 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            DeactivateLampLight();
+            CheckPlayerInventoryForLightRods();
         }
         else
         {
@@ -74,5 +83,20 @@ public class Lamp : MonoBehaviour
     public float GetLampTimeRemaining()
     {
         return lampTime;
+    }
+
+    private void CheckPlayerInventoryForLightRods()
+    {
+        if (playerInventory.InventoryContainsItem(lightRodItem))
+        {
+            playerInventory.SubstractItemToInventory(lightRodItem);
+            lampTime += LIGHT_ROD_REFUEL_AMOUNT;
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToTrue();
+        }
+        else
+        {
+            DeactivateLampLight();
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
+        }
     }
 }
