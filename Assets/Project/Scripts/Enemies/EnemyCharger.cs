@@ -40,11 +40,18 @@ public class EnemyCharger : Enemy
         collidedWithPlayer = false;
         enemyState = EnemyState.AGGRO;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
+
+        currentBanishTime = BANISH_TIME;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (startedBanishing)
+        {
+            return;
+        }
+
         if (healthSystem.IsDead())
         {
             Die();
@@ -96,6 +103,11 @@ public class EnemyCharger : Enemy
 
     private void FixedUpdate()
     {
+        if (startedBanishing)
+        {
+            return;
+        }
+
         if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();
