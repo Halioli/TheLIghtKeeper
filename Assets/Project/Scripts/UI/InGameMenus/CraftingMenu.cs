@@ -9,6 +9,8 @@ public class CraftingMenu : MonoBehaviour
 
     // Public Attribute
     public Item lightRodItem;
+    public Item coalItem;
+    public Item ironItem;
     public InventoryMenu inventoryMenu;
 
     private void Start()
@@ -16,9 +18,32 @@ public class CraftingMenu : MonoBehaviour
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
     }
 
+    public bool CheckPlayerInventoryForRequiredItems()
+    {
+        if (playerInventory.InventoryContainsItem(coalItem) && playerInventory.InventoryContainsItem(ironItem))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void SubstractItemsFromInventory()
+    {
+        playerInventory.SubstractItemToInventory(coalItem);
+        playerInventory.SubstractItemToInventory(ironItem);
+    }
+
     public void GiveItemToPlayer()
     {
-        playerInventory.AddItemToInventory(lightRodItem);
-        inventoryMenu.UpdateInventory();
+        if (CheckPlayerInventoryForRequiredItems())
+        {
+            SubstractItemsFromInventory();
+
+            playerInventory.AddItemToInventory(lightRodItem);
+            inventoryMenu.UpdateInventory();
+        }
     }
 }

@@ -5604,6 +5604,10 @@ PrefabInstance:
       propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2270476362180652575, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
+      propertyPath: m_text
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2270476362255799654, guid: 147d186244e2f5845b499e4d1134e611, type: 3}
       propertyPath: m_Name
       value: Canvas_CraftingMenu
@@ -11109,6 +11113,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightRodItem: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
+  coalItem: {fileID: 11400000, guid: 3ad1a6f564b80f743a80f5b6a541cd25, type: 2}
+  ironItem: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
   inventoryMenu: {fileID: 181104529}
 --- !u!114 &1688106389 stripped
 MonoBehaviour:
