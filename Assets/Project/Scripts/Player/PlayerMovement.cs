@@ -34,10 +34,7 @@ public class PlayerMovement : PlayerInputs
         {
             rigidbody2D.velocity = Vector2.zero;
         }
-        else
-        {
-            rigidbody2D.velocity = Vector2.zero;
-        }
+       
     }
 
     private void FlipSprite()
