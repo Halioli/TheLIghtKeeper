@@ -62,6 +62,8 @@ public class PlayerMiner : PlayerInputs
     private void SetOreToMine()
     {
         oreToMine = colliderDetectedByMouse.gameObject.GetComponent<Ore>();
+        isMining = true;
+
     }
 
 
