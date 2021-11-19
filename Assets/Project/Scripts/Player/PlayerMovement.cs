@@ -7,12 +7,13 @@ public class PlayerMovement : PlayerInputs
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
-    public PlayerMiner playerMiner;
 
     // Public attributes
     public float moveSpeed;
     public ParticleSystem walkingParticleSystem;
+    public PlayerMiner playerMiner;
 
+    private Vector3 playerPos;
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -23,18 +24,19 @@ public class PlayerMovement : PlayerInputs
 
     private void Update()
     {
+        FlipSpriteIfClickedAnOre();
+
         if (!playerMiner.IsMining())
         {
             moveDirection = PlayerPressedMovementButtons();
             rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
             FlipSprite();
-
             CheckPartlicleSystemActive();
         }else
         {
             rigidbody2D.velocity = Vector2.zero;
         }
-        
+        playerPos = transform.position;
     }
 
     private void FlipSprite()
@@ -58,5 +60,18 @@ public class PlayerMovement : PlayerInputs
         {
             walkingParticleSystem.Stop();
         }
+    }
+
+    private void FlipSpriteIfClickedAnOre()
+    {
+        if (PlayerClickedMineButton())
+        {
+            if (mousePosition.x > playerPos.x && !facingRight || mousePosition.x < playerPos.x && facingRight)
+            {
+                facingRight = !facingRight;
+                transform.Rotate(new Vector3(0, 180, 0));
+            }
+        }
+      
     }
 }
