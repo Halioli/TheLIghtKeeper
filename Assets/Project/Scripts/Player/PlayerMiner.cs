@@ -117,13 +117,11 @@ public class PlayerMiner : PlayerInputs
         }
 
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-        {
-            Debug.Log("CRITICAL MINING");
+        { 
             MineOre(criticalMiningDamage);
         }
         else
         {
-            Debug.Log("MINING");
             MineOre(miningDamage);
         }
 
