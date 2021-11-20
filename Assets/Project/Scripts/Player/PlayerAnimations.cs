@@ -6,6 +6,7 @@ public class PlayerAnimations : MonoBehaviour
 {
     //Private Atributes
     private PlayerMiner playerMiner;
+    private Vector2 direction;
 
     //Public Atributes
     public Animator animator;
@@ -31,6 +32,8 @@ public class PlayerAnimations : MonoBehaviour
         {
             animator.SetBool("isMining", false);
         }
+
+        animator.SetFloat("speed", Mathf.Abs(direction.x));
     }
 
     public void ActivateShake()
