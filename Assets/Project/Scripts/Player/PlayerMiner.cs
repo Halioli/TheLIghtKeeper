@@ -115,9 +115,12 @@ public class PlayerMiner : PlayerInputs
             miningTime -= Time.deltaTime;
 
         }
+    }
 
+    public void ExecuteMine()
+    {
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-        { 
+        {
             MineOre(criticalMiningDamage);
         }
         else
@@ -127,7 +130,6 @@ public class PlayerMiner : PlayerInputs
 
         ResetMining();
     }
-
 
 
 }
