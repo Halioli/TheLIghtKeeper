@@ -30,8 +30,11 @@ public class PlayerMovement : PlayerInputs
             FlipSprite();
 
             CheckPartlicleSystemActive();
+        }else
+        {
+            rigidbody2D.velocity = Vector2.zero;
         }
-        
+       
     }
 
     private void FlipSprite()
