@@ -118,7 +118,9 @@ public class CraftingSystem : MonoBehaviour
             if (!playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
             {
                 // instantiate item in map instead
-                Instantiate(recepieToCraft.resultingItem.Key, droppedItemPosition, Quaternion.identity);
+                GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
+                item.GetComponent<ItemGameObject>().DropsDown();
+                item.GetComponent<ItemGameObject>().StartDespawning();
             }
         }
         
@@ -135,6 +137,7 @@ public class CraftingSystem : MonoBehaviour
         else
         {
             Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepie.recepieName);
+            AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
         }
     }
 
