@@ -2,30 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Recepie : MonoBehaviour
+
+[CreateAssetMenu(fileName = "NewRecepie", menuName = "Crafting System/Recepie")]
+
+public class Recepie : ScriptableObject
 {
-    // Private Attributes
-    private Dictionary<Item, int> requiredItems;
-    private KeyValuePair<Item, int> resultingItem;
-
     // Public Attributes
-    public List<Item> requiredItemsList;
-    public List<int> requiredAmountsList;
+    public string recepieName;
 
-    public Item resultingItemUnit;
-    public int resultingAmountUnit;
+    public GameObject recepieGameObjectPrefab;
 
+    public List<Item> requiredItems;
+    public List<int> requiredAmounts;
 
-    private void Start()
-    {
-        // Initialize requiredItems
-        requiredItems = new Dictionary<Item, int>();
-        for (int i = 0; i < requiredItemsList.Count; ++i)
-        {
-            requiredItems[requiredItemsList[i]] = requiredAmountsList[i];
-        }
-
-        // Initialize resultingItem
-        resultingItem = new KeyValuePair<Item, int>(resultingItemUnit, resultingAmountUnit);
-    }
+    public Item resultingItem;
+    public int resultingAmount;
 }
