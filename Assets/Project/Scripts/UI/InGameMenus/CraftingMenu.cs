@@ -40,6 +40,7 @@ public class CraftingMenu : MonoBehaviour
     private void UpdateCraftingMenu()
     {
         recepieButtonsGameObjects.Clear();
+        int buttonNumb = 0;
 
         foreach (Recepie recepie in craftingSystem.availableRecepies)
         {
@@ -47,6 +48,7 @@ public class CraftingMenu : MonoBehaviour
             recepieButtonsGameObjects.Add(gameObjectButton);
 
             gameObjectButton.GetComponent<Image>().sprite = smallCraftingRecepieFrame;
+            gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
             gameObjectButton.GetComponentInChildren<Image>().sprite = recepie.resultingItemUnit.GetItemSprite();
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[1].text = recepie.resultingAmountUnit.ToString();
@@ -58,6 +60,8 @@ public class CraftingMenu : MonoBehaviour
                 requiredMaterial.GetComponentInChildren<Image>().sprite = recepie.requiredItemsList[i].GetItemSprite();
                 requiredMaterial.GetComponentInChildren<TextMeshProUGUI>().text = recepie.requiredAmountsList[i].ToString();
             }
+
+            ++buttonNumb;
         }
     }
 
