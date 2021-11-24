@@ -4,17 +4,31 @@ using UnityEngine;
 
 public class Lamp : MonoBehaviour
 {
+    // Private Attributes
+    private const float LIGHT_ROD_REFUEL_AMOUNT = 5f;
+
     private float maxLampTime;
     private float lampTime;
     private bool turnedOn;
+    private SpriteRenderer lampSpriteRenderer;
+    private Inventory playerInventory;
 
+    // Public Attributes
     public GameObject lampLight;
+    public GameObject lampSpriteObject;
+    public Sprite lampSprite;
+    public Item lightRodItem;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        lampTime = maxLampTime = 20f;
+        turnedOn = false;
+        lampSpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     private void Start()
     {
-        lampTime = maxLampTime = 3f;
-        turnedOn = false;
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
     }
 
     private void Update()
@@ -29,7 +43,7 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            DeactivateLampLight();
+            CheckPlayerInventoryForLightRods();
         }
         else
         {
@@ -56,11 +70,33 @@ public class Lamp : MonoBehaviour
     {
         turnedOn = true;
         lampLight.SetActive(true);
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
         lampLight.SetActive(false);
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = null;
+    }
+
+    public float GetLampTimeRemaining()
+    {
+        return lampTime;
+    }
+
+    private void CheckPlayerInventoryForLightRods()
+    {
+        if (playerInventory.InventoryContainsItem(lightRodItem))
+        {
+            playerInventory.SubstractItemToInventory(lightRodItem);
+            lampTime += LIGHT_ROD_REFUEL_AMOUNT;
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToTrue();
+        }
+        else
+        {
+            DeactivateLampLight();
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
+        }
     }
 }
