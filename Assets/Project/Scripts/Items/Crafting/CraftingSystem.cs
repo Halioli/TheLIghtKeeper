@@ -7,7 +7,6 @@ public class CraftingSystem : MonoBehaviour
     // Private Attributes
     private const int MAX_LEVEL = 5;
     private int currentLevel;
-    private List<Recepie> availableRecepies;
 
     private Inventory playerInventory;
     private Dictionary<Item, int> playerInventoryItems;
@@ -17,6 +16,7 @@ public class CraftingSystem : MonoBehaviour
 
     // Public Attributes
     public List<RecepieCollection> recepiesLvl;
+    public List<Recepie> availableRecepies;
 
 
     void Start()
@@ -148,6 +148,4 @@ public class CraftingSystem : MonoBehaviour
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
         }
     }
-
-    
 }
