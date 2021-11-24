@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CraftableItemButton : MonoBehaviour
 {
@@ -8,42 +9,12 @@ public class CraftableItemButton : MonoBehaviour
 
     // Public Attributes
     public int buttonNumber = 0;
+    public delegate void ClickedRecepieButtonAction(int numb);
+    public static event ClickedRecepieButtonAction OnClickedRecepieButton;
 
-    public void CraftSelectedItem()
+    public void OnClick()
     {
-
-        Debug.Log(buttonNumber);
-        if (CheckIfInventoryHasMaterials())
-        {
-            RemoveMaterialsFromInventory();
-
-            AddItemsToInventory();
-
-            Debug.Log("ITEM CRAFTED");
-        }
-        else
-        {
-            Debug.Log("NOT ENOUGH MATERIALS");
-        }
-    }
-
-    private bool CheckIfInventoryHasMaterials()
-    {
-        return false;
-    }
-
-    private void RemoveMaterialsFromInventory()
-    {
-
-    }
-
-    private void AddItemsToInventory()
-    {
-
-    }
-
-    private void Ping()
-    {
-        Debug.Log("Ping");
+        if (OnClickedRecepieButton != null)
+            OnClickedRecepieButton(buttonNumber);
     }
 }

@@ -134,6 +134,16 @@ public class CraftingSystem : MonoBehaviour
         
     }
 
+    private void OnEnable()
+    {
+        CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
+    }
+
+    private void OnDisable()
+    {
+        CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
+    }
+
     public void RecepieWasSelected(int selectedRecepieIndex)
     {
         UpdatePlayerInventoryData();
@@ -145,7 +155,6 @@ public class CraftingSystem : MonoBehaviour
         else
         {
             Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepieName);
-            AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
         }
     }
 }
