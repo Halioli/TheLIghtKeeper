@@ -2,9 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecepieCollection : MonoBehaviour
+
+[CreateAssetMenu(fileName = "NewRecepieCollection", menuName = "Crafting System/RecepieCollection")]
+
+public class RecepieCollection : ScriptableObject
 {
     // Public Attributes
-    public List<RecepieGameObject> recepies;
+    public List<Recepie> recepies;
 
+
+    public void InitRecepies()
+    {
+        foreach (Recepie recepie in recepies)
+        {
+            recepie.Init();
+        }
+    }
 }

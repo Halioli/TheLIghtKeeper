@@ -10,11 +10,26 @@ public class Recepie : ScriptableObject
     // Public Attributes
     public string recepieName;
 
-    public GameObject recepieGameObjectPrefab;
+    public List<Item> requiredItemsList;
+    public List<int> requiredAmountsList;
 
-    public List<Item> requiredItems;
-    public List<int> requiredAmounts;
+    public Item resultingItemUnit;
+    public int resultingAmountUnit;
 
-    public Item resultingItem;
-    public int resultingAmount;
+    public Dictionary<Item, int> requiredItems;
+    public KeyValuePair<Item, int> resultingItem;
+
+
+    public void Init()
+    {
+        // Initialize requiredItems
+        requiredItems = new Dictionary<Item, int>();
+        for (int i = 0; i < requiredItemsList.Count; ++i)
+        {
+            requiredItems[requiredItemsList[i]] = requiredAmountsList[i];
+        }
+
+        // Initialize resultingItem
+        resultingItem = new KeyValuePair<Item, int>(resultingItemUnit, resultingAmountUnit);
+    }
 }

@@ -7,7 +7,7 @@ public class CraftingSystem : MonoBehaviour
     // Private Attributes
     private const int MAX_LEVEL = 5;
     private int currentLevel;
-    private List<RecepieGameObject> availableRecepies;
+    private List<Recepie> availableRecepies;
 
     private Inventory playerInventory;
     private Dictionary<Item, int> playerInventoryItems;
@@ -22,8 +22,9 @@ public class CraftingSystem : MonoBehaviour
     void Start()
     {
         currentLevel = 1;
+        InitAllRecepies();
 
-        availableRecepies = new List<RecepieGameObject>();
+        availableRecepies = new List<Recepie>();
         AddAvailableRecepies();
 
         droppedItemPosition = new Vector2(transform.position.x, transform.position.y - 1f);
@@ -47,11 +48,18 @@ public class CraftingSystem : MonoBehaviour
     }
 
 
+    private void InitAllRecepies()
+    {
+        foreach (RecepieCollection recepieCollection in recepiesLvl)
+        {
+            recepieCollection.InitRecepies();
+        }
+    }
 
 
     private void AddAvailableRecepies()
     {
-        foreach (RecepieGameObject recepie in recepiesLvl[currentLevel - 1].recepies)
+        foreach (Recepie recepie in recepiesLvl[currentLevel - 1].recepies)
         {
             availableRecepies.Add(recepie);
         }
@@ -91,7 +99,7 @@ public class CraftingSystem : MonoBehaviour
 
     }
 
-    private bool PlayerHasEnoughItemsToCraftRecepie(RecepieGameObject recepieToCraft)
+    private bool PlayerHasEnoughItemsToCraftRecepie(Recepie recepieToCraft)
     {
         foreach (KeyValuePair<Item, int> requiredItem in recepieToCraft.requiredItems)
         {
@@ -103,7 +111,7 @@ public class CraftingSystem : MonoBehaviour
         return true;
     }
 
-    private void RemoveRecepieRequiredItems(RecepieGameObject recepieToCraft)
+    private void RemoveRecepieRequiredItems(Recepie recepieToCraft)
     {
         foreach (KeyValuePair<Item, int> requiredItem in recepieToCraft.requiredItems)
         {
@@ -111,7 +119,7 @@ public class CraftingSystem : MonoBehaviour
         }
     }
 
-    private void AddRecepieResultingItems(RecepieGameObject recepieToCraft)
+    private void AddRecepieResultingItems(Recepie recepieToCraft)
     {
         for (int i = 0; i < recepieToCraft.resultingItem.Value; ++i)
         {
@@ -136,7 +144,7 @@ public class CraftingSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepie.recepieName);
+            Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepieName);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
         }
     }
