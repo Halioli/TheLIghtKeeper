@@ -5,7 +5,7 @@ using UnityEngine;
 
 enum CriticalMiningState { NONE, FAILED, SUCCEESSFUL };
 
-public class PlayerMiner : PlayerInputs
+public class PlayerMiner : PlayerBase
 {
     // Private Attributes
     private Collider2D colliderDetectedByMouse = null;
@@ -28,10 +28,10 @@ public class PlayerMiner : PlayerInputs
 
     void Update()
     {
-        if (PlayerClickedMineButton() && !isMining)
+        if (playerInputs.PlayerClickedMineButton() && !isMining)
         {
-            SetNewMousePosition();
-            if (PlayerIsInReachToMine(mouseWorldPosition) && MouseClickedOnAnOre(mouseWorldPosition))
+            playerInputs.SetNewMousePosition();
+            if (PlayerIsInReachToMine(playerInputs.mouseWorldPosition) && MouseClickedOnAnOre(playerInputs.mouseWorldPosition))
             {
                 SetOreToMine();
                 StartMining();
@@ -69,7 +69,7 @@ public class PlayerMiner : PlayerInputs
 
     private void CheckCriticalMining()
     {
-        if (PlayerClickedMineButton())
+        if (playerInputs.PlayerClickedMineButton())
         {
             if (WithinCriticalInterval())
             {

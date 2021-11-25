@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttacker : PlayerInputs
+public class PlayerAttacker : PlayerBase
 {  
     // Private Attributes
     private AttackSystem attackSystem;
@@ -23,10 +23,10 @@ public class PlayerAttacker : PlayerInputs
 
     void Update()
     {
-        if (PlayerClickedAttackButton() && !isAttacking)
+        if (playerInputs.PlayerClickedAttackButton() && !isAttacking)
         {
-            SetNewMousePosition();
-            if (PlayerIsInReachToAttack(mouseWorldPosition) && MouseClickedOnAnEnemy(mouseWorldPosition))
+            playerInputs.SetNewMousePosition();
+            if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
             {
                 SetEnemyToAttack();
                 StartAttacking();

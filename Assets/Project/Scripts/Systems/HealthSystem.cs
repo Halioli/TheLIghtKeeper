@@ -19,7 +19,7 @@ public class HealthSystem : MonoBehaviour
         canBeDamaged = true;
     }
 
-    public void RevivePlayer() { health = maxHealth; }
+    public void RestoreHealthToMaxHealth() { health = maxHealth; }
 
     public int GetMaxHealth() { return maxHealth; }
 

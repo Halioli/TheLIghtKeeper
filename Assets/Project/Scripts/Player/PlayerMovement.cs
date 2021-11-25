@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : PlayerInputs
+public class PlayerMovement : PlayerBase
 {
     // Private attributes
     private Vector2 moveDirection;
@@ -16,7 +16,6 @@ public class PlayerMovement : PlayerInputs
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        facingRight = false;
         walkingParticleSystem.Stop();
         playerMiner = GetComponent<PlayerMiner>();
     }
@@ -25,7 +24,7 @@ public class PlayerMovement : PlayerInputs
     {
         if (!playerMiner.IsMining())
         {
-            moveDirection = PlayerPressedMovementButtons();
+            moveDirection = playerInputs.PlayerPressedMovementButtons();
             rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
             FlipSprite();
 
@@ -39,8 +38,9 @@ public class PlayerMovement : PlayerInputs
 
     private void FlipSprite()
     {
-        if((moveDirection.x > 0 && facingRight) || moveDirection.x < 0 && !facingRight){
-            facingRight = !facingRight;
+        if((moveDirection.x > 0 && playerInputs.facingRight) || moveDirection.x < 0 && !playerInputs.facingRight)
+        {
+            playerInputs.facingRight = !playerInputs.facingRight;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }
