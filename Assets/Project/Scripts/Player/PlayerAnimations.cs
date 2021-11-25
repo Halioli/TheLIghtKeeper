@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class PlayerAnimations : PlayerBase
 {
-<<<<<<< HEAD
-    //Private Atributes
-    private PlayerMiner playerMiner;
-    private Vector2 direction;
-
-=======
->>>>>>> develop
     //Public Atributes
     public Animator animator;
 
@@ -34,13 +27,11 @@ public class PlayerAnimations : PlayerBase
         {
             animator.SetBool("isMining", false);
         }
-
-        animator.SetFloat("speed", Mathf.Abs(direction.x));
     }
 
     public void ActivateShake()
     {
-        CinemachineShake.Instance.ShakeCamera(10f, 1f);
+        CinemachineShake.Instance.ShakeCamera(2f, 1f);
     }
 
     public void DesactivateShake()
