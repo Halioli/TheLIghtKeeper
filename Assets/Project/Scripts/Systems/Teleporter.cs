@@ -9,14 +9,12 @@ public class Teleporter : MonoBehaviour
     private bool activated = false;
     private Vector2 spawnPosition;
     private Animator animatior;
-    private Animator boltAnimator;
     private bool playerOnTrigger = false;
 
     private void Start()
     {
         spawnPosition = transform.position;
         animatior = GetComponent<Animator>();
-        boltAnimator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -40,16 +38,6 @@ public class Teleporter : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         playerOnTrigger = false;
-    }
-
-    public void ActivateBolt()
-    {
-        boltAnimator.SetBool("Bolt", true);
-    }
-
-    public void DesactivateBolt()
-    {
-        boltAnimator.SetBool("Bolt", false);
     }
 
 }
