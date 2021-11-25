@@ -106,21 +106,6 @@ public class PlayerMiner : PlayerBase
 
     private void Mine()
     {
-<<<<<<< HEAD
-        while (miningTime > 0.0f)
-        {
-            CheckCriticalMining();
-
-            yield return new WaitForSeconds(Time.deltaTime);
-            miningTime -= Time.deltaTime;
-
-        }
-    }
-
-    public void ExecuteMine()
-    {
-=======
->>>>>>> develop
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
         {
             MineOre(criticalMiningDamage);
@@ -145,5 +130,6 @@ public class PlayerMiner : PlayerBase
         }
         Mine();
     }
+
 
 }
