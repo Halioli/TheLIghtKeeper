@@ -6,10 +6,12 @@ public class PlayerBase : MonoBehaviour
 {
     // Protected methods
     protected PlayerInputs playerInputs;
+    protected PlayerStates playerStates;
 
     void Awake()
     {
         playerInputs = GetComponent<PlayerInputs>();
+        playerStates = GetComponent<PlayerStates>();
     }
 
 }

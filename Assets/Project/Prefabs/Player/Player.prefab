@@ -454,7 +454,7 @@ MonoBehaviour:
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
-  m_LightOrder: 0
+  m_LightOrder: -3
   m_AlphaBlendOnOverlap: 0
   m_ShadowIntensity: 0
   m_ShadowVolumeIntensity: 0
@@ -526,7 +526,7 @@ MonoBehaviour:
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
-  m_LightOrder: 0
+  m_LightOrder: -3
   m_AlphaBlendOnOverlap: 0
   m_ShadowIntensity: 0
   m_ShadowVolumeIntensity: 0
@@ -5372,6 +5372,7 @@ GameObject:
   - component: {fileID: 8905000886976472096}
   - component: {fileID: 758410370477500953}
   - component: {fileID: 1709918701752405699}
+  - component: {fileID: 4340775672013195461}
   - component: {fileID: 7663325681733211924}
   - component: {fileID: 4051017288765368254}
   - component: {fileID: 7925409133873029505}
@@ -5514,6 +5515,18 @@ MonoBehaviour:
   mousePosition: {x: 0, y: 0}
   mouseWorldPosition: {x: 0, y: 0}
   facingRight: 0
+--- !u!114 &4340775672013195461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6885668688810299022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3421cf4dc179bc843a9a7c66eed97087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7663325681733211924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5526,8 +5539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b846a591734c24b8dae2a601287881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMiner: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 8
   walkingParticleSystem: {fileID: 6885668688500999285}
 --- !u!114 &4051017288765368254
 MonoBehaviour:

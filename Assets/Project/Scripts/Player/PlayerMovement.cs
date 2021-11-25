@@ -7,7 +7,6 @@ public class PlayerMovement : PlayerBase
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
-    public PlayerMiner playerMiner;
 
     // Public attributes
     public float moveSpeed;
@@ -17,24 +16,39 @@ public class PlayerMovement : PlayerBase
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         walkingParticleSystem.Stop();
-        playerMiner = GetComponent<PlayerMiner>();
     }
 
     private void Update()
     {
-        if (!playerMiner.IsMining())
+        if (playerStates.PlayerStateIsFree())
         {
             moveDirection = playerInputs.PlayerPressedMovementButtons();
-            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
-            FlipSprite();
+            if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+                walkingParticleSystem.Stop();
+            }
+            else if (moveDirection != Vector2.zero)
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
+                FlipSprite();
+                walkingParticleSystem.Play();
+            }
+        }
+    }
 
-            CheckPartlicleSystemActive();
-        }else
+    private void FixedUpdate()
+    {
+        if (playerStates.PlayerActionIsWalking())
+        {
+            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
+        }
+        else
         {
             rigidbody2D.velocity = Vector2.zero;
         }
-       
     }
+
 
     private void FlipSprite()
     {
@@ -45,18 +59,5 @@ public class PlayerMovement : PlayerBase
         }
     }
 
-    private void CheckPartlicleSystemActive()
-    {
-        if (rigidbody2D.velocity.x != 0f || rigidbody2D.velocity.y != 0f)
-        {
-            if (!walkingParticleSystem.isPlaying)
-            {
-                walkingParticleSystem.Play();
-            }
-        }
-        else
-        {
-            walkingParticleSystem.Stop();
-        }
-    }
+
 }

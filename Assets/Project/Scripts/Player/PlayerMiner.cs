@@ -18,7 +18,6 @@ public class PlayerMiner : PlayerBase
     private const int START_CRITICAL_MINING_DAMAGE = 2;
     private int criticalMiningDamage = START_CRITICAL_MINING_DAMAGE;
 
-    private bool isMining = false;
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
     private const float START_MINING_TIME = 1.0f;
     private float miningTime = START_MINING_TIME;
@@ -28,7 +27,7 @@ public class PlayerMiner : PlayerBase
 
     void Update()
     {
-        if (playerInputs.PlayerClickedMineButton() && !isMining)
+        if (playerInputs.PlayerClickedMineButton() && playerStates.PlayerStateIsFree())
         {
             playerInputs.SetNewMousePosition();
             if (PlayerIsInReachToMine(playerInputs.mouseWorldPosition) && MouseClickedOnAnOre(playerInputs.mouseWorldPosition))
@@ -44,9 +43,6 @@ public class PlayerMiner : PlayerBase
 
 
     // METHODS
-
-    public bool IsMining() { return isMining; }
-
     private bool PlayerIsInReachToMine(Vector2 mousePosition)
     {
         float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
@@ -62,8 +58,6 @@ public class PlayerMiner : PlayerBase
     private void SetOreToMine()
     {
         oreToMine = colliderDetectedByMouse.gameObject.GetComponent<Ore>();
-        isMining = true;
-
     }
 
 
@@ -90,7 +84,8 @@ public class PlayerMiner : PlayerBase
 
     private void StartMining()
     {
-        isMining = true;
+        playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
+        playerStates.SetCurrentPlayerAction(PlayerAction.MINING);
         StartCoroutine("Mining");
     }
 
@@ -104,7 +99,23 @@ public class PlayerMiner : PlayerBase
     {
         miningTime = START_MINING_TIME;
         criticalMiningState = CriticalMiningState.NONE;
-        isMining = false;
+
+        playerStates.SetCurrentPlayerState(PlayerState.FREE);
+        playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+    }
+
+    private void Mine()
+    {
+        if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
+        {
+            MineOre(criticalMiningDamage);
+        }
+        else
+        {
+            MineOre(miningDamage);
+        }
+
+        ResetMining();
     }
 
     IEnumerator Mining()
@@ -117,19 +128,8 @@ public class PlayerMiner : PlayerBase
             miningTime -= Time.deltaTime;
 
         }
-
-        if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-        { 
-            MineOre(criticalMiningDamage);
-        }
-        else
-        {
-            MineOre(miningDamage);
-        }
-
-        ResetMining();
+        Mine();
     }
-
 
 
 }

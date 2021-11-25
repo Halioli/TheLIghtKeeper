@@ -10,7 +10,6 @@ public class PlayerAttacker : PlayerBase
     private float attackingTime = ATTACK_TIME_DURATION;
 
     private float attackReachRadius = 3f;
-    private bool isAttacking;
 
     private Collider2D colliderDetectedByMouse = null;
     private Enemy enemyToAttack;
@@ -23,7 +22,7 @@ public class PlayerAttacker : PlayerBase
 
     void Update()
     {
-        if (playerInputs.PlayerClickedAttackButton() && !isAttacking)
+        if (playerInputs.PlayerClickedAttackButton() && !playerStates.PlayerStateIsFree())
         {
             playerInputs.SetNewMousePosition();
             if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
@@ -54,7 +53,7 @@ public class PlayerAttacker : PlayerBase
 
     private void StartAttacking()
     {
-        isAttacking = true;
+        playerStates.SetCurrentPlayerAction(PlayerAction.ATTACKING);
         StartCoroutine("Attacking");
     }
 
@@ -74,6 +73,8 @@ public class PlayerAttacker : PlayerBase
     private void ResetAttack()
     {
         attackingTime = ATTACK_TIME_DURATION;
-        isAttacking = false;
+
+        playerStates.SetCurrentPlayerState(PlayerState.FREE);
+        playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
 }
