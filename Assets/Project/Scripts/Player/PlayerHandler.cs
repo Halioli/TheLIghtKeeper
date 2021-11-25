@@ -20,7 +20,7 @@ public class PlayerHandler : MonoBehaviour
         {
             // Teleport to starting position (0, 0)
             playerRigidbody2D.transform.position = Vector3.zero;
-            playerHealthSystem.RevivePlayer();
+            playerHealthSystem.RestoreHealthToMaxHealth();
         }
     }
 }
