@@ -40,12 +40,8 @@ public class PlayerLightChecker : MonoBehaviour
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
             numberOfLights += 1;
-
-            if (!lamp.LampTimeExhausted())
-            {
-                // Lamp turns off
-                lamp.DeactivateLampLight();
-            }
+            // Lamp turns off
+            lamp.DeactivateLampLight();
 
             if (lightingCollider.gameObject.CompareTag("CoreLight"))
             {
