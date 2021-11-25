@@ -62,6 +62,8 @@ public class PlayerMiner : PlayerInputs
     private void SetOreToMine()
     {
         oreToMine = colliderDetectedByMouse.gameObject.GetComponent<Ore>();
+        isMining = true;
+
     }
 
 
@@ -117,13 +119,11 @@ public class PlayerMiner : PlayerInputs
         }
 
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-        {
-            Debug.Log("CRITICAL MINING");
+        { 
             MineOre(criticalMiningDamage);
         }
         else
         {
-            Debug.Log("MINING");
             MineOre(miningDamage);
         }
 

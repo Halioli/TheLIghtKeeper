@@ -14,7 +14,6 @@ public class PlayerHandler : MonoBehaviour
         playerRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-
     void Update()
     {
         if (playerHealthSystem.IsDead())
@@ -23,15 +22,5 @@ public class PlayerHandler : MonoBehaviour
             playerRigidbody2D.transform.position = Vector3.zero;
             playerHealthSystem.RevivePlayer();
         }
-    }
-
-    public void SetPlayerToStatic()
-    {
-        playerRigidbody2D.bodyType = RigidbodyType2D.Static;
-    }
-
-    public void SetPlayerToDynamic()
-    {
-        playerRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 }

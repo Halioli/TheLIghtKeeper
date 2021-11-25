@@ -13,7 +13,7 @@ public class Teleportation : MonoBehaviour
         {
             if(currentTeleporter != null)
             {
-                transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
+                StartCoroutine("WaitAndTeleport");
             }
         }
     }
@@ -36,5 +36,11 @@ public class Teleportation : MonoBehaviour
             }
 
         }
+    }
+
+    IEnumerator WaitAndTeleport()
+    {
+        yield return new WaitForSeconds(7.5f);
+        transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
     }
 }
