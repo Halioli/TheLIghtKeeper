@@ -207,6 +207,19 @@ public class Inventory : MonoBehaviour
     }
 
 
+    public bool SubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
+    {
+        for (int i = 0; i < numberOfItemsToSubstract; ++i)
+        {
+            if (!SubstractItemToInventory(itemToSubstract))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()

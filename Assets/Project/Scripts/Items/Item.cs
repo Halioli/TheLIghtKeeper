@@ -22,13 +22,6 @@ public abstract class Item : ScriptableObject
     private Sprite sprite;
 
 
-    //private void Start()
-    //{
-    //    sprite = GetComponent<Sprite>();
-    //}
-
-
-
     // Getter Methods
     public int GetID() { return ID; }
 
