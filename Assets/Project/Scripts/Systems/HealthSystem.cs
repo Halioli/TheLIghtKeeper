@@ -11,6 +11,8 @@ public class HealthSystem : MonoBehaviour
     // Public Attributes
     public int maxHealth;
 
+    public AudioSource hurtedAudioSource;
+
 
 
     void Start()
@@ -31,11 +33,15 @@ public class HealthSystem : MonoBehaviour
         {
             health = (health - damageValueToSubstract < 0 ? 0 : health -= damageValueToSubstract);
         }
+        PlayHurtedSound();
     }
 
     virtual public bool IsDead() { return health <= 0; }
  
-
+    private void PlayHurtedSound()
+    {
+        hurtedAudioSource.Play();
+    }
 
 
 }
