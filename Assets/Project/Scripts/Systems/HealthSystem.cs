@@ -40,7 +40,7 @@ public class HealthSystem : MonoBehaviour
  
     private void PlayHurtedSound()
     {
-        hurtedAudioSource.Play();
+        //hurtedAudioSource.Play();
     }
 
 
