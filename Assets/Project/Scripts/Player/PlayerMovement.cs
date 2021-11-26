@@ -26,7 +26,7 @@ public class PlayerMovement : PlayerBase
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
-                //walkingParticleSystem.Stop();
+                walkingParticleSystem.Stop();
             }
             else if (moveDirection != Vector2.zero)
             {
