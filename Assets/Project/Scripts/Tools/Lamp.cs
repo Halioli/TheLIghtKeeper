@@ -9,9 +9,9 @@ public class Lamp : MonoBehaviour
     private const float LIGHT_ROD_REFUEL_AMOUNT = 10f;
     private const float INNER_OUTER_ANGLE = 259.89f;
     private const float INNER_OUTER_COMPLETE_ANGLE = 360f;
-    private const float POINTLIGHT_INNER_RADIUS_OFF = 2f;
+    private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
     private const float POINTLIGHT_INNER_RADIUS_ON = 3f;
-    private const float POINTLIGHT_OUTER_RADIUS_OFF = 3f;
+    private const float POINTLIGHT_OUTER_RADIUS_OFF = 2f;
     private const float POINTLIGHT_OUTER_RADIUS_ON = 4f;
 
     private float maxLampTime;
@@ -85,6 +85,7 @@ public class Lamp : MonoBehaviour
         pointLight2D.pointLightOuterAngle = INNER_OUTER_ANGLE;
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
+        pointLight2D.intensity = 1f;
 
         lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
@@ -103,7 +104,7 @@ public class Lamp : MonoBehaviour
         pointLight2D.pointLightOuterAngle = INNER_OUTER_COMPLETE_ANGLE;
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
-
+        pointLight2D.intensity = 0.1f;
     }
 
     public float GetLampTimeRemaining()
