@@ -36,7 +36,7 @@ abstract public class Enemy : MonoBehaviour
     protected int damageToDeal;
     protected bool startedBanishing = false;
 
-    protected const float BANISH_TIME = 2f;
+    protected const float BANISH_TIME = 1f;
     protected float currentBanishTime;
 
 
@@ -48,6 +48,16 @@ abstract public class Enemy : MonoBehaviour
 
 
     // Methods
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("CoreLight"))
+        {
+            startedBanishing = true;
+        }
+    }
+
+
     protected void UpdatePlayerPosition() { 
         playerPosition = player.transform.position;
     }
@@ -97,4 +107,5 @@ abstract public class Enemy : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
 }
