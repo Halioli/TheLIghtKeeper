@@ -35,7 +35,8 @@ public class PlayerMovement : PlayerBase
                 walkingParticleSystem.Play();
             }
         }
-        /* player gets kicked
+
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rigidbody2D.velocity = Vector2.zero;
