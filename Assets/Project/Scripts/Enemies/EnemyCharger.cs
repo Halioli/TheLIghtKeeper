@@ -25,6 +25,11 @@ public class EnemyCharger : Enemy
     public float attackForce = 8f;
     public float distanceToCharge = 4f;
 
+    public AudioSource movementAudioSource;
+    public AudioSource screamAudioSource;
+
+
+
     private void Start()
     {
         attackSystem = GetComponent<AttackSystem>();
@@ -49,6 +54,8 @@ public class EnemyCharger : Enemy
     {
         if (startedBanishing)
         {
+            if (movementAudioSource.isPlaying)
+                movementAudioSource.Stop();
             return;
         }
 
@@ -62,6 +69,9 @@ public class EnemyCharger : Enemy
         {
             if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
             {
+                if (!movementAudioSource.isPlaying)
+                    movementAudioSource.Play();
+
                 if (currentSpeed < MAX_SPEED)
                 {
                     currentSpeed += ACCELERATION;
@@ -81,6 +91,11 @@ public class EnemyCharger : Enemy
             }
             else if (attackState == AttackState.CHARGING)
             {
+                if (!screamAudioSource.isPlaying)
+                {
+                    screamAudioSource.Play();
+                }
+
                 spriteRenderer.color = new Color(1f, 0f, 0f, 1f);
                 if (collidedWithPlayer)
                 {
@@ -92,6 +107,8 @@ public class EnemyCharger : Enemy
             }
             else if (attackState == AttackState.RECOVERING)
             {
+                movementAudioSource.Stop();
+
                 spriteRenderer.color = new Color(0.36f, 0.36f, 0.36f, 1f);
                 currentSpeed = 0f;
                 Recovering();
