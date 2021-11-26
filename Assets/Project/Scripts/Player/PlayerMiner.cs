@@ -5,7 +5,7 @@ using UnityEngine;
 
 enum CriticalMiningState { NONE, FAILED, SUCCEESSFUL };
 
-public class PlayerMiner : PlayerInputs
+public class PlayerMiner : PlayerBase
 {
     // Private Attributes
     private Collider2D colliderDetectedByMouse = null;
@@ -18,7 +18,6 @@ public class PlayerMiner : PlayerInputs
     private const int START_CRITICAL_MINING_DAMAGE = 2;
     private int criticalMiningDamage = START_CRITICAL_MINING_DAMAGE;
 
-    private bool isMining = false;
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
     private const float START_MINING_TIME = 1.0f;
     private float miningTime = START_MINING_TIME;
@@ -26,12 +25,18 @@ public class PlayerMiner : PlayerInputs
     private const float UPPER_INTERVAL_CRITICAL_MINING = 0.7f;
 
 
+    // Events
+    public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerMinesOreEvent;
+    public static event PlayPlayerSound playerBreaksOreEvent;
+
+
     void Update()
     {
-        if (PlayerClickedMineButton() && !isMining)
+        if (playerInputs.PlayerClickedMineButton() && playerStates.PlayerStateIsFree())
         {
-            SetNewMousePosition();
-            if (PlayerIsInReachToMine(mouseWorldPosition) && MouseClickedOnAnOre(mouseWorldPosition))
+            playerInputs.SetNewMousePosition();
+            if (PlayerIsInReachToMine(playerInputs.mouseWorldPosition) && MouseClickedOnAnOre(playerInputs.mouseWorldPosition))
             {
                 SetOreToMine();
                 StartMining();
@@ -44,9 +49,6 @@ public class PlayerMiner : PlayerInputs
 
 
     // METHODS
-
-    public bool IsMining() { return isMining; }
-
     private bool PlayerIsInReachToMine(Vector2 mousePosition)
     {
         float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
@@ -67,7 +69,7 @@ public class PlayerMiner : PlayerInputs
 
     private void CheckCriticalMining()
     {
-        if (PlayerClickedMineButton())
+        if (playerInputs.PlayerClickedMineButton())
         {
             if (WithinCriticalInterval())
             {
@@ -88,21 +90,53 @@ public class PlayerMiner : PlayerInputs
 
     private void StartMining()
     {
-        isMining = true;
+        playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
+        playerStates.SetCurrentPlayerAction(PlayerAction.MINING);
         StartCoroutine("Mining");
     }
 
     private void MineOre(int damageToDeal)
     {
         if (oreToMine.CanBeMined())
+        {
             oreToMine.GetsMined(damageToDeal);
+
+            if (oreToMine.Broke())
+            {
+                // Play normal mine sound
+                if (playerBreaksOreEvent != null)
+                    playerBreaksOreEvent();
+            }
+            else
+            {
+                // Play break sound
+                if (playerMinesOreEvent != null)
+                    playerMinesOreEvent();
+            }
+        }
     }
 
     private void ResetMining()
     {
         miningTime = START_MINING_TIME;
         criticalMiningState = CriticalMiningState.NONE;
-        isMining = false;
+
+        playerStates.SetCurrentPlayerState(PlayerState.FREE);
+        playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+    }
+
+    private void Mine()
+    {
+        if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
+        {
+            MineOre(criticalMiningDamage);
+        }
+        else
+        {
+            MineOre(miningDamage);
+        }
+
+        ResetMining();
     }
 
     IEnumerator Mining()
@@ -115,21 +149,8 @@ public class PlayerMiner : PlayerInputs
             miningTime -= Time.deltaTime;
 
         }
-
-        if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-        {
-            Debug.Log("CRITICAL MINING");
-            MineOre(criticalMiningDamage);
-        }
-        else
-        {
-            Debug.Log("MINING");
-            MineOre(miningDamage);
-        }
-
-        ResetMining();
+        Mine();
     }
-
 
 
 }

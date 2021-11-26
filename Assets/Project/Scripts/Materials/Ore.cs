@@ -32,6 +32,7 @@ public class Ore : MonoBehaviour
 
     public bool CanBeMined() { return breakState == OreState.WHOLE; }
 
+    public bool Broke() { return healthSystem.IsDead(); }
 
     public void GetsMined(int damageAmount)
     {
@@ -102,4 +103,6 @@ public class Ore : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+
 }

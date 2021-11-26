@@ -94,10 +94,17 @@ AnimationClip:
     functionName: ActivateShake
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 5
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.0166667
+  - time: 0.95
+    functionName: CheckCriticalMining
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
     functionName: DesactivateShake
     data: 
     objectReferenceParameter: {fileID: 0}

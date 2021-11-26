@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : PlayerInputs
+public class PlayerMovement : PlayerBase
 {
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
-    public PlayerMiner playerMiner;
 
     // Public attributes
     public float moveSpeed;
@@ -16,44 +15,49 @@ public class PlayerMovement : PlayerInputs
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        facingRight = false;
         walkingParticleSystem.Stop();
-        playerMiner = GetComponent<PlayerMiner>();
     }
 
     private void Update()
     {
-        if (!playerMiner.IsMining())
+        if (playerStates.PlayerStateIsFree())
         {
-            moveDirection = PlayerPressedMovementButtons();
-            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
-            FlipSprite();
-
-            CheckPartlicleSystemActive();
+            moveDirection = playerInputs.PlayerPressedMovementButtons();
+            if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+                walkingParticleSystem.Stop();
+            }
+            else if (moveDirection != Vector2.zero)
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
+                FlipSprite();
+                walkingParticleSystem.Play();
+            }
         }
-        
     }
+
+    private void FixedUpdate()
+    {
+        if (playerStates.PlayerActionIsWalking())
+        {
+            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
+        }
+        else
+        {
+            rigidbody2D.velocity = Vector2.zero;
+        }
+    }
+
 
     private void FlipSprite()
     {
-        if((moveDirection.x > 0 && facingRight) || moveDirection.x < 0 && !facingRight){
-            facingRight = !facingRight;
+        if((moveDirection.x > 0 && playerInputs.facingRight) || moveDirection.x < 0 && !playerInputs.facingRight)
+        {
+            playerInputs.facingRight = !playerInputs.facingRight;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }
 
-    private void CheckPartlicleSystemActive()
-    {
-        if (rigidbody2D.velocity.x != 0f || rigidbody2D.velocity.y != 0f)
-        {
-            if (!walkingParticleSystem.isPlaying)
-            {
-                walkingParticleSystem.Play();
-            }
-        }
-        else
-        {
-            walkingParticleSystem.Stop();
-        }
-    }
+
 }
