@@ -46,7 +46,7 @@ public class CraftingMenu : MonoBehaviour
         {
             GameObject gameObjectButton = Instantiate(buttonPrefab, craftingList.transform);
             recepieButtonsGameObjects.Add(gameObjectButton);
-
+            craftingList.GetComponent<RectTransform>().sizeDelta = new Vector2(craftingList.GetComponent<RectTransform>().sizeDelta.x, craftingList.GetComponent<RectTransform>().sizeDelta.y + gameObjectButton.GetComponent<RectTransform>().sizeDelta.y);
             gameObjectButton.GetComponent<Image>().sprite = smallCraftingRecepieFrame;
             gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
