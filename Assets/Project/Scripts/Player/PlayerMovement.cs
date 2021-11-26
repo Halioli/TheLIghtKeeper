@@ -26,14 +26,23 @@ public class PlayerMovement : PlayerBase
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
-                walkingParticleSystem.Stop();
             }
             else if (moveDirection != Vector2.zero)
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
                 FlipSprite();
-                walkingParticleSystem.Play();
             }
+        }
+
+        //Particle logic
+        if (walkingParticleSystem.isPlaying && !playerStates.PlayerActionIsWalking())
+        {
+            walkingParticleSystem.Stop();
+        }
+        else if(walkingParticleSystem.isStopped && playerStates.PlayerActionIsWalking())
+        {
+            walkingParticleSystem.Play();
+
         }
         /* player gets kicked
         if (Input.GetKeyDown(KeyCode.Space))
