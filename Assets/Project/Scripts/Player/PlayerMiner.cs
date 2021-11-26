@@ -149,7 +149,6 @@ public class PlayerMiner : PlayerBase
             miningTime -= Time.deltaTime;
 
         }
-        Mine();
     }
 
 
