@@ -25,6 +25,12 @@ public class PlayerMiner : PlayerBase
     private const float UPPER_INTERVAL_CRITICAL_MINING = 0.7f;
 
 
+    // Events
+    public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerMinesOreEvent;
+    public static event PlayPlayerSound playerBreaksOreEvent;
+
+
     void Update()
     {
         if (playerInputs.PlayerClickedMineButton() && playerStates.PlayerStateIsFree())
@@ -92,7 +98,22 @@ public class PlayerMiner : PlayerBase
     private void MineOre(int damageToDeal)
     {
         if (oreToMine.CanBeMined())
+        {
             oreToMine.GetsMined(damageToDeal);
+
+            if (oreToMine.Broke())
+            {
+                // Play normal mine sound
+                if (playerBreaksOreEvent != null)
+                    playerBreaksOreEvent();
+            }
+            else
+            {
+                // Play break sound
+                if (playerMinesOreEvent != null)
+                    playerMinesOreEvent();
+            }
+        }
     }
 
     private void ResetMining()
