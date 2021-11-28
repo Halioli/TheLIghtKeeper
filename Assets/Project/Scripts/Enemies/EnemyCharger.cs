@@ -2,36 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum AttackState
+
+
+public class EnemyCharger : Enemy
 {
-    MOVING_TOWARDS_PLAYER,
-    CHARGING,
-    RECOVERING
-}
-
-public class EnemyCharger : BaseEnemy
-{
-    // Public
-    public const float ATTACK_RECOVER_TIME = 2f;
-    public const float CHARGE_SPEED = 12f;
-    public const float CHARGE_TIME = 0.5f;
-    public const float MAX_SPEED = 7f;
-    public const float ACCELERATION = 0.25f;
-
-    public GameObject player;
-    public AttackSystem attackSystem;
-    public Rigidbody2D rigidbody;
-    public SpriteRenderer spriteRenderer;
-    public BaseEnemy baseEnemy;
-    public float attackForce = 8f;
-    public float distanceToCharge = 4f;
-
-    // Private
-    private EnemyState enemyState;
-    private AttackState attackState;
-
-    private Vector2 playerPosition;
-    private Vector2 directionTowardsPlayerPosition;
+    // Private Attributes
     private Vector2 directionOnChargeStart;
 
     private float currentSpeed;
@@ -40,11 +15,28 @@ public class EnemyCharger : BaseEnemy
     private bool hasRecovered;
     private bool collidedWithPlayer;
 
+    // Public Attributes
+    public const float ATTACK_RECOVER_TIME = 2f;
+    public const float CHARGE_SPEED = 12f;
+    public const float CHARGE_TIME = 0.5f;
+    public const float MAX_SPEED = 7f;
+    public const float ACCELERATION = 0.25f;
+
+    public float attackForce = 8f;
+    public float distanceToCharge = 4f;
+
+    public AudioSource movementAudioSource;
+    public AudioSource screamAudioSource;
+
+
+
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        attackSystem = GetComponent<AttackSystem>();
+        healthSystem = GetComponent<HealthSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
         currentAttackRecoverTime = ATTACK_RECOVER_TIME;
         currentChargeTime = CHARGE_TIME;
@@ -53,15 +45,33 @@ public class EnemyCharger : BaseEnemy
         collidedWithPlayer = false;
         enemyState = EnemyState.AGGRO;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
+
+        currentBanishTime = BANISH_TIME;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (startedBanishing)
+        {
+            if (movementAudioSource.isPlaying)
+                movementAudioSource.Stop();
+            return;
+        }
+
+        if (healthSystem.IsDead())
+        {
+            Die();
+        }
+
+
         if (enemyState == EnemyState.AGGRO)
         {
             if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
             {
+                if (!movementAudioSource.isPlaying)
+                    movementAudioSource.Play();
+
                 if (currentSpeed < MAX_SPEED)
                 {
                     currentSpeed += ACCELERATION;
@@ -74,13 +84,18 @@ public class EnemyCharger : BaseEnemy
                 // Change to CHARGE
                 if (Vector2.Distance(transform.position, player.transform.position) <= distanceToCharge)
                 {
-                    playerPosition = player.transform.position;
+                    UpdatePlayerPosition();
                     directionOnChargeStart = (playerPosition - rigidbody.position).normalized;
                     attackState = AttackState.CHARGING; // Change state
                 }
             }
             else if (attackState == AttackState.CHARGING)
             {
+                if (!screamAudioSource.isPlaying)
+                {
+                    screamAudioSource.Play();
+                }
+
                 spriteRenderer.color = new Color(1f, 0f, 0f, 1f);
                 if (collidedWithPlayer)
                 {
@@ -92,6 +107,8 @@ public class EnemyCharger : BaseEnemy
             }
             else if (attackState == AttackState.RECOVERING)
             {
+                movementAudioSource.Stop();
+
                 spriteRenderer.color = new Color(0.36f, 0.36f, 0.36f, 1f);
                 currentSpeed = 0f;
                 Recovering();
@@ -99,8 +116,15 @@ public class EnemyCharger : BaseEnemy
         }
     }
 
+
+
     private void FixedUpdate()
     {
+        if (startedBanishing)
+        {
+            return;
+        }
+
         if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();
@@ -118,21 +142,20 @@ public class EnemyCharger : BaseEnemy
         }
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.collider);
-        if (collision.collider.GetComponent<HealthSystem>() != null && attackState == AttackState.CHARGING)
+        if (collision.collider.gameObject.CompareTag("Player"))
         {
-            attackSystem.DamageHealthSystemWithAttackValue(collision.collider.GetComponent<HealthSystem>());
-
+            DamagePlayer();
             collidedWithPlayer = true;
         }
     }
 
     private void MoveTowardsPlayer()
     {
-        playerPosition = player.transform.position;
-        directionTowardsPlayerPosition = (playerPosition - rigidbody.position).normalized;
+        UpdatePlayerPosition();
+        UpdateDirectionTowardsPlayerPosition();
 
         rigidbody.MovePosition((Vector2)transform.position + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
     }

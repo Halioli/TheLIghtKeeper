@@ -2,33 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerBase
 {
-    // Start is called before the first frame update
+    // Private attributes
+    private Vector2 moveDirection;
+    private Rigidbody2D rigidbody2D;
 
-    Vector2 playerInput;
-    Rigidbody2D rb;
-
+    // Public attributes
     public float moveSpeed;
-    public bool facingRight;
-    void Start()
+    public ParticleSystem walkingParticleSystem;
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        walkingParticleSystem.Stop();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        rb.velocity = playerInput.normalized * moveSpeed;
-        flip();
+        if (playerStates.PlayerStateIsFree())
+        {
+            moveDirection = playerInputs.PlayerPressedMovementButtons();
+            if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+            }
+            else if (moveDirection != Vector2.zero)
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
+                FlipSprite();
+            }
+        }
+
+        if(walkingParticleSystem.isStopped && playerStates.PlayerActionIsWalking())
+        {
+            walkingParticleSystem.Play();
+        }
+        else if(!playerStates.PlayerActionIsWalking() && walkingParticleSystem.isPlaying)
+        {
+            walkingParticleSystem.Stop();
+        }
+        /*
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rigidbody2D.velocity = Vector2.zero;
+            rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
+        }
+        */
     }
 
-    void flip()
+    private void FixedUpdate()
     {
-        if((Input.GetAxisRaw("Horizontal") > 0 && facingRight) || Input.GetAxisRaw("Horizontal") < 0 && !facingRight){
-            facingRight = !facingRight;
+        if (playerStates.PlayerActionIsWalking())
+        {
+            rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
+            if (rigidbody2D.velocity.magnitude > 3f)
+                rigidbody2D.velocity = rigidbody2D.velocity.normalized * Mathf.Lerp(rigidbody2D.velocity.magnitude, 3f, Time.fixedDeltaTime * 30f);
+        }
+    }
+
+
+    private void FlipSprite()
+    {
+        if((moveDirection.x > 0 && playerInputs.facingRight) || moveDirection.x < 0 && !playerInputs.facingRight)
+        {
+            playerInputs.facingRight = !playerInputs.facingRight;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }
+
+
 }

@@ -4,29 +4,44 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
+    // Protected Attributes
+    protected int health;
+    protected bool canBeDamaged;
+
     // Public Attributes
     public int maxHealth;
 
-    // Private Attributes
-    private int health;
+    public AudioSource hurtedAudioSource;
+
 
 
     void Start()
     {
         health = maxHealth;
+        canBeDamaged = true;
     }
 
-
+    public void RestoreHealthToMaxHealth() { health = maxHealth; }
 
     public int GetMaxHealth() { return maxHealth; }
 
     public int GetHealth() { return health; }
 
-    public void ReceiveDamage(int damageValueToSubstract)
+    virtual public void ReceiveDamage(int damageValueToSubstract)
     {
-        health -= damageValueToSubstract;
+        if (canBeDamaged)
+        {
+            health = (health - damageValueToSubstract < 0 ? 0 : health -= damageValueToSubstract);
+        }
+        PlayHurtedSound();
     }
 
-    public bool IsDead() { return health <= 0; }
+    virtual public bool IsDead() { return health <= 0; }
  
+    private void PlayHurtedSound()
+    {
+        //hurtedAudioSource.Play();
+    }
+
+
 }

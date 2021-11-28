@@ -29,24 +29,10 @@ public class Ore : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (CanBeMined())
-                GetsMined(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.B))
-        {
-            if (CanBeMined())
-                GetsMined(2);
-        }
-    }
-
-
 
     public bool CanBeMined() { return breakState == OreState.WHOLE; }
 
+    public bool Broke() { return healthSystem.IsDead(); }
 
     public void GetsMined(int damageAmount)
     {
@@ -87,6 +73,7 @@ public class Ore : MonoBehaviour
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsDown();
+        droppedMineralItem.StartDespawning();
     }
 
     private Vector2 GetDropSpawnPosition()
@@ -116,4 +103,6 @@ public class Ore : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+
 }
