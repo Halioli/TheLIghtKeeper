@@ -15,7 +15,7 @@ public class PlayerMovement : PlayerBase
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        walkingParticleSystem.Stop();
+        walkingParticleSystem.Play();
     }
 
     private void Update()
@@ -26,16 +26,14 @@ public class PlayerMovement : PlayerBase
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
-                walkingParticleSystem.Stop();
             }
             else if (moveDirection != Vector2.zero)
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
                 FlipSprite();
-                walkingParticleSystem.Play();
             }
         }
-        /* player gets kicked
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rigidbody2D.velocity = Vector2.zero;

@@ -659,9 +659,9 @@ GameObject:
   - component: {fileID: 4247216038034703328}
   - component: {fileID: 4989443145165977615}
   - component: {fileID: 2043989748637824320}
-  - component: {fileID: 2310117487037883043}
   - component: {fileID: 4958907409423626844}
   - component: {fileID: 8397354122656166637}
+  - component: {fileID: 1558386269828309269}
   - component: {fileID: 5742222722491315820}
   - component: {fileID: 2109840049878452791}
   m_Layer: 3
@@ -755,7 +755,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -818,7 +818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b846a591734c24b8dae2a601287881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  moveSpeed: 200
   walkingParticleSystem: {fileID: 5281033995110350959}
 --- !u!114 &4783228191847081116
 MonoBehaviour:
@@ -914,18 +914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5742222722491315820}
---- !u!114 &2310117487037883043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7987370481941902186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23fdc6dc5c2a6374199396d5f14a55fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4958907409423626844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,6 +938,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3be414cda14a4a428d97ff3b2cff101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1558386269828309269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987370481941902186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77463adef3b9bf3468c2bcb4676c9a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 5742222722491315820}
 --- !u!95 &5742222722491315820
 Animator:
   serializedVersion: 3

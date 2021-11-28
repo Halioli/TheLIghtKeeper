@@ -471,7 +471,6 @@ GameObject:
   - component: {fileID: 226577134}
   - component: {fileID: 226577136}
   - component: {fileID: 226577130}
-  - component: {fileID: 226577137}
   - component: {fileID: 226577125}
   m_Layer: 3
   m_Name: Player
@@ -712,18 +711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb446d62690ac174fb3705141321d577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &226577137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226577123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23fdc6dc5c2a6374199396d5f14a55fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &241577620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 842936017497849178, guid: fbf0df33eed58d447b5007ec5a469558, type: 3}
@@ -811,7 +798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51926e889f09c742b4f8eac36d3d2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {fileID: 422943385}
+  name: 
 --- !u!212 &317567130
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -860,7 +847,7 @@ SpriteRenderer:
   m_Size: {x: 9.375, y: 9.375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &317567131
@@ -1334,7 +1321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51926e889f09c742b4f8eac36d3d2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {fileID: 317567128}
+  name: 
 --- !u!61 &422943387
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1409,7 +1396,7 @@ SpriteRenderer:
   m_Size: {x: 9.375, y: 9.375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &453353688 stripped
@@ -8787,6 +8774,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightRodItem: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
+  coalItem: {fileID: 0}
+  ironItem: {fileID: 0}
   inventoryMenu: {fileID: 1738727318}
 --- !u!1 &1687120375
 GameObject:
