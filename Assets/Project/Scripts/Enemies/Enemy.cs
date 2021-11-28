@@ -36,7 +36,7 @@ abstract public class Enemy : MonoBehaviour
     protected int damageToDeal;
     protected bool startedBanishing = false;
 
-    protected const float BANISH_TIME = 1f;
+    protected const float BANISH_TIME = 0.5f;
     protected float currentBanishTime;
 
 
@@ -50,10 +50,10 @@ abstract public class Enemy : MonoBehaviour
     // Methods
 
     private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.CompareTag("CoreLight"))
+    {      
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
         {
-            startedBanishing = true;
+            Banish();
         }
     }
 

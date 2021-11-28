@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4708902000198877502}
   - component: {fileID: 4708902000198877489}
   - component: {fileID: 4708902000198877499}
-  - component: {fileID: 4708902000198877496}
+  - component: {fileID: 5874272379042813701}
   - component: {fileID: 1842720396159397353}
   - component: {fileID: 4708902000198877503}
   - component: {fileID: 4708902000198877501}
@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 2462194125869836966}
   - component: {fileID: -7492661058434659146}
   - component: {fileID: 6945472369009456364}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyCharger
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -112,8 +112,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &4708902000198877496
-BoxCollider2D:
+--- !u!70 &5874272379042813701
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -125,19 +125,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.5}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.1, y: -0.1}
+  m_Size: {x: 0.8, y: 1.4}
+  m_Direction: 0
 --- !u!114 &1842720396159397353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,8 +169,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropOnDeathItem: {fileID: 9018237891161031051, guid: e2c57d1dc2d45ed4cac975acf415c722, type: 3}
   banishAudioSource: {fileID: -7492661058434659146}
+  CHARGE_SPEED: 15
+  MAX_SPEED: 10
   attackForce: 3
-  distanceToCharge: 4
+  distanceToCharge: 5
+  amplitude: 0.2
+  period: 0.15
+  distance: 0
   movementAudioSource: {fileID: 7146052036117722878}
   screamAudioSource: {fileID: 2462194125869836966}
 --- !u!82 &7146052036117722878
