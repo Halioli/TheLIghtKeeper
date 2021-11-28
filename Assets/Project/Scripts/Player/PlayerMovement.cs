@@ -15,7 +15,7 @@ public class PlayerMovement : PlayerBase
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        walkingParticleSystem.Stop();
+        walkingParticleSystem.Play();
     }
 
     private void Update()
@@ -32,15 +32,6 @@ public class PlayerMovement : PlayerBase
                 playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
                 FlipSprite();
             }
-        }
-
-        if(walkingParticleSystem.isStopped && playerStates.PlayerActionIsWalking())
-        {
-            walkingParticleSystem.Play();
-        }
-        else if(!playerStates.PlayerActionIsWalking() && walkingParticleSystem.isPlaying)
-        {
-            walkingParticleSystem.Stop();
         }
         /*
         if (Input.GetKeyDown(KeyCode.Space))
