@@ -35,17 +35,23 @@ public class PlayerMovement : PlayerBase
                 walkingParticleSystem.Play();
             }
         }
+
+        /*
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rigidbody2D.velocity = Vector2.zero;
+            rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
+        }
+        */
     }
 
     private void FixedUpdate()
     {
         if (playerStates.PlayerActionIsWalking())
         {
-            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
-        }
-        else
-        {
-            rigidbody2D.velocity = Vector2.zero;
+            rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
+            if (rigidbody2D.velocity.magnitude > 3f)
+                rigidbody2D.velocity = rigidbody2D.velocity.normalized * Mathf.Lerp(rigidbody2D.velocity.magnitude, 3f, Time.fixedDeltaTime * 30f);
         }
     }
 

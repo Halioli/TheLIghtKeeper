@@ -31,7 +31,7 @@ public class PlayerAnimations : PlayerBase
 
     public void ActivateShake()
     {
-        CinemachineShake.Instance.ShakeCamera(2f, 1f);
+        CinemachineShake.Instance.ShakeCamera(10f, 1f);
     }
 
     public void DesactivateShake()
