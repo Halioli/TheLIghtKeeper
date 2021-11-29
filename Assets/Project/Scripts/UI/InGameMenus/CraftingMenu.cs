@@ -83,19 +83,4 @@ public class CraftingMenu : MonoBehaviour
     {
         recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
     }
-
-    public bool CheckPlayerInventoryForRequiredItems()
-    {
-        return false;
-    }
-
-    public void SubstractItemsFromInventory()
-    {
-
-    }
-
-    public void GiveItemToPlayer()
-    {
-
-    }
 }
