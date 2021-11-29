@@ -8,6 +8,8 @@ public class PlayerHandler : MonoBehaviour
     private HealthSystem playerHealthSystem;
     private Rigidbody2D playerRigidbody2D;
 
+
+
     private void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
