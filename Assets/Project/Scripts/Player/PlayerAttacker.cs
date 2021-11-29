@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerAttacker : PlayerBase
 {  
     // Private Attributes
-    private AttackSystem attackSystem;
     private const float ATTACK_TIME_DURATION = 0.8f;
     private float attackingTime = ATTACK_TIME_DURATION;
 

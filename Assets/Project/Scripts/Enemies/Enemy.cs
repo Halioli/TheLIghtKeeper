@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 
 abstract public class Enemy : MonoBehaviour
 {
@@ -44,7 +44,9 @@ abstract public class Enemy : MonoBehaviour
     // Public Attributes
     public ItemGameObject dropOnDeathItem;
 
-    public AudioSource banishAudioSource;
+    public AudioSource audioSource;
+    public AudioClip banishAudioClip;
+    public AudioClip hurtedAudioClip;
 
 
     // Methods
@@ -67,9 +69,27 @@ abstract public class Enemy : MonoBehaviour
         directionTowardsPlayerPosition = (playerPosition - rigidbody.position).normalized;
     }
 
-    protected void DamagePlayer()
+    public void ReceiveDamage(int damageValue)
     {
-        attackSystem.DamageHealthSystemWithAttackValue(player.GetComponent<HealthSystem>());        
+        healthSystem.ReceiveDamage(damageValue);
+
+        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), 0.15f);
+
+        audioSource.clip = hurtedAudioClip;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
+    }
+
+    protected void DealDamageToPlayer()
+    {
+        DealDamage(player.GetComponent<HealthSystem>());
+    }
+
+    public void DealDamage(HealthSystem healthSystemToDealDamage)
+    {
+        healthSystemToDealDamage.ReceiveDamage(attackSystem.attackValue);
+        
+        //attackAudioSource.Play();
     }
 
     protected void Die()
@@ -93,8 +113,12 @@ abstract public class Enemy : MonoBehaviour
 
     IEnumerator StartBanishing()
     {
-        banishAudioSource.Play();
+        // Play banish audio sound
+        audioSource.clip = banishAudioClip;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
 
+        // Fading
         Color fadeColor = spriteRenderer.material.color;
         fadeColor.a = 0.5f;
 

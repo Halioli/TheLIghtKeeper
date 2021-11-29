@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 
 
 public class EnemyCharger : Enemy
@@ -33,7 +33,6 @@ public class EnemyCharger : Enemy
 
     public AudioSource movementAudioSource;
     public AudioSource screamAudioSource;
-
 
 
     private void Start()
@@ -102,6 +101,8 @@ public class EnemyCharger : Enemy
                     UpdatePlayerPosition();
                     directionOnChargeStart = (playerPosition - rigidbody.position).normalized;
                     attackState = AttackState.CHARGING; // Change state
+
+                    transform.DOPunchRotation(new Vector3(0, 0, 20), CHARGE_TIME);
                 }
             }
             else if (attackState == AttackState.CHARGING)
@@ -163,7 +164,7 @@ public class EnemyCharger : Enemy
     {
         if (collision.collider.gameObject.CompareTag("Player"))
         {
-            DamagePlayer();
+            DealDamageToPlayer();
             collidedWithPlayer = true;
         }
     }
@@ -197,8 +198,14 @@ public class EnemyCharger : Enemy
 
     private void Recovering()
     {
+        if (currentAttackRecoverTime == ATTACK_RECOVER_TIME)
+        {
+            transform.DOPunchScale(new Vector3(-0.1f, -0.1f, 0), ATTACK_RECOVER_TIME, 0);
+        }
+
         currentAttackRecoverTime -= Time.deltaTime;
         rigidbody.bodyType = RigidbodyType2D.Static;
+
 
         if (currentAttackRecoverTime <= 0)
         {
@@ -210,4 +217,7 @@ public class EnemyCharger : Enemy
             attackState = AttackState.MOVING_TOWARDS_PLAYER; // Change state
         }
     }
+
+
+
 }
