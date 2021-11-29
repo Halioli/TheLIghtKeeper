@@ -11,6 +11,7 @@ public class CraftingMenu : MonoBehaviour
     private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
     private RectTransform craftingListRectTransform;
+    private bool updatedCraftingMenu;
 
     // Public Attribute
     public InventoryMenu inventoryMenu;
@@ -25,10 +26,17 @@ public class CraftingMenu : MonoBehaviour
         craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
         craftingListRectTransform = craftingList.GetComponent<RectTransform>();
+        updatedCraftingMenu = true;
     }
 
     private void Update()
     {
+        if (updatedCraftingMenu)
+        {
+            UpdateCraftingMenu();
+            updatedCraftingMenu = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             UpdateCraftingMenu();
