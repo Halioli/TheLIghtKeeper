@@ -7,12 +7,6 @@ public class PlayerBase : MonoBehaviour
     // Protected attributes
     protected PlayerInputs playerInputs;
     protected PlayerStates playerStates;
-    protected HealthSystem healthSystem;
-    protected AttackSystem attackSystem;
-
-    // Public Attributes
-    // public AudioSource audioSource;
-    // public AudioClip hurtedAudioClip
 
 
 
@@ -23,17 +17,4 @@ public class PlayerBase : MonoBehaviour
     }
 
 
-    public void ReceiveDamage(int damageValue)
-    {
-        healthSystem.ReceiveDamage(damageValue);
-
-        //hurtedAudioSource.Play();
-    }
-
-    public void DealDamage(HealthSystem healthSystemToDealDamage)
-    {
-        healthSystemToDealDamage.ReceiveDamage(attackSystem.attackValue);
-
-        //attackAudioSource.Play();
-    }
 }

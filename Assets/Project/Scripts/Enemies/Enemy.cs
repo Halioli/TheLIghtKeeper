@@ -82,15 +82,10 @@ abstract public class Enemy : MonoBehaviour
 
     protected void DealDamageToPlayer()
     {
-        DealDamage(player.GetComponent<HealthSystem>());
+        player.GetComponent<PlayerCombat>().ReceiveDamage(attackSystem.attackValue);
     }
 
-    public void DealDamage(HealthSystem healthSystemToDealDamage)
-    {
-        healthSystemToDealDamage.ReceiveDamage(attackSystem.attackValue);
-        
-        //attackAudioSource.Play();
-    }
+
 
     protected void Die()
     {
