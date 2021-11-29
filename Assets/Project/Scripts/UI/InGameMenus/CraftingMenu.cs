@@ -45,6 +45,8 @@ public class CraftingMenu : MonoBehaviour
         {
             SetFirstElemtTextToRed();
         }
+
+        inventoryMenu.UpdateInventory();
     }
 
     private void UpdateCraftingMenu()
