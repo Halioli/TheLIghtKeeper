@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerInputs : MonoBehaviour
 {
     // Public Attributes
-    protected Vector2 mousePosition = new Vector2();
-    protected Vector2 mouseWorldPosition = new Vector2();
-    protected bool facingRight;
+    public Vector2 mousePosition = new Vector2();
+    public Vector2 mouseWorldPosition = new Vector2();
+    public bool facingRight = false;
 
     // Methods
     public bool PlayerClickedMineButton()

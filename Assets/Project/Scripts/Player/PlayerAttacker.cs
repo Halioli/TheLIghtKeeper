@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttacker : PlayerInputs
+public class PlayerAttacker : PlayerBase
 {  
     // Private Attributes
     private AttackSystem attackSystem;
@@ -10,7 +10,6 @@ public class PlayerAttacker : PlayerInputs
     private float attackingTime = ATTACK_TIME_DURATION;
 
     private float attackReachRadius = 3f;
-    private bool isAttacking;
 
     private Collider2D colliderDetectedByMouse = null;
     private Enemy enemyToAttack;
@@ -23,10 +22,10 @@ public class PlayerAttacker : PlayerInputs
 
     void Update()
     {
-        if (PlayerClickedAttackButton() && !isAttacking)
+        if (playerInputs.PlayerClickedAttackButton() && !playerStates.PlayerStateIsFree())
         {
-            SetNewMousePosition();
-            if (PlayerIsInReachToAttack(mouseWorldPosition) && MouseClickedOnAnEnemy(mouseWorldPosition))
+            playerInputs.SetNewMousePosition();
+            if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
             {
                 SetEnemyToAttack();
                 StartAttacking();
@@ -54,7 +53,7 @@ public class PlayerAttacker : PlayerInputs
 
     private void StartAttacking()
     {
-        isAttacking = true;
+        playerStates.SetCurrentPlayerAction(PlayerAction.ATTACKING);
         StartCoroutine("Attacking");
     }
 
@@ -74,6 +73,8 @@ public class PlayerAttacker : PlayerInputs
     private void ResetAttack()
     {
         attackingTime = ATTACK_TIME_DURATION;
-        isAttacking = false;
+
+        playerStates.SetCurrentPlayerState(PlayerState.FREE);
+        playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
 }
