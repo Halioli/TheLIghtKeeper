@@ -14,6 +14,10 @@ public class EnemySpawner : Spawner
     public float enemySpawnCooldown;
     public List<GameObject> enemies;
 
+    // Events
+    public delegate void SpawnEnemy();
+    public static event SpawnEnemy spawnEnemyEvent;
+
 
     private void Start()
     {
@@ -44,6 +48,7 @@ public class EnemySpawner : Spawner
     protected override void Spawn()
     {
         InstantiateEnemy();
+        spawnEnemyEvent();
     }
 
     // Methods

@@ -49,6 +49,11 @@ abstract public class Enemy : MonoBehaviour
     public AudioClip hurtedAudioClip;
 
 
+    // Events
+    public delegate void EnemyDisappears();
+    public static event EnemyDisappears enemyDisappearsEvent;
+
+
     // Methods
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -91,7 +96,7 @@ abstract public class Enemy : MonoBehaviour
     {
         // Play death animation
         DropItem();
-        Destroy(gameObject);
+        Banish();
     }
 
     protected void DropItem()
@@ -104,6 +109,8 @@ abstract public class Enemy : MonoBehaviour
     {
         startedBanishing = true;
         StartCoroutine("StartBanishing");
+
+        enemyDisappearsEvent();
     }
 
     IEnumerator StartBanishing()
