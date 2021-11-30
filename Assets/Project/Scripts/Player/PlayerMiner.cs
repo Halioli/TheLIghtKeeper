@@ -90,6 +90,7 @@ public class PlayerMiner : PlayerBase
 
     private void StartMining()
     {
+        FlipPlayerSpriteFacingOreToMine();
         playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
         playerStates.SetCurrentPlayerAction(PlayerAction.MINING);
         StartCoroutine("Mining");
@@ -148,6 +149,16 @@ public class PlayerMiner : PlayerBase
             yield return new WaitForSeconds(Time.deltaTime);
             miningTime -= Time.deltaTime;
 
+        }
+    }
+
+    private void FlipPlayerSpriteFacingOreToMine()
+    {
+        if ((transform.position.x < oreToMine.transform.position.x && !playerInputs.facingLeft) ||
+            (transform.position.x > oreToMine.transform.position.x && playerInputs.facingLeft))
+        {
+            playerInputs.facingLeft = !playerInputs.facingLeft;
+            transform.Rotate(new Vector3(0, 180, 0));
         }
     }
 
