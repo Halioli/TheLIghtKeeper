@@ -55,9 +55,9 @@ public class PlayerMovement : PlayerBase
 
     private void FlipSprite()
     {
-        if((moveDirection.x > 0 && playerInputs.facingRight) || moveDirection.x < 0 && !playerInputs.facingRight)
+        if((moveDirection.x > 0 && !playerInputs.facingLeft) || moveDirection.x < 0 && playerInputs.facingLeft)
         {
-            playerInputs.facingRight = !playerInputs.facingRight;
+            playerInputs.facingLeft = !playerInputs.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }

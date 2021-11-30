@@ -72,7 +72,7 @@ public class PlayerCombat : PlayerBase
     private void StartAttacking()
     {
         attacking = true;
-
+        FlipPlayerSpriteFacingEnemyToAttack();
         playerStates.SetCurrentPlayerAction(PlayerAction.ATTACKING);
         StartCoroutine("Attacking");
     }
@@ -145,5 +145,15 @@ public class PlayerCombat : PlayerBase
 
         currentInvulnerabilityTime = INVULNERABILITY_TIME;
         isInvulnerable = false;
+    }
+
+    private void FlipPlayerSpriteFacingEnemyToAttack()
+    {
+        if ((transform.position.x < enemyToAttack.transform.position.x && !playerInputs.facingLeft) ||
+            (transform.position.x > enemyToAttack.transform.position.x && playerInputs.facingLeft))
+        {
+            playerInputs.facingLeft = !playerInputs.facingLeft;
+            transform.Rotate(new Vector3(0, 180, 0));
+        }
     }
 }

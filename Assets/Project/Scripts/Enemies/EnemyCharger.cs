@@ -48,22 +48,15 @@ public class EnemyCharger : Enemy
         currentSpeed = 1f;
         hasRecovered = false;
         collidedWithPlayer = false;
-        enemyState = EnemyState.SPAWNING;
+        enemyState = EnemyState.AGGRO;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
 
         currentBanishTime = BANISH_TIME;
-
-        Spawn();
     }
 
 
     void Update()
     {
-        if (enemyState == EnemyState.SPAWNING)
-        {
-            return;
-        }
-
         if (startedBanishing)
         {
             if (movementAudioSource.isPlaying)
@@ -144,17 +137,8 @@ public class EnemyCharger : Enemy
 
     private void FixedUpdate()
     {
-        if (enemyState == EnemyState.SPAWNING)
-        {
-            return;
-        }
-
         if (startedBanishing)
         {
-            if (enemyState == EnemyState.SCARED)
-            {
-                FleeAwayFromPlayer();
-            }
             return;
         }
 
@@ -194,15 +178,6 @@ public class EnemyCharger : Enemy
         rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * distance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
     }
 
-    private void FleeAwayFromPlayer()
-    {
-        UpdatePlayerPosition();
-        UpdateDirectionTowardsPlayerPosition();
-
-
-        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * distance) + (-1 * directionTowardsPlayerPosition) * (currentSpeed * Time.deltaTime));
-    }
-
     private void Charge()
     {
         rigidbody.MovePosition((Vector2)transform.position + directionOnChargeStart * (CHARGE_SPEED * Time.deltaTime));
@@ -211,13 +186,10 @@ public class EnemyCharger : Enemy
         if (currentChargeTime <= 0)
         {
             currentChargeTime = CHARGE_TIME; // Reset value
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
             attackState = AttackState.RECOVERING; // Change state
-            ResetColor();
         }
     }
-
-
-
 
     private void PushPlayer()
     {   
@@ -232,31 +204,20 @@ public class EnemyCharger : Enemy
         }
 
         currentAttackRecoverTime -= Time.deltaTime;
-        rigidbody.isKinematic = true;
+        rigidbody.bodyType = RigidbodyType2D.Static;
 
 
         if (currentAttackRecoverTime <= 0)
         {
             hasRecovered = true;
 
-            rigidbody.isKinematic = false;
+            rigidbody.bodyType = RigidbodyType2D.Dynamic;
             currentAttackRecoverTime = ATTACK_RECOVER_TIME; // Reset value
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
             attackState = AttackState.MOVING_TOWARDS_PLAYER; // Change state
         }
     }
 
-    public override void FleeAndBanish()
-    {
-        if (attackState == AttackState.RECOVERING)
-        {
-            rigidbody.isKinematic = false;
-        }
-
-        enemyState = EnemyState.SCARED;
-        attackState = AttackState.MOVING_TOWARDS_PLAYER;
-        Banish();
-    }
 
 
 }
