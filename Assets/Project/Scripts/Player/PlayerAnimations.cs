@@ -31,7 +31,7 @@ public class PlayerAnimations : PlayerBase
 
     public void ActivateShake()
     {
-        CinemachineShake.Instance.ShakeCamera(10f, 1f);
+        CinemachineShake.Instance.ShakeCamera(5f, 1f);
     }
 
     public void DesactivateShake()
@@ -44,6 +44,7 @@ public class PlayerAnimations : PlayerBase
     public void DestroyOre()
     {
         //Explote (Shake effects)
-        CinemachineShake.Instance.ShakeCamera(5f, 1f);
+        CinemachineShake.Instance.ShakeCamera(10f, 1f);
     }
+
 }

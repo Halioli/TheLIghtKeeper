@@ -139,6 +139,8 @@ public class PlayerMiner : PlayerBase
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
         {
             MineOre(criticalMiningDamage);
+            //(Shake effects)
+            CinemachineShake.Instance.ShakeCamera(15f, 1f);
         }
         else
         {
