@@ -33,7 +33,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000014928896}
+  m_AnchoredPosition: {x: 0, y: -0.000028684795}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2078909850255732778
@@ -720,6 +720,7 @@ GameObject:
   - component: {fileID: 2078909852242158080}
   - component: {fileID: 2078909852242158081}
   - component: {fileID: 2078909852242158082}
+  - component: {fileID: 7460433675561445977}
   m_Layer: 5
   m_Name: CanvasTeleportSelection
   m_TagString: Untagged
@@ -808,3 +809,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7460433675561445977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078909852242158083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9673fbe14b8b7af4ca12a18b31f087b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportList: {fileID: 2078909850255732820}
+  buttonPrefab: {fileID: 2308154667847987326, guid: 359053219086c4646b84ac4e33c993a3, type: 3}
