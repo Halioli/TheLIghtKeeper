@@ -15,7 +15,7 @@ public class PlayerMovement : PlayerBase
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        walkingParticleSystem.Stop();
+        walkingParticleSystem.Play();
     }
 
     private void Update()
@@ -26,26 +26,29 @@ public class PlayerMovement : PlayerBase
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
-                walkingParticleSystem.Stop();
             }
             else if (moveDirection != Vector2.zero)
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
                 FlipSprite();
-                walkingParticleSystem.Play();
             }
         }
+        /*
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rigidbody2D.velocity = Vector2.zero;
+            rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
+        }
+        */
     }
 
     private void FixedUpdate()
     {
         if (playerStates.PlayerActionIsWalking())
         {
-            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
-        }
-        else
-        {
-            rigidbody2D.velocity = Vector2.zero;
+            rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
+            if (rigidbody2D.velocity.magnitude > 3f)
+                rigidbody2D.velocity = rigidbody2D.velocity.normalized * Mathf.Lerp(rigidbody2D.velocity.magnitude, 3f, Time.fixedDeltaTime * 30f);
         }
     }
 
