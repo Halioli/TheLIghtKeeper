@@ -5,15 +5,13 @@ using DG.Tweening;
 
 abstract public class Enemy : MonoBehaviour
 {
-    public enum EnemyState
+    protected enum EnemyState
     {
-        SPAWNING,
         WANDERING,
-        AGGRO,
-        SCARED
+        AGGRO
     }
 
-    public enum AttackState
+    protected enum AttackState
     {
         MOVING_TOWARDS_PLAYER,
         CHARGING,
@@ -22,8 +20,8 @@ abstract public class Enemy : MonoBehaviour
 
 
     // Protected Attributes
-    public EnemyState enemyState;
-    public AttackState attackState;
+    protected EnemyState enemyState;
+    protected AttackState attackState;
 
     protected GameObject player;
     protected Vector2 playerPosition;
@@ -38,10 +36,7 @@ abstract public class Enemy : MonoBehaviour
     protected int damageToDeal;
     protected bool startedBanishing = false;
 
-    public const float SPAWN_TIME = 0.5f;
-    protected float currentSpawnTime = 0f;
-
-    protected const float BANISH_TIME = 1f;
+    protected const float BANISH_TIME = 0.5f;
     protected float currentBanishTime;
 
 
@@ -54,48 +49,18 @@ abstract public class Enemy : MonoBehaviour
     public AudioClip hurtedAudioClip;
 
 
-    // Events
-    public delegate void EnemyDisappears();
-    public static event EnemyDisappears enemyDisappearsEvent;
-
-
     // Methods
 
     private void OnTriggerEnter2D(Collider2D collider)
-    {
+    {      
         if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
         {
-            FleeAndBanish();
+            Banish();
         }
     }
 
 
-
-    public void Spawn()
-    {
-        StartCoroutine("Spawning");
-    }
-
-    IEnumerator Spawning()
-    {
-        enemyState = EnemyState.SPAWNING;
-
-        Color fadeColor = spriteRenderer.material.color;
-
-        while (currentSpawnTime <= SPAWN_TIME)
-        {
-            fadeColor.a = currentSpawnTime / SPAWN_TIME;
-            spriteRenderer.material.color = fadeColor;
-
-            currentSpawnTime += Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-
-        enemyState = EnemyState.AGGRO;
-    }
-
-    protected void UpdatePlayerPosition()
-    {
+    protected void UpdatePlayerPosition() { 
         playerPosition = player.transform.position;
     }
 
@@ -126,7 +91,7 @@ abstract public class Enemy : MonoBehaviour
     {
         // Play death animation
         DropItem();
-        Banish();
+        Destroy(gameObject);
     }
 
     protected void DropItem()
@@ -139,41 +104,27 @@ abstract public class Enemy : MonoBehaviour
     {
         startedBanishing = true;
         StartCoroutine("StartBanishing");
-
-        enemyDisappearsEvent();
     }
 
     IEnumerator StartBanishing()
     {
         // Play banish audio sound
         audioSource.clip = banishAudioClip;
-        audioSource.volume = Random.Range(0.1f, 0.3f);
-        audioSource.pitch = Random.Range(0.7f, 1.5f);
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.Play();
 
         // Fading
-        ResetColor();
         Color fadeColor = spriteRenderer.material.color;
+        fadeColor.a = 0.5f;
+
+        spriteRenderer.material.color = fadeColor;
+
         while (currentBanishTime > 0f)
         {
-            fadeColor.a = currentBanishTime / BANISH_TIME;
-            spriteRenderer.material.color = fadeColor;
-
             currentBanishTime -= Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
         Destroy(gameObject);
     }
 
-    protected void ResetColor()
-    {
-        spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-    }
-
-    public virtual void FleeAndBanish()
-    {       
-        enemyState = EnemyState.SCARED;
-        attackState = AttackState.MOVING_TOWARDS_PLAYER;
-        Banish();
-    }
 }

@@ -10,14 +10,9 @@ public class EnemySpawner : Spawner
     private bool spawnerIsActive;
 
     // Public Attributes
-    public float spawnRadius = 2f;
     public float spawnerRadiusRange;
     public float enemySpawnCooldown;
     public List<GameObject> enemies;
-
-    // Events
-    public delegate void SpawnEnemy();
-    public static event SpawnEnemy spawnEnemyEvent;
 
 
     private void Start()
@@ -49,7 +44,6 @@ public class EnemySpawner : Spawner
     protected override void Spawn()
     {
         InstantiateEnemy();
-        spawnEnemyEvent();
     }
 
     // Methods
@@ -60,7 +54,7 @@ public class EnemySpawner : Spawner
 
     private void InstantiateEnemy()
     {
-        Instantiate(GetRandomEnemyFromList(), (Vector2)transform.position + Random.insideUnitCircle * spawnRadius, Quaternion.identity);
+        Instantiate(GetRandomEnemyFromList(), transform.position, Quaternion.identity);
     }
 
     private GameObject GetRandomEnemyFromList()

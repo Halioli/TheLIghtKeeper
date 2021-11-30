@@ -10,8 +10,6 @@ public class CraftingMenu : MonoBehaviour
     private Inventory playerInventory;
     private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
-    private RectTransform craftingListRectTransform;
-    private bool updatedCraftingMenu;
 
     // Public Attribute
     public InventoryMenu inventoryMenu;
@@ -25,24 +23,18 @@ public class CraftingMenu : MonoBehaviour
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
-        craftingListRectTransform = craftingList.GetComponent<RectTransform>();
-        updatedCraftingMenu = false;
     }
 
     private void Update()
     {
-        if (!updatedCraftingMenu)
+        if (Input.GetKeyDown(KeyCode.V))
         {
             UpdateCraftingMenu();
-            updatedCraftingMenu = true;
         }
-
-        if (Input.GetKeyDown(KeyCode.B))
+        else if (Input.GetKeyDown(KeyCode.B))
         {
             SetFirstElemtTextToRed();
         }
-
-        inventoryMenu.UpdateInventory();
     }
 
     private void UpdateCraftingMenu()
@@ -55,10 +47,6 @@ public class CraftingMenu : MonoBehaviour
             GameObject gameObjectButton = Instantiate(buttonPrefab, craftingList.transform);
             recepieButtonsGameObjects.Add(gameObjectButton);
 
-            RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
-            craftingListRectTransform.sizeDelta = new Vector2(craftingListRectTransform.sizeDelta.x, 
-                craftingListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
-            
             gameObjectButton.GetComponent<Image>().sprite = smallCraftingRecepieFrame;
             gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
@@ -80,5 +68,20 @@ public class CraftingMenu : MonoBehaviour
     private void SetFirstElemtTextToRed()
     {
         recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
+    }
+
+    public bool CheckPlayerInventoryForRequiredItems()
+    {
+        return false;
+    }
+
+    public void SubstractItemsFromInventory()
+    {
+
+    }
+
+    public void GiveItemToPlayer()
+    {
+
     }
 }
