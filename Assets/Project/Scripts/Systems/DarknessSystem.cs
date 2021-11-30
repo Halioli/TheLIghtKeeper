@@ -86,7 +86,7 @@ public class DarknessSystem : MonoBehaviour
         List<GameObject> spawnedEnemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
         for (int i = 0; i < spawnedEnemies.Count; i++)
         {
-            spawnedEnemies[i].GetComponent<Enemy>().Banish();
+            spawnedEnemies[i].GetComponent<Enemy>().FleeAndBanish();
         }
     }
 
