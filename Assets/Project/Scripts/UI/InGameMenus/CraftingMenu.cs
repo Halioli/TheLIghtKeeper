@@ -26,22 +26,18 @@ public class CraftingMenu : MonoBehaviour
         craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
         craftingListRectTransform = craftingList.GetComponent<RectTransform>();
-        updatedCraftingMenu = true;
+        updatedCraftingMenu = false;
     }
 
     private void Update()
     {
-        if (updatedCraftingMenu)
+        if (!updatedCraftingMenu)
         {
             UpdateCraftingMenu();
-            updatedCraftingMenu = false;
+            updatedCraftingMenu = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            UpdateCraftingMenu();
-        }
-        else if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             SetFirstElemtTextToRed();
         }
