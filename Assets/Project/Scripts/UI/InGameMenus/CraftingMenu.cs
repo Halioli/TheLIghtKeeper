@@ -11,6 +11,7 @@ public class CraftingMenu : MonoBehaviour
     private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
     private RectTransform craftingListRectTransform;
+    private bool updatedCraftingMenu;
 
     // Public Attribute
     public InventoryMenu inventoryMenu;
@@ -25,18 +26,23 @@ public class CraftingMenu : MonoBehaviour
         craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
         craftingListRectTransform = craftingList.GetComponent<RectTransform>();
+        updatedCraftingMenu = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (!updatedCraftingMenu)
         {
             UpdateCraftingMenu();
+            updatedCraftingMenu = true;
         }
-        else if (Input.GetKeyDown(KeyCode.B))
+
+        if (Input.GetKeyDown(KeyCode.B))
         {
             SetFirstElemtTextToRed();
         }
+
+        inventoryMenu.UpdateInventory();
     }
 
     private void UpdateCraftingMenu()
@@ -74,20 +80,5 @@ public class CraftingMenu : MonoBehaviour
     private void SetFirstElemtTextToRed()
     {
         recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
-    }
-
-    public bool CheckPlayerInventoryForRequiredItems()
-    {
-        return false;
-    }
-
-    public void SubstractItemsFromInventory()
-    {
-
-    }
-
-    public void GiveItemToPlayer()
-    {
-
     }
 }
