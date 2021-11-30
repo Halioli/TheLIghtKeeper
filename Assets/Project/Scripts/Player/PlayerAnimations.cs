@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimations : MonoBehaviour
+public class PlayerAnimations : PlayerBase
 {
-    //Private Atributes
-    private PlayerMiner playerMiner;
-
     //Public Atributes
     public Animator animator;
 
@@ -16,14 +13,13 @@ public class PlayerAnimations : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerMiner = GetComponent<PlayerMiner>();
         animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerMiner.IsMining())
+        if (playerStates.PlayerActionIsMining())
         {
             animator.SetBool("isMining", true);
         }
@@ -35,7 +31,7 @@ public class PlayerAnimations : MonoBehaviour
 
     public void ActivateShake()
     {
-        CinemachineShake.Instance.ShakeCamera(2f, 1f);
+        CinemachineShake.Instance.ShakeCamera(10f, 1f);
     }
 
     public void DesactivateShake()

@@ -44,6 +44,7 @@ abstract public class Enemy : MonoBehaviour
     // Public Attributes
     public ItemGameObject dropOnDeathItem;
 
+    public AudioSource banishAudioSource;
 
 
     // Methods
@@ -82,6 +83,8 @@ abstract public class Enemy : MonoBehaviour
 
     IEnumerator StartBanishing()
     {
+        banishAudioSource.Play();
+
         Color fadeColor = spriteRenderer.material.color;
         fadeColor.a = 0.5f;
 
