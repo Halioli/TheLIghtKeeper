@@ -121,6 +121,7 @@ public class PlayerMiner : PlayerBase
                 // Play break sound
                 if (playerMinesOreEvent != null) { }
                     playerMinesOreEvent();
+                    CinemachineShake.Instance.ShakeCamera(20f, 1f);
             }
         }
     }
@@ -138,9 +139,8 @@ public class PlayerMiner : PlayerBase
     {
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
         {
-            MineOre(criticalMiningDamage);
             //(Shake effects)
-            CinemachineShake.Instance.ShakeCamera(15f, 1f);
+            MineOre(criticalMiningDamage);
         }
         else
         {
