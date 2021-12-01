@@ -29,7 +29,7 @@ public class EnemyCharger : Enemy
     public float amplitude = 0.1f;
     public float period = 1f;
     private float theta;
-    public float distance;
+    public float sinWaveDistance;
 
     public AudioSource movementAudioSource;
     public AudioSource screamAudioSource;
@@ -99,7 +99,7 @@ public class EnemyCharger : Enemy
 
                 // Sinusoidal movement
                 theta = Time.timeSinceLevelLoad / period;
-                distance = amplitude * Mathf.Sin(theta);
+                sinWaveDistance = amplitude * Mathf.Sin(theta);
 
 
                 // Change to CHARGE
@@ -153,7 +153,7 @@ public class EnemyCharger : Enemy
         {
             if (enemyState == EnemyState.SCARED)
             {
-                FleeAwayFromPlayer();
+                FleeAway();
             }
             return;
         }
@@ -190,17 +190,12 @@ public class EnemyCharger : Enemy
         UpdatePlayerPosition();
         UpdateDirectionTowardsPlayerPosition();
 
-
-        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * distance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * sinWaveDistance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
     }
 
-    private void FleeAwayFromPlayer()
+    private void FleeAway()
     {
-        UpdatePlayerPosition();
-        UpdateDirectionTowardsPlayerPosition();
-
-
-        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * distance) + (-1 * directionTowardsPlayerPosition) * (currentSpeed * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position + (-1 * directionTowardsPlayerPosition) * (currentSpeed * Time.deltaTime));
     }
 
     private void Charge()
