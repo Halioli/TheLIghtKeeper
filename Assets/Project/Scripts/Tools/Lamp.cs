@@ -9,9 +9,9 @@ public class Lamp : MonoBehaviour
     private const float LIGHT_ROD_REFUEL_AMOUNT = 10f;
 
     private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
-    private const float POINTLIGHT_INNER_RADIUS_ON = 3.6f;
+    private const float POINTLIGHT_INNER_RADIUS_ON = 2f;
     private const float POINTLIGHT_OUTER_RADIUS_OFF = 2f;
-    private const float POINTLIGHT_OUTER_RADIUS_ON = 10.40f;
+    private const float POINTLIGHT_OUTER_RADIUS_ON = 8f;
 
     private float maxLampTime;
     private float lampTime;
@@ -19,6 +19,7 @@ public class Lamp : MonoBehaviour
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
     private Light2D pointLight2D;
+    private Light2D pointLight2DIntensity;
 
     // Public Attributes
     public GameObject lampLight;
@@ -37,6 +38,7 @@ public class Lamp : MonoBehaviour
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         pointLight2D = GetComponentsInChildren<Light2D>()[0];
+        pointLight2DIntensity = GetComponentsInChildren<Light2D>()[1];
     }
 
     private void Update()
@@ -81,7 +83,7 @@ public class Lamp : MonoBehaviour
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
         pointLight2D.intensity = 1f;
-
+        pointLight2DIntensity.intensity = 1f;
         lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
@@ -97,6 +99,7 @@ public class Lamp : MonoBehaviour
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
         pointLight2D.intensity = 0.1f;
+        pointLight2DIntensity.intensity = 0f;
     }
 
     public float GetLampTimeRemaining()
