@@ -15,7 +15,7 @@ public class PlayerMovement : PlayerBase
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        walkingParticleSystem.Stop();
+        walkingParticleSystem.Play();
     }
 
     private void Update()
@@ -33,18 +33,7 @@ public class PlayerMovement : PlayerBase
                 FlipSprite();
             }
         }
-
-        //Particle logic
-        if (walkingParticleSystem.isPlaying && !playerStates.PlayerActionIsWalking())
-        {
-            walkingParticleSystem.Stop();
-        }
-        else if(walkingParticleSystem.isStopped && playerStates.PlayerActionIsWalking())
-        {
-            walkingParticleSystem.Play();
-
-        }
-        /* player gets kicked
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rigidbody2D.velocity = Vector2.zero;
@@ -66,9 +55,12 @@ public class PlayerMovement : PlayerBase
 
     private void FlipSprite()
     {
-        if((moveDirection.x > 0 && playerInputs.facingRight) || moveDirection.x < 0 && !playerInputs.facingRight)
+        if (!playerInputs.canFlip)
+            return;
+
+        if((moveDirection.x > 0 && !playerInputs.facingLeft) || moveDirection.x < 0 && playerInputs.facingLeft)
         {
-            playerInputs.facingRight = !playerInputs.facingRight;
+            playerInputs.facingLeft = !playerInputs.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }

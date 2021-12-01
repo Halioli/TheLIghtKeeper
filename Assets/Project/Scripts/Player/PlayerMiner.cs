@@ -19,21 +19,24 @@ public class PlayerMiner : PlayerBase
     private int criticalMiningDamage = START_CRITICAL_MINING_DAMAGE;
 
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
-    private const float START_MINING_TIME = 1.0f;
-    private float miningTime = START_MINING_TIME;
-    private const float LOWER_INTERVAL_CRITICAL_MINING = 0.5f;
-    private const float UPPER_INTERVAL_CRITICAL_MINING = 0.7f;
+    private const float MINING_TIME = 1.0f;
+    private float miningTime = 0;
+    private const float LOWER_INTERVAL_CRITICAL_MINING = 0.4f;
+    private const float UPPER_INTERVAL_CRITICAL_MINING = 0.9f;
 
 
     // Events
     public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerMiningBuildUpSoundEvent;
+    public static event PlayPlayerSound successCriticalMiningSoundEvent;
+    public static event PlayPlayerSound failCriticalMiningSoundEvent;
     public static event PlayPlayerSound playerMinesOreEvent;
     public static event PlayPlayerSound playerBreaksOreEvent;
 
 
     void Update()
     {
-        if (playerInputs.PlayerClickedMineButton() && playerStates.PlayerStateIsFree())
+        if (playerInputs.PlayerClickedMineButton() && playerStates.PlayerStateIsFree() && !playerStates.PlayerActionIsMining())
         {
             playerInputs.SetNewMousePosition();
             if (PlayerIsInReachToMine(playerInputs.mouseWorldPosition) && MouseClickedOnAnOre(playerInputs.mouseWorldPosition))
@@ -74,10 +77,12 @@ public class PlayerMiner : PlayerBase
             if (WithinCriticalInterval())
             {
                 criticalMiningState = CriticalMiningState.SUCCEESSFUL;
+                successCriticalMiningSoundEvent();
             }
             else
             {
                 criticalMiningState = CriticalMiningState.FAILED;
+                failCriticalMiningSoundEvent();
             }
         }
     }
@@ -90,8 +95,12 @@ public class PlayerMiner : PlayerBase
 
     private void StartMining()
     {
+        playerMiningBuildUpSoundEvent();
+
+        FlipPlayerSpriteFacingOreToMine();
         playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
         playerStates.SetCurrentPlayerAction(PlayerAction.MINING);
+        criticalMiningState = CriticalMiningState.NONE;
         StartCoroutine("Mining");
     }
 
@@ -110,7 +119,7 @@ public class PlayerMiner : PlayerBase
             else
             {
                 // Play break sound
-                if (playerMinesOreEvent != null)
+                if (playerMinesOreEvent != null) { }
                     playerMinesOreEvent();
             }
         }
@@ -118,7 +127,7 @@ public class PlayerMiner : PlayerBase
 
     private void ResetMining()
     {
-        miningTime = START_MINING_TIME;
+        miningTime = 0;
         criticalMiningState = CriticalMiningState.NONE;
 
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
@@ -135,21 +144,32 @@ public class PlayerMiner : PlayerBase
         {
             MineOre(miningDamage);
         }
-
-        ResetMining();
     }
 
     IEnumerator Mining()
     {
-        while (miningTime > 0.0f)
+        while (miningTime <= MINING_TIME)
         {
-            CheckCriticalMining();
 
             yield return new WaitForSeconds(Time.deltaTime);
-            miningTime -= Time.deltaTime;
+            miningTime += Time.deltaTime;
+
+            if (criticalMiningState == CriticalMiningState.NONE)
+                CheckCriticalMining();
 
         }
-        Mine();
+
+        ResetMining();
+    }
+
+    private void FlipPlayerSpriteFacingOreToMine()
+    {
+        if ((transform.position.x < oreToMine.transform.position.x && !playerInputs.facingLeft) ||
+            (transform.position.x > oreToMine.transform.position.x && playerInputs.facingLeft))
+        {
+            playerInputs.facingLeft = !playerInputs.facingLeft;
+            transform.Rotate(new Vector3(0, 180, 0));
+        }
     }
 
 
