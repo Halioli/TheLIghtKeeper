@@ -9,7 +9,7 @@ public class Lamp : MonoBehaviour
     private const float LIGHT_ROD_REFUEL_AMOUNT = 10f;
 
     private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
-    private const float POINTLIGHT_INNER_RADIUS_ON = 2f;
+    private const float POINTLIGHT_INNER_RADIUS_ON = 6f;
     private const float POINTLIGHT_OUTER_RADIUS_OFF = 2f;
     private const float POINTLIGHT_OUTER_RADIUS_ON = 8f;
 
@@ -19,7 +19,9 @@ public class Lamp : MonoBehaviour
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
     private Light2D pointLight2D;
-    private Light2D pointLight2DIntensity;
+
+    private float flickerIntensity = 1f;
+    private float flickerTime = 0.08f;
 
     // Public Attributes
     public GameObject lampLight;
@@ -27,18 +29,23 @@ public class Lamp : MonoBehaviour
     public Sprite lampSprite;
     public Item lightRodItem;
 
+    System.Random rg;
+
     private void Awake()
     {
         lampTime = maxLampTime = 20f;
         turnedOn = false;
         lampSpriteRenderer = GetComponent<SpriteRenderer>();
+        rg = new System.Random();
+        flickerTime = 0.08f;
+        flickerIntensity = 1f;
     }
 
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         pointLight2D = GetComponentsInChildren<Light2D>()[0];
-        pointLight2DIntensity = GetComponentsInChildren<Light2D>()[1];
+        StartCoroutine(Flicker());
     }
 
     private void Update()
@@ -83,7 +90,6 @@ public class Lamp : MonoBehaviour
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
         pointLight2D.intensity = 1f;
-        pointLight2DIntensity.intensity = 1f;
         lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
@@ -99,7 +105,6 @@ public class Lamp : MonoBehaviour
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
         pointLight2D.intensity = 0.1f;
-        pointLight2DIntensity.intensity = 0f;
     }
 
     public float GetLampTimeRemaining()
@@ -120,6 +125,28 @@ public class Lamp : MonoBehaviour
         {
             DeactivateConeLightButNotPointLight();
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
+        }
+    }
+
+    IEnumerator Flicker()
+    {
+        while (true)
+        {
+            pointLight2D.intensity = 1f;
+
+            float lightningTime = 2 + ((float)rg.NextDouble() - 0.5f);
+            yield return new WaitForSeconds(lightningTime);
+
+            int flickerCount = rg.Next(4, 9);
+
+            for(int i = 0; i < flickerCount; i++)
+            {
+                float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
+                pointLight2D.intensity = flickingIntensity;
+
+                float flickingTime = (float)rg.NextDouble() * flickerTime;
+                yield return new WaitForSeconds(flickingTime);
+            }
         }
     }
 }
