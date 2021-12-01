@@ -12,6 +12,12 @@ public class PlayerInventory : PlayerInputs
     public Canvas inventoryCanvas;
     public InventoryMenu inventoryMenu;
 
+    // Events
+    public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerPicksUpItemEvent;
+
+
+
     private void Start()
     {
         inventory = GetComponentInChildren<Inventory>();
@@ -64,7 +70,8 @@ public class PlayerInventory : PlayerInputs
         bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
         if (couldAddItem)
         {
-            // Play picking up sound
+            if (playerPicksUpItemEvent != null)
+                playerPicksUpItemEvent();
 
             Destroy(itemToPickUp.gameObject);
         }

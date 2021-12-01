@@ -1,24 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
+    private const float LIGHT_ROD_REFUEL_AMOUNT = 10f;
+
+    private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
+    private const float POINTLIGHT_INNER_RADIUS_ON = 3.6f;
+    private const float POINTLIGHT_OUTER_RADIUS_OFF = 2f;
+    private const float POINTLIGHT_OUTER_RADIUS_ON = 10.40f;
+
     private float maxLampTime;
     private float lampTime;
     private bool turnedOn;
     private SpriteRenderer lampSpriteRenderer;
+    private Inventory playerInventory;
+    private Light2D pointLight2D;
 
     // Public Attributes
     public GameObject lampLight;
+    public GameObject lampSpriteObject;
     public Sprite lampSprite;
+    public Item lightRodItem;
+
+    private void Awake()
+    {
+        lampTime = maxLampTime = 20f;
+        turnedOn = false;
+        lampSpriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     private void Start()
     {
-        lampTime = maxLampTime = 3f;
-        turnedOn = false;
-        lampSpriteRenderer = GetComponent<SpriteRenderer>();
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        pointLight2D = GetComponentsInChildren<Light2D>()[0];
     }
 
     private void Update()
@@ -33,7 +51,7 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            DeactivateLampLight();
+            CheckPlayerInventoryForLightRods();
         }
         else
         {
@@ -60,13 +78,45 @@ public class Lamp : MonoBehaviour
     {
         turnedOn = true;
         lampLight.SetActive(true);
-        lampSpriteRenderer.sprite = lampSprite;
+        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
+        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
+        pointLight2D.intensity = 1f;
+
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
         lampLight.SetActive(false);
-        lampSpriteRenderer.sprite = null;
+        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = null;
+    }
+
+    public void DeactivateConeLightButNotPointLight()
+    {
+        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
+        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
+        pointLight2D.intensity = 0.1f;
+    }
+
+    public float GetLampTimeRemaining()
+    {
+        return lampTime;
+    }
+
+   
+    private void CheckPlayerInventoryForLightRods()
+    {
+        if (playerInventory.InventoryContainsItem(lightRodItem))
+        {
+            playerInventory.SubstractItemToInventory(lightRodItem);
+            lampTime += LIGHT_ROD_REFUEL_AMOUNT;
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToTrue();
+        }
+        else
+        {
+            DeactivateConeLightButNotPointLight();
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
+        }
     }
 }
