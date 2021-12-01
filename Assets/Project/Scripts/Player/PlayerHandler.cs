@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHandler : MonoBehaviour
+public class PlayerHandler : PlayerInputs
 {
     // Public Attributes
     private HealthSystem playerHealthSystem;
     private Rigidbody2D playerRigidbody2D;
-
-
 
     private void Start()
     {

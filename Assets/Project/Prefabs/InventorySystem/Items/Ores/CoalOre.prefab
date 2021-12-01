@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
-  hurtedAudioSource: {fileID: 0}
 --- !u!1 &5305445299640113223
 GameObject:
   m_ObjectHideFlags: 0
@@ -4008,7 +4007,7 @@ ParticleSystem:
     primitives: []
   SubModule:
     serializedVersion: 2
-    enabled: 1
+    enabled: 0
     subEmitters:
     - serializedVersion: 3
       emitter: {fileID: 2679780370003126867}
