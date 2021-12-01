@@ -8,6 +8,7 @@ public class PlayerInputs : MonoBehaviour
     public Vector2 mousePosition = new Vector2();
     public Vector2 mouseWorldPosition = new Vector2();
     public bool facingLeft = true;
+    public bool canFlip = true;
 
     // Methods
     public bool PlayerClickedMineButton()

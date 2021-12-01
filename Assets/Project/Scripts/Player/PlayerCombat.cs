@@ -80,6 +80,8 @@ public class PlayerCombat : PlayerBase
 
     IEnumerator Attacking()
     {
+        playerInputs.canFlip = false;
+
         DealDamageToEnemy();
 
         while (attackingTime > 0.0f)
@@ -88,6 +90,7 @@ public class PlayerCombat : PlayerBase
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
+        playerInputs.canFlip = true;
         ResetAttack();
     }
 
@@ -149,6 +152,9 @@ public class PlayerCombat : PlayerBase
 
     private void FlipPlayerSpriteFacingEnemyToAttack()
     {
+        if (playerStates.PlayerActionIsWalking())
+            return;
+
         if ((transform.position.x < enemyToAttack.transform.position.x && !playerInputs.facingLeft) ||
             (transform.position.x > enemyToAttack.transform.position.x && playerInputs.facingLeft))
         {

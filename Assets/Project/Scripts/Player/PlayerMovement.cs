@@ -55,6 +55,9 @@ public class PlayerMovement : PlayerBase
 
     private void FlipSprite()
     {
+        if (!playerInputs.canFlip)
+            return;
+
         if((moveDirection.x > 0 && !playerInputs.facingLeft) || moveDirection.x < 0 && playerInputs.facingLeft)
         {
             playerInputs.facingLeft = !playerInputs.facingLeft;

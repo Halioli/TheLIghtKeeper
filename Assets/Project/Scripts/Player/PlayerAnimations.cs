@@ -16,7 +16,6 @@ public class PlayerAnimations : PlayerBase
     {
         animator = GetComponent<Animator>();
         swordLight.SetActive(false);
-
     }
 
     // Update is called once per frame
@@ -42,9 +41,7 @@ public class PlayerAnimations : PlayerBase
         {
             animator.SetBool("isAttacking", false);
             swordLight.SetActive(false);
-
         }
-
     }
 
 
