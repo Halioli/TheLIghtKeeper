@@ -19,6 +19,7 @@ public class PlayerAnimations : PlayerBase
     // Update is called once per frame
     void Update()
     {
+        //Mining animation
         if (playerStates.PlayerActionIsMining())
         {
             animator.SetBool("isMining", true);
@@ -27,7 +28,19 @@ public class PlayerAnimations : PlayerBase
         {
             animator.SetBool("isMining", false);
         }
+
+        //Attacking animation
+        if (playerStates.PlayerActionIsAttacking()) 
+        {
+            animator.SetBool("isAttacking", true);
+        }
+        else
+        {
+            animator.SetBool("isAttacking", false);
+        }
+
     }
+
 
     public void ActivateShake()
     {
