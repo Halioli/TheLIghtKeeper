@@ -40,7 +40,7 @@ public class Ore : MonoBehaviour
 
     public void GetsMined(int damageAmount)
     {
-        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), 0.15f);
+        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
         // Update ore Sprite
