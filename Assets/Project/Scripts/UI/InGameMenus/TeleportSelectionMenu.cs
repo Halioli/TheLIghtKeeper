@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TeleportSelectionMenu : MonoBehaviour
 {
     // Private Attributes
-    private Teleporter teleporter;
+    private TeleporterSystem teleportSystem;
     private List<GameObject> teleportButtonsGameObjects;
     private RectTransform teleportListRectTransform;
 
@@ -16,7 +16,7 @@ public class TeleportSelectionMenu : MonoBehaviour
 
     void Start()
     {
-        teleporter = GameObject.FindGameObjectWithTag("Teleporter").GetComponent<Teleporter>();
+        teleportSystem = GameObject.FindGameObjectWithTag("Teleporter").GetComponent<TeleporterSystem>();
         teleportButtonsGameObjects = new List<GameObject>();
         teleportListRectTransform = teleportList.GetComponent<RectTransform>();
     }
