@@ -37,14 +37,6 @@ public class Inventory : MonoBehaviour
 
     public void InitInventory()
     {
-        //ItemStack newItemStackToAdd = new ItemStack();
-        //newItemStackToAdd.InitEmptyNullStack(itemNull);
-        //for (int i = 0; i < numberOfInventorySlots; i++)
-        //{
-        //    inventory.Add(newItemStackToAdd);
-        //}
-
-
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
             inventory.Add(Instantiate(emptyStack, transform));
@@ -107,9 +99,6 @@ public class Inventory : MonoBehaviour
         if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
         {
             numberOfInventorySlots++;
-            //ItemStack newItemStackToAdd = new ItemStack();
-            //newItemStackToAdd.InitEmptyNullStack(itemNull);
-            //inventory.Add(newItemStackToAdd);
             inventory.Add(Instantiate(emptyStack, transform));
         }
     }
@@ -131,6 +120,23 @@ public class Inventory : MonoBehaviour
             i++;
         }
         return wasFound;
+    }
+
+    public bool InventoryContainsItemAndAmount(Item itemToCompare, int requiredAmount)
+    {
+        bool hasEnough = false;
+        int i = 0;
+        int amountInInventory = 0;
+        while (!hasEnough && i < numberOfInventorySlots)
+        {
+            if (inventory[i].StackContainsItem(itemToCompare))
+            {
+                amountInInventory += inventory[i].GetAmountInStack();
+            }
+            hasEnough = amountInInventory >= requiredAmount;
+            i++;
+        }
+        return hasEnough;
     }
 
 
@@ -198,6 +204,19 @@ public class Inventory : MonoBehaviour
         }
 
         return couldRemoveItem;
+    }
+
+
+    public bool SubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
+    {
+        for (int i = 0; i < numberOfItemsToSubstract; ++i)
+        {
+            if (!SubstractItemToInventory(itemToSubstract))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 

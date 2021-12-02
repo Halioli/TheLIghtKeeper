@@ -30,6 +30,7 @@ public class ItemStack : MonoBehaviour
         amountInStack = 1;
     }
 
+
     public void InitEmptyNullStack(Item item)
     {
         itemInStack = item;
@@ -41,6 +42,10 @@ public class ItemStack : MonoBehaviour
     public int GetItemID() { return itemInStack.GetID(); }
 
     public int GetItemStackSize() { return itemInStack.GetStackSize(); }
+
+    public Item GetItemInStack() { return itemInStack; }
+
+    public int GetAmountInStack() { return amountInStack; }
 
     public Sprite GetStackItemSprite()
     {
@@ -62,6 +67,11 @@ public class ItemStack : MonoBehaviour
     public bool StackIsFull() { return amountInStack == itemInStack.GetStackSize(); }
 
     public bool StackHasNoItemsLeft()
+    {
+        return amountInStack == 0;
+    }
+
+    public bool StackIsEmpty()
     {
         return amountInStack == 0;
     }

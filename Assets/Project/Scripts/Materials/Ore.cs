@@ -2,52 +2,107 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+enum OreState { WHOLE, BROKEN};
+
 public class Ore : MonoBehaviour
 {
-    public int id;
-    public int maxHardness;
-    private int hardness;
+    // Private Attributes
+    private OreState breakState;
+    private HealthSystem healthSystem;
+    private int currentSpriteIndex;
+    private Sprite currentSprite;
 
-    private float alphaDecrement;
+    // Public Attributes
+    public List<Sprite> spriteList;
+    public ItemGameObject mineralItemToDrop;
 
-    public GameObject ore;
-    private SpriteRenderer sprite;
 
     private void Start()
     {
-        hardness = maxHardness;
-        sprite = GetComponent<SpriteRenderer>();
+        breakState = OreState.WHOLE;
+
+        currentSpriteIndex = 0;
+        currentSprite = spriteList[currentSpriteIndex];
+
+        healthSystem = GetComponent<HealthSystem>();
     }
 
-    public void GetMined()
+
+
+    public bool CanBeMined() { return breakState == OreState.WHOLE; }
+
+    public bool Broke() { return healthSystem.IsDead(); }
+
+    public void GetsMined(int damageAmount)
     {
-        Debug.Log(id);
-        hardness -= 1;
+        // Damage the Ore
+        healthSystem.ReceiveDamage(damageAmount);
+        // Update ore Sprite
+        ProgressNAmountOfSprites(damageAmount);
 
-        Test_ChangeOreColor();
+        if (healthSystem.IsDead())
+        {
+            breakState = OreState.BROKEN;
 
+            // Drop mineralItemToDrop
+            DropMineralItem();
+
+            // Start disappear coroutine
+            StartCoroutine("Disappear");
+        }
+
+        UpdateCurrentSprite();
     }
 
-
-    private void Test_ChangeOreColor()
+    private void ProgressNAmountOfSprites(int numberOfProgressions)
     {
-        if (hardness <= 0)
+        if (currentSpriteIndex + numberOfProgressions >= spriteList.Count)
         {
-            SpawnMaterial();
+            currentSpriteIndex = spriteList.Count - 1;
         }
-        else if (hardness <= maxHardness / 3)
+        else
         {
-            sprite.color = new Color(1, 0, 0, 1);
+            currentSpriteIndex += numberOfProgressions;
         }
-        else if (hardness <= (maxHardness / 3) * 2)
-        {
-            sprite.color = new Color(0.5f, 0, 0, 1);
-        }
+
+        currentSprite = spriteList[currentSpriteIndex];
     }
 
-    private void SpawnMaterial()
+    private void DropMineralItem()
     {
-        Debug.Log("Spawned material for: " + id);
-        ore.SetActive(false);
+        ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
+        droppedMineralItem.DropsDown();
+        droppedMineralItem.StartDespawning();
     }
+
+    private Vector2 GetDropSpawnPosition()
+    {
+        return new Vector2(transform.position.x + 0.1f, transform.position.y);
+    }
+
+    private void UpdateCurrentSprite()
+    {
+        GetComponent<SpriteRenderer>().sprite = currentSprite;
+    }
+
+    IEnumerator Disappear()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        Color transparentColor = spriteRenderer.material.color;
+        transparentColor.a = 0.0f;
+
+        Color semiTransparentColor = spriteRenderer.material.color;
+        semiTransparentColor.a = 0.5f;
+        
+        spriteRenderer.material.color = semiTransparentColor;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.material.color = transparentColor;
+        yield return new WaitForSeconds(0.2f);
+
+        Destroy(gameObject);
+    }
+
+
 }
