@@ -20,8 +20,8 @@ public class Lamp : MonoBehaviour
     private Inventory playerInventory;
     private Light2D pointLight2D;
 
-    private float flickerIntensity = 1f;
-    private float flickerTime = 0.08f;
+    public float flickerIntensity = 1f;
+    public float flickerTime = 0.08f;
 
     // Public Attributes
     public GameObject lampLight;
@@ -134,8 +134,8 @@ public class Lamp : MonoBehaviour
         {
             pointLight2D.intensity = 1f;
 
-            float lightningTime = 2 + ((float)rg.NextDouble() - 0.5f);
-            yield return new WaitForSeconds(lightningTime);
+            float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
+            yield return new WaitForSeconds(lightingTime);
 
             int flickerCount = rg.Next(4, 9);
 
