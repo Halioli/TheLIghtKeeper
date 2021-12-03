@@ -8,6 +8,9 @@ public class TeleporterSystem : MonoBehaviour
     private const int MAX_TELEPORTS_TO_UNLOCK = 2;
     private int currentUnlockedTeleportNumber;
 
+    // Public Attributes
+    public List<Teleporter> teleporters;
+
     void Start()
     {
         
