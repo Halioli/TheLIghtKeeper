@@ -12,11 +12,13 @@ public class Inventory : MonoBehaviour
 
     public List<ItemStack> inventory = new List<ItemStack>();
 
+    public int indexOfSelectedInventorySlot;
+
+
 
     // Private Attributes
     private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
-    private int indexOfSelectedInventorySlot;
     private bool inventoryIsEmpty;
 
     private const int MAX_NUMBER_OF_SLOTS = 9;
@@ -219,6 +221,23 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    public void SubstractItemFromInventorySlot(int inventorySlot)
+    {
+        inventory[inventorySlot].SubstractOneItemFromStack();
+
+        // Set slot to empty if the last unit of the item was substracted
+        if (inventory[inventorySlot].StackHasNoItemsLeft())
+        {
+            inventory[inventorySlot].InitEmptyNullStack(itemNull);
+            numberOfOccuppiedInventorySlots--;
+
+            if (numberOfOccuppiedInventorySlots == 0)
+            {
+                inventoryIsEmpty = true;
+            }
+        }
+    }
+
 
 
     // Other Methods
@@ -239,11 +258,23 @@ public class Inventory : MonoBehaviour
 
     public void CycleLeftSelectedItemIndex()
     {
-        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot - 1) % numberOfInventorySlots;
+        --indexOfSelectedInventorySlot;
+        indexOfSelectedInventorySlot = indexOfSelectedInventorySlot < 0 ? indexOfSelectedInventorySlot = numberOfInventorySlots-1 : indexOfSelectedInventorySlot;
+
     }
 
     public void CycleRightSelectedItemIndex()
     {
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
+    }
+
+
+    public void UseSelectedConsumibleItem()
+    {
+        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
+        {
+            inventory[indexOfSelectedInventorySlot].itemInStack.prefab.GetComponent<ItemGameObject>().DoFunctionality();
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+        }
     }
 }

@@ -23,6 +23,13 @@ public class ItemGameObject : MonoBehaviour
     public Item item;
 
 
+    // Audio
+    public AudioSource audioSource;
+    public AudioClip itemIsDropped;
+
+
+
+
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -34,6 +41,8 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         rigidbody2D.AddForce(transform.up * DROP_DOWN_FORCE_Y, ForceMode2D.Impulse);
 
+        PlayDropSound();
+
         StartCoroutine("StopDroping", DROP_DOWN_TIME);
     }
 
@@ -42,7 +51,15 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         rigidbody2D.AddForce(new Vector2(directionX * DROP_FORWARD_FORCE_X, DROP_FORWARD_FORCE_Y), ForceMode2D.Impulse);
 
+        PlayDropSound();
+
         StartCoroutine("StopDroping", DROP_FORWARD_TIME);
+    }
+
+    private void PlayDropSound()
+    {
+        audioSource.clip = itemIsDropped;
+        audioSource.Play();
     }
 
     IEnumerator StopDroping(float secondsToWait)
@@ -87,5 +104,10 @@ public class ItemGameObject : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    public virtual void DoFunctionality()
+    {
+        // Consumible does functionality
     }
 }
