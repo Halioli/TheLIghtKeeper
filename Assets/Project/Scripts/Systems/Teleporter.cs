@@ -10,6 +10,7 @@ public class Teleporter : MonoBehaviour
     private Vector2 spawnPosition;
     private Animator animatior;
     private bool playerOnTrigger = false;
+    public GameObject[] teleporterLights;
 
     private void Start()
     {
@@ -26,8 +27,10 @@ public class Teleporter : MonoBehaviour
             {
                 Debug.Log("AAAAAAA");
                 animatior.SetBool("isActivated", true);
+                activated = true;
             }
         }
+
     }
 
     private void OnTriggerStay2D(Collider2D collision)
