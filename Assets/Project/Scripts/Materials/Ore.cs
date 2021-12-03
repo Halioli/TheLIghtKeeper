@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Experimental.Rendering.Universal;
 
-enum OreState { WHOLE, BROKEN};
+public enum OreState { WHOLE, BROKEN};
 
 public class Ore : MonoBehaviour
 {
     // Private Attributes
-    private OreState breakState;
-    private HealthSystem healthSystem;
-    private int currentSpriteIndex;
-    private Sprite currentSprite;
+    protected OreState breakState;
+    protected HealthSystem healthSystem;
+    protected int currentSpriteIndex;
+    protected Sprite currentSprite;
 
     // Public Attributes
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
+    public Animator animator;
 
     private void Start()
     {
@@ -38,8 +40,9 @@ public class Ore : MonoBehaviour
 
     public bool Broke() { return healthSystem.IsDead(); }
 
-    public void GetsMined(int damageAmount)
+    public virtual void GetsMined(int damageAmount)
     {
+        
         transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
@@ -61,7 +64,7 @@ public class Ore : MonoBehaviour
 
     }
 
-    private void ProgressNAmountOfSprites(int numberOfProgressions)
+    protected void ProgressNAmountOfSprites(int numberOfProgressions)
     {
         if (currentSpriteIndex + numberOfProgressions >= spriteList.Count)
         {
@@ -73,9 +76,10 @@ public class Ore : MonoBehaviour
         }
 
         currentSprite = spriteList[currentSpriteIndex];
+        animator.SetInteger("actualState", currentSpriteIndex);
     }
 
-    private void DropMineralItem()
+    protected void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f,0.5f),transform.position.y + Random.Range(-0.5f, 0.5f),0),0.1f,1,0.3f);
@@ -84,12 +88,12 @@ public class Ore : MonoBehaviour
         droppedMineralItem.StartDespawning();
     }
 
-    private Vector2 GetDropSpawnPosition()
+    protected Vector2 GetDropSpawnPosition()
     {
         return new Vector2(transform.position.x + 0.1f, transform.position.y);
     }
 
-    private void UpdateCurrentSprite()
+    protected void UpdateCurrentSprite()
     {
         GetComponent<SpriteRenderer>().sprite = currentSprite;
     }
