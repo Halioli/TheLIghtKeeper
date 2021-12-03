@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 public class ChangeColorLux : MonoBehaviour
 {
-    float duration = 4.0f;
+    float duration;
     public Color[] colors;
     int currentColor = 0;
     private float colorTime = 0;
@@ -23,12 +23,23 @@ public class ChangeColorLux : MonoBehaviour
         if (colorTime >= duration)
         {
             colorTime = 0;
-            currentColor = (currentColor + 1) % (colors.Length - 1);
+            currentColor = (currentColor + 1) % (colors.Length);
+            duration = Random.Range(1.0f, 3.0f);
+            Debug.Log(duration);
         }
         else
         {
             colorTime += Time.deltaTime;
-            pointLight.color = Color.Lerp(colors[(currentColor - 1) % (colors.Length - 1)], colors[currentColor], colorTime);
+            if(currentColor != 0)
+            {
+                pointLight.color = Color.Lerp(colors[(currentColor - 1) % (colors.Length)], colors[currentColor], colorTime);
+
+            }
+            else
+            {
+                pointLight.color = Color.Lerp(colors[colors.Length - 1], colors[currentColor], colorTime);
+
+            }
         }
         //set light color
         //float t = Mathf.PingPong(Time.time, duration) / duration;
