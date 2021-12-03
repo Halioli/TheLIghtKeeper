@@ -30,6 +30,7 @@ public class CraftingSystem : MonoBehaviour
         droppedItemPosition = new Vector2(transform.position.x, transform.position.y - 1f);
     }
 
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -150,7 +151,6 @@ public class CraftingSystem : MonoBehaviour
         {
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
-            Debug.Log("Crafted " + availableRecepies[selectedRecepieIndex].recepieName);
         }
         else
         {
