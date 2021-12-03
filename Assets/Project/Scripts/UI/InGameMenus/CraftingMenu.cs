@@ -10,6 +10,7 @@ public class CraftingMenu : MonoBehaviour
     private Inventory playerInventory;
     private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
+    private bool craftingRecepiesShown;
 
     // Public Attribute
     public InventoryMenu inventoryMenu;
@@ -23,18 +24,24 @@ public class CraftingMenu : MonoBehaviour
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
+        craftingRecepiesShown = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (!craftingRecepiesShown)
         {
             UpdateCraftingMenu();
+            craftingRecepiesShown = true;
         }
-        else if (Input.GetKeyDown(KeyCode.B))
+        
+        if (Input.GetKeyDown(KeyCode.B))
         {
             SetFirstElemtTextToRed();
         }
+
+        //craftingSystem.UpdatePlayerInventoryData();
+        inventoryMenu.UpdateInventory();
     }
 
     private void UpdateCraftingMenu()
@@ -68,20 +75,5 @@ public class CraftingMenu : MonoBehaviour
     private void SetFirstElemtTextToRed()
     {
         recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
-    }
-
-    public bool CheckPlayerInventoryForRequiredItems()
-    {
-        return false;
-    }
-
-    public void SubstractItemsFromInventory()
-    {
-
-    }
-
-    public void GiveItemToPlayer()
-    {
-
     }
 }
