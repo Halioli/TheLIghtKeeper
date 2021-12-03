@@ -5,6 +5,9 @@ using UnityEngine;
 public class AudioEvents : MonoBehaviour
 {
     // Public Attributes
+    public AudioSource audioSourceWalking;
+    public AudioClip playerWalkingSound;
+
     public AudioSource audioSourceCriticalMining;
     public AudioClip miningBuildUpSound;
     public AudioClip successCriticalMiningSound;
@@ -19,24 +22,48 @@ public class AudioEvents : MonoBehaviour
 
     private void OnEnable()
     {
+        PlayerMovement.playPlayerWalkingSoundEvent += PlayWalkingSound;
+        PlayerMovement.pausePlayerWalkingSoundEvent += PauseWalkingSound;
+
         PlayerMiner.playerMiningBuildUpSoundEvent += PlayMiningBuildUpSound;
         PlayerMiner.successCriticalMiningSoundEvent += PlaySuccessCriticalMiningSound;
         PlayerMiner.failCriticalMiningSoundEvent += PlayFailCriticalMiningSound;
         PlayerMiner.playerMinesOreEvent += PlayMiningOreSound;
         PlayerMiner.playerBreaksOreEvent += PlayBreaksOreSound;
+
         PlayerInventory.playerPicksUpItemEvent += PlayPicksUpItemSound;
     }
 
     private void OnDisable()
     {
+        PlayerMovement.playPlayerWalkingSoundEvent -= PlayWalkingSound;
+        PlayerMovement.pausePlayerWalkingSoundEvent -= PauseWalkingSound;
+
         PlayerMiner.playerMiningBuildUpSoundEvent -= PlayMiningBuildUpSound;
         PlayerMiner.successCriticalMiningSoundEvent -= PlaySuccessCriticalMiningSound;
         PlayerMiner.failCriticalMiningSoundEvent -= PlayFailCriticalMiningSound;
         PlayerMiner.playerMinesOreEvent -= PlayMiningOreSound;
         PlayerMiner.playerBreaksOreEvent -= PlayBreaksOreSound;
+
         PlayerInventory.playerPicksUpItemEvent -= PlayPicksUpItemSound;
     }
 
+
+
+    private void PlayWalkingSound()
+    {
+        if (audioSourceWalking.isPlaying) return;
+
+        audioSourceWalking.pitch = Random.Range(0.8f, 1.3f);
+        audioSourceWalking.clip = playerWalkingSound;
+        audioSourceWalking.Play();
+    }
+
+    private void PauseWalkingSound()
+    {
+        if (!audioSourceWalking.isPlaying) return;
+        audioSourceWalking.Pause();
+    }
 
 
     private void PlayMiningBuildUpSound()

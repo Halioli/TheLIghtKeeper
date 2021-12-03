@@ -12,6 +12,11 @@ public class PlayerMovement : PlayerBase
     public float moveSpeed;
     public ParticleSystem walkingParticleSystem;
 
+    // Events
+    public delegate void PlayerWalkingSound();
+    public static event PlayerWalkingSound playPlayerWalkingSoundEvent;
+    public static event PlayerWalkingSound pausePlayerWalkingSoundEvent;
+
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -26,11 +31,15 @@ public class PlayerMovement : PlayerBase
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+
+                pausePlayerWalkingSoundEvent();
             }
             else if (moveDirection != Vector2.zero)
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
                 FlipSprite();
+
+                playPlayerWalkingSoundEvent();
             }
         }
         /*
