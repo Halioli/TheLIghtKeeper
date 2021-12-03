@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    public string name;
+    public string teleportName;
+    public Vector3 teleportTransformPosition;
 
     private bool activated = false;
     private Vector2 spawnPosition;
@@ -14,6 +15,7 @@ public class Teleporter : MonoBehaviour
 
     private void Start()
     {
+        teleportTransformPosition = GetComponent<Transform>().position;
         spawnPosition = transform.position;
         animatior = GetComponent<Animator>();
     }

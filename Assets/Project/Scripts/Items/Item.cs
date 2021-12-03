@@ -41,7 +41,4 @@ public abstract class Item : ScriptableObject
         return ID != other.ID;
     }
 
-
-    // Virtual Methods
-    public virtual void DoFunctionality() { }
 }
