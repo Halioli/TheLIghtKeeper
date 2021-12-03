@@ -25,7 +25,7 @@ public class LightRodGameObject : ItemGameObject
     {
         UseSound();
 
-        Instantiate(light, GameObject.FindGameObjectWithTag("Player").transform);
+        GameObject spawnedLight = Instantiate(light, transform);
 
         float lightTime = 3f;
 
@@ -35,6 +35,7 @@ public class LightRodGameObject : ItemGameObject
             lightTime -= Time.deltaTime;
         }
 
-        Destroy(this);
+        Destroy(spawnedLight);
+        Destroy(gameObject);
     }
 }
