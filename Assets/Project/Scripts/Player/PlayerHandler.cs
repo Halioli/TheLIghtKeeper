@@ -39,7 +39,7 @@ public class PlayerHandler : PlayerInputs
     IEnumerator DeathAnimation()
     {
         animator.SetBool("isDead", true);
-        yield return new WaitForSeconds(2.2f);
+        yield return new WaitForSeconds(2.6f);
         animator.SetBool("isDead", false);
         animationEnds = true;
     }
