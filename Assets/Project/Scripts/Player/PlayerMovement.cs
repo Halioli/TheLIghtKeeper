@@ -11,6 +11,7 @@ public class PlayerMovement : PlayerBase
     // Public attributes
     public float moveSpeed;
     public ParticleSystem walkingParticleSystem;
+    public Animator animator;
 
     // Events
     public delegate void PlayerWalkingSound();
@@ -31,14 +32,15 @@ public class PlayerMovement : PlayerBase
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
-
+                //Update speed for walk animation
+                animator.SetBool("isWalking", false);
                 pausePlayerWalkingSoundEvent();
             }
             else if (moveDirection != Vector2.zero)
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
                 FlipSprite();
-
+                animator.SetBool("isWalking", true);
                 playPlayerWalkingSoundEvent();
             }
         }
