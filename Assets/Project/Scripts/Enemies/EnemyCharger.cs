@@ -27,9 +27,9 @@ public class EnemyCharger : Enemy
 
     // Sinusoidal movement
     public float amplitude = 0.1f;
-    public float period = 1f;
+    private float period;
     private float theta;
-    public float distance;
+    public float sinWaveDistance;
 
     public AudioSource movementAudioSource;
     public AudioSource screamAudioSource;
@@ -52,6 +52,8 @@ public class EnemyCharger : Enemy
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
 
         currentBanishTime = BANISH_TIME;
+
+        period = Random.Range(0.10f, 0.15f);
 
         Spawn();
     }
@@ -99,7 +101,7 @@ public class EnemyCharger : Enemy
 
                 // Sinusoidal movement
                 theta = Time.timeSinceLevelLoad / period;
-                distance = amplitude * Mathf.Sin(theta);
+                sinWaveDistance = amplitude * Mathf.Sin(theta);
 
 
                 // Change to CHARGE
@@ -153,12 +155,11 @@ public class EnemyCharger : Enemy
         {
             if (enemyState == EnemyState.SCARED)
             {
-                FleeAwayFromPlayer();
+                FleeAway();
             }
             return;
         }
-
-        if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
+        else if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();
         }
@@ -190,17 +191,12 @@ public class EnemyCharger : Enemy
         UpdatePlayerPosition();
         UpdateDirectionTowardsPlayerPosition();
 
-
-        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * distance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * sinWaveDistance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
     }
 
-    private void FleeAwayFromPlayer()
+    private void FleeAway()
     {
-        UpdatePlayerPosition();
-        UpdateDirectionTowardsPlayerPosition();
-
-
-        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * distance) + (-1 * directionTowardsPlayerPosition) * (currentSpeed * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position + (-1 * directionTowardsPlayerPosition) * (MAX_SPEED * Time.deltaTime));
     }
 
     private void Charge()
@@ -221,7 +217,8 @@ public class EnemyCharger : Enemy
 
     private void PushPlayer()
     {
-        player.GetComponent<Rigidbody2D>().AddForce(directionOnChargeStart * attackForce, ForceMode2D.Impulse);
+        //player.GetsPushed(directionOnChargeStart);
+        //player.GetComponent<Rigidbody2D>().AddForce(directionOnChargeStart * attackForce, ForceMode2D.Impulse);
     }
 
     private void Recovering()
