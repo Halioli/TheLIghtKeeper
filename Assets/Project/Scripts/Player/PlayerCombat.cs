@@ -6,7 +6,7 @@ using DG.Tweening;
 public class PlayerCombat : PlayerBase
 {  
     // Private Attributes
-    private const float ATTACK_TIME_DURATION = 0.8f;
+    private const float ATTACK_TIME_DURATION = 0.5f;
     private float attackingTime = ATTACK_TIME_DURATION;
 
     protected AttackSystem attackSystem; 
@@ -14,8 +14,9 @@ public class PlayerCombat : PlayerBase
 
     private float attackReachRadius = 3f;
     private bool attacking = false;
+    private bool attackingAnEnemy = false;
 
-    private const float INVULNERABILITY_TIME = 1.0f;
+    private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
@@ -46,8 +47,8 @@ public class PlayerCombat : PlayerBase
             if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
             {
                 SetEnemyToAttack();
-                StartAttacking();
             }
+            StartAttacking();
         }
     }
 
@@ -66,13 +67,14 @@ public class PlayerCombat : PlayerBase
 
     private void SetEnemyToAttack()
     {
+        attackingAnEnemy = true;
         enemyToAttack = colliderDetectedByMouse.gameObject.GetComponent<Enemy>();
     }
 
     private void StartAttacking()
     {
         attacking = true;
-        FlipPlayerSpriteFacingEnemyToAttack();
+        FlipPlayerSpriteFacingWhereToAttack();
         playerStates.SetCurrentPlayerAction(PlayerAction.ATTACKING);
         StartCoroutine("Attacking");
     }
@@ -82,7 +84,10 @@ public class PlayerCombat : PlayerBase
     {
         playerInputs.canFlip = false;
 
-        DealDamageToEnemy();
+        if (attackingAnEnemy)
+        {
+            DealDamageToEnemy();
+        }
 
         while (attackingTime > 0.0f)
         {
@@ -98,6 +103,7 @@ public class PlayerCombat : PlayerBase
     {
         attackingTime = ATTACK_TIME_DURATION;
         attacking = false;
+        attackingAnEnemy = false;
 
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
@@ -139,24 +145,34 @@ public class PlayerCombat : PlayerBase
     IEnumerator Invulnerability()
     {
         isInvulnerable = true;
+        gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Color original = spriteRenderer.color;
+        Color transparent = spriteRenderer.color;
+        transparent.a = 0.3f;
 
         while (currentInvulnerabilityTime >= 0.0f)
         {
+            spriteRenderer.color = transparent;
+
             currentInvulnerabilityTime -= Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
+        spriteRenderer.color = original;
         currentInvulnerabilityTime = INVULNERABILITY_TIME;
         isInvulnerable = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
-    private void FlipPlayerSpriteFacingEnemyToAttack()
+    private void FlipPlayerSpriteFacingWhereToAttack()
     {
         if (playerStates.PlayerActionIsWalking())
             return;
-
-        if ((transform.position.x < enemyToAttack.transform.position.x && !playerInputs.facingLeft) ||
-            (transform.position.x > enemyToAttack.transform.position.x && playerInputs.facingLeft))
+        
+        if ((transform.position.x < playerInputs.mousePosition.x && !playerInputs.facingLeft) ||
+            (transform.position.x > playerInputs.mousePosition.x && playerInputs.facingLeft))
         {
             playerInputs.facingLeft = !playerInputs.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));

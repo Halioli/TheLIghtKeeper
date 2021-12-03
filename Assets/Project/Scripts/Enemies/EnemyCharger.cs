@@ -22,7 +22,7 @@ public class EnemyCharger : Enemy
     public float MAX_SPEED;
     public const float ACCELERATION = 0.25f;
 
-    public float attackForce = 8f;
+    public float pushForce = 16f;
     public float distanceToCharge = 4f;
 
     // Sinusoidal movement
@@ -125,7 +125,9 @@ public class EnemyCharger : Enemy
                 spriteRenderer.color = new Color(1f, 0f, 0f, 1f);
                 if (collidedWithPlayer)
                 {
+                    PushPlayer();
                     collidedWithPlayer = false;
+
                     currentChargeTime = CHARGE_TIME; // Reset value
                     spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
                     attackState = AttackState.RECOVERING; // Change state
@@ -165,11 +167,7 @@ public class EnemyCharger : Enemy
         }
         else if (attackState == AttackState.CHARGING)
         {
-            if (collidedWithPlayer)
-            {
-                PushPlayer();
-            }
-            else
+            if (!collidedWithPlayer)
             {
                 Charge();
             }
@@ -213,12 +211,9 @@ public class EnemyCharger : Enemy
     }
 
 
-
-
     private void PushPlayer()
     {
-        //player.GetsPushed(directionOnChargeStart);
-        //player.GetComponent<Rigidbody2D>().AddForce(directionOnChargeStart * attackForce, ForceMode2D.Impulse);
+        player.GetComponent<PlayerMovement>().GetsPushed(directionOnChargeStart, pushForce);
     }
 
     private void Recovering()
