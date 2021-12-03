@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
+
+
 
 public class LightRodGameObject : ItemGameObject
 {
@@ -14,7 +17,7 @@ public class LightRodGameObject : ItemGameObject
     }
 
 
-    private void UseSound()
+    private void FunctionalitySound()
     {
         audioSource.clip = lightRodUseSound;
         audioSource.pitch = Random.Range(0.8f, 1.3f);
@@ -23,7 +26,13 @@ public class LightRodGameObject : ItemGameObject
 
     IEnumerator Functionality()
     {
-        UseSound();
+        FunctionalitySound();
+
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        rigidbody2D.AddForce(new Vector2(0, -3), ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.4f);
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
+
 
         GameObject spawnedLight = Instantiate(light, transform);
 
@@ -33,6 +42,11 @@ public class LightRodGameObject : ItemGameObject
         {
             yield return new WaitForSeconds(Time.deltaTime);
             lightTime -= Time.deltaTime;
+
+            if (lightTime <= 1f)
+            {
+                spawnedLight.GetComponent<Light2D>().intensity -= Time.deltaTime;
+            }
         }
 
         Destroy(spawnedLight);
