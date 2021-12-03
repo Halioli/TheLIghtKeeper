@@ -6,7 +6,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-    private const float LIGHT_ROD_REFUEL_AMOUNT = 10f;
 
     private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
     private const float POINTLIGHT_INNER_RADIUS_ON = 6f;
@@ -26,8 +25,7 @@ public class Lamp : MonoBehaviour
     // Public Attributes
     public GameObject lampLight;
     public GameObject lampSpriteObject;
-    public Sprite lampSprite;
-    public Item lightRodItem;
+    public Animator animator;
 
     System.Random rg;
 
@@ -60,7 +58,8 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            CheckPlayerInventoryForLightRods();
+            DeactivateConeLightButNotPointLight();
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
         }
         else
         {
@@ -86,18 +85,18 @@ public class Lamp : MonoBehaviour
     public void ActivateLampLight()
     {
         turnedOn = true;
+        animator.SetBool("light", true);
         lampLight.SetActive(true);
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
         pointLight2D.intensity = 1f;
-        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
+        animator.SetBool("light", false);
         lampLight.SetActive(false);
-        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = null;
     }
 
     public void DeactivateConeLightButNotPointLight()
@@ -112,21 +111,6 @@ public class Lamp : MonoBehaviour
         return lampTime;
     }
 
-   
-    private void CheckPlayerInventoryForLightRods()
-    {
-        if (playerInventory.InventoryContainsItem(lightRodItem))
-        {
-            playerInventory.SubstractItemToInventory(lightRodItem);
-            lampTime += LIGHT_ROD_REFUEL_AMOUNT;
-            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToTrue();
-        }
-        else
-        {
-            DeactivateConeLightButNotPointLight();
-            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
-        }
-    }
 
     IEnumerator Flicker()
     {

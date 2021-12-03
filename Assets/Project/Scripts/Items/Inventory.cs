@@ -221,6 +221,23 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    public void SubstractItemFromInventorySlot(int inventorySlot)
+    {
+        inventory[inventorySlot].SubstractOneItemFromStack();
+
+        // Set slot to empty if the last unit of the item was substracted
+        if (inventory[inventorySlot].StackHasNoItemsLeft())
+        {
+            inventory[inventorySlot].InitEmptyNullStack(itemNull);
+            numberOfOccuppiedInventorySlots--;
+
+            if (numberOfOccuppiedInventorySlots == 0)
+            {
+                inventoryIsEmpty = true;
+            }
+        }
+    }
+
 
 
     // Other Methods
@@ -241,8 +258,9 @@ public class Inventory : MonoBehaviour
 
     public void CycleLeftSelectedItemIndex()
     {
-        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot - 1) % numberOfInventorySlots;
-        indexOfSelectedInventorySlot = indexOfSelectedInventorySlot < 0 ? indexOfSelectedInventorySlot = 0 : indexOfSelectedInventorySlot;
+        --indexOfSelectedInventorySlot;
+        indexOfSelectedInventorySlot = indexOfSelectedInventorySlot < 0 ? indexOfSelectedInventorySlot = numberOfInventorySlots-1 : indexOfSelectedInventorySlot;
+
     }
 
     public void CycleRightSelectedItemIndex()
@@ -250,4 +268,15 @@ public class Inventory : MonoBehaviour
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
     }
 
+
+    public void UseSelectedConsumibleItem()
+    {
+        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
+        {
+            GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
+            consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
+
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+        }
+    }
 }
