@@ -119,6 +119,7 @@ MonoBehaviour:
   itemNull: {fileID: 11400000, guid: 56ea98fd605d8bb4eac0b03cc45dc452, type: 2}
   emptyStack: {fileID: 2426600849371271658}
   inventory: []
+  indexOfSelectedInventorySlot: 0
 --- !u!1 &2387508393825434294
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,6 +894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 200
   walkingParticleSystem: {fileID: 5281033995110350959}
+  animator: {fileID: 5742222722491315820}
 --- !u!114 &4783228191847081116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -990,6 +992,7 @@ MonoBehaviour:
   mouseWorldPosition: {x: 0, y: 0}
   facingLeft: 1
   canFlip: 1
+  animator: {fileID: 0}
 --- !u!114 &8397354122656166637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6044,6 +6047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b86401d8a72a54b859a1e68221f2ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flickerIntensity: 1
+  flickerTime: 0.08
   lampLight: {fileID: 2387508393825434294}
   lampSpriteObject: {fileID: 7585264494197858546}
   lampSprite: {fileID: 21300000, guid: 73c91967fa39ffa42bd803a2c90e325c, type: 3}

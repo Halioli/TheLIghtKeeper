@@ -25,7 +25,7 @@ public class HUDHandler : MonoBehaviour
     public HUDItem itemCenter;
     public HUDItem itemLeft;
 
-    public HealthSystem playerhealthSystem;
+    private HealthSystem playerHealthSystem;
     public Lamp lamp;
     public Furnace furnace;
 
@@ -33,10 +33,11 @@ public class HUDHandler : MonoBehaviour
     private void Start()
     {
         currentFadeTime = 0f;
+        playerHealthSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<HealthSystem>();
 
         // Initalize health variables
         healthGroup = GetComponentsInChildren<CanvasGroup>()[0];
-        playerHealthValue = playerhealthSystem.GetMaxHealth();
+        playerHealthValue = playerHealthSystem.GetMaxHealth();
         healthBar.SetMaxValue(playerHealthValue);
         healthBar.UpdateText(CheckTextForZeros(playerHealthValue.ToString()));
 
@@ -58,7 +59,7 @@ public class HUDHandler : MonoBehaviour
 
     private void Update()
     {
-        playerHealthValue = playerhealthSystem.GetHealth();
+        playerHealthValue = playerHealthSystem.GetHealth();
         ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
 
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
