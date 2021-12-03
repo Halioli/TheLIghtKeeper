@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class PlayerBase : MonoBehaviour
 {
-    // Protected methods
+    // Protected attributes
     protected PlayerInputs playerInputs;
     protected PlayerStates playerStates;
+
+
 
     void Awake()
     {
         playerInputs = GetComponent<PlayerInputs>();
         playerStates = GetComponent<PlayerStates>();
     }
+
 
 }
