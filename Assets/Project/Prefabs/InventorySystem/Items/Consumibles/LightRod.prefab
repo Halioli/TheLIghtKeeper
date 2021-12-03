@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4438368956421843468}
   - component: {fileID: 4438368956421843470}
   - component: {fileID: -1572094187727018519}
-  - component: {fileID: 3848699864291273460}
   - component: {fileID: 8539784664639347599}
+  - component: {fileID: 3848699864291273460}
   m_Layer: 0
   m_Name: LightRod
   m_TagString: Item
@@ -123,6 +123,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8539784664639347599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4438368956421843471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79208907e30f12d46a8c953be9675b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canBePickedUp: 0
+  currentDespawnTimeInSeconds: 10
+  item: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
+  audioSource: {fileID: 3848699864291273460}
+  itemIsDropped: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
+  lightRodUseSound: {fileID: 8300000, guid: 805debc778397284da8b4c6fb61942d5, type: 3}
 --- !u!82 &3848699864291273460
 AudioSource:
   m_ObjectHideFlags: 0
@@ -133,10 +151,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
+  m_audioClip: {fileID: 8300000, guid: 805debc778397284da8b4c6fb61942d5, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1.060374
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -219,20 +237,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8539784664639347599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4438368956421843471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79208907e30f12d46a8c953be9675b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentDespawnTimeInSeconds: 10
-  item: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
-  audioSource: {fileID: 3848699864291273460}
-  itemIsDropped: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
-  enemy: {fileID: 4708902000198877488, guid: f272495ed65800645acb70962819a384, type: 3}

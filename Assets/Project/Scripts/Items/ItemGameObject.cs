@@ -5,7 +5,9 @@ using UnityEngine;
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
-    private Rigidbody2D rigidbody2D;
+    protected Rigidbody2D rigidbody2D;
+    public bool canBePickedUp = true;
+
     
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
