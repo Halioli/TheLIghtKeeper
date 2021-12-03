@@ -24,24 +24,31 @@ public class ChangeColorLux : MonoBehaviour
         {
             colorTime = 0;
             currentColor = (currentColor + 1) % (colors.Length);
-            duration = Random.Range(1.0f, 3.0f);
-            Debug.Log(duration);
+            ChangeDuration();
         }
         else
         {
-            colorTime += Time.deltaTime;
-            if(currentColor != 0)
-            {
-                pointLight.color = Color.Lerp(colors[(currentColor - 1) % (colors.Length)], colors[currentColor], colorTime);
-
-            }
-            else
-            {
-                pointLight.color = Color.Lerp(colors[colors.Length - 1], colors[currentColor], colorTime);
-
-            }
+            ChangeColor();
         }
-        //set light color
-        //float t = Mathf.PingPong(Time.time, duration) / duration;
+    }
+
+    void ChangeColor()
+    {
+        colorTime += Time.deltaTime;
+        if (currentColor != 0)
+        {
+            pointLight.color = Color.Lerp(colors[(currentColor - 1) % (colors.Length)], colors[currentColor], colorTime);
+
+        }
+        else
+        {
+            pointLight.color = Color.Lerp(colors[colors.Length - 1], colors[currentColor], colorTime);
+
+        }
+    }
+
+    void ChangeDuration()
+    {
+        duration = Random.Range(1.0f, 3.0f);
     }
 }
