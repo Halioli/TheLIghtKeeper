@@ -105,4 +105,9 @@ public class ItemGameObject : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    public virtual void DoFunctionality()
+    {
+        // Consumible does functionality
+    }
 }
