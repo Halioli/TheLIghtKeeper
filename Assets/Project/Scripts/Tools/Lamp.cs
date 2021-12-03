@@ -6,7 +6,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-    private const float LIGHT_ROD_REFUEL_AMOUNT = 10f;
 
     private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
     private const float POINTLIGHT_INNER_RADIUS_ON = 6f;
@@ -27,7 +26,6 @@ public class Lamp : MonoBehaviour
     public GameObject lampLight;
     public GameObject lampSpriteObject;
     public Sprite lampSprite;
-    public Item lightRodItem;
 
     System.Random rg;
 
@@ -60,7 +58,8 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            CheckPlayerInventoryForLightRods();
+            DeactivateConeLightButNotPointLight();
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
         }
         else
         {
@@ -112,21 +111,6 @@ public class Lamp : MonoBehaviour
         return lampTime;
     }
 
-   
-    private void CheckPlayerInventoryForLightRods()
-    {
-        if (playerInventory.InventoryContainsItem(lightRodItem))
-        {
-            playerInventory.SubstractItemToInventory(lightRodItem);
-            lampTime += LIGHT_ROD_REFUEL_AMOUNT;
-            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToTrue();
-        }
-        else
-        {
-            DeactivateConeLightButNotPointLight();
-            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
-        }
-    }
 
     IEnumerator Flicker()
     {
