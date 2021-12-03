@@ -7,6 +7,9 @@ public class PlayerMovement : PlayerBase
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
+    private bool beingPushed = false;
+    private Vector2 pushDirection = new Vector2();
+    private float pushForce = 0f;
 
     // Public attributes
     public float moveSpeed;
@@ -42,17 +45,22 @@ public class PlayerMovement : PlayerBase
                 playPlayerWalkingSoundEvent();
             }
         }
-        /*
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rigidbody2D.velocity = Vector2.zero;
             rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
         }
-        */
+        
     }
 
     private void FixedUpdate()
     {
+        if (beingPushed)
+        {
+            rigidbody2D.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+            beingPushed = false;
+        }
         if (playerStates.PlayerActionIsWalking())
         {
             rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
@@ -74,5 +82,10 @@ public class PlayerMovement : PlayerBase
         }
     }
 
-
+    public void GetsPushed(Vector2 newPushDirection, float newPushForce)
+    {
+        beingPushed = true;
+        pushDirection = newPushDirection;
+        pushForce = newPushForce;
+    }
 }
