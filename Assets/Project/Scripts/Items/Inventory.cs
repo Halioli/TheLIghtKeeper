@@ -12,11 +12,13 @@ public class Inventory : MonoBehaviour
 
     public List<ItemStack> inventory = new List<ItemStack>();
 
+    public int indexOfSelectedInventorySlot;
+
+
 
     // Private Attributes
     private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
-    private int indexOfSelectedInventorySlot;
     private bool inventoryIsEmpty;
 
     private const int MAX_NUMBER_OF_SLOTS = 9;
@@ -240,10 +242,12 @@ public class Inventory : MonoBehaviour
     public void CycleLeftSelectedItemIndex()
     {
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot - 1) % numberOfInventorySlots;
+        indexOfSelectedInventorySlot = indexOfSelectedInventorySlot < 0 ? indexOfSelectedInventorySlot = 0 : indexOfSelectedInventorySlot;
     }
 
     public void CycleRightSelectedItemIndex()
     {
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
     }
+
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 
 enum OreState { WHOLE, BROKEN};
 
@@ -16,7 +16,7 @@ public class Ore : MonoBehaviour
     // Public Attributes
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
-
+    public ParticleSystem[] oreParticleSystem;
 
     private void Start()
     {
@@ -26,6 +26,10 @@ public class Ore : MonoBehaviour
         currentSprite = spriteList[currentSpriteIndex];
 
         healthSystem = GetComponent<HealthSystem>();
+        foreach (ParticleSystem particleSystem in oreParticleSystem)
+        {
+            particleSystem.Stop();
+        }
     }
 
 
@@ -36,6 +40,7 @@ public class Ore : MonoBehaviour
 
     public void GetsMined(int damageAmount)
     {
+        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
         // Update ore Sprite
@@ -51,8 +56,9 @@ public class Ore : MonoBehaviour
             // Start disappear coroutine
             StartCoroutine("Disappear");
         }
-
         UpdateCurrentSprite();
+        StartCoroutine("PlayBreakParticles");
+
     }
 
     private void ProgressNAmountOfSprites(int numberOfProgressions)
@@ -72,7 +78,9 @@ public class Ore : MonoBehaviour
     private void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
-        droppedMineralItem.DropsDown();
+        droppedMineralItem.transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f,0.5f),transform.position.y + Random.Range(-0.5f, 0.5f),0),0.1f,1,0.3f);
+        //droppedMineralItem.transform.DOPunchPosition(new Vector3(Random.Range(-0.3f,0.3f), Random.Range(0.4f, 0.6f), 0), 0.3f);
+        //droppedMineralItem.DropsDown();
         droppedMineralItem.StartDespawning();
     }
 
@@ -104,5 +112,16 @@ public class Ore : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    IEnumerator PlayBreakParticles()
+    {
+        foreach (ParticleSystem particleSystem in oreParticleSystem)
+        {
+            particleSystem.Play();
+        }
+        yield return new WaitForSeconds(0.3f);
+        foreach (ParticleSystem particleSystem in oreParticleSystem)
+        {
+            particleSystem.Stop();
+        }
+    }
 }
