@@ -16,8 +16,11 @@ public class HUDHandler : MonoBehaviour
     private CanvasGroup coreGroup;
     private CanvasGroup quickAccessGroup;
     private HealthSystem playerHealthSystem;
+    private Lamp lamp;
 
     // Public Attributes
+    public float fadeSpeed = 0.003f;
+
     public HUDBar healthBar;
     public HUDBar lampBar;
     public HUDBar coreBar;
@@ -27,14 +30,13 @@ public class HUDHandler : MonoBehaviour
     public HUDItem itemLeft;
 
     public Furnace furnace;
-    public Lamp lamp;
 
     // Start is called before the first frame update
     private void Start()
     {
         currentFadeTime = 0f;
         playerHealthSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<HealthSystem>();
-        //lamp = GameObject.FindGameObjectWithTag("Player").GetComponent<Lamp>();
+        lamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
 
         // Initalize health variables
         healthGroup = GetComponentsInChildren<CanvasGroup>()[0];
@@ -71,15 +73,15 @@ public class HUDHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.M))
         {
-            ChangeCanvasGroupAlphaToOne(healthGroup);
+            StartCoroutine("ChangeCanvasGroupAlphaToZero", healthGroup);
         }
         else if (Input.GetKeyDown(KeyCode.N))
         {
-            ChangeCanvasGroupAlphaToZero(healthGroup);
+            
         }
         else if (Input.GetKeyDown(KeyCode.K))
         {
-            ChangeCanvasGroupAlphaToValue(healthGroup, 0.5f);
+            
         }
     }
 
@@ -101,36 +103,16 @@ public class HUDHandler : MonoBehaviour
         bar.UpdateText(CheckTextForZeros(text));
     }
 
-    public void ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
     {
-        while (currentFadeTime < FADE_TIME)
+        float lerpAmount = 0f;
+
+        while (lerpAmount < 1)
         {
-            currentFadeTime += Time.deltaTime;
-
-            canvasGroup.alpha = 1f - Mathf.Clamp01(currentFadeTime / FADE_TIME);
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, lerpAmount);
+            lerpAmount += fadeSpeed;
         }
-        currentFadeTime = 0f;
-    }
 
-    public void ChangeCanvasGroupAlphaToValue(CanvasGroup canvasGroup, float value)
-    {
-        while (currentFadeTime < FADE_TIME && canvasGroup.alpha > value)
-        {
-            currentFadeTime += Time.deltaTime;
-
-            canvasGroup.alpha = 1f - Mathf.Clamp01(currentFadeTime / FADE_TIME);
-        }
-        currentFadeTime = 0f;
-    }
-
-    public void ChangeCanvasGroupAlphaToOne(CanvasGroup canvasGroup)
-    {
-        while (currentFadeTime < FADE_TIME)
-        {
-            currentFadeTime += Time.deltaTime;
-
-            canvasGroup.alpha = 1f + Mathf.Clamp01(currentFadeTime / FADE_TIME);
-        }
-        currentFadeTime = 0f;
+        yield return null;
     }
 }
