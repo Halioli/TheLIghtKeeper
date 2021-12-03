@@ -43,7 +43,10 @@ public class PlayerInventory : PlayerInputs
         if (collider.gameObject.CompareTag("Item"))
         {
             ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-            PickUpItem(itemGameObject);
+            if (itemGameObject.canBePickedUp)
+            {
+                PickUpItem(itemGameObject);
+            }
         }
     }
 

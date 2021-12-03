@@ -6,7 +6,7 @@ public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
     protected Rigidbody2D rigidbody2D;
-    public bool canBePickedUp = true;
+    public bool canBePickedUp;
 
     
     private const float DROP_DOWN_FORCE_Y = 1.5f;
@@ -35,6 +35,7 @@ public class ItemGameObject : MonoBehaviour
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        canBePickedUp = true;
     }
 
 
