@@ -25,7 +25,7 @@ public class Lamp : MonoBehaviour
     // Public Attributes
     public GameObject lampLight;
     public GameObject lampSpriteObject;
-    public Sprite lampSprite;
+    public Animator animator;
 
     System.Random rg;
 
@@ -85,18 +85,18 @@ public class Lamp : MonoBehaviour
     public void ActivateLampLight()
     {
         turnedOn = true;
+        animator.SetBool("light", true);
         lampLight.SetActive(true);
         pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
         pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
         pointLight2D.intensity = 1f;
-        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
     }
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
+        animator.SetBool("light", false);
         lampLight.SetActive(false);
-        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = null;
     }
 
     public void DeactivateConeLightButNotPointLight()
