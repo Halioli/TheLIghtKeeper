@@ -24,7 +24,6 @@ public class Lamp : MonoBehaviour
 
     // Public Attributes
     public GameObject lampLight;
-    public GameObject lampSpriteObject;
     public Animator animator;
 
     System.Random rg;
