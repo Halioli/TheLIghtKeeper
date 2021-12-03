@@ -29,7 +29,6 @@ public class PlayerHandler : PlayerInputs
             // Teleport to starting position (0, 0)
             else
             {
-
                 playerRigidbody2D.transform.position = Vector3.zero;
                 playerHealthSystem.RestoreHealthToMaxHealth();
    
@@ -39,7 +38,7 @@ public class PlayerHandler : PlayerInputs
     IEnumerator DeathAnimation()
     {
         animator.SetBool("isDead", true);
-        yield return new WaitForSeconds(2.6f);
+        yield return new WaitForSeconds(2.5f);
         animator.SetBool("isDead", false);
         animationEnds = true;
     }
