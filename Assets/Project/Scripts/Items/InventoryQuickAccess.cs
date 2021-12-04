@@ -7,6 +7,8 @@ public class InventoryQuickAccess : MonoBehaviour
     private Inventory playerInventory;
     private PlayerInputs playerInputs;
     private int mouseScrollDirection;
+    
+    private bool printedAlready = true;
 
     void Start()
     {
@@ -21,12 +23,22 @@ public class InventoryQuickAccess : MonoBehaviour
 
         if (mouseScrollDirection > 0){
             playerInventory.CycleRightSelectedItemIndex();
+            printedAlready = false;
         }
         else if (mouseScrollDirection < 0)
         {
             playerInventory.CycleLeftSelectedItemIndex();
+            printedAlready = false;
         }
-        Debug.Log(playerInventory.indexOfSelectedInventorySlot);
-        Debug.Log(playerInventory.inventory[playerInventory.indexOfSelectedInventorySlot].itemInStack.name);
+        if (!printedAlready)
+        {
+            Debug.Log(playerInventory.indexOfSelectedInventorySlot);
+            printedAlready = true;
+        }
+
+        if (playerInputs.PlayerPressedUseButton())
+        {
+            playerInventory.UseSelectedConsumibleItem();
+        }
     }
 }
