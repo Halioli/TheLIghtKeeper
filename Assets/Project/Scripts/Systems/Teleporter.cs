@@ -8,18 +8,21 @@ public class Teleporter : MonoBehaviour
     private Vector2 spawnPosition;
     private Animator animatior;
     private bool playerOnTrigger = false;
-    public GameObject[] teleporterLights;
+    private bool canvasIsActive;
 
     // Public Attributes
     public string teleportName;
     public Vector3 teleportTransformPosition;
     public bool activated = false;
+    public GameObject[] teleporterLights;
+    public GameObject canvasTeleportSelection;
 
     private void Start()
     {
         teleportTransformPosition = GetComponent<Transform>().position;
         spawnPosition = transform.position;
         animatior = GetComponent<Animator>();
+        canvasIsActive = false;
     }
 
     private void Update()
@@ -29,9 +32,21 @@ public class Teleporter : MonoBehaviour
             //Do the activate teleport animation and stay teleport
             if (!activated)
             {
-                Debug.Log("AAAAAAA");
                 animatior.SetBool("isActivated", true);
                 activated = true;
+            }
+            else
+            {
+                if (canvasIsActive)
+                {
+                    canvasTeleportSelection.SetActive(false);
+                    canvasIsActive = false;
+                }
+                else
+                {
+                    canvasTeleportSelection.SetActive(true);
+                    canvasIsActive = true;
+                }
             }
         }
 

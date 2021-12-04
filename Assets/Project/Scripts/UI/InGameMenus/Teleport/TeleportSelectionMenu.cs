@@ -7,9 +7,10 @@ using TMPro;
 public class TeleportSelectionMenu : MonoBehaviour
 {
     // Private Attributes
-    private TeleportSystem teleportSystem;
+    public TeleportSystem teleportSystem;
     private List<GameObject> teleportButtonsGameObjects;
     private RectTransform teleportListRectTransform;
+    private bool updatedUI;
 
     // Public Attributes
     public GameObject teleportList;
@@ -20,11 +21,16 @@ public class TeleportSelectionMenu : MonoBehaviour
         teleportSystem = GameObject.FindGameObjectWithTag("TeleportSystem").GetComponent<TeleportSystem>();
         teleportButtonsGameObjects = new List<GameObject>();
         teleportListRectTransform = teleportList.GetComponent<RectTransform>();
+        updatedUI = false;
     }
 
     void Update()
     {
-        
+        if (!updatedUI)
+        {
+            UpdateTeleportSelectionMenu();
+            updatedUI = true;
+        }
     }
 
     private void UpdateTeleportSelectionMenu()
@@ -38,7 +44,11 @@ public class TeleportSelectionMenu : MonoBehaviour
             teleportButtonsGameObjects.Add(gameObjectButton);
 
             gameObjectButton.GetComponentInChildren<TextMeshProUGUI>().text = teleport.name;
-            
+
+            RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
+            teleportListRectTransform.sizeDelta = new Vector2(teleportListRectTransform.sizeDelta.x,
+                         teleportListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
+
             ++buttonNumb;
         }
     }

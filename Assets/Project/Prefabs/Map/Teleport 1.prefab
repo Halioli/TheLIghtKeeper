@@ -1605,7 +1605,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51926e889f09c742b4f8eac36d3d2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
+  teleportName: 
+  teleportTransformPosition: {x: 0, y: 0, z: 0}
+  activated: 0
   teleporterLights:
   - {fileID: 4704029252577259905}
   - {fileID: 3309924547463059021}
@@ -1618,6 +1620,7 @@ MonoBehaviour:
   - {fileID: 495006816893553977}
   - {fileID: 8727986197185067303}
   - {fileID: 1993774542480723580}
+  canvasTeleportSelection: {fileID: 2078909852242158083, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
 --- !u!1 &8481334966192708791
 GameObject:
   m_ObjectHideFlags: 0
