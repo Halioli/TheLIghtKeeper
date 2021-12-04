@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    public string name;
-
-    private bool activated = false;
+    // Private Attributes
     private Vector2 spawnPosition;
     private Animator animatior;
     private bool playerOnTrigger = false;
     public GameObject[] teleporterLights;
 
+    // Public Attributes
+    public string teleportName;
+    public Vector3 teleportTransformPosition;
+    public bool activated = false;
+
     private void Start()
     {
+        teleportTransformPosition = GetComponent<Transform>().position;
         spawnPosition = transform.position;
         animatior = GetComponent<Animator>();
     }

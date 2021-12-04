@@ -16,7 +16,7 @@ public class PlayerCombat : PlayerBase
     private bool attacking = false;
     private bool attackingAnEnemy = false;
 
-    private const float INVULNERABILITY_TIME = 1.0f;
+    private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
@@ -145,15 +145,25 @@ public class PlayerCombat : PlayerBase
     IEnumerator Invulnerability()
     {
         isInvulnerable = true;
+        gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Color original = spriteRenderer.color;
+        Color transparent = spriteRenderer.color;
+        transparent.a = 0.3f;
 
         while (currentInvulnerabilityTime >= 0.0f)
         {
+            spriteRenderer.color = transparent;
+
             currentInvulnerabilityTime -= Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
+        spriteRenderer.color = original;
         currentInvulnerabilityTime = INVULNERABILITY_TIME;
         isInvulnerable = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
     private void FlipPlayerSpriteFacingWhereToAttack()
