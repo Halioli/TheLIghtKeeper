@@ -18,7 +18,6 @@ public class CraftingMenu : MonoBehaviour
     public GameObject craftingList;
     public GameObject buttonPrefab;
     public GameObject requiredMaterialPrefab;
-    public Sprite smallCraftingRecepieFrame;
 
     private void Start()
     {
@@ -59,7 +58,6 @@ public class CraftingMenu : MonoBehaviour
             craftingListRectTransform.sizeDelta = new Vector2(craftingListRectTransform.sizeDelta.x,
                 craftingListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
 
-            gameObjectButton.GetComponent<Image>().sprite = smallCraftingRecepieFrame;
             gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
             gameObjectButton.GetComponentInChildren<Image>().sprite = recepie.resultingItemUnit.GetItemSprite();
