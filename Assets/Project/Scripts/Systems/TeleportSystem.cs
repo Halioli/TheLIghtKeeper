@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class TeleportSystem : MonoBehaviour
 {
-    public List<GameObject> teleports;
+
     private Vector3 teleportToGoPosition;
+    
+    public List<GameObject> teleports;
 
     void Start()
     {

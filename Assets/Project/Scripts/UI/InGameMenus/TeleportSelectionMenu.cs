@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TeleportSelectionMenu : MonoBehaviour
 {
     // Private Attributes
-    private TeleporterSystem teleportSystem;
+    private TeleportSystem teleportSystem;
     private List<GameObject> teleportButtonsGameObjects;
     private RectTransform teleportListRectTransform;
 
@@ -16,7 +17,7 @@ public class TeleportSelectionMenu : MonoBehaviour
 
     void Start()
     {
-        teleportSystem = GameObject.FindGameObjectWithTag("Teleporter").GetComponent<TeleporterSystem>();
+        teleportSystem = GameObject.FindGameObjectWithTag("TeleportSystem").GetComponent<TeleportSystem>();
         teleportButtonsGameObjects = new List<GameObject>();
         teleportListRectTransform = teleportList.GetComponent<RectTransform>();
     }
@@ -29,7 +30,16 @@ public class TeleportSelectionMenu : MonoBehaviour
     private void UpdateTeleportSelectionMenu()
     {
         teleportButtonsGameObjects.Clear();
+        int buttonNumb = 0;
 
-        
+        foreach(GameObject teleport in teleportSystem.teleports)
+        {
+            GameObject gameObjectButton = Instantiate(buttonPrefab, teleportList.transform);
+            teleportButtonsGameObjects.Add(gameObjectButton);
+
+            gameObjectButton.GetComponentInChildren<TextMeshProUGUI>().text = teleport.name;
+            
+            ++buttonNumb;
+        }
     }
 }
