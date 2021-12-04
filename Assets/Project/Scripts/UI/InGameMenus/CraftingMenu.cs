@@ -10,7 +10,8 @@ public class CraftingMenu : MonoBehaviour
     private Inventory playerInventory;
     private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
-    private bool craftingRecepiesShown;
+    private RectTransform craftingListRectTransform;
+    private bool updatedCraftingMenu;
 
     // Public Attribute
     public InventoryMenu inventoryMenu;
@@ -24,23 +25,23 @@ public class CraftingMenu : MonoBehaviour
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
-        craftingRecepiesShown = false;
+        craftingListRectTransform = craftingList.GetComponent<RectTransform>();
+        updatedCraftingMenu = false;
     }
 
     private void Update()
     {
-        if (!craftingRecepiesShown)
+        if (!updatedCraftingMenu)
         {
             UpdateCraftingMenu();
-            craftingRecepiesShown = true;
+            updatedCraftingMenu = true;
         }
-        
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             SetFirstElemtTextToRed();
         }
 
-        //craftingSystem.UpdatePlayerInventoryData();
         inventoryMenu.UpdateInventory();
     }
 
@@ -53,6 +54,10 @@ public class CraftingMenu : MonoBehaviour
         {
             GameObject gameObjectButton = Instantiate(buttonPrefab, craftingList.transform);
             recepieButtonsGameObjects.Add(gameObjectButton);
+
+            RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
+            craftingListRectTransform.sizeDelta = new Vector2(craftingListRectTransform.sizeDelta.x,
+                craftingListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
 
             gameObjectButton.GetComponent<Image>().sprite = smallCraftingRecepieFrame;
             gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
