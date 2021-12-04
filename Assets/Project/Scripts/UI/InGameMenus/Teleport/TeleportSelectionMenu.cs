@@ -7,7 +7,7 @@ using TMPro;
 public class TeleportSelectionMenu : MonoBehaviour
 {
     // Private Attributes
-    private TeleportSystem teleportSystem;
+    public TeleportSystem teleportSystem;
     private List<GameObject> teleportButtonsGameObjects;
     private RectTransform teleportListRectTransform;
     private bool updatedUI;
