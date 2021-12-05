@@ -31,7 +31,7 @@ public class Teleporter : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && playerOnTrigger)
+        if (PlayerInputs.instance.PlayerPressedInteractButton() && playerOnTrigger)
         {
             //Do the activate teleport animation and stay teleport
             if (activated)

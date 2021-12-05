@@ -15,6 +15,7 @@ public class TeleportSelectionMenu : MonoBehaviour
     public GameObject teleportList;
     public GameObject buttonPrefab;
 
+
     void Start()
     {
         teleportSystem = GameObject.FindGameObjectWithTag("TeleportSystem").GetComponent<TeleportSystem>();
@@ -35,6 +36,7 @@ public class TeleportSelectionMenu : MonoBehaviour
 
             if (!teleportSystem.teleports[i].activated)
             {
+                teleportButtonsGameObjects[i].GetComponent<Button>().interactable = false;
                 gameObjectButton.SetActive(false);
             }
         }
@@ -64,7 +66,6 @@ public class TeleportSelectionMenu : MonoBehaviour
             if (teleportSystem.teleports[i].activated)
             {
                 teleportButtonsGameObjects[i].SetActive(true);
-
 
                 if (i == teleportSystem.currentTeleportInUse)
                 {

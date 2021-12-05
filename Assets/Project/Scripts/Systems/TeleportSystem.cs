@@ -5,11 +5,12 @@ using UnityEngine;
 public class TeleportSystem : MonoBehaviour
 {
     private GameObject playerGameObject;
+    public int currentTeleportInUse = 0;
 
     public List<Teleporter> teleports;
     private Dictionary<string, int> teleportIdentifier;
 
-    public int currentTeleportInUse = 0;
+
 
     private void Start()
     {
