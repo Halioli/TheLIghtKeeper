@@ -41,10 +41,10 @@ public class PlayerCombat : PlayerBase
 
     void Update()
     {
-        if (playerInputs.PlayerClickedAttackButton() && !attacking)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
         {
-            playerInputs.SetNewMousePosition();
-            if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
+            PlayerInputs.instance.SetNewMousePosition();
+            if (PlayerIsInReachToAttack(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnEnemy(PlayerInputs.instance.mouseWorldPosition))
             {
                 SetEnemyToAttack();
             }
@@ -82,7 +82,7 @@ public class PlayerCombat : PlayerBase
 
     IEnumerator Attacking()
     {
-        playerInputs.canFlip = false;
+        PlayerInputs.instance.canFlip = false;
 
         if (attackingAnEnemy)
         {
@@ -95,7 +95,7 @@ public class PlayerCombat : PlayerBase
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        playerInputs.canFlip = true;
+        PlayerInputs.instance.canFlip = true;
         ResetAttack();
     }
 
@@ -171,10 +171,10 @@ public class PlayerCombat : PlayerBase
         if (playerStates.PlayerActionIsWalking())
             return;
         
-        if ((transform.position.x < playerInputs.mousePosition.x && !playerInputs.facingLeft) ||
-            (transform.position.x > playerInputs.mousePosition.x && playerInputs.facingLeft))
+        if ((transform.position.x < PlayerInputs.instance.mousePosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > PlayerInputs.instance.mousePosition.x && PlayerInputs.instance.facingLeft))
         {
-            playerInputs.facingLeft = !playerInputs.facingLeft;
+            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }
