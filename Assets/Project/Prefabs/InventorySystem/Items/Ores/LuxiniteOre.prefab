@@ -83,10 +83,9 @@ GameObject:
   - component: {fileID: 640109987367956300}
   - component: {fileID: 640109987367956299}
   - component: {fileID: 640109987367956298}
-  - component: {fileID: 640109987367956297}
   - component: {fileID: 640109987367956296}
   - component: {fileID: 2764422272351697028}
-  - component: {fileID: 7175544839310379638}
+  - component: {fileID: 6978114874826525320}
   m_Layer: 0
   m_Name: LuxiniteOre
   m_TagString: Ore
@@ -188,32 +187,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.3}
   m_EdgeRadius: 0
---- !u!114 &640109987367956297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 640109987367956295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1b31aa5e118c7a499a21f45b2c63a89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteList:
-  - {fileID: 21300000, guid: eedc6084227c002489ef43959794f92b, type: 3}
-  - {fileID: 21300000, guid: c4fb88f9cfb3ea946815b4df6a684daf, type: 3}
-  - {fileID: 21300000, guid: babe7555214973043bbaee55957d3426, type: 3}
-  - {fileID: 21300000, guid: 3aa10e9d00c58ec4fb22846023ca682d, type: 3}
-  - {fileID: 21300000, guid: 60c52b78de1dcc1438e774311597b606, type: 3}
-  - {fileID: 21300000, guid: 3130e8599ab50f54a9ca1829d1e98ef8, type: 3}
-  mineralItemToDrop: {fileID: 7714621029357433213, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
-  oreParticleSystem:
-  - {fileID: 7234443045205181044}
-  - {fileID: 6196264925401517989}
-  - {fileID: 5672891841408919291}
-  - {fileID: 5287492390290926962}
-  - {fileID: 7236085261481006924}
 --- !u!114 &640109987367956296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,25 +217,33 @@ MonoBehaviour:
   - {r: 1, g: 0.5330188, b: 0.5330188, a: 0}
   - {r: 0.6179246, g: 1, b: 0.92834663, a: 0}
   - {r: 0.946133, g: 0.6247775, b: 0.9811321, a: 0}
---- !u!95 &7175544839310379638
-Animator:
-  serializedVersion: 3
+--- !u!114 &6978114874826525320
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 640109987367956295}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2ed284237a4373a49a90bdf4d5177c66, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556ddd0c13643e248a54d1ed19fc773f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteList:
+  - {fileID: 21300000, guid: eedc6084227c002489ef43959794f92b, type: 3}
+  - {fileID: 21300000, guid: c4fb88f9cfb3ea946815b4df6a684daf, type: 3}
+  - {fileID: 21300000, guid: babe7555214973043bbaee55957d3426, type: 3}
+  - {fileID: 21300000, guid: 3aa10e9d00c58ec4fb22846023ca682d, type: 3}
+  - {fileID: 21300000, guid: 60c52b78de1dcc1438e774311597b606, type: 3}
+  - {fileID: 21300000, guid: 3130e8599ab50f54a9ca1829d1e98ef8, type: 3}
+  mineralItemToDrop: {fileID: 7714621029357433213, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
+  oreParticleSystem:
+  - {fileID: 7234443045205181044}
+  - {fileID: 6196264925401517989}
+  - {fileID: 5672891841408919291}
+  - {fileID: 5287492390290926962}
+  - {fileID: 7236085261481006924}
+  flashLight: {fileID: 8130296797955341296}
 --- !u!1 &1743028391929746229
 GameObject:
   m_ObjectHideFlags: 0

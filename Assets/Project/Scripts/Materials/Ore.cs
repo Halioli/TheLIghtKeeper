@@ -18,7 +18,6 @@ public class Ore : MonoBehaviour
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
-    public Animator animator;
 
     private void Start()
     {
@@ -76,7 +75,6 @@ public class Ore : MonoBehaviour
         }
 
         currentSprite = spriteList[currentSpriteIndex];
-        animator.SetInteger("actualState", currentSpriteIndex);
     }
 
     protected void DropMineralItem()
@@ -98,7 +96,7 @@ public class Ore : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = currentSprite;
     }
 
-    IEnumerator Disappear()
+    protected IEnumerator Disappear()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -116,7 +114,7 @@ public class Ore : MonoBehaviour
         Destroy(gameObject);
     }
 
-    IEnumerator PlayBreakParticles()
+    protected IEnumerator PlayBreakParticles()
     {
         foreach (ParticleSystem particleSystem in oreParticleSystem)
         {
