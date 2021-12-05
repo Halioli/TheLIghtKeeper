@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class TeleportButton : MonoBehaviour
 {
-    private GameObject player;
-    private TeleportSystem teleportSystem;
     public int buttonNumber;
 
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-        teleportSystem = GameObject.FindGameObjectWithTag("TeleportSystem").GetComponent<TeleportSystem>();
-    }
+    // Events
+    public delegate void TeleportSelected(int teleportIndex);
+    public static event TeleportSelected OnSelection;
+
 
     public void TeleportToLocation()
     {
-        player.transform.position = teleportSystem.teleports[buttonNumber].GetComponent<Teleporter>().teleportTransformPosition;
+        if (OnSelection != null)
+        {
+            OnSelection(buttonNumber);
+        }
     }
+
 }

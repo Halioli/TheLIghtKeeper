@@ -41,14 +41,46 @@ public class TeleportSelectionMenu : MonoBehaviour
     }
 
 
-    public void UpdateTeleportSelectionMenu()
+    private void OnEnable()
+    {
+        Teleporter.OnActivation += UpdateTeleportSelectionMenu;
+
+        TeleportButton.OnSelection += DeactivateSelf;
+    }
+
+    private void OnDisable()
+    {
+        Teleporter.OnActivation -= UpdateTeleportSelectionMenu;
+        
+        TeleportButton.OnSelection -= DeactivateSelf;
+    }
+
+
+
+    public void UpdateTeleportSelectionMenu(string currentTeleportInUse)
     {
         for (int i = 0; i < teleportSystem.teleports.Count; ++i)
         {
             if (teleportSystem.teleports[i].activated)
             {
                 teleportButtonsGameObjects[i].SetActive(true);
+
+
+                if (i == teleportSystem.currentTeleportInUse)
+                {
+                    teleportButtonsGameObjects[i].GetComponent<Button>().interactable = false;
+                }
+                else if (!teleportButtonsGameObjects[i].GetComponent<Button>().interactable)
+                {
+                    teleportButtonsGameObjects[i].GetComponent<Button>().interactable = true;
+                }
             }
         }
     }
+
+    private void DeactivateSelf(int teleportIndex)
+    {
+        gameObject.SetActive(false);
+    }
+
 }
