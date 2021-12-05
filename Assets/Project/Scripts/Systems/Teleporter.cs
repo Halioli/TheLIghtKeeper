@@ -38,17 +38,22 @@ public class Teleporter : MonoBehaviour
             {
                 if (canvasTeleportSelection.active)
                 {
-                    
+                    PlayerInputs.instance.canMove = true;
+
                     canvasTeleportSelection.SetActive(false);
                 }
                 else
                 {
+                    PlayerInputs.instance.canMove = false;
+
                     canvasTeleportSelection.SetActive(true);
                     OnActivation(teleportName);
                 }
             }
             else
             {
+                PlayerInputs.instance.canMove = false;
+
                 animatior.SetBool("isActivated", true);
                 OnActivation(teleportName);
             }

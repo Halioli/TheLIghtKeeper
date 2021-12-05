@@ -48,5 +48,6 @@ public class TeleportSystem : MonoBehaviour
     {
         playerGameObject.transform.position = teleports[teleportIndex].GetComponent<Teleporter>().teleportTransformPosition;
 
+        PlayerInputs.instance.canMove = true;
     }
 }
