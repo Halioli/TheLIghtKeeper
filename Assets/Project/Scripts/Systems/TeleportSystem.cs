@@ -4,9 +4,5 @@ using UnityEngine;
 
 public class TeleportSystem : MonoBehaviour
 {
-
-    private Vector3 teleportToGoPosition;
-    public List<GameObject> teleports;
-
-
+    public List<Teleporter> teleports;
 }

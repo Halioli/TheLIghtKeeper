@@ -10,7 +10,6 @@ public class TeleportSelectionMenu : MonoBehaviour
     public TeleportSystem teleportSystem;
     private List<GameObject> teleportButtonsGameObjects;
     private RectTransform teleportListRectTransform;
-    private bool updatedUI;
 
     // Public Attributes
     public GameObject teleportList;
@@ -21,35 +20,35 @@ public class TeleportSelectionMenu : MonoBehaviour
         teleportSystem = GameObject.FindGameObjectWithTag("TeleportSystem").GetComponent<TeleportSystem>();
         teleportButtonsGameObjects = new List<GameObject>();
         teleportListRectTransform = teleportList.GetComponent<RectTransform>();
-        updatedUI = false;
-    }
 
-    void Update()
-    {
-        if (!updatedUI)
-        {
-            UpdateTeleportSelectionMenu();
-            updatedUI = true;
-        }
-    }
-
-    private void UpdateTeleportSelectionMenu()
-    {
-        teleportButtonsGameObjects.Clear();
-        int buttonNumb = 0;
-
-        foreach(GameObject teleport in teleportSystem.teleports)
+        for (int i = 0; i < teleportSystem.teleports.Count; ++i)
         {
             GameObject gameObjectButton = Instantiate(buttonPrefab, teleportList.transform);
             teleportButtonsGameObjects.Add(gameObjectButton);
 
-            gameObjectButton.GetComponentInChildren<TextMeshProUGUI>().text = teleport.GetComponent<Teleporter>().teleportName;
+            gameObjectButton.GetComponentInChildren<TextMeshProUGUI>().text = teleportSystem.teleports[i].teleportName;
+            gameObjectButton.GetComponentInChildren<TeleportButton>().buttonNumber = i;
 
-            RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
-            teleportListRectTransform.sizeDelta = new Vector2(teleportListRectTransform.sizeDelta.x,
-                         teleportListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
+            //RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
+            //teleportListRectTransform.sizeDelta = new Vector2(teleportListRectTransform.sizeDelta.x,
+            //    
 
-            ++buttonNumb;
+            if (!teleportSystem.teleports[i].activated)
+            {
+                gameObjectButton.SetActive(false);
+            }
+        }
+    }
+
+
+    public void UpdateTeleportSelectionMenu()
+    {
+        for (int i = 0; i < teleportSystem.teleports.Count; ++i)
+        {
+            if (teleportSystem.teleports[i].activated)
+            {
+                teleportButtonsGameObjects[i].SetActive(true);
+            }
         }
     }
 }

@@ -30,12 +30,7 @@ public class Teleporter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && playerOnTrigger)
         {
             //Do the activate teleport animation and stay teleport
-            if (!activated)
-            {
-                animatior.SetBool("isActivated", true);
-                activated = true;
-            }
-            else
+            if (activated)
             {
                 if (canvasIsActive)
                 {
@@ -47,6 +42,11 @@ public class Teleporter : MonoBehaviour
                     canvasTeleportSelection.SetActive(true);
                     canvasIsActive = true;
                 }
+
+            }
+            else
+            {
+                animatior.SetBool("isActivated", true);
             }
         }
 
@@ -62,4 +62,13 @@ public class Teleporter : MonoBehaviour
         playerOnTrigger = false;
     }
 
+
+    public void SetTeleporterActive()
+    {
+        activated = true;
+
+        canvasTeleportSelection.SetActive(true);
+        canvasIsActive = true;
+        canvasTeleportSelection.GetComponent<TeleportSelectionMenu>().UpdateTeleportSelectionMenu();
+    }
 }
