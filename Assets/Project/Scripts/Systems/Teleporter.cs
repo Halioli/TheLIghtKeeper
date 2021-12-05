@@ -8,7 +8,6 @@ public class Teleporter : MonoBehaviour
     private Vector2 spawnPosition;
     private Animator animatior;
     private bool playerOnTrigger = false;
-    private bool canvasIsActive;
 
     // Public Attributes
     public string teleportName;
@@ -17,12 +16,17 @@ public class Teleporter : MonoBehaviour
     public GameObject[] teleporterLights;
     public GameObject canvasTeleportSelection;
 
+
+    // Events
+    public delegate void TeleportActivation(string teleportName);
+    public static event TeleportActivation OnActivation;
+
+
     private void Start()
     {
         teleportTransformPosition = GetComponent<Transform>().position;
         spawnPosition = transform.position;
         animatior = GetComponent<Animator>();
-        canvasIsActive = false;
     }
 
     private void Update()
@@ -30,23 +34,23 @@ public class Teleporter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && playerOnTrigger)
         {
             //Do the activate teleport animation and stay teleport
-            if (!activated)
+            if (activated)
             {
-                animatior.SetBool("isActivated", true);
-                activated = true;
-            }
-            else
-            {
-                if (canvasIsActive)
+                if (canvasTeleportSelection.active)
                 {
+                    
                     canvasTeleportSelection.SetActive(false);
-                    canvasIsActive = false;
                 }
                 else
                 {
                     canvasTeleportSelection.SetActive(true);
-                    canvasIsActive = true;
+                    OnActivation(teleportName);
                 }
+            }
+            else
+            {
+                animatior.SetBool("isActivated", true);
+                OnActivation(teleportName);
             }
         }
 
@@ -62,4 +66,14 @@ public class Teleporter : MonoBehaviour
         playerOnTrigger = false;
     }
 
+
+    public void SetTeleporterActive()
+    {
+        activated = true;
+
+        canvasTeleportSelection.SetActive(true);
+
+        if (OnActivation != null)
+            OnActivation(teleportName);
+    }
 }
