@@ -10,8 +10,9 @@ public class TeleportButton : TeleportSystem
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
+
     public void TeleportToLocation(int buttonNumb)
     {
-        player.transform.position = teleports[buttonNumb].transform.position;
+        player.transform.position = teleports[buttonNumb].GetComponent<Teleporter>().teleportTransformPosition;
     }
 }

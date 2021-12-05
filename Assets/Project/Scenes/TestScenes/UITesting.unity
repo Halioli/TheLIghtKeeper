@@ -130,9 +130,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1950038477}
     m_Modifications:
+    - target: {fileID: 6529776738348863833, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
+      propertyPath: teleportName
+      value: B
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529776738348863833, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
+      propertyPath: canvasTeleportSelection
+      value: 
+      objectReference: {fileID: 409042324}
     - target: {fileID: 7734219591756777512, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
       propertyPath: m_Name
-      value: Teleport 1 (1)
+      value: Teleport_02
       objectReference: {fileID: 0}
     - target: {fileID: 7734219591756777513, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
       propertyPath: m_RootOrder
@@ -189,6 +197,11 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7734219591756777512, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
   m_PrefabInstance: {fileID: 344899451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &409042324 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2078909852242158083, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
+  m_PrefabInstance: {fileID: 2078909851078137579}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &450977612
 GameObject:
@@ -383,6 +396,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1950038477}
     m_Modifications:
+    - target: {fileID: 6529776738348863833, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
+      propertyPath: teleportName
+      value: A
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529776738348863833, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
+      propertyPath: canvasTeleportSelection
+      value: 
+      objectReference: {fileID: 409042324}
     - target: {fileID: 7734219591756777512, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
       propertyPath: m_Name
       value: Teleport 1
@@ -550,7 +571,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2078909850255732779, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000011099893
+      value: 0.000042477222
       objectReference: {fileID: 0}
     - target: {fileID: 2078909850376149193, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -558,23 +579,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2078909851673363081, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2078909851673363081, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.9993655
       objectReference: {fileID: 0}
     - target: {fileID: 2078909851801286880, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2078909851801286880, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2078909851801286880, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 2078909852143538339, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -583,6 +604,10 @@ PrefabInstance:
     - target: {fileID: 2078909852242158083, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_Name
       value: CanvasTeleportSelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 2078909852242158083, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2078909852242158087, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: m_Pivot.x

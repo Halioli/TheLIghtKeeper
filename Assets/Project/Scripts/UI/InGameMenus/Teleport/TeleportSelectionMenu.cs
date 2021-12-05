@@ -43,7 +43,7 @@ public class TeleportSelectionMenu : MonoBehaviour
             GameObject gameObjectButton = Instantiate(buttonPrefab, teleportList.transform);
             teleportButtonsGameObjects.Add(gameObjectButton);
 
-            gameObjectButton.GetComponentInChildren<TextMeshProUGUI>().text = teleport.name;
+            gameObjectButton.GetComponentInChildren<TextMeshProUGUI>().text = teleport.GetComponent<Teleporter>().teleportName;
 
             RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
             teleportListRectTransform.sizeDelta = new Vector2(teleportListRectTransform.sizeDelta.x,
