@@ -31,24 +31,29 @@ public class Teleporter : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && playerOnTrigger)
+        if (PlayerInputs.instance.PlayerPressedInteractButton() && playerOnTrigger)
         {
             //Do the activate teleport animation and stay teleport
             if (activated)
             {
                 if (canvasTeleportSelection.active)
                 {
-                    
+                    PlayerInputs.instance.canMove = true;
+
                     canvasTeleportSelection.SetActive(false);
                 }
                 else
                 {
+                    PlayerInputs.instance.canMove = false;
+
                     canvasTeleportSelection.SetActive(true);
                     OnActivation(teleportName);
                 }
             }
             else
             {
+                PlayerInputs.instance.canMove = false;
+
                 animatior.SetBool("isActivated", true);
                 OnActivation(teleportName);
             }

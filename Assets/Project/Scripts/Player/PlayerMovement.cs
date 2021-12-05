@@ -31,7 +31,7 @@ public class PlayerMovement : PlayerBase
     {
         if (playerStates.PlayerStateIsFree())
         {
-            moveDirection = playerInputs.PlayerPressedMovementButtons();
+            moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
@@ -74,12 +74,12 @@ public class PlayerMovement : PlayerBase
 
     private void FlipSprite()
     {
-        if (!playerInputs.canFlip)
+        if (!PlayerInputs.instance.canFlip)
             return;
 
-        if((moveDirection.x > 0 && !playerInputs.facingLeft) || moveDirection.x < 0 && playerInputs.facingLeft)
+        if((moveDirection.x > 0 && !PlayerInputs.instance.facingLeft) || moveDirection.x < 0 && PlayerInputs.instance.facingLeft)
         {
-            playerInputs.facingLeft = !playerInputs.facingLeft;
+            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }

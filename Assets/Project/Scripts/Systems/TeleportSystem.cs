@@ -5,11 +5,12 @@ using UnityEngine;
 public class TeleportSystem : MonoBehaviour
 {
     private GameObject playerGameObject;
+    public int currentTeleportInUse = 0;
 
     public List<Teleporter> teleports;
     private Dictionary<string, int> teleportIdentifier;
 
-    public int currentTeleportInUse = 0;
+
 
     private void Start()
     {
@@ -48,5 +49,6 @@ public class TeleportSystem : MonoBehaviour
     {
         playerGameObject.transform.position = teleports[teleportIndex].GetComponent<Teleporter>().teleportTransformPosition;
 
+        PlayerInputs.instance.canMove = true;
     }
 }

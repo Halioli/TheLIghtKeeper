@@ -17,13 +17,14 @@ public class Lamp : MonoBehaviour
     private bool turnedOn;
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
-    private Light2D pointLight2D;
 
     public float flickerIntensity = 1f;
     public float flickerTime = 0.08f;
 
     // Public Attributes
-    public GameObject lampLight;
+    public GameObject lampLightCone;
+    public Light2D pointLight;
+
     public Animator animator;
 
     System.Random rg;
@@ -41,7 +42,6 @@ public class Lamp : MonoBehaviour
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-        pointLight2D = GetComponentsInChildren<Light2D>()[0];
         StartCoroutine(Flicker());
     }
 
@@ -85,24 +85,24 @@ public class Lamp : MonoBehaviour
     {
         turnedOn = true;
         animator.SetBool("light", true);
-        lampLight.SetActive(true);
-        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
-        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
-        pointLight2D.intensity = 1f;
+        lampLightCone.SetActive(true);
+        //pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
+        //pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
+        pointLight.intensity = 1f;
     }
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
         animator.SetBool("light", false);
-        lampLight.SetActive(false);
+        lampLightCone.SetActive(false);
     }
 
     public void DeactivateConeLightButNotPointLight()
     {
-        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
-        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
-        pointLight2D.intensity = 0.1f;
+        //pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
+        //pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
+        pointLight.intensity = 0.1f;
     }
 
     public float GetLampTimeRemaining()
@@ -115,7 +115,7 @@ public class Lamp : MonoBehaviour
     {
         while (true)
         {
-            pointLight2D.intensity = 1f;
+            pointLight.intensity = 1f;
 
             float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
             yield return new WaitForSeconds(lightingTime);
@@ -125,7 +125,7 @@ public class Lamp : MonoBehaviour
             for(int i = 0; i < flickerCount; i++)
             {
                 float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
-                pointLight2D.intensity = flickingIntensity;
+                pointLight.intensity = flickingIntensity;
 
                 float flickingTime = (float)rg.NextDouble() * flickerTime;
                 yield return new WaitForSeconds(flickingTime);
