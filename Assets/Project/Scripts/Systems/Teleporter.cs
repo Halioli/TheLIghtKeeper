@@ -25,6 +25,7 @@ public class Teleporter : MonoBehaviour
     private void Start()
     {
         teleportTransformPosition = GetComponent<Transform>().position;
+        teleportTransformPosition.y -= 1.3f;
         spawnPosition = transform.position;
         animatior = GetComponent<Animator>();
     }
