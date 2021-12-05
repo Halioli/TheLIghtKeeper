@@ -6,7 +6,7 @@ public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
     private const float FADE_TIME = 2f;
-    
+
     private float currentFadeTime;
     private int playerHealthValue;
     private int lampTimeValue;
@@ -15,12 +15,8 @@ public class HUDHandler : MonoBehaviour
     private CanvasGroup lampGroup;
     private CanvasGroup coreGroup;
     private CanvasGroup quickAccessGroup;
-    private HealthSystem playerHealthSystem;
-    private Lamp lamp;
 
     // Public Attributes
-    public float fadeSpeed = 0.003f;
-
     public HUDBar healthBar;
     public HUDBar lampBar;
     public HUDBar coreBar;
@@ -29,18 +25,18 @@ public class HUDHandler : MonoBehaviour
     public HUDItem itemCenter;
     public HUDItem itemLeft;
 
+    public HealthSystem playerhealthSystem;
+    public Lamp lamp;
     public Furnace furnace;
 
     // Start is called before the first frame update
     private void Start()
     {
         currentFadeTime = 0f;
-        playerHealthSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<HealthSystem>();
-        lamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
 
         // Initalize health variables
         healthGroup = GetComponentsInChildren<CanvasGroup>()[0];
-        playerHealthValue = playerHealthSystem.GetMaxHealth();
+        playerHealthValue = playerhealthSystem.GetMaxHealth();
         healthBar.SetMaxValue(playerHealthValue);
         healthBar.UpdateText(CheckTextForZeros(playerHealthValue.ToString()));
 
@@ -62,7 +58,7 @@ public class HUDHandler : MonoBehaviour
 
     private void Update()
     {
-        playerHealthValue = playerHealthSystem.GetHealth();
+        playerHealthValue = playerhealthSystem.GetHealth();
         ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
 
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
@@ -70,19 +66,6 @@ public class HUDHandler : MonoBehaviour
 
         coreTimeValue = furnace.GetCurrentFuel();
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            StartCoroutine("ChangeCanvasGroupAlphaToZero", healthGroup);
-        }
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            
-        }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            
-        }
     }
 
     private string CheckTextForZeros(string text)
@@ -103,16 +86,14 @@ public class HUDHandler : MonoBehaviour
         bar.UpdateText(CheckTextForZeros(text));
     }
 
-    IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    public void ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
     {
-        float lerpAmount = 0f;
-
-        while (lerpAmount < 1)
+        while (currentFadeTime < FADE_TIME)
         {
-            canvasGroup.alpha = Mathf.Lerp(1f, 0f, lerpAmount);
-            lerpAmount += fadeSpeed;
-        }
+            currentFadeTime += Time.deltaTime;
 
-        yield return null;
+            canvasGroup.alpha = 1f - Mathf.Clamp01(currentFadeTime / FADE_TIME);
+        }
+        currentFadeTime = 0f;
     }
 }
