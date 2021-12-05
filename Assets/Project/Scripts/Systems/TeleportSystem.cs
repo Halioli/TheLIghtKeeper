@@ -4,16 +4,49 @@ using UnityEngine;
 
 public class TeleportSystem : MonoBehaviour
 {
-    private List<GameObject> teleports;
-    private Vector3 teleportToGoPosition;
+    private GameObject playerGameObject;
 
-    void Start()
+    public List<Teleporter> teleports;
+    private Dictionary<string, int> teleportIdentifier;
+
+    public int currentTeleportInUse = 0;
+
+    private void Start()
     {
-        teleports = new List<GameObject>(GameObject.FindGameObjectsWithTag("Teleporter"));
+        playerGameObject = GameObject.FindGameObjectWithTag("Player");
+
+        teleportIdentifier = new Dictionary<string, int>();
+        for (int i = 0; i < teleports.Count; ++i)
+        {
+            teleportIdentifier[teleports[i].teleportName] = i;
+        }
+        
     }
 
-    private void TeleportPlayer()
+
+    private void OnEnable()
     {
+        Teleporter.OnActivation += SetPlayerInCurrentTeleport;
+
+        TeleportButton.OnSelection += TeleportPlayerToNewPosition;
+    }
+
+    private void OnDisable()
+    {
+        Teleporter.OnActivation -= SetPlayerInCurrentTeleport;
+        
+        TeleportButton.OnSelection -= TeleportPlayerToNewPosition;
+    }
+
+
+    private void SetPlayerInCurrentTeleport(string teleportName)
+    {
+        currentTeleportInUse = teleportIdentifier[teleportName];
+    }
+
+    private void TeleportPlayerToNewPosition(int teleportIndex)
+    {
+        playerGameObject.transform.position = teleports[teleportIndex].GetComponent<Teleporter>().teleportTransformPosition;
 
     }
 }

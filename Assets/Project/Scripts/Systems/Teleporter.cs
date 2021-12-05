@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    public string teleportName;
-    public Vector3 teleportTransformPosition;
-
-    private bool activated = false;
+    // Private Attributes
     private Vector2 spawnPosition;
     private Animator animatior;
     private bool playerOnTrigger = false;
+
+    // Public Attributes
+    public string teleportName;
+    public Vector3 teleportTransformPosition;
+    public bool activated = false;
     public GameObject[] teleporterLights;
+    public GameObject canvasTeleportSelection;
+
+
+    // Events
+    public delegate void TeleportActivation(string teleportName);
+    public static event TeleportActivation OnActivation;
+
 
     private void Start()
     {
@@ -25,11 +34,23 @@ public class Teleporter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && playerOnTrigger)
         {
             //Do the activate teleport animation and stay teleport
-            if (!activated)
+            if (activated)
             {
-                Debug.Log("AAAAAAA");
+                if (canvasTeleportSelection.active)
+                {
+                    
+                    canvasTeleportSelection.SetActive(false);
+                }
+                else
+                {
+                    canvasTeleportSelection.SetActive(true);
+                    OnActivation(teleportName);
+                }
+            }
+            else
+            {
                 animatior.SetBool("isActivated", true);
-                activated = true;
+                OnActivation(teleportName);
             }
         }
 
@@ -45,4 +66,14 @@ public class Teleporter : MonoBehaviour
         playerOnTrigger = false;
     }
 
+
+    public void SetTeleporterActive()
+    {
+        activated = true;
+
+        canvasTeleportSelection.SetActive(true);
+
+        if (OnActivation != null)
+            OnActivation(teleportName);
+    }
 }
