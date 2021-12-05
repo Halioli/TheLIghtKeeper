@@ -5,7 +5,9 @@ using UnityEngine;
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
-    private Rigidbody2D rigidbody2D;
+    protected Rigidbody2D rigidbody2D;
+    public bool canBePickedUp;
+
     
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
@@ -33,6 +35,7 @@ public class ItemGameObject : MonoBehaviour
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        canBePickedUp = true;
     }
 
 
@@ -104,5 +107,10 @@ public class ItemGameObject : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    public virtual void DoFunctionality()
+    {
+        // Consumible does functionality
     }
 }

@@ -145,9 +145,16 @@ abstract public class Enemy : MonoBehaviour
 
     IEnumerator StartBanishing()
     {
+        float preDespawnTime = Random.Range(0.0f, 0.3f);
+        while (preDespawnTime > 0.0f)
+        {
+            preDespawnTime -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
         // Play banish audio sound
         audioSource.clip = banishAudioClip;
-        audioSource.volume = Random.Range(0.1f, 0.3f);
+        audioSource.volume = Random.Range(0.1f, 0.2f);
         audioSource.pitch = Random.Range(0.7f, 1.5f);
         audioSource.Play();
 

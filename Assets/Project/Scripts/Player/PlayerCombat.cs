@@ -16,7 +16,7 @@ public class PlayerCombat : PlayerBase
     private bool attacking = false;
     private bool attackingAnEnemy = false;
 
-    private const float INVULNERABILITY_TIME = 1.0f;
+    private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
@@ -41,10 +41,10 @@ public class PlayerCombat : PlayerBase
 
     void Update()
     {
-        if (playerInputs.PlayerClickedAttackButton() && !attacking)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
         {
-            playerInputs.SetNewMousePosition();
-            if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
+            PlayerInputs.instance.SetNewMousePosition();
+            if (PlayerIsInReachToAttack(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnEnemy(PlayerInputs.instance.mouseWorldPosition))
             {
                 SetEnemyToAttack();
             }
@@ -82,7 +82,7 @@ public class PlayerCombat : PlayerBase
 
     IEnumerator Attacking()
     {
-        playerInputs.canFlip = false;
+        PlayerInputs.instance.canFlip = false;
 
         if (attackingAnEnemy)
         {
@@ -95,7 +95,7 @@ public class PlayerCombat : PlayerBase
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        playerInputs.canFlip = true;
+        PlayerInputs.instance.canFlip = true;
         ResetAttack();
     }
 
@@ -145,15 +145,25 @@ public class PlayerCombat : PlayerBase
     IEnumerator Invulnerability()
     {
         isInvulnerable = true;
+        gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Color original = spriteRenderer.color;
+        Color transparent = spriteRenderer.color;
+        transparent.a = 0.3f;
 
         while (currentInvulnerabilityTime >= 0.0f)
         {
+            spriteRenderer.color = transparent;
+
             currentInvulnerabilityTime -= Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
+        spriteRenderer.color = original;
         currentInvulnerabilityTime = INVULNERABILITY_TIME;
         isInvulnerable = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
     private void FlipPlayerSpriteFacingWhereToAttack()
@@ -161,10 +171,10 @@ public class PlayerCombat : PlayerBase
         if (playerStates.PlayerActionIsWalking())
             return;
         
-        if ((transform.position.x < playerInputs.mousePosition.x && !playerInputs.facingLeft) ||
-            (transform.position.x > playerInputs.mousePosition.x && playerInputs.facingLeft))
+        if ((transform.position.x < PlayerInputs.instance.mousePosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > PlayerInputs.instance.mousePosition.x && PlayerInputs.instance.facingLeft))
         {
-            playerInputs.facingLeft = !playerInputs.facingLeft;
+            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }

@@ -7,6 +7,9 @@ public class PlayerMovement : PlayerBase
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
+    private bool beingPushed = false;
+    private Vector2 pushDirection = new Vector2();
+    private float pushForce = 0f;
 
     // Public attributes
     public float moveSpeed;
@@ -28,7 +31,7 @@ public class PlayerMovement : PlayerBase
     {
         if (playerStates.PlayerStateIsFree())
         {
-            moveDirection = playerInputs.PlayerPressedMovementButtons();
+            moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
             if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
@@ -44,17 +47,22 @@ public class PlayerMovement : PlayerBase
                 playPlayerWalkingSoundEvent();
             }
         }
-        /*
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rigidbody2D.velocity = Vector2.zero;
             rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
         }
-        */
+        
     }
 
     private void FixedUpdate()
     {
+        if (beingPushed)
+        {
+            rigidbody2D.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+            beingPushed = false;
+        }
         if (playerStates.PlayerActionIsWalking())
         {
             rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
@@ -66,15 +74,20 @@ public class PlayerMovement : PlayerBase
 
     private void FlipSprite()
     {
-        if (!playerInputs.canFlip)
+        if (!PlayerInputs.instance.canFlip)
             return;
 
-        if((moveDirection.x > 0 && !playerInputs.facingLeft) || moveDirection.x < 0 && playerInputs.facingLeft)
+        if((moveDirection.x > 0 && !PlayerInputs.instance.facingLeft) || moveDirection.x < 0 && PlayerInputs.instance.facingLeft)
         {
-            playerInputs.facingLeft = !playerInputs.facingLeft;
+            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
     }
 
-
+    public void GetsPushed(Vector2 newPushDirection, float newPushForce)
+    {
+        beingPushed = true;
+        pushDirection = newPushDirection;
+        pushForce = newPushForce;
+    }
 }

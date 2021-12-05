@@ -6,7 +6,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-    private const float LIGHT_ROD_REFUEL_AMOUNT = 10f;
 
     private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
     private const float POINTLIGHT_INNER_RADIUS_ON = 6f;
@@ -18,16 +17,15 @@ public class Lamp : MonoBehaviour
     private bool turnedOn;
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
-    private Light2D pointLight2D;
 
     public float flickerIntensity = 1f;
     public float flickerTime = 0.08f;
 
     // Public Attributes
-    public GameObject lampLight;
-    public GameObject lampSpriteObject;
-    public Sprite lampSprite;
-    public Item lightRodItem;
+    public GameObject lampLightCone;
+    public Light2D pointLight;
+
+    public Animator animator;
 
     System.Random rg;
 
@@ -44,7 +42,6 @@ public class Lamp : MonoBehaviour
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-        pointLight2D = GetComponentsInChildren<Light2D>()[0];
         StartCoroutine(Flicker());
     }
 
@@ -60,7 +57,8 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            CheckPlayerInventoryForLightRods();
+            DeactivateConeLightButNotPointLight();
+            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
         }
         else
         {
@@ -86,25 +84,25 @@ public class Lamp : MonoBehaviour
     public void ActivateLampLight()
     {
         turnedOn = true;
-        lampLight.SetActive(true);
-        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
-        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
-        pointLight2D.intensity = 1f;
-        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = lampSprite;
+        animator.SetBool("light", true);
+        lampLightCone.SetActive(true);
+        //pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
+        //pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
+        pointLight.intensity = 1f;
     }
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
-        lampLight.SetActive(false);
-        lampSpriteObject.GetComponent<SpriteRenderer>().sprite = null;
+        animator.SetBool("light", false);
+        lampLightCone.SetActive(false);
     }
 
     public void DeactivateConeLightButNotPointLight()
     {
-        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
-        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
-        pointLight2D.intensity = 0.1f;
+        //pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
+        //pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
+        pointLight.intensity = 0.1f;
     }
 
     public float GetLampTimeRemaining()
@@ -112,27 +110,12 @@ public class Lamp : MonoBehaviour
         return lampTime;
     }
 
-   
-    private void CheckPlayerInventoryForLightRods()
-    {
-        if (playerInventory.InventoryContainsItem(lightRodItem))
-        {
-            playerInventory.SubstractItemToInventory(lightRodItem);
-            lampTime += LIGHT_ROD_REFUEL_AMOUNT;
-            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToTrue();
-        }
-        else
-        {
-            DeactivateConeLightButNotPointLight();
-            GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
-        }
-    }
 
     IEnumerator Flicker()
     {
         while (true)
         {
-            pointLight2D.intensity = 1f;
+            pointLight.intensity = 1f;
 
             float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
             yield return new WaitForSeconds(lightingTime);
@@ -142,7 +125,7 @@ public class Lamp : MonoBehaviour
             for(int i = 0; i < flickerCount; i++)
             {
                 float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
-                pointLight2D.intensity = flickingIntensity;
+                pointLight.intensity = flickingIntensity;
 
                 float flickingTime = (float)rg.NextDouble() * flickerTime;
                 yield return new WaitForSeconds(flickingTime);
