@@ -11,6 +11,15 @@ public class CraftingStation : InteractStation
 
     public InventoryMenu inventoryMenu;
 
+    public ParticleSystem[] craftingParticles;
+
+    private void Start()
+    {
+        foreach(ParticleSystem particle in craftingParticles)
+        {
+            particle.Stop();
+        }
+    }
     void Update()
     {
         // If player enters the trigger area the interactionText will appears
@@ -56,5 +65,20 @@ public class CraftingStation : InteractStation
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+    }
+
+    IEnumerator CraftingParticleSystem()
+    {
+        foreach (ParticleSystem particle in craftingParticles)
+        {
+            particle.Play();
+        }
+
+        yield return new WaitForSeconds(3.4f);
+
+        foreach (ParticleSystem particle in craftingParticles)
+        {
+            particle.Play();
+        }
     }
 }
