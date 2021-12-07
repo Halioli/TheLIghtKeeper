@@ -24,6 +24,8 @@ public class PlayerCombat : PlayerBase
     private Collider2D colliderDetectedByMouse = null;
     private Enemy enemyToAttack;
 
+    //Particles
+    public ParticleSystem playerBlood;
 
 
     // Audio
@@ -37,6 +39,7 @@ public class PlayerCombat : PlayerBase
     {
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        playerBlood.Stop();
     }
 
     void Update()
@@ -140,6 +143,7 @@ public class PlayerCombat : PlayerBase
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.clip = hurtedAudioClip;
         audioSource.Play();
+        StartCoroutine(PlayerBloodParticleSystem());
     }
 
     IEnumerator Invulnerability()
@@ -177,5 +181,12 @@ public class PlayerCombat : PlayerBase
             PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
+    }
+
+    IEnumerator PlayerBloodParticleSystem()
+    {
+        playerBlood.Play();
+        yield return new WaitForSeconds(0.3f);
+        playerBlood.Stop();
     }
 }
