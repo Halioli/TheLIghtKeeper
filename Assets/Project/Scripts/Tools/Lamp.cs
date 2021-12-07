@@ -6,11 +6,10 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-
-    private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
-    private const float POINTLIGHT_INNER_RADIUS_ON = 6f;
-    private const float POINTLIGHT_OUTER_RADIUS_OFF = 2f;
-    private const float POINTLIGHT_OUTER_RADIUS_ON = 8f;
+    private const float CONE_LIGHT_INTENSITY_ON = 0.25f;
+    private const float CONE_LIGHT_INTENSITY_OFF = 0f;
+    private const float CIRCLE_LIGHT_INTENSITY_ON = 1f;
+    private const float CIRCLE_LIGHT_INTENSITY_OFF = 0.1f;
 
     private float maxLampTime;
     private float lampTime;
@@ -18,14 +17,16 @@ public class Lamp : MonoBehaviour
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
 
-    public float flickerIntensity = 1f;
-    public float flickerTime = 0.08f;
-
     // Public Attributes
+    public GameObject lampLightCircle;
     public GameObject lampLightCone;
-    public Light2D pointLight;
+    public Light2D circlePointLight;
+    public Light2D coneParametricLight;
 
     public Animator animator;
+
+    public float flickerIntensity;
+    public float flickerTime;
 
     System.Random rg;
 
@@ -86,9 +87,10 @@ public class Lamp : MonoBehaviour
         turnedOn = true;
         animator.SetBool("light", true);
         lampLightCone.SetActive(true);
-        //pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
-        //pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
-        pointLight.intensity = 1f;
+        lampLightCircle.SetActive(true);
+
+        circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_ON;
+        coneParametricLight.intensity = CONE_LIGHT_INTENSITY_ON;
     }
 
     public void DeactivateLampLight()
@@ -96,13 +98,13 @@ public class Lamp : MonoBehaviour
         turnedOn = false;
         animator.SetBool("light", false);
         lampLightCone.SetActive(false);
+        lampLightCircle.SetActive(false);
     }
 
     public void DeactivateConeLightButNotPointLight()
     {
-        //pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
-        //pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
-        pointLight.intensity = 0.1f;
+        circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_OFF;
+        coneParametricLight.intensity = CONE_LIGHT_INTENSITY_OFF;
     }
 
     public float GetLampTimeRemaining()
@@ -115,7 +117,8 @@ public class Lamp : MonoBehaviour
     {
         while (true)
         {
-            pointLight.intensity = 1f;
+            circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_ON;
+            coneParametricLight.intensity = CONE_LIGHT_INTENSITY_ON;
 
             float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
             yield return new WaitForSeconds(lightingTime);
@@ -125,7 +128,8 @@ public class Lamp : MonoBehaviour
             for(int i = 0; i < flickerCount; i++)
             {
                 float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
-                pointLight.intensity = flickingIntensity;
+                circlePointLight.intensity = flickingIntensity;
+                coneParametricLight.intensity = flickingIntensity;
 
                 float flickingTime = (float)rg.NextDouble() * flickerTime;
                 yield return new WaitForSeconds(flickingTime);
