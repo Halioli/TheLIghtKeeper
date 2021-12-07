@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6637408502466100895
 Transform:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -5126,7 +5126,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -10567,6 +10567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3be414cda14a4a428d97ff3b2cff101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBlood: {fileID: 3410508154403687448}
   audioSource: {fileID: 2109840049878452791}
   hurtedAudioClip: {fileID: 8300000, guid: f86cc0477ce388d438823c8614629861, type: 3}
   attackAudioClip: {fileID: 8300000, guid: c71f21078ef7bde41ac74114199b0f9f, type: 3}
@@ -10747,7 +10748,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -15608,10 +15609,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b86401d8a72a54b859a1e68221f2ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lampLightCircle: {fileID: 0}
-  lampLightCone: {fileID: 7710010098509997972}
-  circlePointLight: {fileID: 0}
-  coneParametricLight: {fileID: 0}
+  lampLightCircle: {fileID: 7710010098509997972}
+  lampLightCone: {fileID: 7481743149728758119}
+  circlePointLight: {fileID: 6834677149230244831}
+  coneParametricLight: {fileID: 4334696612477020472}
   animator: {fileID: 5742222722491315820}
   flickerIntensity: 1
   flickerTime: 0.08
