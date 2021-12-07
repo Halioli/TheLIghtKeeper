@@ -179,7 +179,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene("PrototypeBuildScene");
+                SceneManager.LoadScene("V0.1");
             }
         }
         else if (CheckIfMaxCoreLevel())
@@ -189,7 +189,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene("PrototypeBuildScene");
+                SceneManager.LoadScene("V0.1");
             }
         }
     }
