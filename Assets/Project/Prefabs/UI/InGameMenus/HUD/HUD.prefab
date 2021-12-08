@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 05
+  m_text: 00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
   m_sharedMaterial: {fileID: 777905129303724322, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 05
+  m_text: 00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
   m_sharedMaterial: {fileID: 777905129303724322, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
@@ -1043,6 +1043,7 @@ GameObject:
   m_Component:
   - component: {fileID: 271418066703302015}
   - component: {fileID: 271418066703301952}
+  - component: {fileID: 3239384315613427463}
   m_Layer: 0
   m_Name: HUD
   m_TagString: Untagged
@@ -1086,6 +1087,19 @@ MonoBehaviour:
   playerHealthSystem: {fileID: 0}
   lamp: {fileID: 0}
   furnace: {fileID: 0}
+--- !u!114 &3239384315613427463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271418066703302010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e6bd575dfd68ad4daa511031601d4d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quickAccessGameObject: {fileID: 271418066938869291}
 --- !u!1 &271418066804829627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1254,7 +1268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &271418066938869300
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2562,7 +2576,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 05
+  m_text: 00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
   m_sharedMaterial: {fileID: 777905129303724322, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
