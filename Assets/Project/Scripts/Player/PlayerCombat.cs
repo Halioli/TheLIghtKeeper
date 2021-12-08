@@ -26,8 +26,10 @@ public class PlayerCombat : PlayerBase
 
     //Particles
     public ParticleSystem playerBlood;
+    public GameObject swordLight;
 
-
+    //Animator
+    public Animator animator;
     // Audio
     public AudioSource audioSource;
     public AudioClip hurtedAudioClip;
@@ -85,6 +87,8 @@ public class PlayerCombat : PlayerBase
 
     IEnumerator Attacking()
     {
+        animator.SetBool("isAttacking", true);
+        swordLight.SetActive(true);
         PlayerInputs.instance.canFlip = false;
 
         if (attackingAnEnemy)
@@ -99,6 +103,8 @@ public class PlayerCombat : PlayerBase
         }
 
         PlayerInputs.instance.canFlip = true;
+        animator.SetBool("isAttacking", false);
+        swordLight.SetActive(false);
         ResetAttack();
     }
 
