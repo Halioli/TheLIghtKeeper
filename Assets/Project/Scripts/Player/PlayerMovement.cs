@@ -80,7 +80,7 @@ public class PlayerMovement : PlayerBase
         if((moveDirection.x > 0 && !PlayerInputs.instance.facingLeft) || moveDirection.x < 0 && PlayerInputs.instance.facingLeft)
         {
             PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
-            GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+            transform.Rotate(new Vector3(0, 180, 0));
         }
     }
 

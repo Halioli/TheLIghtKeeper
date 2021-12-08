@@ -11,10 +11,6 @@ public class Lamp : MonoBehaviour
     private const float CIRCLE_LIGHT_INTENSITY_ON = 1f;
     private const float CIRCLE_LIGHT_INTENSITY_OFF = 0.1f;
 
-    private const float LIGHT_INTENSITY_ON = 0.3f;
-    private const float LIGHT_INTENSITY_OFF = 0.0f;
-
-
     private float maxLampTime;
     private float lampTime;
     private bool turnedOn;
@@ -22,8 +18,10 @@ public class Lamp : MonoBehaviour
     private Inventory playerInventory;
 
     // Public Attributes
-    public GameObject lampCircleLight;
-    public GameObject lampConeLight;
+    public GameObject lampLightCircle;
+    public GameObject lampLightCone;
+    public Light2D circlePointLight;
+    public Light2D coneParametricLight;
 
     public Animator animator;
 
@@ -45,6 +43,7 @@ public class Lamp : MonoBehaviour
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        StartCoroutine(Flicker());
     }
 
     private void Update()
@@ -59,9 +58,7 @@ public class Lamp : MonoBehaviour
     {
         if (LampTimeExhausted())
         {
-            turnedOn = false;
-            animator.SetBool("light", false);
-            DeactivateConeLight();
+            DeactivateConeLightButNotPointLight();
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
         }
         else
@@ -89,51 +86,26 @@ public class Lamp : MonoBehaviour
     {
         turnedOn = true;
         animator.SetBool("light", true);
-        
-        //lampConeLight.SetActive(true);
-        //lampCircleLight.SetActive(true);
+        lampLightCone.SetActive(true);
+        lampLightCircle.SetActive(true);
 
-        //circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_ON;
-        //coneParametricLight.intensity = CONE_LIGHT_INTENSITY_ON;
-
-        ActivateConeLight();
-        ActivateCircleLight();
-
-        StartCoroutine("LightFlicking");
+        circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_ON;
+        coneParametricLight.intensity = CONE_LIGHT_INTENSITY_ON;
     }
-
-    public void ActivateConeLight()
-    {
-        lampConeLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
-        StartCoroutine("ExpandConeLightOnActivate");
-    }
-    public void ActivateCircleLight()
-    {
-        lampCircleLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
-    }
-
 
     public void DeactivateLampLight()
     {
         turnedOn = false;
         animator.SetBool("light", false);
-
-        //lampConeLight.SetActive(false);
-        //lampCircleLight.SetActive(false);
-        DeactivateConeLight();
-        DeactivateCircleLight();
+        lampLightCone.SetActive(false);
+        lampLightCircle.SetActive(false);
     }
 
-    public void DeactivateConeLight()
+    public void DeactivateConeLightButNotPointLight()
     {
-        lampConeLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_OFF;
-        StartCoroutine("ShrinkConeLightOnActivate");
+        circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_OFF;
+        coneParametricLight.intensity = CONE_LIGHT_INTENSITY_OFF;
     }
-    public void DeactivateCircleLight()
-    {
-        lampCircleLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_OFF;
-    }
-
 
     public float GetLampTimeRemaining()
     {
@@ -141,12 +113,12 @@ public class Lamp : MonoBehaviour
     }
 
 
-    IEnumerator LightFlicking()
+    IEnumerator Flicker()
     {
-        while (turnedOn)
+        while (true)
         {
-            lampCircleLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
-            lampConeLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
+            circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_ON;
+            coneParametricLight.intensity = CONE_LIGHT_INTENSITY_ON;
 
             float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
             yield return new WaitForSeconds(lightingTime);
@@ -156,47 +128,12 @@ public class Lamp : MonoBehaviour
             for(int i = 0; i < flickerCount; i++)
             {
                 float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
-                lampCircleLight.GetComponent<Light2D>().intensity = flickingIntensity;
-                lampConeLight.GetComponent<Light2D>().intensity = flickingIntensity;
+                circlePointLight.intensity = flickingIntensity;
+                coneParametricLight.intensity = flickingIntensity;
 
                 float flickingTime = (float)rg.NextDouble() * flickerTime;
-                if (lampTime < flickingTime)
-                {
-                    yield return new WaitForSeconds(lampTime - Time.deltaTime);
-                    if (!turnedOn) break;
-                }
-                else
-                {
-                    yield return new WaitForSeconds(flickingTime);
-                }
+                yield return new WaitForSeconds(flickingTime);
             }
         }
-
-        ActivateCircleLight();
-        DeactivateConeLight();
-
     }
-
-    IEnumerator ExpandConeLightOnActivate()
-    {
-        float length = 35f;
-
-        for (float i = 0f; i < length; i += Time.deltaTime * 30f)
-        {
-            lampConeLight.GetComponent<Light2D>().pointLightOuterRadius = i;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-    }
-
-    IEnumerator ShrinkConeLightOnActivate()
-    {
-        float length = 35f;
-
-        for (float i = length; i >= 0f; i -= Time.deltaTime * 30f)
-        {
-            lampConeLight.GetComponent<Light2D>().pointLightOuterRadius = i;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-    }
-
 }
