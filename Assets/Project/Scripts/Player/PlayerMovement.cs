@@ -47,13 +47,7 @@ public class PlayerMovement : PlayerBase
                 playPlayerWalkingSoundEvent();
             }
         }
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rigidbody2D.velocity = Vector2.zero;
-            rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
-        }
-        
+                
     }
 
     private void FixedUpdate()
