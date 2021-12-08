@@ -14,6 +14,7 @@ public class InventoryQuickAccess : MonoBehaviour
     private HUDItem rightItem;
     private HUDItem centerItem;
     private HUDItem leftItem;
+    private CanvasGroup quickAccessGroup;
 
     private List<ItemStack.itemStackToDisplay> itemsToDisplay;
 
@@ -29,6 +30,7 @@ public class InventoryQuickAccess : MonoBehaviour
         rightItem = quickAccessGameObject.GetComponentsInChildren<HUDItem>()[0];
         centerItem = quickAccessGameObject.GetComponentsInChildren<HUDItem>()[1];
         leftItem = quickAccessGameObject.GetComponentsInChildren<HUDItem>()[2];
+        quickAccessGroup = quickAccessGameObject.GetComponent<CanvasGroup>();
     }
 
     void Update()
@@ -56,11 +58,13 @@ public class InventoryQuickAccess : MonoBehaviour
             playerInventory.UseSelectedConsumibleItem();
         }
 
-        //UpdateQuickAccessItems();
+        UpdateQuickAccessItems();
     }
 
     private void UpdateQuickAccessItems()
     {
+        int n = 4;
+
         if (itemsToDisplay != null)
             itemsToDisplay.Clear();
         
