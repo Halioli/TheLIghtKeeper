@@ -23,12 +23,13 @@ public class Lamp : MonoBehaviour
 
 
     private float maxLampTime;
-    private float lampTime;
-    private bool turnedOn;
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
 
     // Public Attributes
+    public bool turnedOn;
+    public float lampTime;
+
     public GameObject lampCircleLight;
     public GameObject lampConeLight;
 
@@ -38,6 +39,13 @@ public class Lamp : MonoBehaviour
     public float flickerTime;
 
     System.Random rg;
+
+
+    public delegate void PlayLanternSound();
+    public static event PlayLanternSound turnOnLanternSoundEvent;
+    public static event PlayLanternSound turnOffLanternSoundEvent;
+
+
 
     private void Awake()
     {
@@ -118,6 +126,8 @@ public class Lamp : MonoBehaviour
         lampConeLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
         StartCoroutine("ExpandConeLight");
 
+        if (turnOnLanternSoundEvent != null)
+            turnOnLanternSoundEvent();
     }
     public void ActivateCircleLight()
     {
@@ -135,6 +145,9 @@ public class Lamp : MonoBehaviour
 
         DeactivateConeLight();
         DeactivateCircleLight();
+
+        if (turnOffLanternSoundEvent != null)
+            turnOffLanternSoundEvent();
     }
 
     public void DeactivateConeLight()
