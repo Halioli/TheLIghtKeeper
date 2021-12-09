@@ -148,8 +148,6 @@ public class PlayerMiner : PlayerBase
 
     IEnumerator Mining()
     {
-        PlayerInputs.instance.canMove = false;
-
         while (miningTime <= MINING_TIME)
         {
 
@@ -162,8 +160,6 @@ public class PlayerMiner : PlayerBase
         }
 
         ResetMining();
-
-        PlayerInputs.instance.canMove = true;
     }
 
     private void FlipPlayerSpriteFacingOreToMine()

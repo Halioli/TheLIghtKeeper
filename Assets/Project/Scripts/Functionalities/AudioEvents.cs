@@ -13,13 +13,11 @@ public class AudioEvents : MonoBehaviour
     public AudioClip successCriticalMiningSound;
     public AudioClip failCriticalMiningSound;
 
-    public AudioSource soundEffectsSource;
+    public AudioSource audioSource;
     public AudioClip miningOreSound;
     public AudioClip breaksOreSound;
     public AudioClip itemIsPickedUpSound;
 
-    public AudioClip turnOnLampSound;
-    public AudioClip turnOffLampSound;
 
 
     private void OnEnable()
@@ -32,9 +30,6 @@ public class AudioEvents : MonoBehaviour
         PlayerMiner.failCriticalMiningSoundEvent += PlayFailCriticalMiningSound;
         PlayerMiner.playerMinesOreEvent += PlayMiningOreSound;
         PlayerMiner.playerBreaksOreEvent += PlayBreaksOreSound;
-
-        Lamp.turnOnLanternSoundEvent += PlayTurnOnLampSound;
-        Lamp.turnOffLanternSoundEvent += PlayTurnOffLampSound;
 
         PlayerInventory.playerPicksUpItemEvent += PlayPicksUpItemSound;
     }
@@ -49,9 +44,6 @@ public class AudioEvents : MonoBehaviour
         PlayerMiner.failCriticalMiningSoundEvent -= PlayFailCriticalMiningSound;
         PlayerMiner.playerMinesOreEvent -= PlayMiningOreSound;
         PlayerMiner.playerBreaksOreEvent -= PlayBreaksOreSound;
-
-        Lamp.turnOnLanternSoundEvent -= PlayTurnOnLampSound;
-        Lamp.turnOffLanternSoundEvent -= PlayTurnOffLampSound;
 
         PlayerInventory.playerPicksUpItemEvent -= PlayPicksUpItemSound;
     }
@@ -94,31 +86,19 @@ public class AudioEvents : MonoBehaviour
 
     private void PlayMiningOreSound()
     {
-        soundEffectsSource.clip = miningOreSound;
-        soundEffectsSource.Play();
+        audioSource.clip = miningOreSound;
+        audioSource.Play();
     }
 
     private void PlayBreaksOreSound()
     {
-        soundEffectsSource.clip = breaksOreSound;
-        soundEffectsSource.Play();
+        audioSource.clip = breaksOreSound;
+        audioSource.Play();
     }
 
     private void PlayPicksUpItemSound()
     {
-        soundEffectsSource.clip = itemIsPickedUpSound;
-        soundEffectsSource.Play();
-    }
-
-    private void PlayTurnOnLampSound()
-    {
-        soundEffectsSource.clip = turnOnLampSound;
-        soundEffectsSource.Play();
-    }
-
-    private void PlayTurnOffLampSound()
-    {
-        soundEffectsSource.clip = turnOffLampSound;
-        soundEffectsSource.Play();
+        audioSource.clip = itemIsPickedUpSound;
+        audioSource.Play();
     }
 }
