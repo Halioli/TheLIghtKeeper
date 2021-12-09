@@ -39,7 +39,8 @@ public class EnemySpawner : Spawner
         }
         else
         {
-            playerPosition = playerGameObject.transform.position;
+            UpdatePlayerPosition();
+            //playerPosition = playerGameObject.transform.position;
             spawnerIsActive = Vector2.Distance(playerPosition, transform.position) <= spawnerRadiusRange;
         }
     }
