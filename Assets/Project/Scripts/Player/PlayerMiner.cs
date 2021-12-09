@@ -67,6 +67,8 @@ public class PlayerMiner : PlayerBase
     private void SetOreToMine()
     {
         oreToMine = colliderDetectedByMouse.gameObject.GetComponent<Ore>();
+
+        PlayerInputs.instance.SpawnSelectSpotAtTransform(oreToMine.transform);
     }
 
 

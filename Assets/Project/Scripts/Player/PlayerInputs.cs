@@ -13,6 +13,7 @@ public class PlayerInputs : MonoBehaviour
     public bool canFlip = true;
     public bool canMove = true;
 
+    public GameObject selectSpotGameObject;
 
 
     private void Awake()
@@ -76,5 +77,10 @@ public class PlayerInputs : MonoBehaviour
     public Vector2 PlayerMouseScroll()
     {
         return Input.mouseScrollDelta;
+    }
+
+    public void SpawnSelectSpotAtTransform(Transform transform)
+    {
+        Instantiate(selectSpotGameObject, transform);
     }
 }

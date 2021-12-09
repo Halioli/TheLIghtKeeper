@@ -12,7 +12,7 @@ public class PlayerCombat : PlayerBase
     protected AttackSystem attackSystem; 
     protected HealthSystem healthSystem;
 
-    private float attackReachRadius = 3f;
+    private float attackReachRadius = 5f;
     private bool attacking = false;
     private bool attackingAnEnemy = false;
 
@@ -72,6 +72,8 @@ public class PlayerCombat : PlayerBase
     {
         attackingAnEnemy = true;
         enemyToAttack = colliderDetectedByMouse.gameObject.GetComponent<Enemy>();
+
+        PlayerInputs.instance.SpawnSelectSpotAtTransform(enemyToAttack.transform);
     }
 
     private void StartAttacking()

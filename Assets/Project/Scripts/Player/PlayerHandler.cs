@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHandler : PlayerInputs
+public class PlayerHandler : MonoBehaviour
 {
     // Public Attributes
     private HealthSystem playerHealthSystem;

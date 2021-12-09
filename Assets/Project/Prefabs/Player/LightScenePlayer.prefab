@@ -10400,6 +10400,7 @@ MonoBehaviour:
   facingLeft: 1
   canFlip: 1
   canMove: 1
+  selectSpotGameObject: {fileID: 1788428900551174798, guid: 5f0b1009fae22be4f8600478edf3faa4, type: 3}
 --- !u!114 &4225761790095227379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10490,11 +10491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109aa9b4f2f816f49853766a038a9f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mousePosition: {x: 0, y: 0}
-  mouseWorldPosition: {x: 0, y: 0}
-  facingLeft: 1
-  canFlip: 1
-  canMove: 1
   inventoryCanvas: {fileID: 0}
   inventoryMenu: {fileID: 0}
 --- !u!114 &4989443145165977615
@@ -10521,11 +10517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b566151a264762940ba814cba2fc5c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mousePosition: {x: 0, y: 0}
-  mouseWorldPosition: {x: 0, y: 0}
-  facingLeft: 1
-  canFlip: 1
-  canMove: 1
   animator: {fileID: 5742222722491315820}
 --- !u!114 &8397354122656166637
 MonoBehaviour:
@@ -10539,7 +10530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3be414cda14a4a428d97ff3b2cff101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBlood: {fileID: 0}
+  playerBlood: {fileID: 7898089022401775291}
   audioSource: {fileID: 2109840049878452791}
   hurtedAudioClip: {fileID: 8300000, guid: f86cc0477ce388d438823c8614629861, type: 3}
   attackAudioClip: {fileID: 8300000, guid: c71f21078ef7bde41ac74114199b0f9f, type: 3}
@@ -15583,6 +15574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnedOn: 0
   lampTime: 0
+  active: 0
   lampCircleLight: {fileID: 7815692360324521492}
   lampConeLight: {fileID: 2740074470124525976}
   animator: {fileID: 5742222722491315820}
