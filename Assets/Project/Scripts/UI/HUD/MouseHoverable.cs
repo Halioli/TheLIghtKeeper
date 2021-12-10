@@ -14,4 +14,9 @@ public class MouseHoverable : MonoBehaviour
             OnMouseHoverExit();
     }
 
+    private void OnDestroy()
+    {
+        if (OnMouseHoverExit != null)
+            OnMouseHoverExit();
+    }
 }
