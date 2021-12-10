@@ -24,6 +24,8 @@ public class PlayerCombat : PlayerBase
     private Collider2D colliderDetectedByMouse = null;
     private Enemy enemyToAttack;
 
+    //Particles
+    public ParticleSystem playerBlood;
 
 
     // Audio
@@ -37,14 +39,15 @@ public class PlayerCombat : PlayerBase
     {
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        playerBlood.Stop();
     }
 
     void Update()
     {
-        if (playerInputs.PlayerClickedAttackButton() && !attacking)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
         {
-            playerInputs.SetNewMousePosition();
-            if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
+            PlayerInputs.instance.SetNewMousePosition();
+            if (PlayerIsInReachToAttack(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnEnemy(PlayerInputs.instance.mouseWorldPosition))
             {
                 SetEnemyToAttack();
             }
@@ -82,7 +85,7 @@ public class PlayerCombat : PlayerBase
 
     IEnumerator Attacking()
     {
-        playerInputs.canFlip = false;
+        PlayerInputs.instance.canFlip = false;
 
         if (attackingAnEnemy)
         {
@@ -95,7 +98,7 @@ public class PlayerCombat : PlayerBase
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        playerInputs.canFlip = true;
+        PlayerInputs.instance.canFlip = true;
         ResetAttack();
     }
 
@@ -140,6 +143,7 @@ public class PlayerCombat : PlayerBase
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.clip = hurtedAudioClip;
         audioSource.Play();
+        StartCoroutine(PlayerBloodParticleSystem());
     }
 
     IEnumerator Invulnerability()
@@ -171,11 +175,18 @@ public class PlayerCombat : PlayerBase
         if (playerStates.PlayerActionIsWalking())
             return;
         
-        if ((transform.position.x < playerInputs.mousePosition.x && !playerInputs.facingLeft) ||
-            (transform.position.x > playerInputs.mousePosition.x && playerInputs.facingLeft))
+        if ((transform.position.x < PlayerInputs.instance.mousePosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > PlayerInputs.instance.mousePosition.x && PlayerInputs.instance.facingLeft))
         {
-            playerInputs.facingLeft = !playerInputs.facingLeft;
+            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
+    }
+
+    IEnumerator PlayerBloodParticleSystem()
+    {
+        playerBlood.Play();
+        yield return new WaitForSeconds(0.3f);
+        playerBlood.Stop();
     }
 }

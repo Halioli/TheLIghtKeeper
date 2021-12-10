@@ -6,7 +6,7 @@ public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
     private const float FADE_TIME = 2f;
-    
+
     private float currentFadeTime;
     private int playerHealthValue;
     private int lampTimeValue;
@@ -25,7 +25,7 @@ public class HUDHandler : MonoBehaviour
     public HUDItem itemCenter;
     public HUDItem itemLeft;
 
-    public HealthSystem playerhealthSystem;
+    public HealthSystem playerHealthSystem;
     public Lamp lamp;
     public Furnace furnace;
 
@@ -36,7 +36,7 @@ public class HUDHandler : MonoBehaviour
 
         // Initalize health variables
         healthGroup = GetComponentsInChildren<CanvasGroup>()[0];
-        playerHealthValue = playerhealthSystem.GetMaxHealth();
+        playerHealthValue = playerHealthSystem.GetMaxHealth();
         healthBar.SetMaxValue(playerHealthValue);
         healthBar.UpdateText(CheckTextForZeros(playerHealthValue.ToString()));
 
@@ -44,7 +44,6 @@ public class HUDHandler : MonoBehaviour
         lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         lampBar.SetMaxValue(lampTimeValue);
-        lampBar.UpdateText(CheckTextForZeros(lampTimeValue.ToString()));
 
         // Initialize core variables
         coreGroup = GetComponentsInChildren<CanvasGroup>()[2];
@@ -58,11 +57,11 @@ public class HUDHandler : MonoBehaviour
 
     private void Update()
     {
-        playerHealthValue = playerhealthSystem.GetHealth();
+        playerHealthValue = playerHealthSystem.GetHealth();
         ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
 
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
-        ChangeValueInHUD(lampBar, lampTimeValue, lampTimeValue.ToString());
+        ChangeValueInHUD(lampBar, lampTimeValue, null);
 
         coreTimeValue = furnace.GetCurrentFuel();
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
@@ -83,7 +82,9 @@ public class HUDHandler : MonoBehaviour
     private void ChangeValueInHUD(HUDBar bar, int value, string text)
     {
         bar.SetValue(value);
-        bar.UpdateText(CheckTextForZeros(text));
+
+        if (text != null)
+            bar.UpdateText(CheckTextForZeros(text));
     }
 
     public void ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
