@@ -47,7 +47,13 @@ public class PlayerMovement : PlayerBase
                 playPlayerWalkingSoundEvent();
             }
         }
-                
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rigidbody2D.velocity = Vector2.zero;
+            rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
+        }
+        
     }
 
     private void FixedUpdate()
@@ -74,7 +80,7 @@ public class PlayerMovement : PlayerBase
         if((moveDirection.x > 0 && !PlayerInputs.instance.facingLeft) || moveDirection.x < 0 && PlayerInputs.instance.facingLeft)
         {
             PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
-            GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+            transform.Rotate(new Vector3(0, 180, 0));
         }
     }
 

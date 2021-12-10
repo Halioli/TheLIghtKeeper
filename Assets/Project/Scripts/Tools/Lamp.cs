@@ -6,8 +6,10 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-    private const int MAX_LEVELS = 5;
-    private int level = 1;
+    private const float CONE_LIGHT_INTENSITY_ON = 0.25f;
+    private const float CONE_LIGHT_INTENSITY_OFF = 0f;
+    private const float CIRCLE_LIGHT_INTENSITY_ON = 1f;
+    private const float CIRCLE_LIGHT_INTENSITY_OFF = 0.1f;
 
     private const float LIGHT_INTENSITY_ON = 0.5f;
     private const float LIGHT_INTENSITY_OFF = 0.0f;
@@ -26,6 +28,8 @@ public class Lamp : MonoBehaviour
     private bool coneIsActive = false;
 
     private float maxLampTime;
+    private float lampTime;
+    private bool turnedOn;
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
 
@@ -34,9 +38,6 @@ public class Lamp : MonoBehaviour
     public float lampTime;
     public bool active = false;
     public bool canRefill;
-
-    public GameObject lampCircleLight;
-    public GameObject lampConeLight;
 
     public Animator animator;
 
@@ -64,14 +65,12 @@ public class Lamp : MonoBehaviour
         rg = new System.Random();
         flickerTime = 0.08f;
         flickerIntensity = 1f;
-
-        lightAngle = LIGHT_ANGLE_LVL[0];
-        lightDistance = LIGHT_DISTANCE_LVL[0];
     }
 
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        StartCoroutine(Flicker());
     }
 
     private void Update()
@@ -80,20 +79,13 @@ public class Lamp : MonoBehaviour
         {
             UpdateLamp();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LevelUp();
-        }
     }
 
     public void UpdateLamp()
     {
         if (LampTimeExhausted())
         {
-            turnedOn = false;
-            animator.SetBool("light", false);
-            DeactivateConeLight();
+            DeactivateConeLightButNotPointLight();
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
         }
         else
@@ -159,6 +151,8 @@ public class Lamp : MonoBehaviour
     {
         turnedOn = true;
         animator.SetBool("light", true);
+        lampLightCone.SetActive(true);
+        lampLightCircle.SetActive(true);
 
         ActivateConeLight();
         ActivateCircleLight();
@@ -212,7 +206,7 @@ public class Lamp : MonoBehaviour
             turnOffLanternSoundEvent();
     }
 
-    public void DeactivateConeLight()
+    public void DeactivateConeLightButNotPointLight()
     {
         coneIsActive = false;
 
@@ -233,36 +227,18 @@ public class Lamp : MonoBehaviour
             stopLanternDroneSoundEvent();
     }
 
-
     public float GetLampTimeRemaining()
     {
         return lampTime;
     }
 
-    public void LevelUp()
+
+    IEnumerator Flicker()
     {
-        if (level >= MAX_LEVELS)
+        while (true)
         {
-            return;
-        }
-
-        ++level;
-
-        lightAngle = LIGHT_ANGLE_LVL[level - 1];
-        lightDistance = LIGHT_DISTANCE_LVL[level - 1];
-
-        lampConeLight.GetComponent<Light2D>().pointLightInnerRadius = lightDistance - 5f;
-        lampConeLight.GetComponent<Light2D>().pointLightOuterRadius = lightDistance;
-    }
-
-
-
-    IEnumerator LightFlicking()
-    {
-        while (turnedOn)
-        {
-            lampCircleLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
-            lampConeLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
+            circlePointLight.intensity = CIRCLE_LIGHT_INTENSITY_ON;
+            coneParametricLight.intensity = CONE_LIGHT_INTENSITY_ON;
 
             float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
             yield return new WaitForSeconds(lightingTime);
@@ -272,19 +248,11 @@ public class Lamp : MonoBehaviour
             for (int i = 0; i < flickerCount; i++)
             {
                 float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
-                lampCircleLight.GetComponent<Light2D>().intensity = flickingIntensity;
-                lampConeLight.GetComponent<Light2D>().intensity = flickingIntensity;
+                circlePointLight.intensity = flickingIntensity;
+                coneParametricLight.intensity = flickingIntensity;
 
                 float flickingTime = (float)rg.NextDouble() * flickerTime;
-                if (lampTime < flickingTime)
-                {
-                    yield return new WaitForSeconds(lampTime - Time.deltaTime);
-                    if (!turnedOn) break;
-                }
-                else
-                {
-                    yield return new WaitForSeconds(flickingTime);
-                }
+                yield return new WaitForSeconds(flickingTime);
             }
         }
 
