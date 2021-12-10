@@ -44,9 +44,9 @@ public class Furnace : InteractStation
     private bool couroutineStartedConsumeCoal = false;
 
     //Scalation variables
-    private Vector3 scaleChange = new Vector3(5, 5, 5);
+    private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
 
-    private float fuelDurationInSeconds = 2f;
+    private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
     private int fuelAmountPerCoalUnit = 10;
     private float currentTextTime = 0f;
@@ -179,7 +179,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene("PrototypeBuildScene");
+                SceneManager.LoadScene("V0.1");
             }
         }
         else if (CheckIfMaxCoreLevel())
@@ -189,7 +189,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene("PrototypeBuildScene");
+                SceneManager.LoadScene("V0.1");
             }
         }
     }
