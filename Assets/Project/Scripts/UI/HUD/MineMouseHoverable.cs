@@ -5,8 +5,6 @@ using UnityEngine;
 public class MineMouseHoverable : MouseHoverable
 {
     public static event MouseHoverAction OnMineMouseHoverStay;
-    //public static event MouseHoverAction OnMineMouseHoverExit;
-
 
     private void OnMouseOver()
     {
@@ -14,9 +12,4 @@ public class MineMouseHoverable : MouseHoverable
             OnMineMouseHoverStay();
     }
 
-    //private void OnMouseExit()
-    //{
-    //    if (OnMineMouseHoverExit != null)
-    //        OnMineMouseHoverExit();
-    //}
 }
