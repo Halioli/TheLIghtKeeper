@@ -12,8 +12,11 @@ public class PlayerInputs : MonoBehaviour
     public bool facingLeft = true;
     public bool canFlip = true;
     public bool canMove = true;
+    public float playerReach = 3f;
 
     public GameObject selectSpotGameObject;
+
+
 
 
     private void Awake()
@@ -45,6 +48,12 @@ public class PlayerInputs : MonoBehaviour
     {
         mousePosition = Input.mousePosition;
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    }
+
+    public Vector2 GetMousePositionInWorld()
+    {
+        SetNewMousePosition();
+        return mouseWorldPosition;
     }
 
     public bool PlayerPressedInteractButton()

@@ -11,8 +11,6 @@ public class PlayerMiner : PlayerBase
     private Collider2D colliderDetectedByMouse = null;
     private Ore oreToMine;
 
-    private float miningReachRadius = 3f;
-
     private const int START_MINING_DAMAGE = 1;
     private int miningDamage = START_MINING_DAMAGE;
     private const int START_CRITICAL_MINING_DAMAGE = 2;
@@ -55,7 +53,7 @@ public class PlayerMiner : PlayerBase
     private bool PlayerIsInReachToMine(Vector2 mousePosition)
     {
         float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= miningReachRadius;
+        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
     }
 
     private bool MouseClickedOnAnOre(Vector2 mousePosition)

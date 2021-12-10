@@ -12,7 +12,6 @@ public class PlayerCombat : PlayerBase
     protected AttackSystem attackSystem; 
     protected HealthSystem healthSystem;
 
-    private float attackReachRadius = 5f;
     private bool attacking = false;
     private bool attackingAnEnemy = false;
 
@@ -59,7 +58,7 @@ public class PlayerCombat : PlayerBase
     private bool PlayerIsInReachToAttack(Vector2 mousePosition)
     {
         float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= attackReachRadius;
+        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
     }
 
     private bool MouseClickedOnAnEnemy(Vector2 mousePosition)

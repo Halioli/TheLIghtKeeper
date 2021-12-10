@@ -5134,7 +5134,7 @@ GameObject:
   - component: {fileID: 3410508154403687448}
   - component: {fileID: 1831574693195745323}
   m_Layer: 3
-  m_Name: Particle System
+  m_Name: BloodParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10400,6 +10400,7 @@ MonoBehaviour:
   facingLeft: 1
   canFlip: 1
   canMove: 1
+  playerReach: 3
   selectSpotGameObject: {fileID: 1788428900551174798, guid: 5f0b1009fae22be4f8600478edf3faa4, type: 3}
 --- !u!114 &4225761790095227379
 MonoBehaviour:
@@ -10530,7 +10531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3be414cda14a4a428d97ff3b2cff101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBlood: {fileID: 7898089022401775291}
+  playerBlood: {fileID: 3410508154403687448}
   audioSource: {fileID: 2109840049878452791}
   hurtedAudioClip: {fileID: 8300000, guid: f86cc0477ce388d438823c8614629861, type: 3}
   attackAudioClip: {fileID: 8300000, guid: c71f21078ef7bde41ac74114199b0f9f, type: 3}
