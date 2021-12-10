@@ -46,7 +46,7 @@ public class Furnace : InteractStation
     //Scalation variables
     private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
 
-    private float fuelDurationInSeconds = 2.5f;
+    private float fuelDurationInSeconds = 5f;
     private int fuelConsumedByTime = 1;
     private int fuelAmountPerCoalUnit = 10;
     private float currentTextTime = 0f;
