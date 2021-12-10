@@ -106,20 +106,20 @@ public class AudioEvents : MonoBehaviour
 
     private void PlayMiningOreSound()
     {
-        audioSource.clip = miningOreSound;
-        audioSource.Play();
+        soundEffectsSource.clip = miningOreSound;
+        soundEffectsSource.Play();
     }
 
     private void PlayBreaksOreSound()
     {
-        audioSource.clip = breaksOreSound;
-        audioSource.Play();
+        soundEffectsSource.clip = breaksOreSound;
+        soundEffectsSource.Play();
     }
 
     private void PlayPicksUpItemSound()
     {
-        audioSource.clip = itemIsPickedUpSound;
-        audioSource.Play();
+        soundEffectsSource.clip = itemIsPickedUpSound;
+        soundEffectsSource.Play();
     }
 
     private void PlayTurnOnLampSound()
