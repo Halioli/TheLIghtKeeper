@@ -32,6 +32,7 @@ public class Lamp : MonoBehaviour
     // Public Attributes
     public bool turnedOn;
     public float lampTime;
+    public bool active = false;
     public bool canRefill;
 
     public GameObject lampCircleLight;
