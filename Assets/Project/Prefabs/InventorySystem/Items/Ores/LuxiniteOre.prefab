@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 640109987367956296}
   - component: {fileID: 2764422272351697028}
   - component: {fileID: 6978114874826525320}
+  - component: {fileID: 2671546894214658935}
   m_Layer: 0
   m_Name: LuxiniteOre
   m_TagString: Ore
@@ -244,6 +245,18 @@ MonoBehaviour:
   - {fileID: 5287492390290926962}
   - {fileID: 7236085261481006924}
   flashLight: {fileID: 8130296797955341296}
+--- !u!114 &2671546894214658935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640109987367956295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4851340e7e27147bbc119a88ae37a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1743028391929746229
 GameObject:
   m_ObjectHideFlags: 0
