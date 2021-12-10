@@ -12,6 +12,10 @@ public class PlayerInputs : MonoBehaviour
     public bool facingLeft = true;
     public bool canFlip = true;
     public bool canMove = true;
+    public float playerReach = 3f;
+
+    public GameObject selectSpotGameObject;
+
 
 
 
@@ -46,6 +50,12 @@ public class PlayerInputs : MonoBehaviour
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
+    public Vector2 GetMousePositionInWorld()
+    {
+        SetNewMousePosition();
+        return mouseWorldPosition;
+    }
+
     public bool PlayerPressedInteractButton()
     {
         return Input.GetKeyDown(KeyCode.E);
@@ -76,5 +86,10 @@ public class PlayerInputs : MonoBehaviour
     public Vector2 PlayerMouseScroll()
     {
         return Input.mouseScrollDelta;
+    }
+
+    public void SpawnSelectSpotAtTransform(Transform transform)
+    {
+        Instantiate(selectSpotGameObject, transform);
     }
 }
