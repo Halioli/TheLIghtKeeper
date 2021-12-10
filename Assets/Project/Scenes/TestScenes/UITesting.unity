@@ -831,11 +831,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7734219591756777513, guid: c4a2172d13c6555428e0be0248cdf93c, type: 3}
   m_PrefabInstance: {fileID: 786452932}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1277118510 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5050550011244126635, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
-  m_PrefabInstance: {fileID: 2078909851078137579}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1333459452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1243,6 +1238,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2142916043 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7464427060918209193, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
+  m_PrefabInstance: {fileID: 2078909851078137579}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2078909851078137579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1378,10 +1378,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6698392544596308442, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0000424772
+      objectReference: {fileID: 0}
     - target: {fileID: 7460433675561445977, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: teleportList
       value: 
-      objectReference: {fileID: 1277118510}
+      objectReference: {fileID: 2142916043}
     - target: {fileID: 7460433675561445977, guid: ce9342990bbd4f64eb6cdfc814bbdf0d, type: 3}
       propertyPath: teleportSystem
       value: 
