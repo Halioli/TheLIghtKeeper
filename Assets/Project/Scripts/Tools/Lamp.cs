@@ -14,8 +14,8 @@ public class Lamp : MonoBehaviour
 
     private const float RADIUS_DIFFERENCE = 20f;
 
-    private float[] LIGHT_ANGLE_LVL = {35f, 55f, 75f, 95f, 115f };
-    private float[] LIGHT_DISTANCE_LVL = {5f, 10f, 15f, 20f, 25f };
+    private float[] LIGHT_ANGLE_LVL = { 35f, 55f, 75f, 95f, 115f };
+    private float[] LIGHT_DISTANCE_LVL = { 5f, 10f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
 
@@ -29,6 +29,7 @@ public class Lamp : MonoBehaviour
     // Public Attributes
     public bool turnedOn;
     public float lampTime;
+    public bool canRefill;
 
     public GameObject lampCircleLight;
     public GameObject lampConeLight;
@@ -106,6 +107,44 @@ public class Lamp : MonoBehaviour
     public void FullyRefillLampTime()
     {
         lampTime = maxLampTime;
+    }
+
+    public void RefillLampTime(float time)
+    {
+        if (lampTime + time > maxLampTime)
+        {
+            FullyRefillLampTime();
+        }
+        else
+        {
+            lampTime += time;
+        }
+    }
+
+    public bool CanRefill()
+    {
+        if (turnedOn)  //Player in darkness
+        {
+            if (lampTime == 0 || lampTime == maxLampTime) //Player don't has lamp fuel
+            {
+                return false;
+            }
+            else //Player has lamp fuel
+            {
+                return true;
+            }
+        }
+        else //Player in light
+        {
+            if(lampTime != maxLampTime) //Player has no max lamp fuel
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public void ActivateLampLight()
@@ -199,7 +238,7 @@ public class Lamp : MonoBehaviour
 
             int flickerCount = rg.Next(4, 9);
 
-            for(int i = 0; i < flickerCount; i++)
+            for (int i = 0; i < flickerCount; i++)
             {
                 float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
                 lampCircleLight.GetComponent<Light2D>().intensity = flickingIntensity;
@@ -218,7 +257,7 @@ public class Lamp : MonoBehaviour
             }
         }
 
-        
+
         DeactivateConeLight();
 
     }

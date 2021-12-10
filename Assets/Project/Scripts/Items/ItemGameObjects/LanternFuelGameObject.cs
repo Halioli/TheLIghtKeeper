@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LanternFuelGameObject : MonoBehaviour
+public class LanternFuelGameObject : ItemGameObject
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private Lamp playerLamp;
+    private float lampTimeToRefill = 5f;
+
+    private void Start()
     {
-        
+        playerLamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
+    }
+    public override void DoFunctionality()
+    {
+        if (playerLamp.CanRefill())
+        {
+            playerLamp.RefillLampTime(lampTimeToRefill);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
