@@ -31,17 +31,17 @@ public class PlayerAnimations : PlayerBase
             animator.SetBool("isMining", false);
         }
 
-        //Attacking animation
-        if (playerStates.PlayerActionIsAttacking()) 
-        {
-            animator.SetBool("isAttacking", true);
-            swordLight.SetActive(true);
-        }
-        else
-        {
-            animator.SetBool("isAttacking", false);
-            swordLight.SetActive(false);
-        }
+        ////Attacking animation
+        //if (playerStates.PlayerActionIsAttacking()) 
+        //{
+        //    animator.SetBool("isAttacking", true);
+        //    swordLight.SetActive(true);
+        //}
+        //else
+        //{
+        //    animator.SetBool("isAttacking", false);
+        //    swordLight.SetActive(false);
+        //}
     }
 
 
