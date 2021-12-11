@@ -10532,6 +10532,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBlood: {fileID: 3410508154403687448}
+  animator: {fileID: 5742222722491315820}
+  swordLight: {fileID: 1954897529}
   audioSource: {fileID: 2109840049878452791}
   hurtedAudioClip: {fileID: 8300000, guid: f86cc0477ce388d438823c8614629861, type: 3}
   attackAudioClip: {fileID: 8300000, guid: c71f21078ef7bde41ac74114199b0f9f, type: 3}
@@ -15576,6 +15578,7 @@ MonoBehaviour:
   turnedOn: 0
   lampTime: 0
   active: 0
+  canRefill: 0
   lampCircleLight: {fileID: 7815692360324521492}
   lampConeLight: {fileID: 2740074470124525976}
   animator: {fileID: 5742222722491315820}
