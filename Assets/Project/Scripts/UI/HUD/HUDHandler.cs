@@ -15,6 +15,7 @@ public class HUDHandler : MonoBehaviour
     private CanvasGroup lampGroup;
     private CanvasGroup coreGroup;
     private CanvasGroup quickAccessGroup;
+    private bool coreExists;
 
     // Public Attributes
     public HUDBar healthBar;
@@ -46,10 +47,18 @@ public class HUDHandler : MonoBehaviour
         lampBar.SetMaxValue(lampTimeValue);
 
         // Initialize core variables
-        coreGroup = GetComponentsInChildren<CanvasGroup>()[2];
-        coreTimeValue = furnace.GetMaxFuel();
-        coreBar.SetMaxValue(coreTimeValue);
-        coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
+        if (coreBar != null)
+        {
+            coreExists = true;
+            coreGroup = GetComponentsInChildren<CanvasGroup>()[2];
+            coreTimeValue = furnace.GetMaxFuel();
+            coreBar.SetMaxValue(coreTimeValue);
+            coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
+        }
+        else
+        {
+            coreExists = false;
+        }
 
         // Initialize quick access variables
         quickAccessGroup = GetComponentsInChildren<CanvasGroup>()[3];
@@ -63,8 +72,11 @@ public class HUDHandler : MonoBehaviour
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         ChangeValueInHUD(lampBar, lampTimeValue, null);
 
-        coreTimeValue = furnace.GetCurrentFuel();
-        ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
+        if (coreExists)
+        {
+            coreTimeValue = furnace.GetCurrentFuel();
+            ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
+        }
     }
 
     private string CheckTextForZeros(string text)
