@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : PlayerInputs
+public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
     private bool inventoryIsOpen = false;
@@ -25,7 +25,7 @@ public class PlayerInventory : PlayerInputs
 
     void Update()
     {
-        if (PlayerPressedInventoryButton())
+        if (PlayerInputs.instance.PlayerPressedInventoryButton())
         {
             if (inventoryIsOpen)
             {

@@ -12,7 +12,6 @@ public class PlayerCombat : PlayerBase
     protected AttackSystem attackSystem; 
     protected HealthSystem healthSystem;
 
-    private float attackReachRadius = 3f;
     private bool attacking = false;
     private bool attackingAnEnemy = false;
 
@@ -26,13 +25,13 @@ public class PlayerCombat : PlayerBase
 
     //Particles
     public ParticleSystem playerBlood;
-
+    public Animator animator;
+    public GameObject swordLight;
 
     // Audio
     public AudioSource audioSource;
     public AudioClip hurtedAudioClip;
     public AudioClip attackAudioClip;
-
 
 
     private void Start()
@@ -59,7 +58,7 @@ public class PlayerCombat : PlayerBase
     private bool PlayerIsInReachToAttack(Vector2 mousePosition)
     {
         float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= attackReachRadius;
+        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
     }
 
     private bool MouseClickedOnAnEnemy(Vector2 mousePosition)
@@ -72,6 +71,8 @@ public class PlayerCombat : PlayerBase
     {
         attackingAnEnemy = true;
         enemyToAttack = colliderDetectedByMouse.gameObject.GetComponent<Enemy>();
+
+        PlayerInputs.instance.SpawnSelectSpotAtTransform(enemyToAttack.transform);
     }
 
     private void StartAttacking()
@@ -86,6 +87,8 @@ public class PlayerCombat : PlayerBase
     IEnumerator Attacking()
     {
         PlayerInputs.instance.canFlip = false;
+        animator.SetBool("isAttacking", true);
+        swordLight.SetActive(true);
 
         if (attackingAnEnemy)
         {
@@ -99,6 +102,8 @@ public class PlayerCombat : PlayerBase
         }
 
         PlayerInputs.instance.canFlip = true;
+        animator.SetBool("isAttacking", false);
+        swordLight.SetActive(false);
         ResetAttack();
     }
 
