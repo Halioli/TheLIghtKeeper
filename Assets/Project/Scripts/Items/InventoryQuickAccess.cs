@@ -72,7 +72,7 @@ public class InventoryQuickAccess : MonoBehaviour
 
         // Update Right Item
         rightItem.image.sprite = itemsToDisplay[0].sprite;
-        rightItem.textQuantity.text = CheckTextForZeros(itemsToDisplay[0].quantity.ToString());
+        //rightItem.textQuantity.text = CheckTextForZeros(itemsToDisplay[0].quantity.ToString());
 
         // Update Center Item
         centerItem.image.sprite = itemsToDisplay[1].sprite;
@@ -81,7 +81,7 @@ public class InventoryQuickAccess : MonoBehaviour
 
         // Update Left Item
         leftItem.image.sprite = itemsToDisplay[2].sprite;
-        leftItem.textQuantity.text = CheckTextForZeros(itemsToDisplay[2].quantity.ToString());
+        //leftItem.textQuantity.text = CheckTextForZeros(itemsToDisplay[2].quantity.ToString());
     }
 
     private string CheckTextForZeros(string text)

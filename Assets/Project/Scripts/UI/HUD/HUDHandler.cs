@@ -15,6 +15,7 @@ public class HUDHandler : MonoBehaviour
     private CanvasGroup lampGroup;
     private CanvasGroup coreGroup;
     private CanvasGroup quickAccessGroup;
+    private bool coreExists;
 
     // Public Attributes
     public HUDBar healthBar;
@@ -46,10 +47,18 @@ public class HUDHandler : MonoBehaviour
         lampBar.SetMaxValue(lampTimeValue);
 
         // Initialize core variables
-        coreGroup = GetComponentsInChildren<CanvasGroup>()[2];
-        coreTimeValue = furnace.GetMaxFuel();
-        coreBar.SetMaxValue(coreTimeValue);
-        coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
+        if (coreBar != null)
+        {
+            coreExists = true;
+            coreGroup = GetComponentsInChildren<CanvasGroup>()[2];
+            coreTimeValue = furnace.GetMaxFuel();
+            coreBar.SetMaxValue(coreTimeValue);
+            coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
+        }
+        else
+        {
+            coreExists = false;
+        }
 
         // Initialize quick access variables
         quickAccessGroup = GetComponentsInChildren<CanvasGroup>()[3];
@@ -63,8 +72,23 @@ public class HUDHandler : MonoBehaviour
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         ChangeValueInHUD(lampBar, lampTimeValue, null);
 
-        coreTimeValue = furnace.GetCurrentFuel();
-        ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
+        if (coreExists)
+        {
+            coreTimeValue = furnace.GetCurrentFuel();
+            ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (healthGroup.alpha >= 1f)
+            {
+                StartCoroutine(ChangeCanvasGroupAlphaToZero(healthGroup));
+            }
+            else
+            {
+                StartCoroutine(ChangeCanvasGroupAlphaToOne(healthGroup));
+            }
+        }
     }
 
     private string CheckTextForZeros(string text)
@@ -83,18 +107,39 @@ public class HUDHandler : MonoBehaviour
     {
         bar.SetValue(value);
 
-        if (text != null)
-            bar.UpdateText(CheckTextForZeros(text));
+        //if (text != null)
+        //    bar.UpdateText(CheckTextForZeros(text));
     }
 
-    public void ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
     {
-        while (currentFadeTime < FADE_TIME)
-        {
-            currentFadeTime += Time.deltaTime;
+        float duration = 2f;
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
 
-            canvasGroup.alpha = 1f - Mathf.Clamp01(currentFadeTime / FADE_TIME);
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            float normalizedTime = t / duration;
+            //right here, you can now use normalizedTime as the third parameter in any Lerp from start to end
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
         }
-        currentFadeTime = 0f;
+        canvasGroup.alpha = endVector.x; //without this, the value will end at something like 0.9992367
+    }
+
+    IEnumerator ChangeCanvasGroupAlphaToOne(CanvasGroup canvasGroup)
+    {
+        float duration = 2f;
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            float normalizedTime = t / duration;
+            //right here, you can now use normalizedTime as the third parameter in any Lerp from start to end
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x; //without this, the value will end at something like 0.9992367
     }
 }
