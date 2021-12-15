@@ -1213,7 +1213,7 @@ GameObject:
   - component: {fileID: 3601792722645728632}
   - component: {fileID: 3601792722645728635}
   - component: {fileID: 3601792722645728634}
-  - component: {fileID: 2849506991336941961}
+  - component: {fileID: 6755774448118709465}
   - component: {fileID: 6137596229663971974}
   m_Layer: 0
   m_Name: InGameHUD
@@ -1305,7 +1305,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &2849506991336941961
+--- !u!114 &6755774448118709465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1314,18 +1314,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3601792722645728636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f84f3571a81879f469aa874ecc55981a, type: 3}
+  m_Script: {fileID: 11500000, guid: e10bb622e2be6dc40b28490f1232513b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 3065237967911786538}
   lampBar: {fileID: 7216428278127609988}
-  coreBar: {fileID: 0}
   itemRight: {fileID: 3601792721940120665}
   itemCenter: {fileID: 3601792722794174963}
   itemLeft: {fileID: 3601792722112393597}
   playerHealthSystem: {fileID: 0}
   lamp: {fileID: 0}
-  furnace: {fileID: 0}
 --- !u!114 &6137596229663971974
 MonoBehaviour:
   m_ObjectHideFlags: 0
