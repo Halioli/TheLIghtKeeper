@@ -13,15 +13,10 @@ public class InGameHUDHandler : MonoBehaviour
     private bool lampIsOn;
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
-    private CanvasGroup quickAccessGroup;
 
     // Public Attributes
     public HUDBar healthBar;
     public HUDBar lampBar;
-
-    public HUDItem itemRight;
-    public HUDItem itemCenter;
-    public HUDItem itemLeft;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -40,9 +35,6 @@ public class InGameHUDHandler : MonoBehaviour
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         lampBar.SetMaxValue(lampTimeValue);
         lampIsOn = false;
-
-        // Initialize quick access variables
-        quickAccessGroup = GetComponentsInChildren<CanvasGroup>()[2];
     }
 
     private void Update()
@@ -53,6 +45,13 @@ public class InGameHUDHandler : MonoBehaviour
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         ChangeValueInHUD(lampBar, lampTimeValue, null);
 
+        // Check if any element needs to appear/disappear
+        ManageShowingHealth();
+        ManageShowingLampFuel();
+    }
+
+    private void ManageShowingHealth()
+    {
         if ((playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && !playerIsDamaged)
         {
             StartCoroutine(ChangeCanvasGroupAlphaToOne(healthGroup));
@@ -63,7 +62,10 @@ public class InGameHUDHandler : MonoBehaviour
             StartCoroutine(ChangeCanvasGroupAlphaToZero(healthGroup));
             playerIsDamaged = false;
         }
+    }
 
+    private void ManageShowingLampFuel()
+    {
         if (lamp.turnedOn && !lampIsOn)
         {
             StartCoroutine(ChangeCanvasGroupAlphaToOne(lampGroup));
@@ -74,18 +76,6 @@ public class InGameHUDHandler : MonoBehaviour
             StartCoroutine(ChangeCanvasGroupAlphaToZero(lampGroup));
             lampIsOn = false;
         }
-    }
-
-    private string CheckTextForZeros(string text)
-    {
-        string zero = "0";
-
-        if (text.Length < 2)
-        {
-            text = zero + text;
-        }
-
-        return text;
     }
 
     private void ChangeValueInHUD(HUDBar bar, int value, string text)
