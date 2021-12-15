@@ -7,10 +7,10 @@ public class InGameHUDHandler : MonoBehaviour
     // Private Attributes
     private const float FADE_TIME = 2f;
 
-    private float currentFadeTime;
     private int playerHealthValue;
     private int lampTimeValue;
-    private int coreTimeValue;
+    private bool playerIsDamaged;
+    private bool lampIsOn;
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
     private CanvasGroup quickAccessGroup;
@@ -29,21 +29,20 @@ public class InGameHUDHandler : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        currentFadeTime = 0f;
-
         // Initalize health variables
         healthGroup = GetComponentsInChildren<CanvasGroup>()[0];
         playerHealthValue = playerHealthSystem.GetMaxHealth();
         healthBar.SetMaxValue(playerHealthValue);
-        healthBar.UpdateText(CheckTextForZeros(playerHealthValue.ToString()));
+        playerIsDamaged = false;
 
         // Initialize lamp variables
         lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         lampBar.SetMaxValue(lampTimeValue);
+        lampIsOn = false;
 
         // Initialize quick access variables
-        quickAccessGroup = GetComponentsInChildren<CanvasGroup>()[3];
+        quickAccessGroup = GetComponentsInChildren<CanvasGroup>()[2];
     }
 
     private void Update()
@@ -54,16 +53,26 @@ public class InGameHUDHandler : MonoBehaviour
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         ChangeValueInHUD(lampBar, lampTimeValue, null);
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if ((playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && !playerIsDamaged)
         {
-            if (healthGroup.alpha >= 1f)
-            {
-                StartCoroutine(ChangeCanvasGroupAlphaToZero(healthGroup));
-            }
-            else
-            {
-                StartCoroutine(ChangeCanvasGroupAlphaToOne(healthGroup));
-            }
+            StartCoroutine(ChangeCanvasGroupAlphaToOne(healthGroup));
+            playerIsDamaged = true;
+        }
+        else if (!(playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && playerIsDamaged)
+        {
+            StartCoroutine(ChangeCanvasGroupAlphaToZero(healthGroup));
+            playerIsDamaged = false;
+        }
+
+        if (lamp.turnedOn && !lampIsOn)
+        {
+            StartCoroutine(ChangeCanvasGroupAlphaToOne(lampGroup));
+            lampIsOn = true;
+        }
+        else if (!lamp.turnedOn && lampIsOn)
+        {
+            StartCoroutine(ChangeCanvasGroupAlphaToZero(lampGroup));
+            lampIsOn = false;
         }
     }
 
@@ -86,35 +95,31 @@ public class InGameHUDHandler : MonoBehaviour
 
     IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
     {
-        float duration = 2f;
         Vector2 startVector = new Vector2(1f, 1f);
         Vector2 endVector = new Vector2(0f, 0f);
 
-        for (float t = 0f; t < duration; t += Time.deltaTime)
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
         {
-            float normalizedTime = t / duration;
+            float normalizedTime = t / FADE_TIME;
 
-            //right here, you can now use normalizedTime as the third parameter in any Lerp from start to end
             canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
             yield return null;
         }
-        canvasGroup.alpha = endVector.x; //without this, the value will end at something like 0.9992367
+        canvasGroup.alpha = endVector.x;
     }
 
     IEnumerator ChangeCanvasGroupAlphaToOne(CanvasGroup canvasGroup)
     {
-        float duration = 2f;
         Vector2 startVector = new Vector2(0f, 0f);
         Vector2 endVector = new Vector2(1f, 1f);
 
-        for (float t = 0f; t < duration; t += Time.deltaTime)
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
         {
-            float normalizedTime = t / duration;
+            float normalizedTime = t / FADE_TIME;
 
-            //right here, you can now use normalizedTime as the third parameter in any Lerp from start to end
             canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
             yield return null;
         }
-        canvasGroup.alpha = endVector.x; //without this, the value will end at something like 0.9992367
+        canvasGroup.alpha = endVector.x;
     }
 }
