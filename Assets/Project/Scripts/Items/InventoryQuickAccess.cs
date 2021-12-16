@@ -5,11 +5,16 @@ using UnityEngine;
 public class InventoryQuickAccess : MonoBehaviour
 {
     // Private Attributes
+    private const float FADE_TIME = 1f;
+    private const float INPUT_TIME = 3f;
+
     private Inventory playerInventory;
     private PlayerInputs playerInputs;
     private int mouseScrollDirection;
     
     private bool printedAlready = true;
+    private bool alphaIsOne;
+    private bool noInput;
 
     private HUDItem rightItem;
     private HUDItem centerItem;
@@ -26,6 +31,8 @@ public class InventoryQuickAccess : MonoBehaviour
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         playerInputs = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInputs>();
         mouseScrollDirection = 0;
+        alphaIsOne = false;
+        noInput = true;
 
         rightItem = quickAccessGameObject.GetComponentsInChildren<HUDItem>()[0];
         centerItem = quickAccessGameObject.GetComponentsInChildren<HUDItem>()[1];
@@ -37,16 +44,33 @@ public class InventoryQuickAccess : MonoBehaviour
     {
         mouseScrollDirection = (int)playerInputs.PlayerMouseScroll().y;
 
-        if (mouseScrollDirection > 0)
+        if (mouseScrollDirection != 0)
         {
-            playerInventory.CycleRightSelectedItemIndex();
-            printedAlready = false;
+            noInput = false;
+            StopCoroutine(WaitForInput(INPUT_TIME));
+
+            if (!alphaIsOne)
+                StartCoroutine(ChangeCanvasGroupAlphaToOne(quickAccessGroup));
+
+            if (mouseScrollDirection > 0)
+            {
+                playerInventory.CycleRightSelectedItemIndex();
+                printedAlready = false;
+            }
+            else if (mouseScrollDirection < 0)
+            {
+                playerInventory.CycleLeftSelectedItemIndex();
+                printedAlready = false;
+            }
         }
-        else if (mouseScrollDirection < 0)
+        else if (alphaIsOne && !noInput)
         {
-            playerInventory.CycleLeftSelectedItemIndex();
-            printedAlready = false;
+            StartCoroutine(WaitForInput(INPUT_TIME));
+
+            if (noInput)
+                StartCoroutine(ChangeCanvasGroupAlphaToZero(quickAccessGroup));
         }
+        
         if (!printedAlready)
         {
             Debug.Log(playerInventory.indexOfSelectedInventorySlot);
@@ -58,7 +82,8 @@ public class InventoryQuickAccess : MonoBehaviour
             playerInventory.UseSelectedConsumibleItem();
         }
 
-        UpdateQuickAccessItems();
+        if (alphaIsOne)
+            UpdateQuickAccessItems();
     }
 
     private void UpdateQuickAccessItems()
@@ -90,5 +115,43 @@ public class InventoryQuickAccess : MonoBehaviour
         }
 
         return text;
+    }
+
+    IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+        alphaIsOne = false;
+    }
+
+    IEnumerator ChangeCanvasGroupAlphaToOne(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+        alphaIsOne = true;
+    }
+
+    IEnumerator WaitForInput(float secsToWait)
+    {
+        yield return new WaitForSeconds(secsToWait);
+        noInput = true;
     }
 }
