@@ -71,6 +71,16 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Tab);
     }
 
+    public bool PlayerPressedQuickAccessButton()
+    {
+        return Input.GetKeyDown(KeyCode.LeftShift);
+    }
+
+    public bool PlayerReleasedQuickAccessButton()
+    {
+        return Input.GetKeyUp(KeyCode.LeftShift);
+    }
+
     public Vector2 PlayerPressedMovementButtons()
     {
         if (canMove)
