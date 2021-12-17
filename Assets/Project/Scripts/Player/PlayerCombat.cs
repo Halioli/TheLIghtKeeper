@@ -54,7 +54,6 @@ public class PlayerCombat : PlayerBase
         }
     }
 
-
     private bool PlayerIsInReachToAttack(Vector2 mousePosition)
     {
         float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
@@ -117,8 +116,6 @@ public class PlayerCombat : PlayerBase
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
 
-
-
     public void DealDamageToEnemy()
     {
         enemyToAttack.GetComponent<Enemy>().ReceiveDamage(attackSystem.attackValue);
@@ -127,7 +124,6 @@ public class PlayerCombat : PlayerBase
         audioSource.clip = attackAudioClip;
         audioSource.Play();
     }
-
 
     public void ReceiveDamage(int damageValue)
     {
@@ -177,14 +173,15 @@ public class PlayerCombat : PlayerBase
 
     private void FlipPlayerSpriteFacingWhereToAttack()
     {
-        if (playerStates.PlayerActionIsWalking())
-            return;
+        //if (playerStates.PlayerActionIsWalking())
+        //    return;
+        Vector2 mousePosition = PlayerInputs.instance.GetMousePositionInWorld();
         
-        if ((transform.position.x < PlayerInputs.instance.mousePosition.x && !PlayerInputs.instance.facingLeft) ||
-            (transform.position.x > PlayerInputs.instance.mousePosition.x && PlayerInputs.instance.facingLeft))
+        if ((transform.position.x < mousePosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > mousePosition.x && PlayerInputs.instance.facingLeft))
         {
-            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
-            transform.Rotate(new Vector3(0, 180, 0));
+            Vector2 direction = mousePosition - (Vector2)transform.position;
+            PlayerInputs.instance.FlipSprite(direction);
         }
     }
 
