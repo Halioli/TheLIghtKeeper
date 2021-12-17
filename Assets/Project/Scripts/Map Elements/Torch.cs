@@ -8,19 +8,26 @@ public class Torch : InteractStation
 {
     public ParticleSystem initialFireParticles;
     public Light2D torchLight;
-    public CircleCollider2D lightRadiusCircle;
 
     private bool turnedOn = false;
     public TextMeshProUGUI interactText;
 
     public float torchIntensity = 1f;
     public float turnedOffIntensity = 0f;
+
+    private float innerOuterRadiusOff = 0f;
+    private const float innerRadiusOn = 1.8f;
+    private const float outerRadiusOn = 3.3f;
+
+    private const float LIGHT_CIRCLE_RADIUS_DIFFERENCE = outerRadiusOn - innerRadiusOn;
+
+    private float timeToChangeRadius = 1f;
+    private float timeElapsed = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        //initialFireParticles = GetComponentInChildren<ParticleSystem>();
-        //torchLight = GetComponentInChildren<Light2D>();
-        //lightRadiusCircle = GetComponentInChildren<CircleCollider2D>();
         initialFireParticles.Stop();
         if (!turnedOn)
         {
@@ -34,6 +41,7 @@ public class Torch : InteractStation
         if (playerInsideTriggerArea)
         {
             interactText.alpha = 1f;
+            GetInput();
         }
         else
         {
@@ -44,9 +52,12 @@ public class Torch : InteractStation
     {
         if (!turnedOn)
         {
-            StartCoroutine(PlayFireParticleSystem());
-            torchLight.intensity = torchIntensity;
-            //turnedOn = true;
+            SetTorchLightOn();
+          
+        }
+        else
+        {
+            SetTorchLightOff();
         }
     }
 
@@ -56,4 +67,28 @@ public class Torch : InteractStation
         yield return new WaitForSeconds(1f);
         initialFireParticles.Stop();
     }
+
+    void SetTorchLightOff()
+    {
+        StartCoroutine(PlayFireParticleSystem());
+        torchLight.intensity = 1f;
+        timeElapsed = 0;
+        turnedOn = false;
+    }
+
+    void SetTorchLightOn()
+    {
+        StartCoroutine(PlayFireParticleSystem());
+        torchLight.intensity = 1f;
+        float timeElapsed = 0;
+        if(timeElapsed < timeToChangeRadius)
+        {
+            torchLight.pointLightInnerRadius = Mathf.Lerp(innerOuterRadiusOff, innerRadiusOn, timeElapsed / timeToChangeRadius);
+            torchLight.pointLightOuterRadius = Mathf.Lerp(innerOuterRadiusOff, outerRadiusOn, timeElapsed / timeToChangeRadius);
+            timeElapsed += Time.deltaTime;
+        }
+        turnedOn = true;
+    }
+
+
 }
