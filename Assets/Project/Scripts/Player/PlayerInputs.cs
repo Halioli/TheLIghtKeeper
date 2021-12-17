@@ -16,9 +16,6 @@ public class PlayerInputs : MonoBehaviour
 
     public GameObject selectSpotGameObject;
 
-
-
-
     private void Awake()
     {
         if (instance != null)
@@ -30,8 +27,6 @@ public class PlayerInputs : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-
 
     // Methods
     public bool PlayerClickedMineButton()
@@ -81,6 +76,11 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyUp(KeyCode.LeftShift);
     }
 
+    public bool PlayerPressedExitButton()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
+    }
+
     public Vector2 PlayerPressedMovementButtons()
     {
         if (canMove)
@@ -113,5 +113,11 @@ public class PlayerInputs : MonoBehaviour
             instance.facingLeft = !instance.facingLeft;
             GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
         }
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Closing application...");
+        Application.Quit();
     }
 }
