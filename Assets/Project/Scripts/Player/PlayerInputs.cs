@@ -102,4 +102,16 @@ public class PlayerInputs : MonoBehaviour
     {
         Instantiate(selectSpotGameObject, transform);
     }
+
+    public void FlipSprite(Vector2 direction)
+    {
+        if (!instance.canFlip)
+            return;
+
+        if ((direction.x > 0 && !instance.facingLeft) || direction.x < 0 && instance.facingLeft)
+        {
+            instance.facingLeft = !instance.facingLeft;
+            GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+        }
+    }
 }

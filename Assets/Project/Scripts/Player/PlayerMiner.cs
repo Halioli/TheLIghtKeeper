@@ -46,9 +46,6 @@ public class PlayerMiner : PlayerBase
         
     }
 
-
-
-
     // METHODS
     private bool PlayerIsInReachToMine(Vector2 mousePosition)
     {
@@ -171,8 +168,8 @@ public class PlayerMiner : PlayerBase
         if ((transform.position.x < oreToMine.transform.position.x && !PlayerInputs.instance.facingLeft) ||
             (transform.position.x > oreToMine.transform.position.x && PlayerInputs.instance.facingLeft))
         {
-            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
-            transform.Rotate(new Vector3(0, 180, 0));
+            Vector2 direction = oreToMine.transform.position - transform.position;
+            PlayerInputs.instance.FlipSprite(direction);
         }
     }
 
