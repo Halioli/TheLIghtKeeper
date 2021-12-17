@@ -26,20 +26,26 @@ public class LightRodGameObject : ItemGameObject
     }
 
 
-    IEnumerator LightAppears()
+    //IEnumerator LightAppears(GameObject spawnedLight)
+    //{
+    //    float LIGHT_OUTER_RADIUS = spawnedLight.GetComponent<Light2D>().pointLightOuterRadius;
+    //    float LIGHT_RADIUS_DIFFERENCE = LIGHT_OUTER_RADIUS - spawnedLight.GetComponent<Light2D>().pointLightInnerRadius;
+    //    spawnedLight.GetComponent<Light2D>().pointLightOuterRadius = 0;
+    //    spawnedLight.GetComponent<Light2D>().pointLightInnerRadius = 0;
+    //    for (float i = 0f; i < LIGHT_OUTER_RADIUS; i += LIGHT_OUTER_RADIUS * Time.deltaTime * 8)
+    //    {
+    //        spawnedLight.GetComponent<Light2D>().pointLightOuterRadius = i;
+    //        spawnedLight.GetComponent<Light2D>().pointLightInnerRadius = i > LIGHT_RADIUS_DIFFERENCE ? i - LIGHT_RADIUS_DIFFERENCE : 0f;
+    //        yield return new WaitForSeconds(Time.deltaTime);
+    //    }
+    //}
+
+    IEnumerator LightDisappears(GameObject spawnedLight)
     {
-        float LIGHT_OUTER_RADIUS = light.GetComponent<Light2D>().pointLightOuterRadius;
-        float LIGHT_RADIUS_DIFFERENCE = LIGHT_OUTER_RADIUS - light.GetComponent<Light2D>().pointLightInnerRadius;
-        light.GetComponent<Light2D>().pointLightOuterRadius = 0;
-        light.GetComponent<Light2D>().pointLightInnerRadius = 0;
-        for (float i = 0f; i < LIGHT_OUTER_RADIUS; i += LIGHT_OUTER_RADIUS / 10f)
-        {
-            Debug.Log("wtffffff");
-            light.GetComponent<Light2D>().pointLightOuterRadius = i;
-            light.GetComponent<Light2D>().pointLightInnerRadius = i > LIGHT_RADIUS_DIFFERENCE ? i - LIGHT_RADIUS_DIFFERENCE : 0f;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
+        yield return new WaitForSeconds(1.6f);
+        spawnedLight.GetComponent<Light>().Disappear();
     }
+
 
 
     IEnumerator Functionality()
@@ -54,11 +60,12 @@ public class LightRodGameObject : ItemGameObject
         rigidbody2D.bodyType = RigidbodyType2D.Static;
 
 
-        GameObject spawnedLight = Instantiate(light, transform);
-        //StartCoroutine(LightAppears());
+        GameObject spawnedLight = Instantiate(light, transform.position, Quaternion.identity);
+        //StartCoroutine(LightAppears(spawnedLight));
+        spawnedLight.GetComponent<Light>().Appear();
+
 
         float lightTime = 5f;
-        Color spriteColor = GetComponent<SpriteRenderer>().color;
         bool disappearing = false;
 
         while (lightTime > 0f)
@@ -66,21 +73,19 @@ public class LightRodGameObject : ItemGameObject
             yield return new WaitForSeconds(Time.deltaTime);
             lightTime -= Time.deltaTime;
 
-            if (lightTime <= 1f)
+            if (lightTime <= 2f)
             {
-                spawnedLight.GetComponent<Light2D>().intensity -= Time.deltaTime;
-                spriteColor.r -= Time.deltaTime;
-                spriteColor.g -= Time.deltaTime;
-                spriteColor.b -= Time.deltaTime;
-                GetComponent<SpriteRenderer>().color = spriteColor;
                 if (!disappearing)
                 {
-                    StartDespawning(1);
+                    StartDespawning(2);
+                    StartCoroutine(LightDisappears(spawnedLight));
+
                     disappearing = true;
                 }
                 
             }
         }
+
 
         Destroy(spawnedLight);
         Destroy(gameObject);
