@@ -2,52 +2,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrosshairCursor : PlayerInputs
+public class CrosshairCursor : MonoBehaviour
 {
-    // Private Attributes
-    private SpriteRenderer crosshairSpriteRenderer;
+    private GameObject playerGameObject;
+    private Vector2 cursorHotspot;
+    private CursorMode cursorMode;
 
-    // Public Attributes
-    //public GameObject pickAxe;
-
-    public Sprite crosshairNormal;
-    public Sprite crosshairPickaxe;
-    public Sprite crosshairPickaxeX;
-    public Sprite crosshairSword;
-    public Sprite crosshairSwordX;
-
+    public Texture2D defaultCursorTexture;
+    public Texture2D greenMineCursorTexture;
+    public Texture2D redMineCursorTexture;
+    public Texture2D greenCombatCursorTexture;
+    public Texture2D redCombatCursorTexture;
 
     private void Awake()
     {
-        crosshairSpriteRenderer = GetComponent<SpriteRenderer>();
-        Cursor.visible = false;
+        playerGameObject = GameObject.FindGameObjectWithTag("Player");
+
+        cursorHotspot = new Vector2(15, 15);
+        cursorMode = CursorMode.Auto;
     }
 
-    
-    private void Update()
+    private void OnEnable()
     {
-        SetNewMousePosition();
-        transform.position = mouseWorldPosition;
+        MouseHoverable.OnMouseHoverExit += SetDefaultCursorTexture;
+        MineMouseHoverable.OnMineMouseHoverStay += DecideMineCursorTexture;
+        CombatMouseHoverable.OnCombatMouseHoverStay += DecideCombatCursorTexture;
     }
 
+    private void OnDisable()
+    {
+        MouseHoverable.OnMouseHoverExit -= SetDefaultCursorTexture;
+        MineMouseHoverable.OnMineMouseHoverStay -= DecideMineCursorTexture;
+        CombatMouseHoverable.OnCombatMouseHoverStay -= DecideCombatCursorTexture;
+    }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision != null && collision.gameObject.CompareTag("Ore"))
-    //    {
-    //        GetComponent<SpriteRenderer>().sprite = crosshairPickaxe;
-    //    }
-    //    else if (collision != null && collision.gameObject.CompareTag("Enemy"))
-    //    {
-    //        GetComponent<SpriteRenderer>().sprite = crosshairSword;
-    //    }
-    //}
+    private void SetDefaultCursorTexture()
+    {
+        Cursor.SetCursor(defaultCursorTexture, cursorHotspot, cursorMode);
+    }
 
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Ore")|| (collision != null && collision.gameObject.CompareTag("Enemy")))
-    //    {
-    //        GetComponent<SpriteRenderer>().sprite = crosshairNormal;
-    //    }
-    //}
+    private void SetGreenMineCursorTexture()
+    {
+        Cursor.SetCursor(greenMineCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void SetRedMineCursorTexture()
+    {
+        Cursor.SetCursor(redMineCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void DecideMineCursorTexture()
+    {
+        if (Mathf.Abs(Vector2.Distance(PlayerInputs.instance.GetMousePositionInWorld(), playerGameObject.transform.position)) <= PlayerInputs.instance.playerReach)
+        {
+            SetGreenMineCursorTexture();
+        }
+        else
+        {
+            SetRedMineCursorTexture();
+        }
+    }
+
+    private void SetGreenCombatCursorTexture()
+    {
+        Cursor.SetCursor(greenCombatCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void SetRedCombatCursorTexture()
+    {
+        Cursor.SetCursor(redCombatCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void DecideCombatCursorTexture()
+    {
+        if (Mathf.Abs(Vector2.Distance(PlayerInputs.instance.GetMousePositionInWorld(), playerGameObject.transform.position)) <= PlayerInputs.instance.playerReach)
+        {
+            SetGreenCombatCursorTexture();
+        }
+        else
+        {
+            SetRedCombatCursorTexture();
+        }
+    }
 }

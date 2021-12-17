@@ -12,7 +12,6 @@ public class PlayerCombat : PlayerBase
     protected AttackSystem attackSystem; 
     protected HealthSystem healthSystem;
 
-    private float attackReachRadius = 3f;
     private bool attacking = false;
     private bool attackingAnEnemy = false;
 
@@ -24,7 +23,10 @@ public class PlayerCombat : PlayerBase
     private Collider2D colliderDetectedByMouse = null;
     private Enemy enemyToAttack;
 
-
+    //Particles
+    public ParticleSystem playerBlood;
+    public Animator animator;
+    public GameObject swordLight;
 
     // Audio
     public AudioSource audioSource;
@@ -32,19 +34,19 @@ public class PlayerCombat : PlayerBase
     public AudioClip attackAudioClip;
 
 
-
     private void Start()
     {
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        playerBlood.Stop();
     }
 
     void Update()
     {
-        if (playerInputs.PlayerClickedAttackButton() && !attacking)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
         {
-            playerInputs.SetNewMousePosition();
-            if (PlayerIsInReachToAttack(playerInputs.mouseWorldPosition) && MouseClickedOnAnEnemy(playerInputs.mouseWorldPosition))
+            PlayerInputs.instance.SetNewMousePosition();
+            if (PlayerIsInReachToAttack(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnEnemy(PlayerInputs.instance.mouseWorldPosition))
             {
                 SetEnemyToAttack();
             }
@@ -56,7 +58,7 @@ public class PlayerCombat : PlayerBase
     private bool PlayerIsInReachToAttack(Vector2 mousePosition)
     {
         float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= attackReachRadius;
+        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
     }
 
     private bool MouseClickedOnAnEnemy(Vector2 mousePosition)
@@ -69,6 +71,8 @@ public class PlayerCombat : PlayerBase
     {
         attackingAnEnemy = true;
         enemyToAttack = colliderDetectedByMouse.gameObject.GetComponent<Enemy>();
+
+        PlayerInputs.instance.SpawnSelectSpotAtTransform(enemyToAttack.transform);
     }
 
     private void StartAttacking()
@@ -82,7 +86,9 @@ public class PlayerCombat : PlayerBase
 
     IEnumerator Attacking()
     {
-        playerInputs.canFlip = false;
+        PlayerInputs.instance.canFlip = false;
+        animator.SetBool("isAttacking", true);
+        swordLight.SetActive(true);
 
         if (attackingAnEnemy)
         {
@@ -95,7 +101,9 @@ public class PlayerCombat : PlayerBase
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        playerInputs.canFlip = true;
+        PlayerInputs.instance.canFlip = true;
+        animator.SetBool("isAttacking", false);
+        swordLight.SetActive(false);
         ResetAttack();
     }
 
@@ -140,6 +148,7 @@ public class PlayerCombat : PlayerBase
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.clip = hurtedAudioClip;
         audioSource.Play();
+        StartCoroutine(PlayerBloodParticleSystem());
     }
 
     IEnumerator Invulnerability()
@@ -171,11 +180,18 @@ public class PlayerCombat : PlayerBase
         if (playerStates.PlayerActionIsWalking())
             return;
         
-        if ((transform.position.x < playerInputs.mousePosition.x && !playerInputs.facingLeft) ||
-            (transform.position.x > playerInputs.mousePosition.x && playerInputs.facingLeft))
+        if ((transform.position.x < PlayerInputs.instance.mousePosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > PlayerInputs.instance.mousePosition.x && PlayerInputs.instance.facingLeft))
         {
-            playerInputs.facingLeft = !playerInputs.facingLeft;
+            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
             transform.Rotate(new Vector3(0, 180, 0));
         }
+    }
+
+    IEnumerator PlayerBloodParticleSystem()
+    {
+        playerBlood.Play();
+        yield return new WaitForSeconds(0.3f);
+        playerBlood.Stop();
     }
 }

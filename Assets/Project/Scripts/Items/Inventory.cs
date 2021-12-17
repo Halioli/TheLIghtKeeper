@@ -248,7 +248,14 @@ public class Inventory : MonoBehaviour
 
         List<ItemStack.itemStackToDisplay> itemsToDisplay = new List<ItemStack.itemStackToDisplay>();
 
-        itemsToDisplay.Add(inventory[(i - 1) % n].GetStackToDisplay());
+        if (((i - 1) % n) < 0)
+        {
+            itemsToDisplay.Add(inventory[3].GetStackToDisplay());
+        }
+        else
+        {
+            itemsToDisplay.Add(inventory[(i - 1) % n].GetStackToDisplay());
+        }
         itemsToDisplay.Add(inventory[i].GetStackToDisplay());
         itemsToDisplay.Add(inventory[(i + 1) % n].GetStackToDisplay());
 

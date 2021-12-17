@@ -5,10 +5,33 @@ using UnityEngine;
 public class PlayerInputs : MonoBehaviour
 {
     // Public Attributes
+    public static PlayerInputs instance;
+
     public Vector2 mousePosition = new Vector2();
     public Vector2 mouseWorldPosition = new Vector2();
     public bool facingLeft = true;
     public bool canFlip = true;
+    public bool canMove = true;
+    public float playerReach = 3f;
+
+    public GameObject selectSpotGameObject;
+
+
+
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(instance);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
 
     // Methods
     public bool PlayerClickedMineButton()
@@ -25,6 +48,12 @@ public class PlayerInputs : MonoBehaviour
     {
         mousePosition = Input.mousePosition;
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    }
+
+    public Vector2 GetMousePositionInWorld()
+    {
+        SetNewMousePosition();
+        return mouseWorldPosition;
     }
 
     public bool PlayerPressedInteractButton()
@@ -44,11 +73,23 @@ public class PlayerInputs : MonoBehaviour
 
     public Vector2 PlayerPressedMovementButtons()
     {
-        return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (canMove)
+        {
+            return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+        else
+        {
+            return Vector2.zero;
+        }
     }
 
     public Vector2 PlayerMouseScroll()
     {
         return Input.mouseScrollDelta;
+    }
+
+    public void SpawnSelectSpotAtTransform(Transform transform)
+    {
+        Instantiate(selectSpotGameObject, transform);
     }
 }
