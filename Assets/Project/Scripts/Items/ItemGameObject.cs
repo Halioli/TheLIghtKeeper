@@ -75,10 +75,15 @@ public class ItemGameObject : MonoBehaviour
 
     public void StartDespawning()
     {
-        StartCoroutine("Despawning");
+        StartCoroutine(Despawning(DESPAWN_TIME_IN_SECONDS));
     }
 
-    IEnumerator Despawning()
+    public void StartDespawning(float time)
+    {
+        StartCoroutine(Despawning(time));
+    }
+
+    IEnumerator Despawning(float time)
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -88,6 +93,7 @@ public class ItemGameObject : MonoBehaviour
         Color semiTransparentColor = spriteRenderer.material.color;
         semiTransparentColor.a = 0.8f;
 
+        currentDespawnTimeInSeconds = time;
         while (currentDespawnTimeInSeconds > START_DESPAWN_FADING_TIME)
         {
             yield return new WaitForSeconds(Time.deltaTime);
