@@ -15,15 +15,10 @@ public class Torch : InteractStation
     public float torchIntensity = 1f;
     public float turnedOffIntensity = 0f;
 
-    private float innerOuterRadiusOff = 0f;
     private const float innerRadiusOn = 1.8f;
     private const float outerRadiusOn = 3.3f;
 
-    private const float LIGHT_CIRCLE_RADIUS_DIFFERENCE = outerRadiusOn - innerRadiusOn;
-
-    private float timeToChangeRadius = 1f;
-    private float timeElapsed = 0;
-
+    public CircleCollider2D lightRadius;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +28,7 @@ public class Torch : InteractStation
         {
             torchLight.intensity = turnedOffIntensity;
         }
+
         interactText.alpha = 0f;
     }
 
@@ -53,7 +49,6 @@ public class Torch : InteractStation
         if (!turnedOn)
         {
             SetTorchLightOn();
-          
         }
         else
         {
@@ -72,23 +67,49 @@ public class Torch : InteractStation
     {
         StartCoroutine(PlayFireParticleSystem());
         torchLight.intensity = 1f;
-        timeElapsed = 0;
+        StartCoroutine(LightsOff());
         turnedOn = false;
+        lightRadius.radius = 0.1f;
     }
 
     void SetTorchLightOn()
     {
         StartCoroutine(PlayFireParticleSystem());
         torchLight.intensity = 1f;
-        float timeElapsed = 0;
-        if(timeElapsed < timeToChangeRadius)
-        {
-            torchLight.pointLightInnerRadius = Mathf.Lerp(innerOuterRadiusOff, innerRadiusOn, timeElapsed / timeToChangeRadius);
-            torchLight.pointLightOuterRadius = Mathf.Lerp(innerOuterRadiusOff, outerRadiusOn, timeElapsed / timeToChangeRadius);
-            timeElapsed += Time.deltaTime;
-        }
+        StartCoroutine(LightsOn());
         turnedOn = true;
+        lightRadius.radius = 2.8f;
     }
 
+    IEnumerator LightsOn()
+    {
+        Interpolator lightLerp = new Interpolator(0.2f, Interpolator.Type.SIN);
+        lightLerp.ToMax();
 
+        while (!lightLerp.isMaxPrecise)
+        {
+            lightLerp.Update(Time.deltaTime);
+            //DO STUFF HERE
+            torchLight.pointLightOuterRadius = lightLerp.Value * outerRadiusOn;
+            torchLight.pointLightInnerRadius = lightLerp.Value * innerRadiusOn;
+            //WAIT A FRAME
+            yield return null;
+        }
+    }
+
+    IEnumerator LightsOff()
+    {
+        Interpolator lightLerp = new Interpolator(0.2f, Interpolator.Type.SIN);
+        lightLerp.ToMax();
+
+        while (!lightLerp.isMaxPrecise)
+        {
+            lightLerp.Update(Time.deltaTime);
+            //DO STUFF HERE
+            torchLight.pointLightOuterRadius = lightLerp.Inverse * outerRadiusOn;
+            torchLight.pointLightInnerRadius = lightLerp.Inverse * innerRadiusOn;
+            //WAIT A FRAME
+            yield return null;
+        }
+    }
 }
