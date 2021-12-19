@@ -6,7 +6,7 @@ using TMPro;
 
 public class Torch : InteractStation
 {
-    public ParticleSystem initialFireParticles;
+    public ParticleSystem smokeTorchParticles;
     public Light2D torchLight;
 
     private bool turnedOn = false;
@@ -20,10 +20,12 @@ public class Torch : InteractStation
 
     public CircleCollider2D lightRadius;
 
+    public Animator animTorch;
+
     // Start is called before the first frame update
     void Start()
     {
-        initialFireParticles.Stop();
+        smokeTorchParticles.Stop();
         if (!turnedOn)
         {
             torchLight.intensity = turnedOffIntensity;
@@ -55,30 +57,24 @@ public class Torch : InteractStation
             SetTorchLightOff();
         }
     }
-
-    IEnumerator PlayFireParticleSystem()
-    {
-        initialFireParticles.Play();
-        yield return new WaitForSeconds(1f);
-        initialFireParticles.Stop();
-    }
-
     void SetTorchLightOff()
     {
-        StartCoroutine(PlayFireParticleSystem());
+        smokeTorchParticles.Stop();
         torchLight.intensity = 1f;
         StartCoroutine(LightsOff());
         turnedOn = false;
         lightRadius.radius = 0.1f;
+        animTorch.SetBool("isBurning", false);
     }
 
     void SetTorchLightOn()
     {
-        StartCoroutine(PlayFireParticleSystem());
+        smokeTorchParticles.Play();
         torchLight.intensity = 1f;
         StartCoroutine(LightsOn());
         turnedOn = true;
         lightRadius.radius = 2.8f;
+        animTorch.SetBool("isBurning", true);
     }
 
     IEnumerator LightsOn()
