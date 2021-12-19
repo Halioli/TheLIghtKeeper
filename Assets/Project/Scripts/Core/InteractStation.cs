@@ -34,6 +34,7 @@ public class InteractStation : PlayerInputs
     {
         if (PlayerPressedInteractButton())
         {
+            Debug.Log("player pressed");
             StationFunction();
         }
     }

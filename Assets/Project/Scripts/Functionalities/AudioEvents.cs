@@ -26,6 +26,8 @@ public class AudioEvents : MonoBehaviour
     public AudioClip turnOffLanternDroneSound;
     public AudioClip lanternDroneSound;
 
+    public AudioClip torchStartsBurning;
+
     private void OnEnable()
     {
         PlayerMovement.playPlayerWalkingSoundEvent += PlayWalkingSound;
