@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
-
+using UnityEngine.Events;
 public class Torch : InteractStation
 {
     public ParticleSystem smokeTorchParticles;
     public Light2D torchLight;
-
-    private bool turnedOn = false;
     public TextMeshProUGUI interactText;
+    public CircleCollider2D lightRadius;
 
     public float torchIntensity = 1f;
     public float turnedOffIntensity = 0f;
+    public bool hasToBurn;
 
     private const float innerRadiusOn = 1.8f;
     private const float outerRadiusOn = 3.3f;
-
-    public CircleCollider2D lightRadius;
+    public bool turnedOn = false;
 
     public Animator animTorch;
+
+    public TorchPuzzleSystem puzzleSystem;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +35,13 @@ public class Torch : InteractStation
         }
 
         interactText.alpha = 0f;
+
+        if(hasToBurn == false)
+        {
+            DoPuzzle();
+        }
+        PuzzleChecker();
+
     }
 
     private void Update()
@@ -56,6 +66,12 @@ public class Torch : InteractStation
         {
             SetTorchLightOff();
         }
+        DoPuzzle();
+        if (PuzzleChecker())
+        {
+            Debug.Log("Puzzle Completed");
+        }
+
     }
     void SetTorchLightOff()
     {
@@ -106,6 +122,41 @@ public class Torch : InteractStation
             torchLight.pointLightInnerRadius = lightLerp.Inverse * innerRadiusOn;
             //WAIT A FRAME
             yield return null;
+        }
+    }
+
+    public void DoPuzzle()
+    {
+        if (turnedOn && hasToBurn)
+        {
+            puzzleSystem.torchesOn += 1;
+        }
+        else if (!turnedOn && hasToBurn)
+        {
+            puzzleSystem.torchesOn -= 1;
+        }
+        else if (turnedOn && !hasToBurn)
+        {
+            puzzleSystem.torchesOff -= 1;
+        }
+        else if (!turnedOn && !hasToBurn)
+        {
+            puzzleSystem.torchesOff += 1;
+        }
+
+    }
+
+    private bool PuzzleChecker()
+    {
+        Debug.Log("TORCHES ON: " + puzzleSystem.torchesOn);
+        Debug.Log("TORCHES OFF:" + puzzleSystem.torchesOff);
+        if (puzzleSystem.torchesOn == puzzleSystem.maxTorchesOn && puzzleSystem.torchesOff == puzzleSystem.maxTorchesOff)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
