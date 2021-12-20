@@ -5,9 +5,28 @@ using UnityEngine;
 public class PlayerInputs : MonoBehaviour
 {
     // Public Attributes
-    protected Vector2 mousePosition = new Vector2();
-    protected Vector2 mouseWorldPosition = new Vector2();
+    public static PlayerInputs instance;
 
+    public Vector2 mousePosition = new Vector2();
+    public Vector2 mouseWorldPosition = new Vector2();
+    public bool facingLeft = true;
+    public bool canFlip = true;
+    public bool canMove = true;
+    public float playerReach = 3f;
+
+    public GameObject selectSpotGameObject;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(instance);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     // Methods
     public bool PlayerClickedMineButton()
@@ -15,10 +34,21 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Mouse0);
     }
 
+    public bool PlayerClickedAttackButton()
+    {
+        return Input.GetKeyDown(KeyCode.Mouse1);
+    }
+
     public void SetNewMousePosition()
     {
         mousePosition = Input.mousePosition;
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    }
+
+    public Vector2 GetMousePositionInWorld()
+    {
+        SetNewMousePosition();
+        return mouseWorldPosition;
     }
 
     public bool PlayerPressedInteractButton()
@@ -36,18 +66,58 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Tab);
     }
 
-    public bool PlayerPressedAttackButton()
+    public bool PlayerPressedQuickAccessButton()
     {
-        return Input.GetKeyDown(KeyCode.Mouse1);
+        return Input.GetKeyDown(KeyCode.LeftShift);
+    }
+
+    public bool PlayerReleasedQuickAccessButton()
+    {
+        return Input.GetKeyUp(KeyCode.LeftShift);
+    }
+
+    public bool PlayerPressedExitButton()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
     }
 
     public Vector2 PlayerPressedMovementButtons()
     {
-        return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (canMove)
+        {
+            return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+        else
+        {
+            return Vector2.zero;
+        }
     }
 
     public Vector2 PlayerMouseScroll()
     {
         return Input.mouseScrollDelta;
+    }
+
+    public void SpawnSelectSpotAtTransform(Transform transform)
+    {
+        Instantiate(selectSpotGameObject, transform);
+    }
+
+    public void FlipSprite(Vector2 direction)
+    {
+        if (!instance.canFlip)
+            return;
+
+        if ((direction.x > 0 && !instance.facingLeft) || direction.x < 0 && instance.facingLeft)
+        {
+            instance.facingLeft = !instance.facingLeft;
+            GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+        }
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Closing application...");
+        Application.Quit();
     }
 }

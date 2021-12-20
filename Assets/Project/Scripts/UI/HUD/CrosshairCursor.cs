@@ -4,29 +4,84 @@ using UnityEngine;
 
 public class CrosshairCursor : MonoBehaviour
 {
-    public GameObject pickAxe;
-    // Start is called before the first frame update
+    private GameObject playerGameObject;
+    private Vector2 cursorHotspot;
+    private CursorMode cursorMode;
+
+    public Texture2D defaultCursorTexture;
+    public Texture2D greenMineCursorTexture;
+    public Texture2D redMineCursorTexture;
+    public Texture2D greenCombatCursorTexture;
+    public Texture2D redCombatCursorTexture;
+
     private void Awake()
     {
-        Cursor.visible = false;
+        playerGameObject = GameObject.FindGameObjectWithTag("Player");
+
+        cursorHotspot = new Vector2(15, 15);
+        cursorMode = CursorMode.Auto;
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void OnEnable()
     {
-        Vector2 mouseCursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = mouseCursorPos;
+        MouseHoverable.OnMouseHoverExit += SetDefaultCursorTexture;
+        MineMouseHoverable.OnMineMouseHoverStay += DecideMineCursorTexture;
+        CombatMouseHoverable.OnCombatMouseHoverStay += DecideCombatCursorTexture;
     }
 
-    /*private void OnTriggerEnter2D(Collider2D collision)
+    private void OnDisable()
     {
-        if (collision != null && collision.gameObject.CompareTag("Ore"))
+        MouseHoverable.OnMouseHoverExit -= SetDefaultCursorTexture;
+        MineMouseHoverable.OnMineMouseHoverStay -= DecideMineCursorTexture;
+        CombatMouseHoverable.OnCombatMouseHoverStay -= DecideCombatCursorTexture;
+    }
+
+    private void SetDefaultCursorTexture()
+    {
+        Cursor.SetCursor(defaultCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void SetGreenMineCursorTexture()
+    {
+        Cursor.SetCursor(greenMineCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void SetRedMineCursorTexture()
+    {
+        Cursor.SetCursor(redMineCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void DecideMineCursorTexture()
+    {
+        if (Mathf.Abs(Vector2.Distance(PlayerInputs.instance.GetMousePositionInWorld(), playerGameObject.transform.position)) <= PlayerInputs.instance.playerReach)
         {
-            pickAxe.SetActive(true);
+            SetGreenMineCursorTexture();
         }
         else
         {
-            pickAxe.SetActive(false);
+            SetRedMineCursorTexture();
         }
-    }*/
+    }
+
+    private void SetGreenCombatCursorTexture()
+    {
+        Cursor.SetCursor(greenCombatCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void SetRedCombatCursorTexture()
+    {
+        Cursor.SetCursor(redCombatCursorTexture, cursorHotspot, cursorMode);
+    }
+
+    private void DecideCombatCursorTexture()
+    {
+        if (Mathf.Abs(Vector2.Distance(PlayerInputs.instance.GetMousePositionInWorld(), playerGameObject.transform.position)) <= PlayerInputs.instance.playerReach)
+        {
+            SetGreenCombatCursorTexture();
+        }
+        else
+        {
+            SetRedCombatCursorTexture();
+        }
+    }
 }

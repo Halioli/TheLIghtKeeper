@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HUDBar : MonoBehaviour
 {
     // Public
     public Slider slider;
-    public Text textToShow;
+    public TextMeshProUGUI textToShow;
 
     public void SetValue(int value)
     {

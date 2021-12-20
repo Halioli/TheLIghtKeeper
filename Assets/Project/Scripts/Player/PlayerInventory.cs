@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : PlayerInputs
+public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
     private bool inventoryIsOpen = false;
@@ -12,6 +12,12 @@ public class PlayerInventory : PlayerInputs
     public Canvas inventoryCanvas;
     public InventoryMenu inventoryMenu;
 
+    // Events
+    public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerPicksUpItemEvent;
+
+
+
     private void Start()
     {
         inventory = GetComponentInChildren<Inventory>();
@@ -19,7 +25,7 @@ public class PlayerInventory : PlayerInputs
 
     void Update()
     {
-        if (PlayerPressedInventoryButton())
+        if (PlayerInputs.instance.PlayerPressedInventoryButton())
         {
             if (inventoryIsOpen)
             {
@@ -37,7 +43,10 @@ public class PlayerInventory : PlayerInputs
         if (collider.gameObject.CompareTag("Item"))
         {
             ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-            PickUpItem(itemGameObject);
+            if (itemGameObject.canBePickedUp)
+            {
+                PickUpItem(itemGameObject);
+            }
         }
     }
 
@@ -64,7 +73,8 @@ public class PlayerInventory : PlayerInputs
         bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
         if (couldAddItem)
         {
-            // Play picking up sound
+            if (playerPicksUpItemEvent != null)
+                playerPicksUpItemEvent();
 
             Destroy(itemToPickUp.gameObject);
         }
