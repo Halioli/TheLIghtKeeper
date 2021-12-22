@@ -16,11 +16,9 @@ public class Teleporter : MonoBehaviour
     public GameObject[] teleporterLights;
     public GameObject canvasTeleportSelection;
 
-
     // Events
     public delegate void TeleportActivation(string teleportName);
     public static event TeleportActivation OnActivation;
-
 
     private void Start()
     {
@@ -37,7 +35,7 @@ public class Teleporter : MonoBehaviour
             //Do the activate teleport animation and stay teleport
             if (activated)
             {
-                if (canvasTeleportSelection.active)
+                if (canvasTeleportSelection.activeInHierarchy)
                 {
                     PlayerInputs.instance.canMove = true;
 
