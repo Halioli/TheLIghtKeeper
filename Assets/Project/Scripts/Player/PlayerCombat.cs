@@ -9,9 +9,6 @@ public class PlayerCombat : PlayerBase
     private const float ATTACK_TIME_DURATION = 0.5f;
     private float attackingTime = ATTACK_TIME_DURATION;
 
-    protected AttackSystem attackSystem; 
-    protected HealthSystem healthSystem;
-
     private bool attacking = false;
     private bool attackingAnEnemy = false;
 
@@ -19,20 +16,24 @@ public class PlayerCombat : PlayerBase
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
-
     private Collider2D colliderDetectedByMouse = null;
     private Enemy enemyToAttack;
+
+    protected AttackSystem attackSystem;
+    protected HealthSystem healthSystem;
+
+    // Public Attributes
+    public GameObject attackArea;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
     public GameObject swordLight;
 
-    // Audio
+    //Audio
     public AudioSource audioSource;
     public AudioClip hurtedAudioClip;
     public AudioClip attackAudioClip;
-
 
     private void Start()
     {
@@ -118,6 +119,7 @@ public class PlayerCombat : PlayerBase
 
     public void DealDamageToEnemy()
     {
+        //attackArea.GetComponent<AttackArea>().DamageAllInCollider(attackSystem.attackValue);
         enemyToAttack.GetComponent<Enemy>().ReceiveDamage(attackSystem.attackValue);
 
         audioSource.pitch = Random.Range(0.8f, 1.3f);
