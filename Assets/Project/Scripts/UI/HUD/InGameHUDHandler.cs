@@ -54,12 +54,12 @@ public class InGameHUDHandler : MonoBehaviour
     {
         if ((playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && !playerIsDamaged)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToOne(healthGroup));
+            StartCoroutine(CanvasFadeIn(healthGroup));
             playerIsDamaged = true;
         }
         else if (!(playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && playerIsDamaged)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToZero(healthGroup));
+            StartCoroutine(CanvasFadeOut(healthGroup));
             playerIsDamaged = false;
         }
     }
@@ -68,12 +68,12 @@ public class InGameHUDHandler : MonoBehaviour
     {
         if (lamp.turnedOn && !lampIsOn)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToOne(lampGroup));
+            StartCoroutine(CanvasFadeIn(lampGroup));
             lampIsOn = true;
         }
         else if (!lamp.turnedOn && lampIsOn)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToZero(lampGroup));
+            StartCoroutine(CanvasFadeOut(lampGroup));
             lampIsOn = false;
         }
     }
@@ -83,7 +83,7 @@ public class InGameHUDHandler : MonoBehaviour
         bar.SetValue(value);
     }
 
-    IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(1f, 1f);
         Vector2 endVector = new Vector2(0f, 0f);
@@ -98,7 +98,7 @@ public class InGameHUDHandler : MonoBehaviour
         canvasGroup.alpha = endVector.x;
     }
 
-    IEnumerator ChangeCanvasGroupAlphaToOne(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(0f, 0f);
         Vector2 endVector = new Vector2(1f, 1f);
