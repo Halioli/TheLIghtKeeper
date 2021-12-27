@@ -5,7 +5,7 @@ using UnityEngine;
 public class InGameHUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 2f;
+    private const float FADE_TIME = 0.5f;
 
     private int playerHealthValue;
     private int lampTimeValue;

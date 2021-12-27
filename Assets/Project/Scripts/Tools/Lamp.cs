@@ -6,7 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-    private const int MAX_LEVELS = 5;
+    private const int MAX_LEVELS = 4;
     private int level = 1;
 
     private const float LIGHT_INTENSITY_ON = 0.5f;
@@ -14,8 +14,8 @@ public class Lamp : MonoBehaviour
 
     private const float RADIUS_DIFFERENCE = 20f;
 
-    private float[] LIGHT_ANGLE_LVL = { 35f, 55f, 75f, 95f, 115f };
-    private float[] LIGHT_DISTANCE_LVL = { 5f, 10f, 15f, 20f, 25f };
+    private float[] LIGHT_ANGLE_LVL = { 55f, 75f, 95f, 115f };
+    private float[] LIGHT_DISTANCE_LVL = { 10f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
 
@@ -28,6 +28,7 @@ public class Lamp : MonoBehaviour
     private float maxLampTime;
     private SpriteRenderer lampSpriteRenderer;
     private Inventory playerInventory;
+    private Animator playerAnimator;
 
     // Public Attributes
     public bool turnedOn;
@@ -38,13 +39,10 @@ public class Lamp : MonoBehaviour
     public GameObject lampCircleLight;
     public GameObject lampConeLight;
 
-    public Animator animator;
-
     public float flickerIntensity;
     public float flickerTime;
 
     System.Random rg;
-
 
     public delegate void PlayLanternSound();
     public static event PlayLanternSound turnOnLanternSoundEvent;
@@ -53,8 +51,6 @@ public class Lamp : MonoBehaviour
     public static event PlayLanternSound turnOffLanternDroneSoundEvent;
     public static event PlayLanternSound playLanternDroneSoundEvent;
     public static event PlayLanternSound stopLanternDroneSoundEvent;
-
-
 
     private void Awake()
     {
@@ -72,6 +68,7 @@ public class Lamp : MonoBehaviour
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        playerAnimator = GetComponentInParent<Animator>();
     }
 
     private void Update()
@@ -92,7 +89,7 @@ public class Lamp : MonoBehaviour
         if (LampTimeExhausted())
         {
             turnedOn = false;
-            animator.SetBool("light", false);
+            playerAnimator.SetBool("light", false);
             DeactivateConeLight();
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
         }
@@ -158,7 +155,7 @@ public class Lamp : MonoBehaviour
     public void ActivateLampLight()
     {
         turnedOn = true;
-        animator.SetBool("light", true);
+        playerAnimator.SetBool("light", true);
 
         ActivateConeLight();
         ActivateCircleLight();
@@ -199,7 +196,7 @@ public class Lamp : MonoBehaviour
     public void DeactivateLampLight()
     {
         turnedOn = false;
-        animator.SetBool("light", false);
+        playerAnimator.SetBool("light", false);
 
         if (coneIsActive)
         {
