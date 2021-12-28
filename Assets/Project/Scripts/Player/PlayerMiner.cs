@@ -21,7 +21,9 @@ public class PlayerMiner : PlayerBase
     private float miningTime = 0;
     private const float LOWER_INTERVAL_CRITICAL_MINING = 0.4f;
     private const float UPPER_INTERVAL_CRITICAL_MINING = 0.9f;
-
+    
+    // Public Attributes
+    public GameObject interactArea;
 
     // Events
     public delegate void PlayPlayerSound();

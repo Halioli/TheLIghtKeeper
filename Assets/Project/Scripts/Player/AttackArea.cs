@@ -39,5 +39,6 @@ public class AttackArea : MonoBehaviour
             }
             Debug.Log(GetColliders()[i]);
         }
+        colliders.Clear();
     }
 }
