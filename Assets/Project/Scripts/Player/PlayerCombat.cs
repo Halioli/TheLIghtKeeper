@@ -90,6 +90,7 @@ public class PlayerCombat : PlayerBase
         animator.SetBool("isAttacking", true);
         swordLight.SetActive(true);
 
+        attackArea.GetComponent<AttackArea>().DamageAllInCollider(attackSystem.attackValue);
         if (attackingAnEnemy)
         {
             DealDamageToEnemy();
@@ -119,7 +120,6 @@ public class PlayerCombat : PlayerBase
 
     public void DealDamageToEnemy()
     {
-        //attackArea.GetComponent<AttackArea>().DamageAllInCollider(attackSystem.attackValue);
         enemyToAttack.GetComponent<Enemy>().ReceiveDamage(attackSystem.attackValue);
 
         audioSource.pitch = Random.Range(0.8f, 1.3f);

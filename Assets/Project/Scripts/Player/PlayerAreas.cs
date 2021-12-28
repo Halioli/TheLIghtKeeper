@@ -94,29 +94,29 @@ public class PlayerAreas : MonoBehaviour
 
             if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
             {
-                Debug.Log("Horizontal Axis");
+                // Horizontal Axis
                 if (mouseWorldPos.x > transform.position.x)
                 {
-                    Debug.Log("RIGHT");
+                    // RIGHT
                     StartCoroutine(SpawnAttackArea(attackAreaRightPosition, areaRotationOnHorizontal));
                 }
                 else
                 {
-                    Debug.Log("LEFT");
+                    // LEFT
                     StartCoroutine(SpawnAttackArea(attackAreaLeftPosition, areaRotationOnHorizontal));
                 }
             }
             else
             {
-                Debug.Log("Vertical Axis");
+                // Vertical Axis
                 if (mouseWorldPos.y > transform.position.y)
                 {
-                    Debug.Log("TOP");
+                    // TOP
                     StartCoroutine(SpawnAttackArea(attackAreaTopPosition, Vector3.zero));
                 }
                 else
                 {
-                    Debug.Log("DOWN");
+                    // DOWN
                     StartCoroutine(SpawnAttackArea(attackAreaDownPosition, Vector3.zero));
                 }
             }
@@ -132,29 +132,29 @@ public class PlayerAreas : MonoBehaviour
 
             if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
             {
-                Debug.Log("Horizontal Axis");
+                // Horizontal Axis
                 if (mouseWorldPos.x > transform.position.x)
                 {
-                    Debug.Log("RIGHT");
+                    // RIGHT
                     interactArea.transform.position = interactAreaRightPosition;
                 }
                 else
                 {
-                    Debug.Log("LEFT");
+                    // LEFT
                     interactArea.transform.position = interactAreaLeftPosition;
                 }
             }
             else
             {
-                Debug.Log("Vertical Axis");
+                // Vertical Axis
                 if (mouseWorldPos.y > transform.position.y)
                 {
-                    Debug.Log("TOP");
+                    // TOP
                     interactArea.transform.position = interactAreaTopPosition;
                 }
                 else
                 {
-                    Debug.Log("DOWN");
+                    // DOWN
                     interactArea.transform.position = interactAreaDownPosition;
                 }
             }

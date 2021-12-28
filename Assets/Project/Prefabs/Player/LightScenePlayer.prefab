@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 2254708442522175721}
   - component: {fileID: 6473599654679710743}
   - component: {fileID: 1800584298477671916}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: InteractArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 844c654a83299ea4ba9c8cb83b6e5749, type: 3}
   m_Color: {r: 0.7028302, g: 1, b: 0.74687064, a: 0.5019608}
   m_FlipX: 0
@@ -10159,7 +10159,7 @@ GameObject:
   - component: {fileID: 2385498757763074010}
   - component: {fileID: 6240982922349549007}
   - component: {fileID: 1333374070526496175}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10219,7 +10219,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 844c654a83299ea4ba9c8cb83b6e5749, type: 3}
   m_Color: {r: 1, g: 0.7019608, b: 0.7162506, a: 0.5019608}
   m_FlipX: 0
@@ -10678,6 +10678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c6b201e4f0d4a4bbc0d76c890fe775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactArea: {fileID: 1194788267757497830}
 --- !u!114 &8148411520325426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10768,7 +10769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3be414cda14a4a428d97ff3b2cff101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackArea: {fileID: 0}
+  attackArea: {fileID: 7233089400078776426}
   playerBlood: {fileID: 3410508154403687448}
   animator: {fileID: 5742222722491315820}
   swordLight: {fileID: 1954897529}
