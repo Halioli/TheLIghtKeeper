@@ -6,7 +6,7 @@ using DG.Tweening;
 public class PlayerCombat : PlayerBase
 {  
     // Private Attributes
-    private const float ATTACK_TIME_DURATION = 0.5f;
+    private const float ATTACK_TIME_DURATION = 0.22f;
     private float attackingTime = ATTACK_TIME_DURATION;
 
     private bool attacking = false;

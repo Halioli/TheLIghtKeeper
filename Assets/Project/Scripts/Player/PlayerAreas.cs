@@ -199,12 +199,12 @@ public class PlayerAreas : MonoBehaviour
 
     IEnumerator SpawnAttackArea(Vector3 areaPos, Vector3 areaRotation)
     {
-        //attackArea.SetActive(true);
+        attackArea.SetActive(true);
         attackArea.transform.position = areaPos;
         currentAttackAreaRotation.eulerAngles = areaRotation;
         attackArea.transform.rotation = currentAttackAreaRotation;
 
-        yield return null;
-        //attackArea.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        attackArea.SetActive(false);
     }
 }
