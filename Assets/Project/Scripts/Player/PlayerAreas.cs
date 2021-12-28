@@ -14,13 +14,21 @@ public class PlayerAreas : MonoBehaviour
 
     private Vector2 playerMovement;
     private Vector3 mouseWorldPos;
+    private Vector3 areaRotationOnHorizontal;
+
+    //Attack
     private Vector3 attackAreaLeftPosition;
     private Vector3 attackAreaRightPosition;
     private Vector3 attackAreaTopPosition;
     private Vector3 attackAreaDownPosition;
-    private Vector3 interactAreaPosition;
-    private Vector3 areaRotationOnHorizontal;
     private Quaternion currentAttackAreaRotation;
+
+    //Interact
+    private Vector3 interactAreaPosition;
+    private Vector3 interactAreaLeftPosition;
+    private Vector3 interactAreaRightPosition;
+    private Vector3 interactAreaTopPosition;
+    private Vector3 interactAreaDownPosition;
 
     // Public Attributes
     public GameObject interactArea;
@@ -35,6 +43,49 @@ public class PlayerAreas : MonoBehaviour
     }
 
     private void Update()
+    {
+        CheckAttackButtonInput();
+        CheckInteractButtonInput();
+
+        MoveInteractAreaBasedOnDirection();
+    }
+
+    private void UpdateArea()
+    {
+        interactArea.transform.localPosition = interactAreaPosition;
+    }
+
+    private void UpdateAttackArea()
+    {
+        attackAreaLeftPosition = attackAreaRightPosition = attackAreaTopPosition = attackAreaDownPosition = transform.position;
+
+        attackAreaLeftPosition.x += LEFT;
+        attackAreaLeftPosition.y += DEFAULT_Y;
+
+        attackAreaRightPosition.x += RIGHT;
+        attackAreaRightPosition.y += DEFAULT_Y;
+
+        attackAreaTopPosition.y += TOP;
+
+        attackAreaDownPosition.y += DOWN;
+    }
+
+    private void UpdateInteractArea()
+    {
+        interactAreaLeftPosition = interactAreaRightPosition = interactAreaTopPosition = interactAreaDownPosition = transform.position;
+
+        interactAreaLeftPosition.x += LEFT;
+        interactAreaLeftPosition.y += DEFAULT_Y;
+
+        interactAreaRightPosition.x += RIGHT;
+        interactAreaRightPosition.y += DEFAULT_Y;
+
+        interactAreaTopPosition.y += TOP;
+
+        interactAreaDownPosition.y += DOWN;
+    }
+
+    private void CheckAttackButtonInput()
     {
         if (PlayerInputs.instance.PlayerClickedAttackButton())
         {
@@ -70,7 +121,48 @@ public class PlayerAreas : MonoBehaviour
                 }
             }
         }
+    }
 
+    private void CheckInteractButtonInput()
+    {
+        if (PlayerInputs.instance.PlayerClickedMineButton())
+        {
+            UpdateInteractArea();
+            mouseWorldPos = PlayerInputs.instance.GetMousePositionInWorld();
+
+            if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
+            {
+                Debug.Log("Horizontal Axis");
+                if (mouseWorldPos.x > transform.position.x)
+                {
+                    Debug.Log("RIGHT");
+                    interactArea.transform.position = interactAreaRightPosition;
+                }
+                else
+                {
+                    Debug.Log("LEFT");
+                    interactArea.transform.position = interactAreaLeftPosition;
+                }
+            }
+            else
+            {
+                Debug.Log("Vertical Axis");
+                if (mouseWorldPos.y > transform.position.y)
+                {
+                    Debug.Log("TOP");
+                    interactArea.transform.position = interactAreaTopPosition;
+                }
+                else
+                {
+                    Debug.Log("DOWN");
+                    interactArea.transform.position = interactAreaDownPosition;
+                }
+            }
+        }
+    }
+
+    private void MoveInteractAreaBasedOnDirection()
+    {
         playerMovement = PlayerInputs.instance.PlayerPressedMovementButtons();
 
         if (playerMovement.y != 0)
@@ -86,7 +178,7 @@ public class PlayerAreas : MonoBehaviour
                 interactAreaPosition.y = DOWN;
             }
 
-            UpdateAreas();
+            UpdateArea();
         }
         else if (playerMovement.x != 0 && playerMovement.y == 0)
         {
@@ -101,28 +193,8 @@ public class PlayerAreas : MonoBehaviour
                 interactAreaPosition.x = LEFT;
             }
 
-            UpdateAreas();
+            UpdateArea();
         }
-    }
-
-    private void UpdateAreas()
-    {
-        interactArea.transform.localPosition = interactAreaPosition;
-    }
-
-    private void UpdateAttackArea()
-    {
-        attackAreaLeftPosition = attackAreaRightPosition = attackAreaTopPosition = attackAreaDownPosition = transform.position;
-
-        attackAreaLeftPosition.x += LEFT;
-        attackAreaLeftPosition.y += DEFAULT_Y;
-
-        attackAreaRightPosition.x += RIGHT;
-        attackAreaRightPosition.y += DEFAULT_Y;
-
-        attackAreaTopPosition.y += TOP;
-
-        attackAreaDownPosition.y += DOWN;
     }
 
     IEnumerator SpawnAttackArea(Vector3 areaPos, Vector3 areaRotation)

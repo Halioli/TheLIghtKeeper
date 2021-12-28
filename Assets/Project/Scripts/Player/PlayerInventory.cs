@@ -7,6 +7,7 @@ public class PlayerInventory : MonoBehaviour
     // Private Attributes
     private bool inventoryIsOpen = false;
     private Inventory inventory;
+    private Collider2D itemCollectionCollider;
 
     // Public Attributes
     public Canvas inventoryCanvas;
@@ -21,6 +22,7 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         inventory = GetComponentInChildren<Inventory>();
+        itemCollectionCollider = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
@@ -38,9 +40,11 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Item"))
+        if (collider.gameObject.CompareTag("Item") && collider.IsTouching(itemCollectionCollider))
         {
             ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
             if (itemGameObject.canBePickedUp)
