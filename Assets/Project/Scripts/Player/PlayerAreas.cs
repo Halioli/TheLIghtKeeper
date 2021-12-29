@@ -42,12 +42,10 @@ public class PlayerAreas : MonoBehaviour
         interactAreaPosition = interactArea.transform.localPosition;
     }
 
-    //private void Update()
-    //{
-    //    CheckInteractButtonInput();
-
-    //    MoveInteractAreaBasedOnDirection();
-    //}
+    private void Update()
+    {
+        CheckInteractButtonInput();
+    }
 
     private void UpdateArea()
     {

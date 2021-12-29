@@ -48,6 +48,7 @@ public class PlayerMiner : PlayerBase
             else
             {
                 miningAnOre = false;
+                PlayerInputs.instance.SpawnSelectSpotAtTransform(interactArea.transform);
             }
 
             StartMining();
