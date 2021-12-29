@@ -39,11 +39,11 @@ public class PlayerMiner : PlayerBase
         if (PlayerInputs.instance.PlayerClickedMineButton() && playerStates.PlayerStateIsFree() && !playerStates.PlayerActionIsMining())
         {
             PlayerInputs.instance.SetNewMousePosition();
-            if (PlayerIsInReachToMine(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnOre(PlayerInputs.instance.mouseWorldPosition))
-            {
-                SetOreToMine();
+            //if (PlayerIsInReachToMine(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnOre(PlayerInputs.instance.mouseWorldPosition))
+            //{
+                SetOreToMine(interactArea.GetComponent<MineArea>().GetClosestOreToCollider());
                 StartMining();
-            }
+            //}
         }
         
     }
@@ -61,9 +61,9 @@ public class PlayerMiner : PlayerBase
         return colliderDetectedByMouse != null && colliderDetectedByMouse.gameObject.CompareTag("Ore");
     }
 
-    private void SetOreToMine()
+    private void SetOreToMine(Ore ore)
     {
-        oreToMine = colliderDetectedByMouse.gameObject.GetComponent<Ore>();
+        oreToMine = ore; //colliderDetectedByMouse.gameObject.GetComponent<Ore>();
 
         PlayerInputs.instance.SpawnSelectSpotAtTransform(oreToMine.transform);
     }

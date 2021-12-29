@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: 2254708442522175721}
   - component: {fileID: 6473599654679710743}
   - component: {fileID: 1800584298477671916}
+  - component: {fileID: 4927259255565532129}
   m_Layer: 3
   m_Name: InteractArea
   m_TagString: Untagged
@@ -181,6 +182,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4927259255565532129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194788267757497830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d13b079c9c2dd94cbddf71cc00961a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1497028114772447308
 GameObject:
   m_ObjectHideFlags: 0
@@ -10269,6 +10282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 153a82e8412bc16468e1f51c556db6d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCombat: {fileID: 8397354122656166637}
 --- !u!1 &7365732816340130227
 GameObject:
   m_ObjectHideFlags: 0
