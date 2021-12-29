@@ -19,9 +19,12 @@ public class PlayerMiner : PlayerBase
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
     private const float MINING_TIME = 1.0f;
     private float miningTime = 0;
-    private const float LOWER_INTERVAL_CRITICAL_MINING = 0.4f;
-    private const float UPPER_INTERVAL_CRITICAL_MINING = 0.9f;
 
+    private bool canCriticalMine = false;
+    private bool miningAnOre = false;
+    
+    // Public Attributes
+    public GameObject interactArea;
 
     // Events
     public delegate void PlayPlayerSound();
@@ -39,15 +42,18 @@ public class PlayerMiner : PlayerBase
             PlayerInputs.instance.SetNewMousePosition();
             if (PlayerIsInReachToMine(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnOre(PlayerInputs.instance.mouseWorldPosition))
             {
+                miningAnOre = true;
                 SetOreToMine();
-                StartMining();
             }
+            else
+            {
+                miningAnOre = false;
+            }
+
+            StartMining();
         }
         
     }
-
-
-
 
     // METHODS
     private bool PlayerIsInReachToMine(Vector2 mousePosition)
@@ -74,7 +80,7 @@ public class PlayerMiner : PlayerBase
     {
         if (PlayerInputs.instance.PlayerClickedMineButton())
         {
-            if (WithinCriticalInterval())
+            if (canCriticalMine)
             {
                 criticalMiningState = CriticalMiningState.SUCCEESSFUL;
                 successCriticalMiningSoundEvent();
@@ -87,11 +93,15 @@ public class PlayerMiner : PlayerBase
         }
     }
 
-    private bool WithinCriticalInterval()
+    public void StartCriticalInterval()
     {
-        return miningTime >= LOWER_INTERVAL_CRITICAL_MINING && miningTime <= UPPER_INTERVAL_CRITICAL_MINING;
+        canCriticalMine = true;
     }
 
+    public void FinishCriticalInterval()
+    {
+        canCriticalMine = false;
+    }
 
     private void StartMining()
     {
@@ -136,6 +146,9 @@ public class PlayerMiner : PlayerBase
 
     private void Mine()
     {
+        if (!miningAnOre)
+            return;
+
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
         {
             MineOre(criticalMiningDamage);
@@ -168,11 +181,13 @@ public class PlayerMiner : PlayerBase
 
     private void FlipPlayerSpriteFacingOreToMine()
     {
-        if ((transform.position.x < oreToMine.transform.position.x && !PlayerInputs.instance.facingLeft) ||
-            (transform.position.x > oreToMine.transform.position.x && PlayerInputs.instance.facingLeft))
+        Vector2 mousePosition = PlayerInputs.instance.GetMousePositionInWorld();
+
+        if ((transform.position.x < mousePosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > mousePosition.x && PlayerInputs.instance.facingLeft))
         {
-            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
-            transform.Rotate(new Vector3(0, 180, 0));
+            Vector2 direction = mousePosition - (Vector2)transform.position;
+            PlayerInputs.instance.FlipSprite(direction);
         }
     }
 

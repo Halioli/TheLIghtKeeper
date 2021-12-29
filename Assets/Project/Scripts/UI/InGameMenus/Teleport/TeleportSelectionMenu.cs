@@ -53,8 +53,6 @@ public class TeleportSelectionMenu : MonoBehaviour
         TeleportButton.OnSelection -= DeactivateSelf;
     }
 
-
-
     public void UpdateTeleportSelectionMenu(string currentTeleportInUse)
     {
         for (int i = 0; i < teleportSystem.teleports.Count; ++i)

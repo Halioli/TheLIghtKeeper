@@ -9,10 +9,8 @@ public class CrosshairCursor : MonoBehaviour
     private CursorMode cursorMode;
 
     public Texture2D defaultCursorTexture;
-    public Texture2D greenMineCursorTexture;
-    public Texture2D redMineCursorTexture;
-    public Texture2D greenCombatCursorTexture;
-    public Texture2D redCombatCursorTexture;
+    public Texture2D greenCursorTexture;
+    public Texture2D redCursorTexture;
 
     private void Awake()
     {
@@ -43,12 +41,12 @@ public class CrosshairCursor : MonoBehaviour
 
     private void SetGreenMineCursorTexture()
     {
-        Cursor.SetCursor(greenMineCursorTexture, cursorHotspot, cursorMode);
+        Cursor.SetCursor(greenCursorTexture, cursorHotspot, cursorMode);
     }
 
     private void SetRedMineCursorTexture()
     {
-        Cursor.SetCursor(redMineCursorTexture, cursorHotspot, cursorMode);
+        Cursor.SetCursor(redCursorTexture, cursorHotspot, cursorMode);
     }
 
     private void DecideMineCursorTexture()
@@ -65,12 +63,12 @@ public class CrosshairCursor : MonoBehaviour
 
     private void SetGreenCombatCursorTexture()
     {
-        Cursor.SetCursor(greenCombatCursorTexture, cursorHotspot, cursorMode);
+        Cursor.SetCursor(greenCursorTexture, cursorHotspot, cursorMode);
     }
 
     private void SetRedCombatCursorTexture()
     {
-        Cursor.SetCursor(redCombatCursorTexture, cursorHotspot, cursorMode);
+        Cursor.SetCursor(redCursorTexture, cursorHotspot, cursorMode);
     }
 
     private void DecideCombatCursorTexture()
