@@ -1,4 +1,7 @@
+using UnityEngine;
 
+
+[CreateAssetMenu(fileName = "Inventory_Upgrade_", menuName = "Upgrade System/Upgrade/Inventory Upgrade")]
 
 public class InventoryUpgrade : Upgrade
 {
