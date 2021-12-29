@@ -47,11 +47,6 @@ public class PlayerAreas : MonoBehaviour
         CheckInteractButtonInput();
     }
 
-    private void UpdateArea()
-    {
-        interactArea.transform.localPosition = interactAreaPosition;
-    }
-
     private void UpdateAttackArea()
     {
         attackAreaLeftPosition = attackAreaRightPosition = attackAreaTopPosition = attackAreaDownPosition = transform.position;
@@ -119,75 +114,19 @@ public class PlayerAreas : MonoBehaviour
 
     private void CheckInteractButtonInput()
     {
+        Vector2 vector2;
+
         if (PlayerInputs.instance.PlayerClickedMineButton())
         {
             UpdateInteractArea();
             mouseWorldPos = PlayerInputs.instance.GetMousePositionInWorld();
 
-            if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
-            {
-                // Horizontal Axis
-                if (mouseWorldPos.x > transform.position.x)
-                {
-                    // RIGHT
-                    interactArea.transform.position = interactAreaRightPosition;
-                }
-                else
-                {
-                    // LEFT
-                    interactArea.transform.position = interactAreaLeftPosition;
-                }
-            }
-            else
-            {
-                // Vertical Axis
-                if (mouseWorldPos.y > transform.position.y)
-                {
-                    // TOP
-                    interactArea.transform.position = interactAreaTopPosition;
-                }
-                else
-                {
-                    // DOWN
-                    interactArea.transform.position = interactAreaDownPosition;
-                }
-            }
-        }
-    }
+            vector2 = mouseWorldPos - transform.position;
+            vector2.Normalize();
+            vector2.y += DEFAULT_Y;
+            vector2 *= 1f;
 
-    private void MoveInteractAreaBasedOnDirection()
-    {
-        playerMovement = PlayerInputs.instance.PlayerPressedMovementButtons();
-
-        if (playerMovement.y != 0)
-        {
-            interactAreaPosition.x = 0f;
-
-            if (playerMovement.y > 0)
-            {
-                interactAreaPosition.y = TOP;
-            }
-            else if (playerMovement.y < 0)
-            {
-                interactAreaPosition.y = DOWN;
-            }
-
-            UpdateArea();
-        }
-        else if (playerMovement.x != 0 && playerMovement.y == 0)
-        {
-            interactAreaPosition.y = DEFAULT_Y;
-
-            if (playerMovement.x > 0)
-            {
-                interactAreaPosition.x = RIGHT;
-            }
-            else if (playerMovement.x < 0)
-            {
-                interactAreaPosition.x = LEFT;
-            }
-
-            UpdateArea();
+            interactArea.transform.position = vector2 + (Vector2)transform.position;
         }
     }
 
