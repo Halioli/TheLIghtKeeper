@@ -143,8 +143,6 @@ public class PlayerCombat : PlayerBase
 
     private void FlipPlayerSpriteFacingWhereToAttack()
     {
-        //if (playerStates.PlayerActionIsWalking())
-        //    return;
         Vector2 mousePosition = PlayerInputs.instance.GetMousePositionInWorld();
         
         if ((transform.position.x < mousePosition.x && !PlayerInputs.instance.facingLeft) ||
