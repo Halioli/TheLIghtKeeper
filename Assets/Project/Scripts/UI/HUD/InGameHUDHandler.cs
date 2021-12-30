@@ -145,7 +145,7 @@ public class InGameHUDHandler : MonoBehaviour
 
     IEnumerator ShakeLampGameObject()
     {
-        Vector2 startingPos = lampBarGameObject.transform.position;
+        Vector2 startingPos = lampBarGameObject.transform.localPosition;
         Vector2 currentPos = startingPos;
         float amount = 0.03f;
 
@@ -153,20 +153,20 @@ public class InGameHUDHandler : MonoBehaviour
         {
             currentPos.x += Random.Range(-amount, amount);
             currentPos.y += Random.Range(-amount, amount);
-            lampBarGameObject.transform.position = currentPos;
+            lampBarGameObject.transform.localPosition = currentPos;
 
             yield return null;
-            lampBarGameObject.transform.position = startingPos;
+            lampBarGameObject.transform.localPosition = startingPos;
             currentPos = startingPos;
         }
 
         yield return new WaitWhile(() => lampIsTrembeling);
-        lampBarGameObject.transform.position = startingPos;
+        lampBarGameObject.transform.localPosition = startingPos;
     }
 
     IEnumerator ShakeHealthGameObject()
     {
-        Vector2 startingPos = healthBarGameObject.transform.position;
+        Vector2 startingPos = healthBarGameObject.transform.localPosition;
         Vector2 currentPos = startingPos;
         float amount = 0.03f;
 
@@ -174,14 +174,14 @@ public class InGameHUDHandler : MonoBehaviour
         {
             currentPos.x += Random.Range(-amount, amount);
             currentPos.y += Random.Range(-amount, amount);
-            healthBarGameObject.transform.position = currentPos;
+            healthBarGameObject.transform.localPosition = currentPos;
 
             yield return null;
-            healthBarGameObject.transform.position = startingPos;
+            healthBarGameObject.transform.localPosition = startingPos;
             currentPos = startingPos;
         }
 
         yield return new WaitWhile(() => healthIsTrembeling);
-        healthBarGameObject.transform.position = startingPos;
+        healthBarGameObject.transform.localPosition = startingPos;
     }
 }
