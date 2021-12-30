@@ -63,7 +63,7 @@ public class InGameHUDHandler : MonoBehaviour
             {
                 // Tremble
                 healthIsTrembeling = true;
-                healthBarGameObject.transform.DOShakePosition(10f, 0.1f);//.SetLoops(-1);
+                StartCoroutine(ShakeHealthGameObject());
             }
         }
 
@@ -73,7 +73,7 @@ public class InGameHUDHandler : MonoBehaviour
             {
                 // Tremble
                 lampIsTrembeling = true;
-                lampBarGameObject.transform.DOShakePosition(10f, 0.1f);//.SetLoops(-1);
+                StartCoroutine(ShakeLampGameObject());
             }
         }
     }
@@ -141,5 +141,47 @@ public class InGameHUDHandler : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = endVector.x;
+    }
+
+    IEnumerator ShakeLampGameObject()
+    {
+        Vector2 startingPos = lampBarGameObject.transform.position;
+        Vector2 currentPos = startingPos;
+        float amount = 0.03f;
+
+        while (lampIsTrembeling)
+        {
+            currentPos.x += Random.Range(-amount, amount);
+            currentPos.y += Random.Range(-amount, amount);
+            lampBarGameObject.transform.position = currentPos;
+
+            yield return null;
+            lampBarGameObject.transform.position = startingPos;
+            currentPos = startingPos;
+        }
+
+        yield return new WaitWhile(() => lampIsTrembeling);
+        lampBarGameObject.transform.position = startingPos;
+    }
+
+    IEnumerator ShakeHealthGameObject()
+    {
+        Vector2 startingPos = healthBarGameObject.transform.position;
+        Vector2 currentPos = startingPos;
+        float amount = 0.03f;
+
+        while (healthIsTrembeling)
+        {
+            currentPos.x += Random.Range(-amount, amount);
+            currentPos.y += Random.Range(-amount, amount);
+            healthBarGameObject.transform.position = currentPos;
+
+            yield return null;
+            healthBarGameObject.transform.position = startingPos;
+            currentPos = startingPos;
+        }
+
+        yield return new WaitWhile(() => healthIsTrembeling);
+        healthBarGameObject.transform.position = startingPos;
     }
 }
