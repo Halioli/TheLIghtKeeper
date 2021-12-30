@@ -44,15 +44,7 @@ public class PlayerAreas : MonoBehaviour
 
     private void Update()
     {
-        CheckAttackButtonInput();
         CheckInteractButtonInput();
-
-        MoveInteractAreaBasedOnDirection();
-    }
-
-    private void UpdateArea()
-    {
-        interactArea.transform.localPosition = interactAreaPosition;
     }
 
     private void UpdateAttackArea()
@@ -85,126 +77,73 @@ public class PlayerAreas : MonoBehaviour
         interactAreaDownPosition.y += DOWN;
     }
 
-    private void CheckAttackButtonInput()
+    private void CheckAndSpawnAttackArea()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton())
-        {
-            UpdateAttackArea();
-            mouseWorldPos = PlayerInputs.instance.GetMousePositionInWorld();
+        UpdateAttackArea();
+        mouseWorldPos = PlayerInputs.instance.GetMousePositionInWorld();
 
-            if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
+        if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
+        {
+            // Horizontal Axis
+            if (mouseWorldPos.x > transform.position.x)
             {
-                // Horizontal Axis
-                if (mouseWorldPos.x > transform.position.x)
-                {
-                    // RIGHT
-                    StartCoroutine(SpawnAttackArea(attackAreaRightPosition, areaRotationOnHorizontal));
-                }
-                else
-                {
-                    // LEFT
-                    StartCoroutine(SpawnAttackArea(attackAreaLeftPosition, areaRotationOnHorizontal));
-                }
+                // RIGHT
+                StartCoroutine(SpawnAttackArea(attackAreaRightPosition, areaRotationOnHorizontal));
             }
             else
             {
-                // Vertical Axis
-                if (mouseWorldPos.y > transform.position.y)
-                {
-                    // TOP
-                    StartCoroutine(SpawnAttackArea(attackAreaTopPosition, Vector3.zero));
-                }
-                else
-                {
-                    // DOWN
-                    StartCoroutine(SpawnAttackArea(attackAreaDownPosition, Vector3.zero));
-                }
+                // LEFT
+                StartCoroutine(SpawnAttackArea(attackAreaLeftPosition, areaRotationOnHorizontal));
+            }
+        }
+        else
+        {
+            // Vertical Axis
+            if (mouseWorldPos.y > transform.position.y)
+            {
+                // TOP
+                StartCoroutine(SpawnAttackArea(attackAreaTopPosition, Vector3.zero));
+            }
+            else
+            {
+                // DOWN
+                StartCoroutine(SpawnAttackArea(attackAreaDownPosition, Vector3.zero));
             }
         }
     }
 
     private void CheckInteractButtonInput()
     {
+        Vector2 vector2;
+
         if (PlayerInputs.instance.PlayerClickedMineButton())
         {
             UpdateInteractArea();
             mouseWorldPos = PlayerInputs.instance.GetMousePositionInWorld();
 
-            if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
-            {
-                // Horizontal Axis
-                if (mouseWorldPos.x > transform.position.x)
-                {
-                    // RIGHT
-                    interactArea.transform.position = interactAreaRightPosition;
-                }
-                else
-                {
-                    // LEFT
-                    interactArea.transform.position = interactAreaLeftPosition;
-                }
-            }
-            else
-            {
-                // Vertical Axis
-                if (mouseWorldPos.y > transform.position.y)
-                {
-                    // TOP
-                    interactArea.transform.position = interactAreaTopPosition;
-                }
-                else
-                {
-                    // DOWN
-                    interactArea.transform.position = interactAreaDownPosition;
-                }
-            }
+            vector2 = mouseWorldPos - transform.position;
+            vector2.Normalize();
+            vector2.y += DEFAULT_Y;
+            vector2 *= 1f;
+
+            interactArea.transform.position = vector2 + (Vector2)transform.position;
         }
     }
 
-    private void MoveInteractAreaBasedOnDirection()
+    public void DoSpawnAttackArea()
     {
-        playerMovement = PlayerInputs.instance.PlayerPressedMovementButtons();
-
-        if (playerMovement.y != 0)
-        {
-            interactAreaPosition.x = 0f;
-
-            if (playerMovement.y > 0)
-            {
-                interactAreaPosition.y = TOP;
-            }
-            else if (playerMovement.y < 0)
-            {
-                interactAreaPosition.y = DOWN;
-            }
-
-            UpdateArea();
-        }
-        else if (playerMovement.x != 0 && playerMovement.y == 0)
-        {
-            interactAreaPosition.y = DEFAULT_Y;
-
-            if (playerMovement.x > 0)
-            {
-                interactAreaPosition.x = RIGHT;
-            }
-            else if (playerMovement.x < 0)
-            {
-                interactAreaPosition.x = LEFT;
-            }
-
-            UpdateArea();
-        }
+        CheckAndSpawnAttackArea();
     }
 
     IEnumerator SpawnAttackArea(Vector3 areaPos, Vector3 areaRotation)
     {
-        //attackArea.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        attackArea.SetActive(true);
         attackArea.transform.position = areaPos;
         currentAttackAreaRotation.eulerAngles = areaRotation;
         attackArea.transform.rotation = currentAttackAreaRotation;
 
-        yield return null;
-        //attackArea.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        attackArea.SetActive(false);
     }
 }
