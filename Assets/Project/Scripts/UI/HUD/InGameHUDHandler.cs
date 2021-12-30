@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class InGameHUDHandler : MonoBehaviour
 {
@@ -10,13 +11,18 @@ public class InGameHUDHandler : MonoBehaviour
     private int playerHealthValue;
     private int lampTimeValue;
     private bool playerIsDamaged;
+    private bool healthIsTrembeling;
     private bool lampIsOn;
+    private bool lampIsTrembeling;
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
 
     // Public Attributes
     public HUDBar healthBar;
     public HUDBar lampBar;
+
+    public GameObject healthBarGameObject;
+    public GameObject lampBarGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -29,12 +35,14 @@ public class InGameHUDHandler : MonoBehaviour
         playerHealthValue = playerHealthSystem.GetMaxHealth();
         healthBar.SetMaxValue(playerHealthValue);
         playerIsDamaged = false;
+        healthIsTrembeling = false;
 
         // Initialize lamp variables
         lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         lampBar.SetMaxValue(lampTimeValue);
         lampIsOn = false;
+        lampIsTrembeling = false;
     }
 
     private void Update()
@@ -48,6 +56,26 @@ public class InGameHUDHandler : MonoBehaviour
         // Check if any element needs to appear/disappear
         ManageShowingHealth();
         ManageShowingLampFuel();
+
+        if (playerIsDamaged)
+        {
+            if (playerHealthSystem.GetHealth() <= 5 && !healthIsTrembeling)
+            {
+                // Tremble
+                healthIsTrembeling = true;
+                healthBarGameObject.transform.DOShakePosition(10f, 0.1f);//.SetLoops(-1);
+            }
+        }
+
+        if (lampIsOn)
+        {
+            if (lamp.GetLampTimeRemaining() <= 5f && !lampIsTrembeling)
+            {
+                // Tremble
+                lampIsTrembeling = true;
+                lampBarGameObject.transform.DOShakePosition(10f, 0.1f);//.SetLoops(-1);
+            }
+        }
     }
 
     private void ManageShowingHealth()
@@ -61,6 +89,7 @@ public class InGameHUDHandler : MonoBehaviour
         {
             StartCoroutine(CanvasFadeOut(healthGroup));
             playerIsDamaged = false;
+            healthIsTrembeling = false;
         }
     }
 
@@ -75,6 +104,7 @@ public class InGameHUDHandler : MonoBehaviour
         {
             StartCoroutine(CanvasFadeOut(lampGroup));
             lampIsOn = false;
+            lampIsTrembeling = false;
         }
     }
 
