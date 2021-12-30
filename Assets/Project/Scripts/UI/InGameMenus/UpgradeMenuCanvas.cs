@@ -6,6 +6,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
 {
     [SerializeField] UpgradeButton[] upgradeButtons;
 
+
     public void Init(List<UpgradeBranch> upgradeBranches)
     {
         int j = 0;
