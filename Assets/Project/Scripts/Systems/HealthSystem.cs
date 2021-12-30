@@ -11,9 +11,6 @@ public class HealthSystem : MonoBehaviour
     // Public Attributes
     public int maxHealth;
 
-
-
-
     void Start()
     {
         health = maxHealth;
@@ -35,6 +32,7 @@ public class HealthSystem : MonoBehaviour
     }
 
     virtual public bool IsDead() { return health <= 0; }
+
  
 
 
