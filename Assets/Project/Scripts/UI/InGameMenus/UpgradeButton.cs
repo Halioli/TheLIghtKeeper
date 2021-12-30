@@ -19,7 +19,7 @@ public class UpgradeButton : MonoBehaviour
     {
         if (canBeClicked)
         {
-            transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0f), 0.25f, 3);
+            transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
             StartCoroutine(ClickCooldown());
         }
     }

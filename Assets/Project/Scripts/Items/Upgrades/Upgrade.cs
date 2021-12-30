@@ -23,8 +23,6 @@ public class Upgrade : ScriptableObject
         {
             requiredItems[requiredItemsList[i]] = requiredAmountsList[i];
         }
-        requiredItemsList.Clear();
-        requiredAmountsList.Clear();
     }
 
     public virtual void InvokeResultEvent() { }

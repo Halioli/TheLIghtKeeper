@@ -14,7 +14,7 @@ public class UpgradesStation : InteractStation
         InitUpgradesMenu();
     }
 
-    
+
     public override void StationFunction()
     {
         // Open menu

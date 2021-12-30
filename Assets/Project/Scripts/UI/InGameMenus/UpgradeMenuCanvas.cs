@@ -11,8 +11,9 @@ public class UpgradeMenuCanvas : MonoBehaviour
     {
         int j = 0;
 
-        for (int i = 0; i < 1; ++i) // 1 ---> upgradeBranches.Count
+        for (int i = 0; i < upgradeBranches.Count; ++i)
         {
+            upgradeBranches[i].Init(i);
             Upgrade upgrade = upgradeBranches[i].GetCurrentUpgrade();
             Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
             string[] amounts = new string[upgrade.requiredItems.Count];
