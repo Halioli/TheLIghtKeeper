@@ -4,38 +4,38 @@ using UnityEngine;
 using DG.Tweening;
 
 public class PlayerCombat : PlayerBase
-{  
+{
     // Private Attributes
-    private const float ATTACK_TIME_DURATION = 0.5f;
+    private const float ATTACK_TIME_DURATION = 0.22f;
     private float attackingTime = ATTACK_TIME_DURATION;
 
-    protected AttackSystem attackSystem; 
-    protected HealthSystem healthSystem;
-
     private bool attacking = false;
-    private bool attackingAnEnemy = false;
 
     private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
+    private PlayerAreas playerAreas;
 
-    private Collider2D colliderDetectedByMouse = null;
-    private Enemy enemyToAttack;
+    protected AttackSystem attackSystem;
+    protected HealthSystem healthSystem;
+
+    // Public Attributes
+    public GameObject attackArea;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
     public GameObject swordLight;
 
-    // Audio
+    //Audio
     public AudioSource audioSource;
     public AudioClip hurtedAudioClip;
     public AudioClip attackAudioClip;
 
-
     private void Start()
     {
+        playerAreas = GetComponent<PlayerAreas>();
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
         playerBlood.Stop();
@@ -45,34 +45,8 @@ public class PlayerCombat : PlayerBase
     {
         if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
         {
-            PlayerInputs.instance.SetNewMousePosition();
-            if (PlayerIsInReachToAttack(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnEnemy(PlayerInputs.instance.mouseWorldPosition))
-            {
-                SetEnemyToAttack();
-            }
             StartAttacking();
         }
-    }
-
-
-    private bool PlayerIsInReachToAttack(Vector2 mousePosition)
-    {
-        float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
-    }
-
-    private bool MouseClickedOnAnEnemy(Vector2 mousePosition)
-    {
-        colliderDetectedByMouse = Physics2D.OverlapCircle(mousePosition, 0.05f);
-        return colliderDetectedByMouse != null && colliderDetectedByMouse.gameObject.CompareTag("Enemy");
-    }
-
-    private void SetEnemyToAttack()
-    {
-        attackingAnEnemy = true;
-        enemyToAttack = colliderDetectedByMouse.gameObject.GetComponent<Enemy>();
-
-        PlayerInputs.instance.SpawnSelectSpotAtTransform(enemyToAttack.transform);
     }
 
     private void StartAttacking()
@@ -90,11 +64,7 @@ public class PlayerCombat : PlayerBase
         animator.SetBool("isAttacking", true);
         swordLight.SetActive(true);
 
-        if (attackingAnEnemy)
-        {
-            DealDamageToEnemy();
-        }
-
+        playerAreas.DoSpawnAttackArea();
         while (attackingTime > 0.0f)
         {
             attackingTime -= Time.deltaTime;
@@ -111,23 +81,19 @@ public class PlayerCombat : PlayerBase
     {
         attackingTime = ATTACK_TIME_DURATION;
         attacking = false;
-        attackingAnEnemy = false;
 
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
 
-
-
-    public void DealDamageToEnemy()
+    public void DealDamageToEnemy(Enemy enemy)
     {
-        enemyToAttack.GetComponent<Enemy>().ReceiveDamage(attackSystem.attackValue);
+        enemy.ReceiveDamage(attackSystem.attackValue);
 
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.clip = attackAudioClip;
         audioSource.Play();
     }
-
 
     public void ReceiveDamage(int damageValue)
     {
@@ -177,14 +143,13 @@ public class PlayerCombat : PlayerBase
 
     private void FlipPlayerSpriteFacingWhereToAttack()
     {
-        if (playerStates.PlayerActionIsWalking())
-            return;
+        Vector2 mousePosition = PlayerInputs.instance.GetMousePositionInWorld();
         
-        if ((transform.position.x < PlayerInputs.instance.mousePosition.x && !PlayerInputs.instance.facingLeft) ||
-            (transform.position.x > PlayerInputs.instance.mousePosition.x && PlayerInputs.instance.facingLeft))
+        if ((transform.position.x < mousePosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > mousePosition.x && PlayerInputs.instance.facingLeft))
         {
-            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
-            transform.Rotate(new Vector3(0, 180, 0));
+            Vector2 direction = mousePosition - (Vector2)transform.position;
+            PlayerInputs.instance.FlipSprite(direction);
         }
     }
 

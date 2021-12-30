@@ -103,6 +103,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5107480550975374657, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5107480550975374657, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
+      propertyPath: m_LinearDrag
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7714621029357433203, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -169,7 +177,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
     - target: {fileID: 7714621029357433214, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
       propertyPath: m_Radius
-      value: 0.6
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714621029357433214, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7714621029357433215, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
       propertyPath: m_Name
