@@ -7,7 +7,7 @@ public class UpgradesSystem : MonoBehaviour
 {
     private Dictionary<Item, int> playerInventoryItems;
     Inventory playerInventory;
-    [SerializeField] List<UpgradeBranch> upgradeBranches;
+    [SerializeField] public List<UpgradeBranch> upgradeBranches;
 
 
     private void Start()

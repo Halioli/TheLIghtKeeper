@@ -11,6 +11,7 @@ public class UpgradesStation : InteractStation
     {
         upgradesSystem = GetComponent<UpgradesSystem>();
         upgradesSystem.Init(playerInventory);
+        InitUpgradesMenu();
     }
 
     
@@ -24,7 +25,7 @@ public class UpgradesStation : InteractStation
 
     private void InitUpgradesMenu()
     {
-
+        upgradesMenu.GetComponent<UpgradeMenuCanvas>().Init(upgradesSystem.upgradeBranches);
     }
 
 
