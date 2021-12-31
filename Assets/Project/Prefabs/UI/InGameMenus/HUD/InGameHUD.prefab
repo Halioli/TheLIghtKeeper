@@ -1287,7 +1287,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3601792722645728634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,6 +1319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 3065237967911786538}
   lampBar: {fileID: 7216428278127609988}
+  healthBarGameObject: {fileID: 3601792721238688574}
+  lampBarGameObject: {fileID: 3601792722224175337}
   playerHealthSystem: {fileID: 0}
   lamp: {fileID: 0}
 --- !u!114 &6137596229663971974
