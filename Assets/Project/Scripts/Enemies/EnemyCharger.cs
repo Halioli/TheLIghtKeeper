@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 
-public class EnemyCharger : Enemy
+public class EnemyCharger : HostileEnemy
 {
     // Private Attributes
     private Vector2 directionOnChargeStart;
@@ -238,7 +238,7 @@ public class EnemyCharger : Enemy
         }
     }
 
-    public override void FleeAndBanish()
+    protected override void FleeAndBanish()
     {
         if (attackState == AttackState.RECOVERING)
         {

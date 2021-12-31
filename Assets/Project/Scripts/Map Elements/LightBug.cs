@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-public class LightBug : MonoBehaviour
+public class LightBug : Enemy
 {
     Interpolator lerp;
 
     private Light2D[] pointLightBug;
     private bool isTurnedOn = false;
-
+    
     void Start()
     {
         lerp = new Interpolator(5f, Interpolator.Type.SMOOTH);
         pointLightBug = GetComponentsInChildren<Light2D>();
+        healthSystem = GetComponent<BeingHealthSystem>();
+        attackSystem = GetComponent<AttackSystem>();
+        rigidbody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
@@ -26,6 +31,11 @@ public class LightBug : MonoBehaviour
         else
         {
             FadeIn();
+        }
+
+        if (healthSystem.IsDead())
+        {
+            Die();
         }
     }
 
@@ -73,5 +83,12 @@ public class LightBug : MonoBehaviour
         }
 
         isTurnedOn = false;
+    }
+
+    protected override void Die()
+    {
+        Debug.Log("murio");
+        base.Die();
+        Destroy(gameObject);
     }
 }
