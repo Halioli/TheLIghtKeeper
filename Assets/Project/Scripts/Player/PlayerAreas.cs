@@ -30,16 +30,22 @@ public class PlayerAreas : MonoBehaviour
     private Vector3 interactAreaTopPosition;
     private Vector3 interactAreaDownPosition;
 
+    //Animator
+    private Animator animator;
+
     // Public Attributes
     public GameObject interactArea;
     public GameObject attackArea;
 
+    
     private void Start()
     {
         areaRotationOnHorizontal = new Vector3(0f, 0f, ROTATION);
 
         playerMovement = PlayerInputs.instance.PlayerPressedMovementButtons();
         interactAreaPosition = interactArea.transform.localPosition;
+
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -89,11 +95,13 @@ public class PlayerAreas : MonoBehaviour
             {
                 // RIGHT
                 StartCoroutine(SpawnAttackArea(attackAreaRightPosition, areaRotationOnHorizontal));
+                animator.SetInteger("attackDirection", 0);
             }
             else
             {
                 // LEFT
                 StartCoroutine(SpawnAttackArea(attackAreaLeftPosition, areaRotationOnHorizontal));
+                animator.SetInteger("attackDirection", 0);
             }
         }
         else
@@ -103,11 +111,13 @@ public class PlayerAreas : MonoBehaviour
             {
                 // TOP
                 StartCoroutine(SpawnAttackArea(attackAreaTopPosition, Vector3.zero));
+                animator.SetInteger("attackDirection", 1);
             }
             else
             {
                 // DOWN
                 StartCoroutine(SpawnAttackArea(attackAreaDownPosition, Vector3.zero));
+                animator.SetInteger("attackDirection", 0);
             }
         }
     }
