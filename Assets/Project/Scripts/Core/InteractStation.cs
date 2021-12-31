@@ -35,7 +35,6 @@ public class InteractStation : MonoBehaviour
     {
         if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
-            Debug.Log("player pressed");
             StationFunction();
         }
     }

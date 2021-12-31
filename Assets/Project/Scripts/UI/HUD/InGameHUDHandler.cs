@@ -1,22 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class InGameHUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 2f;
+    private const float FADE_TIME = 0.5f;
 
     private int playerHealthValue;
     private int lampTimeValue;
     private bool playerIsDamaged;
+    private bool healthIsTrembeling;
     private bool lampIsOn;
+    private bool lampIsTrembeling;
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
 
     // Public Attributes
     public HUDBar healthBar;
     public HUDBar lampBar;
+
+    public GameObject healthBarGameObject;
+    public GameObject lampBarGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -29,12 +35,14 @@ public class InGameHUDHandler : MonoBehaviour
         playerHealthValue = playerHealthSystem.GetMaxHealth();
         healthBar.SetMaxValue(playerHealthValue);
         playerIsDamaged = false;
+        healthIsTrembeling = false;
 
         // Initialize lamp variables
         lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         lampBar.SetMaxValue(lampTimeValue);
         lampIsOn = false;
+        lampIsTrembeling = false;
     }
 
     private void Update()
@@ -48,19 +56,40 @@ public class InGameHUDHandler : MonoBehaviour
         // Check if any element needs to appear/disappear
         ManageShowingHealth();
         ManageShowingLampFuel();
+
+        if (playerIsDamaged)
+        {
+            if (playerHealthSystem.GetHealth() <= 5 && !healthIsTrembeling)
+            {
+                // Tremble
+                healthIsTrembeling = true;
+                StartCoroutine(ShakeHealthGameObject());
+            }
+        }
+
+        if (lampIsOn)
+        {
+            if (lamp.GetLampTimeRemaining() <= 5f && !lampIsTrembeling)
+            {
+                // Tremble
+                lampIsTrembeling = true;
+                StartCoroutine(ShakeLampGameObject());
+            }
+        }
     }
 
     private void ManageShowingHealth()
     {
         if ((playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && !playerIsDamaged)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToOne(healthGroup));
+            StartCoroutine(CanvasFadeIn(healthGroup));
             playerIsDamaged = true;
         }
         else if (!(playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && playerIsDamaged)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToZero(healthGroup));
+            StartCoroutine(CanvasFadeOut(healthGroup));
             playerIsDamaged = false;
+            healthIsTrembeling = false;
         }
     }
 
@@ -68,13 +97,14 @@ public class InGameHUDHandler : MonoBehaviour
     {
         if (lamp.turnedOn && !lampIsOn)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToOne(lampGroup));
+            StartCoroutine(CanvasFadeIn(lampGroup));
             lampIsOn = true;
         }
         else if (!lamp.turnedOn && lampIsOn)
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToZero(lampGroup));
+            StartCoroutine(CanvasFadeOut(lampGroup));
             lampIsOn = false;
+            lampIsTrembeling = false;
         }
     }
 
@@ -83,7 +113,7 @@ public class InGameHUDHandler : MonoBehaviour
         bar.SetValue(value);
     }
 
-    IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(1f, 1f);
         Vector2 endVector = new Vector2(0f, 0f);
@@ -98,7 +128,7 @@ public class InGameHUDHandler : MonoBehaviour
         canvasGroup.alpha = endVector.x;
     }
 
-    IEnumerator ChangeCanvasGroupAlphaToOne(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(0f, 0f);
         Vector2 endVector = new Vector2(1f, 1f);
@@ -111,5 +141,47 @@ public class InGameHUDHandler : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = endVector.x;
+    }
+
+    IEnumerator ShakeLampGameObject()
+    {
+        Vector2 startingPos = lampBarGameObject.transform.localPosition;
+        Vector2 currentPos = startingPos;
+        float amount = 0.03f;
+
+        while (lampIsTrembeling)
+        {
+            currentPos.x += Random.Range(-amount, amount);
+            currentPos.y += Random.Range(-amount, amount);
+            lampBarGameObject.transform.localPosition = currentPos;
+
+            yield return null;
+            lampBarGameObject.transform.localPosition = startingPos;
+            currentPos = startingPos;
+        }
+
+        yield return new WaitWhile(() => lampIsTrembeling);
+        lampBarGameObject.transform.localPosition = startingPos;
+    }
+
+    IEnumerator ShakeHealthGameObject()
+    {
+        Vector2 startingPos = healthBarGameObject.transform.localPosition;
+        Vector2 currentPos = startingPos;
+        float amount = 0.03f;
+
+        while (healthIsTrembeling)
+        {
+            currentPos.x += Random.Range(-amount, amount);
+            currentPos.y += Random.Range(-amount, amount);
+            healthBarGameObject.transform.localPosition = currentPos;
+
+            yield return null;
+            healthBarGameObject.transform.localPosition = startingPos;
+            currentPos = startingPos;
+        }
+
+        yield return new WaitWhile(() => healthIsTrembeling);
+        healthBarGameObject.transform.localPosition = startingPos;
     }
 }

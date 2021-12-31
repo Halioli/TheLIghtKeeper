@@ -34,6 +34,9 @@ public class PlayerHandler : MonoBehaviour
    
             }
         }
+
+        if (PlayerInputs.instance.PlayerPressedExitButton())
+            PlayerInputs.instance.QuitGame();
     }
     IEnumerator DeathAnimation()
     {

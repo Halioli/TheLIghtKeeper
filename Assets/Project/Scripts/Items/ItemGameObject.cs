@@ -38,6 +38,11 @@ public class ItemGameObject : MonoBehaviour
         canBePickedUp = true;
     }
 
+    private void Start()
+    {
+        rigidbody2D.gravityScale = 0f;
+    }
+
 
     public void DropsDown()
     {
@@ -68,22 +73,18 @@ public class ItemGameObject : MonoBehaviour
     IEnumerator StopDroping(float secondsToWait)
     {
         yield return new WaitForSeconds(secondsToWait);
-        rigidbody2D.bodyType = RigidbodyType2D.Static;
+        //rigidbody2D.bodyType = RigidbodyType2D.Static;
+        rigidbody2D.gravityScale = 0f;
     }
 
 
 
     public void StartDespawning()
     {
-        StartCoroutine(Despawning(DESPAWN_TIME_IN_SECONDS));
+        StartCoroutine("Despawning");
     }
 
-    public void StartDespawning(float time)
-    {
-        StartCoroutine(Despawning(time));
-    }
-
-    IEnumerator Despawning(float time)
+    IEnumerator Despawning()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -93,7 +94,6 @@ public class ItemGameObject : MonoBehaviour
         Color semiTransparentColor = spriteRenderer.material.color;
         semiTransparentColor.a = 0.8f;
 
-        currentDespawnTimeInSeconds = time;
         while (currentDespawnTimeInSeconds > START_DESPAWN_FADING_TIME)
         {
             yield return new WaitForSeconds(Time.deltaTime);
