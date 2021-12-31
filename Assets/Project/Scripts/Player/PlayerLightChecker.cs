@@ -41,11 +41,9 @@ public class PlayerLightChecker : MonoBehaviour
         {
             numberOfLights += 1;
 
-            if (!lamp.LampTimeExhausted())
-            {
-                // Lamp turns off
+            // Lamp turns off
+            if (lamp.active)
                 lamp.DeactivateLampLight();
-            }
 
             if (lightingCollider.gameObject.CompareTag("CoreLight"))
             {

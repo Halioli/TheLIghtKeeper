@@ -8,7 +8,12 @@ public class DarknessSystem : MonoBehaviour
     private PlayerLightChecker playerLightChecker;
     private bool playerInLight;
     private List<GameObject> enemySpawners = new List<GameObject>();
-    
+
+    private int ENEMY_CAP = 8;
+    private int numberOfAliveEnemies = 0;
+    public bool enemyCapIsFull = false;
+
+
     void Start()
     {
         playerLightChecker = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLightChecker>();
@@ -19,6 +24,18 @@ public class DarknessSystem : MonoBehaviour
 
     void Update()
     {
+        if (enemyCapIsFull)
+        {
+            DisableEnemySpawners();
+            return;
+        }
+        else if (!playerInLight)
+        {
+            EnableEnemySpawners();
+        }
+
+
+
         if (!playerInLight && playerLightChecker.IsPlayerInLight())
         {
             playerInLight = true;
@@ -30,18 +47,23 @@ public class DarknessSystem : MonoBehaviour
             playerInLight = false;
             EnableEnemySpawners();
         }
-
-        //if (Input.GetKeyDown(KeyCode.N))
-        //{
-        //    playerInLight = true;
-        //    DisableEnemySpawners();
-        //}
-        //else if (Input.GetKeyDown(KeyCode.Y))
-        //{
-        //    playerInLight = false;
-        //    EnableEnemySpawners();
-        //}
     }
+
+
+    void OnEnable()
+    {
+        EnemySpawner.spawnEnemyEvent += AddingEnemy;
+        Enemy.enemyDisappearsEvent += RemovingEnemy;
+    }
+
+    void OnDisable()
+    {
+        EnemySpawner.spawnEnemyEvent -= AddingEnemy;
+        Enemy.enemyDisappearsEvent -= RemovingEnemy;
+    }
+
+
+
 
     private void EnableEnemySpawners()
     {
@@ -64,8 +86,20 @@ public class DarknessSystem : MonoBehaviour
         List<GameObject> spawnedEnemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
         for (int i = 0; i < spawnedEnemies.Count; i++)
         {
-            spawnedEnemies[i].GetComponent<Enemy>().Banish();
+            spawnedEnemies[i].GetComponent<Enemy>().FleeAndBanish();
         }
     }
 
+
+    private void AddingEnemy()
+    {
+        numberOfAliveEnemies++;
+        enemyCapIsFull = numberOfAliveEnemies >= ENEMY_CAP;
+    }
+
+    private void RemovingEnemy()
+    {
+        numberOfAliveEnemies--;
+        enemyCapIsFull = numberOfAliveEnemies >= ENEMY_CAP;
+    }
 }

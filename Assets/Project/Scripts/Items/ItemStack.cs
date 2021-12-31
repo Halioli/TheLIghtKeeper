@@ -71,6 +71,11 @@ public class ItemStack : MonoBehaviour
         return amountInStack == 0;
     }
 
+    public bool StackIsEmpty()
+    {
+        return amountInStack == 0;
+    }
+
     public bool StackContainsItem(Item itemToCompare)
     {
         return itemInStack.SameID(itemToCompare);

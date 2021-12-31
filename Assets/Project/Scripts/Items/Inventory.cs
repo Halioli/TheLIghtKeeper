@@ -12,11 +12,13 @@ public class Inventory : MonoBehaviour
 
     public List<ItemStack> inventory = new List<ItemStack>();
 
+    public int indexOfSelectedInventorySlot;
+
+
 
     // Private Attributes
     private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
-    private int indexOfSelectedInventorySlot;
     private bool inventoryIsEmpty;
 
     private const int MAX_NUMBER_OF_SLOTS = 9;
@@ -207,6 +209,36 @@ public class Inventory : MonoBehaviour
     }
 
 
+    public bool SubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
+    {
+        for (int i = 0; i < numberOfItemsToSubstract; ++i)
+        {
+            if (!SubstractItemToInventory(itemToSubstract))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void SubstractItemFromInventorySlot(int inventorySlot)
+    {
+        inventory[inventorySlot].SubstractOneItemFromStack();
+
+        // Set slot to empty if the last unit of the item was substracted
+        if (inventory[inventorySlot].StackHasNoItemsLeft())
+        {
+            inventory[inventorySlot].InitEmptyNullStack(itemNull);
+            numberOfOccuppiedInventorySlots--;
+
+            if (numberOfOccuppiedInventorySlots == 0)
+            {
+                inventoryIsEmpty = true;
+            }
+        }
+    }
+
+
 
     // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
@@ -216,7 +248,14 @@ public class Inventory : MonoBehaviour
 
         List<ItemStack.itemStackToDisplay> itemsToDisplay = new List<ItemStack.itemStackToDisplay>();
 
-        itemsToDisplay.Add(inventory[(i - 1) % n].GetStackToDisplay());
+        if (((i - 1) % n) < 0)
+        {
+            itemsToDisplay.Add(inventory[3].GetStackToDisplay());
+        }
+        else
+        {
+            itemsToDisplay.Add(inventory[(i - 1) % n].GetStackToDisplay());
+        }
         itemsToDisplay.Add(inventory[i].GetStackToDisplay());
         itemsToDisplay.Add(inventory[(i + 1) % n].GetStackToDisplay());
 
@@ -226,11 +265,25 @@ public class Inventory : MonoBehaviour
 
     public void CycleLeftSelectedItemIndex()
     {
-        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot - 1) % numberOfInventorySlots;
+        --indexOfSelectedInventorySlot;
+        indexOfSelectedInventorySlot = indexOfSelectedInventorySlot < 0 ? indexOfSelectedInventorySlot = numberOfInventorySlots-1 : indexOfSelectedInventorySlot;
+
     }
 
     public void CycleRightSelectedItemIndex()
     {
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
+    }
+
+
+    public void UseSelectedConsumibleItem()
+    {
+        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
+        {
+            GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
+            consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
+
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+        }
     }
 }
