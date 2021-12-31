@@ -49,8 +49,24 @@ public class PlayerInventory : MonoBehaviour
             ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
             if (itemGameObject.canBePickedUp)
             {
-                PickUpItem(itemGameObject);
+                if (!PickUpItem(itemGameObject))
+                {
+                    itemGameObject.SetSelfStatic();
+                }
             }
+            else
+            {
+                itemGameObject.SetSelfStatic();
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Item") && collider.IsTouching(itemCollectionCollider))
+        {
+            ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
+            itemGameObject.SetSelfDynamic();
         }
     }
 
@@ -72,7 +88,7 @@ public class PlayerInventory : MonoBehaviour
         return collider.GetComponent<ItemGameObject>();
     }
 
-    private void PickUpItem(ItemGameObject itemToPickUp)
+    private bool PickUpItem(ItemGameObject itemToPickUp)
     {
         bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
         if (couldAddItem)
@@ -82,5 +98,8 @@ public class PlayerInventory : MonoBehaviour
 
             Destroy(itemToPickUp.gameObject);
         }
+
+        return couldAddItem;
     }
+
 }

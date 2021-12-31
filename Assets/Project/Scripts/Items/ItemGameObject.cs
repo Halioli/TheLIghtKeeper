@@ -119,4 +119,14 @@ public class ItemGameObject : MonoBehaviour
     {
         // Consumible does functionality
     }
+
+    public void SetSelfStatic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
+    }
+
+    public void SetSelfDynamic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+    }
 }
