@@ -54,22 +54,7 @@ abstract public class Enemy : MonoBehaviour
     public AudioClip hurtedAudioClip;
 
 
-    // Events
-    public delegate void EnemyDisappears();
-    public static event EnemyDisappears enemyDisappearsEvent;
-
-
     // Methods
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
-        {
-            FleeAndBanish();
-        }
-    }
-
-
 
     public void Spawn()
     {
@@ -122,11 +107,10 @@ abstract public class Enemy : MonoBehaviour
 
 
 
-    protected void Die()
+    protected virtual void Die()
     {
         // Play death animation
         DropItem();
-        Banish();
     }
 
     protected void DropItem()
@@ -135,52 +119,12 @@ abstract public class Enemy : MonoBehaviour
         item.DropsDown();
     }
 
-    public void Banish()
-    {
-        startedBanishing = true;
-        StartCoroutine("StartBanishing");
-
-        enemyDisappearsEvent();
-    }
-
-    IEnumerator StartBanishing()
-    {
-        float preDespawnTime = Random.Range(0.0f, 0.3f);
-        while (preDespawnTime > 0.0f)
-        {
-            preDespawnTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-
-        // Play banish audio sound
-        audioSource.clip = banishAudioClip;
-        audioSource.volume = Random.Range(0.1f, 0.2f);
-        audioSource.pitch = Random.Range(0.7f, 1.5f);
-        audioSource.Play();
-
-        // Fading
-        ResetColor();
-        Color fadeColor = spriteRenderer.material.color;
-        while (currentBanishTime > 0f)
-        {
-            fadeColor.a = currentBanishTime / BANISH_TIME;
-            spriteRenderer.material.color = fadeColor;
-
-            currentBanishTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-        Destroy(gameObject);
-    }
+    
 
     protected void ResetColor()
     {
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
     }
 
-    public virtual void FleeAndBanish()
-    {
-        enemyState = EnemyState.SCARED;
-        attackState = AttackState.MOVING_TOWARDS_PLAYER;
-        Banish();
-    }
+
 }
