@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 
-public class EnemyCharger : Enemy
+public class EnemyCharger : HostileEnemy
 {
     // Private Attributes
     private Vector2 directionOnChargeStart;
@@ -70,6 +70,11 @@ public class EnemyCharger : Enemy
         {
             if (movementAudioSource.isPlaying)
                 movementAudioSource.Stop();
+
+            if (enemyState == EnemyState.SCARED)
+            {
+                FleeAway();
+            }
             return;
         }
 
@@ -148,19 +153,26 @@ public class EnemyCharger : Enemy
 
     private void FixedUpdate()
     {
+        if (getsPushed)
+        {
+            Pushed();
+        }
+
         if (enemyState == EnemyState.SPAWNING)
         {
             return;
         }
 
-        if (startedBanishing)
-        {
-            if (enemyState == EnemyState.SCARED)
-            {
-                FleeAway();
-            }
-            return;
-        }
+        //if (startedBanishing)
+        //{
+        //    if (enemyState == EnemyState.SCARED)
+        //    {
+        //        FleeAway();
+        //    }
+        //    return;
+        //}
+
+
         else if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();
@@ -238,7 +250,7 @@ public class EnemyCharger : Enemy
         }
     }
 
-    public override void FleeAndBanish()
+    protected override void FleeAndBanish()
     {
         if (attackState == AttackState.RECOVERING)
         {

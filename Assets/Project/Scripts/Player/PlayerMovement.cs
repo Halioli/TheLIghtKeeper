@@ -42,18 +42,12 @@ public class PlayerMovement : PlayerBase
             else if (moveDirection != Vector2.zero)
             {
                 playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
-                FlipSprite();
+                PlayerInputs.instance.FlipSprite(moveDirection);
                 animator.SetBool("isWalking", true);
                 playPlayerWalkingSoundEvent();
             }
         }
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rigidbody2D.velocity = Vector2.zero;
-            rigidbody2D.AddForce(Vector2.right * 30f, ForceMode2D.Impulse);
-        }
-        
+                
     }
 
     private void FixedUpdate()
@@ -68,19 +62,6 @@ public class PlayerMovement : PlayerBase
             rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
             if (rigidbody2D.velocity.magnitude > 3f)
                 rigidbody2D.velocity = rigidbody2D.velocity.normalized * Mathf.Lerp(rigidbody2D.velocity.magnitude, 3f, Time.fixedDeltaTime * 30f);
-        }
-    }
-
-
-    private void FlipSprite()
-    {
-        if (!PlayerInputs.instance.canFlip)
-            return;
-
-        if((moveDirection.x > 0 && !PlayerInputs.instance.facingLeft) || moveDirection.x < 0 && PlayerInputs.instance.facingLeft)
-        {
-            PlayerInputs.instance.facingLeft = !PlayerInputs.instance.facingLeft;
-            transform.Rotate(new Vector3(0, 180, 0));
         }
     }
 

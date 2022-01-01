@@ -19,7 +19,7 @@ public abstract class Item : ScriptableObject
 
 
     // Private Attributes
-    private Sprite sprite;
+    public Sprite sprite;
 
 
     // Getter Methods

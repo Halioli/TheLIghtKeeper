@@ -42,7 +42,8 @@ public class PlayerLightChecker : MonoBehaviour
             numberOfLights += 1;
 
             // Lamp turns off
-            lamp.DeactivateLampLight();
+            if (lamp.active)
+                lamp.DeactivateLampLight();
 
             if (lightingCollider.gameObject.CompareTag("CoreLight"))
             {
@@ -60,15 +61,17 @@ public class PlayerLightChecker : MonoBehaviour
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
             numberOfLights -= 1;
-
-            if (!lamp.LampTimeExhausted())
+            if (numberOfLights == 0)
             {
-                // Lamp turns on
-                lamp.ActivateLampLight();
-            }
-            else
-            {
-                SetPlayerInLightToFalse();
+                if (!lamp.LampTimeExhausted())
+                {
+                    // Lamp turns on
+                    lamp.ActivateLampLight();
+                }
+                else
+                {
+                    SetPlayerInLightToFalse();
+                }
             }
         }
 

@@ -13,12 +13,18 @@ public class AudioEvents : MonoBehaviour
     public AudioClip successCriticalMiningSound;
     public AudioClip failCriticalMiningSound;
 
-    public AudioSource audioSource;
+    public AudioSource soundEffectsSource;
+    public AudioSource soundEffectsSource2;
+    public AudioSource soundEffectsSource3;
     public AudioClip miningOreSound;
     public AudioClip breaksOreSound;
     public AudioClip itemIsPickedUpSound;
 
-
+    public AudioClip turnOnLanternSound;
+    public AudioClip turnOffLanternSound;
+    public AudioClip turnOnLanternDroneSound;
+    public AudioClip turnOffLanternDroneSound;
+    public AudioClip lanternDroneSound;
 
     private void OnEnable()
     {
@@ -30,6 +36,13 @@ public class AudioEvents : MonoBehaviour
         PlayerMiner.failCriticalMiningSoundEvent += PlayFailCriticalMiningSound;
         PlayerMiner.playerMinesOreEvent += PlayMiningOreSound;
         PlayerMiner.playerBreaksOreEvent += PlayBreaksOreSound;
+
+        Lamp.turnOnLanternSoundEvent += PlayTurnOnLampSound;
+        Lamp.turnOffLanternSoundEvent += PlayTurnOffLampSound;
+        Lamp.turnOnLanternDroneSoundEvent += PlayerTurnOnLanternDroneSound;
+        Lamp.turnOffLanternDroneSoundEvent += PlayerTurnOffLanternDroneSound;
+        Lamp.playLanternDroneSoundEvent += PlayLanternDroneSound;
+        Lamp.stopLanternDroneSoundEvent += StopLanternDroneSound;
 
         PlayerInventory.playerPicksUpItemEvent += PlayPicksUpItemSound;
     }
@@ -44,6 +57,13 @@ public class AudioEvents : MonoBehaviour
         PlayerMiner.failCriticalMiningSoundEvent -= PlayFailCriticalMiningSound;
         PlayerMiner.playerMinesOreEvent -= PlayMiningOreSound;
         PlayerMiner.playerBreaksOreEvent -= PlayBreaksOreSound;
+
+        Lamp.turnOnLanternSoundEvent -= PlayTurnOnLampSound;
+        Lamp.turnOffLanternSoundEvent -= PlayTurnOffLampSound;
+        Lamp.turnOnLanternDroneSoundEvent -= PlayerTurnOnLanternDroneSound;
+        Lamp.turnOffLanternDroneSoundEvent -= PlayerTurnOffLanternDroneSound;
+        Lamp.playLanternDroneSoundEvent -= PlayLanternDroneSound;
+        Lamp.stopLanternDroneSoundEvent -= StopLanternDroneSound;
 
         PlayerInventory.playerPicksUpItemEvent -= PlayPicksUpItemSound;
     }
@@ -86,19 +106,57 @@ public class AudioEvents : MonoBehaviour
 
     private void PlayMiningOreSound()
     {
-        audioSource.clip = miningOreSound;
-        audioSource.Play();
+        soundEffectsSource.clip = miningOreSound;
+        soundEffectsSource.Play();
     }
 
     private void PlayBreaksOreSound()
     {
-        audioSource.clip = breaksOreSound;
-        audioSource.Play();
+        soundEffectsSource.clip = breaksOreSound;
+        soundEffectsSource.Play();
     }
 
     private void PlayPicksUpItemSound()
     {
-        audioSource.clip = itemIsPickedUpSound;
-        audioSource.Play();
+        soundEffectsSource.clip = itemIsPickedUpSound;
+        soundEffectsSource.Play();
+    }
+
+    private void PlayTurnOnLampSound()
+    {
+        soundEffectsSource.clip = turnOnLanternSound;
+        soundEffectsSource.Play();
+    }
+
+    private void PlayTurnOffLampSound()
+    {
+        soundEffectsSource.clip = turnOffLanternSound;
+        soundEffectsSource.Play();
+    }
+
+    private void PlayerTurnOnLanternDroneSound()
+    {
+        soundEffectsSource2.clip = turnOnLanternDroneSound;
+        soundEffectsSource2.Play();
+    }
+
+    private void PlayerTurnOffLanternDroneSound()
+    {
+        soundEffectsSource2.clip = turnOffLanternDroneSound;
+        soundEffectsSource2.Play();
+    }
+
+    private void PlayLanternDroneSound()
+    {
+        if (soundEffectsSource3.isPlaying) return;
+
+        soundEffectsSource3.clip = lanternDroneSound;
+        soundEffectsSource3.Play();
+    }
+
+    private void StopLanternDroneSound()
+    {
+        soundEffectsSource3.clip = lanternDroneSound;
+        soundEffectsSource3.Stop();
     }
 }

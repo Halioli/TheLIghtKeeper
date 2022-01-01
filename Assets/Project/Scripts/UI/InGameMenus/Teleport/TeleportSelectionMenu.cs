@@ -30,10 +30,6 @@ public class TeleportSelectionMenu : MonoBehaviour
             gameObjectButton.GetComponentInChildren<TextMeshProUGUI>().text = teleportSystem.teleports[i].teleportName;
             gameObjectButton.GetComponentInChildren<TeleportButton>().buttonNumber = i;
 
-            //RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
-            //teleportListRectTransform.sizeDelta = new Vector2(teleportListRectTransform.sizeDelta.x,
-            //    
-
             if (!teleportSystem.teleports[i].activated)
             {
                 teleportButtonsGameObjects[i].GetComponent<Button>().interactable = false;
@@ -56,8 +52,6 @@ public class TeleportSelectionMenu : MonoBehaviour
         
         TeleportButton.OnSelection -= DeactivateSelf;
     }
-
-
 
     public void UpdateTeleportSelectionMenu(string currentTeleportInUse)
     {
