@@ -70,6 +70,11 @@ public class EnemyCharger : HostileEnemy
         {
             if (movementAudioSource.isPlaying)
                 movementAudioSource.Stop();
+
+            if (enemyState == EnemyState.SCARED)
+            {
+                FleeAway();
+            }
             return;
         }
 
@@ -148,19 +153,26 @@ public class EnemyCharger : HostileEnemy
 
     private void FixedUpdate()
     {
+        if (getsPushed)
+        {
+            Pushed();
+        }
+
         if (enemyState == EnemyState.SPAWNING)
         {
             return;
         }
 
-        if (startedBanishing)
-        {
-            if (enemyState == EnemyState.SCARED)
-            {
-                FleeAway();
-            }
-            return;
-        }
+        //if (startedBanishing)
+        //{
+        //    if (enemyState == EnemyState.SCARED)
+        //    {
+        //        FleeAway();
+        //    }
+        //    return;
+        //}
+
+
         else if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();

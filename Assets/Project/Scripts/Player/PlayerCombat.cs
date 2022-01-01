@@ -8,12 +8,14 @@ public class PlayerCombat : PlayerBase
     // Private Attributes
     private const float ATTACK_TIME_DURATION = 0.22f;
     private float attackingTime = ATTACK_TIME_DURATION;
+    private float ATTACK_COOLDOWN = 0.7f;
 
-    private bool attacking = false;
+    private bool canAttack = true;
 
     private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
+    private float pushForce = 5f;
 
     private PlayerAreas playerAreas;
 
@@ -43,7 +45,7 @@ public class PlayerCombat : PlayerBase
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack)
         {
             StartAttacking();
         }
@@ -51,10 +53,10 @@ public class PlayerCombat : PlayerBase
 
     private void StartAttacking()
     {
-        attacking = true;
         FlipPlayerSpriteFacingWhereToAttack();
         playerStates.SetCurrentPlayerAction(PlayerAction.ATTACKING);
-        StartCoroutine("Attacking");
+        StartCoroutine(Attacking());
+        StartCoroutine(AttackCooldown());
     }
 
 
@@ -63,6 +65,10 @@ public class PlayerCombat : PlayerBase
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
         swordLight.SetActive(true);
+
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.clip = attackAudioClip;
+        audioSource.Play();
 
         playerAreas.DoSpawnAttackArea();
         while (attackingTime > 0.0f)
@@ -80,7 +86,6 @@ public class PlayerCombat : PlayerBase
     private void ResetAttack()
     {
         attackingTime = ATTACK_TIME_DURATION;
-        attacking = false;
 
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
@@ -89,10 +94,7 @@ public class PlayerCombat : PlayerBase
     public void DealDamageToEnemy(Enemy enemy)
     {
         enemy.ReceiveDamage(attackSystem.attackValue);
-
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = attackAudioClip;
-        audioSource.Play();
+        enemy.GetsPushed((enemy.transform.position - transform.position).normalized, pushForce);
     }
 
     public void ReceiveDamage(int damageValue)
@@ -103,7 +105,7 @@ public class PlayerCombat : PlayerBase
         }
         else
         {
-            StartCoroutine("Invulnerability");
+            StartCoroutine(Invulnerability());
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -158,5 +160,12 @@ public class PlayerCombat : PlayerBase
         playerBlood.Play();
         yield return new WaitForSeconds(0.3f);
         playerBlood.Stop();
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(ATTACK_COOLDOWN);
+        canAttack = true;
     }
 }

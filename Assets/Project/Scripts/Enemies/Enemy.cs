@@ -44,6 +44,9 @@ abstract public class Enemy : MonoBehaviour
     protected const float BANISH_TIME = 1f;
     protected float currentBanishTime;
 
+    protected bool getsPushed = false;
+    protected Vector2 pushedDirection = new Vector2();
+    protected float pushedForce = 0f;
 
 
     // Public Attributes
@@ -119,12 +122,22 @@ abstract public class Enemy : MonoBehaviour
         item.DropsDown();
     }
 
-    
 
     protected void ResetColor()
     {
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
     }
 
+    public void GetsPushed(Vector2 direction, float force)
+    {
+        getsPushed = true;
+        pushedDirection = direction;
+        pushedForce = force;
+    }
 
+    protected void Pushed()
+    {
+        rigidbody.AddForce(pushedDirection * pushedForce, ForceMode2D.Impulse);
+        getsPushed = false;
+    }
 }
