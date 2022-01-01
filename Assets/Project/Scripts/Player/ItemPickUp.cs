@@ -4,34 +4,43 @@ using UnityEngine;
 
 public class ItemPickUp : MonoBehaviour
 {
-    //[SerializeField] PlayerInventory playerInventory;
+    private PlayerInventory playerInventory;
+    private CircleCollider2D itemPickUpCheckCollider;
 
-    //private void OnTriggerEnter2D(Collider2D collider)
-    //{
-    //    if (collider.gameObject.CompareTag("Item") && collider.IsTouching(playerInventory.itemCollectionCollider))
-    //    {
-    //        ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-    //        if (itemGameObject.canBePickedUp)
-    //        {
-    //            if (!PickUpItem(itemGameObject))
-    //            {
-    //                itemGameObject.SetSelfStatic();
-    //            }
-    //        }
-    //        else
-    //        {
-    //            itemGameObject.SetSelfStatic();
-    //        }
-    //    }
-    //}
+    private void Start()
+    {
+        playerInventory = GetComponentInParent<PlayerInventory>();
+        itemPickUpCheckCollider = GetComponent<CircleCollider2D>();
+    }
 
-    //private void OnTriggerExit2D(Collider2D collider)
-    //{
-    //    if (collider.gameObject.CompareTag("Item"))
-    //    {
-    //        ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-    //        itemGameObject.SetSelfDynamic();
-    //    }
-    //}
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (!collider.IsTouching(itemPickUpCheckCollider)) return;
+
+        if (collider.gameObject.CompareTag("Item"))
+        {
+            ItemGameObject itemGameObject = collider.GetComponent<ItemGameObject>();
+
+            if (playerInventory.inventory.ItemCanBeAdded(itemGameObject.item))
+            {
+                playerInventory.inventory.AddItemToInventory(itemGameObject.item);
+                itemGameObject.canBePickedUp = true;
+            }
+            else
+            {
+                itemGameObject.SetSelfStatic();
+                itemGameObject.canBePickedUp = false;
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Item"))
+        {
+            collider.GetComponent<ItemGameObject>().SetSelfDynamic();
+        }
+    }
 
 }

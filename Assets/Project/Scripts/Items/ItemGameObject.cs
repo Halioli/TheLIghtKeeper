@@ -44,6 +44,7 @@ public class ItemGameObject : MonoBehaviour
     }
 
 
+
     public void DropsDown()
     {
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
@@ -129,4 +130,6 @@ public class ItemGameObject : MonoBehaviour
     {
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
+
+
 }

@@ -6,10 +6,10 @@ public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
     private bool inventoryIsOpen = false;
-    private Inventory inventory;
     private Collider2D itemCollectionCollider;
 
     // Public Attributes
+    public Inventory inventory { get; private set; }
     public Canvas inventoryCanvas;
     public InventoryMenu inventoryMenu;
 
@@ -44,31 +44,22 @@ public class PlayerInventory : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Item") && collider.IsTouching(itemCollectionCollider))
+        if (collider.gameObject.CompareTag("Item"))
         {
             ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-            if (itemGameObject.canBePickedUp)
+
+            if (collider.IsTouching(itemCollectionCollider))
             {
-                if (!PickUpItem(itemGameObject))
+                if (itemGameObject.canBePickedUp)
                 {
-                    itemGameObject.SetSelfStatic();
+                    PickUpItem(itemGameObject);
+                    Debug.Log("adding");
                 }
             }
-            else
-            {
-                itemGameObject.SetSelfStatic();
-            }
+            
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        if (collider.gameObject.CompareTag("Item") && collider.IsTouching(itemCollectionCollider))
-        {
-            ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-            itemGameObject.SetSelfDynamic();
-        }
-    }
 
     private void OpenInventory()
     {
@@ -90,16 +81,22 @@ public class PlayerInventory : MonoBehaviour
 
     private bool PickUpItem(ItemGameObject itemToPickUp)
     {
-        bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
-        if (couldAddItem)
-        {
-            if (playerPicksUpItemEvent != null)
-                playerPicksUpItemEvent();
+        //bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
+        //if (couldAddItem)
+        //{
+        //    if (playerPicksUpItemEvent != null)
+        //        playerPicksUpItemEvent();
 
-            Destroy(itemToPickUp.gameObject);
-        }
+        //    Destroy(itemToPickUp.gameObject);
+        //}
 
-        return couldAddItem;
+        //return couldAddItem;
+
+        if (playerPicksUpItemEvent != null)
+            playerPicksUpItemEvent();
+
+        Destroy(itemToPickUp.gameObject);
+        return false;
     }
 
 }

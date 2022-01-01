@@ -81,15 +81,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3780117553254132499}
-  - component: {fileID: 6692889532919767931}
-  - component: {fileID: 8652569989174662924}
+  - component: {fileID: 5542865459090240509}
+  - component: {fileID: 1613426547362108406}
   m_Layer: 11
   m_Name: ItemPickUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3780117553254132499
 Transform:
   m_ObjectHideFlags: 0
@@ -104,7 +104,20 @@ Transform:
   m_Father: {fileID: 7987370481941902185}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &6692889532919767931
+--- !u!114 &5542865459090240509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931844652765387369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d785a0ec36046041b316e40223ea535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 4247216038034703328}
+--- !u!58 &1613426547362108406
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,31 +128,11 @@ CircleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 2
---- !u!250 &8652569989174662924
-PointEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931844652765387369}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 512
-  m_ForceMagnitude: -150
-  m_ForceVariation: 0
-  m_DistanceScale: 0.2
-  m_ForceSource: 1
-  m_ForceTarget: 0
-  m_ForceMode: 0
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_Radius: 2.2
 --- !u!1 &1194788267757497830
 GameObject:
   m_ObjectHideFlags: 0
@@ -10776,6 +10769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109aa9b4f2f816f49853766a038a9f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemCollectionCheckCollider: {fileID: 0}
   inventoryCanvas: {fileID: 0}
   inventoryMenu: {fileID: 0}
 --- !u!114 &4989443145165977615
