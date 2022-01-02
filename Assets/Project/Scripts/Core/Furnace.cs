@@ -86,11 +86,6 @@ public class Furnace : InteractStation
         //If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
         {
-            if (CheckPlayerInventoryForLuxinite())
-            {
-                UpgradeFunction();
-            }
-
             GetInput();            //Waits the input from interactStation 
             PopUpAppears();        
         }
@@ -165,11 +160,6 @@ public class Furnace : InteractStation
         }
     }
 
-    private bool CheckPlayerInventoryForLuxinite()
-    {
-        return playerInventory.SubstractItemToInventory(upgradeItem);
-    }
-
     private bool CheckIfNoFuelLeft()
     {
         return currentFuel <= 0;
@@ -236,6 +226,11 @@ public class Furnace : InteractStation
                 
                 ConsumesFuel();
                 CheckWarningMessageAppears();
+
+                if (currentFuel >= MAX_FUEL_AMOUNT)
+                {
+                    furnaceEvents = FURNACE_EVENTS.CALM;
+                }
                 break;
 
             case FURNACE_EVENTS.NEEDS_REPAIRS:
