@@ -106,6 +106,19 @@ public class Furnace : InteractStation
 
     }
 
+
+    private void OnEnable()
+    {
+        CoreUpgrade.OnCoreUpgrade += UpgradeFunction;
+    }
+
+    private void OnDisable()
+    {
+        CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
+    }
+
+
+
     //From InteractStation script
     public override void StationFunction()
     {
@@ -294,7 +307,7 @@ public class Furnace : InteractStation
         {
             numElementAddedText.text = "Luxinite Added";
             coreLight.transform.localScale += scaleChange;
-            lightLevel += 1;
+            ++lightLevel;
 
             if (!couroutineStartedAddCoal)
             {

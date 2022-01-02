@@ -11,11 +11,6 @@ public class PlayerMiner : PlayerBase
     private Collider2D colliderDetectedByMouse = null;
     private Ore oreToMine;
 
-    private const int START_MINING_DAMAGE = 1;
-    private int miningDamage = START_MINING_DAMAGE;
-    private const int START_CRITICAL_MINING_DAMAGE = 2;
-    private int criticalMiningDamage = START_CRITICAL_MINING_DAMAGE;
-
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
     private const float MINING_TIME = 1.0f;
     private float miningTime = 0;
@@ -24,6 +19,8 @@ public class PlayerMiner : PlayerBase
     private bool miningAnOre = false;
     private Vector2 raycastStartingPosition;
     private Vector2 raycastEndingPosition;
+
+    [SerializeField] Pickaxe pickaxe;
 
     // Public Attributes
     public GameObject interactArea;
@@ -145,21 +142,29 @@ public class PlayerMiner : PlayerBase
     {
         if (oreToMine.CanBeMined())
         {
-            oreToMine.GetsMined(damageToDeal);
-
-            if (oreToMine.Broke())
+            if (oreToMine.hardness <= pickaxe.hardness)
             {
-                // Play normal mine sound
-                if (playerBreaksOreEvent != null)
-                    playerBreaksOreEvent();
+                oreToMine.GetsMined(damageToDeal);
+
+                if (oreToMine.Broke())
+                {
+                    // Play normal mine sound
+                    if (playerBreaksOreEvent != null)
+                        playerBreaksOreEvent();
+                }
+                else
+                {
+                    // Play break sound
+                    if (playerMinesOreEvent != null) { }
+                    playerMinesOreEvent();
+                }
             }
             else
             {
-                // Play break sound
-                if (playerMinesOreEvent != null) { }
-                    playerMinesOreEvent();
+                Debug.Log("!!! Pickaxe NOT strong enough !!!");
             }
         }
+
     }
 
     private void ResetMining()
@@ -178,11 +183,11 @@ public class PlayerMiner : PlayerBase
 
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
         {
-            MineOre(criticalMiningDamage);
+            MineOre(pickaxe.criticalDamageValue);
         }
         else
         {
-            MineOre(miningDamage);
+            MineOre(pickaxe.damageValue);
         }
     }
 
