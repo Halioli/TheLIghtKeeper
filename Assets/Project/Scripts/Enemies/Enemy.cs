@@ -41,9 +41,12 @@ abstract public class Enemy : MonoBehaviour
     public const float SPAWN_TIME = 0.5f;
     protected float currentSpawnTime = 0f;
 
-    protected const float BANISH_TIME = 1f;
+    protected const float BANISH_TIME = 0.5f;
     protected float currentBanishTime;
 
+    protected bool getsPushed = false;
+    protected Vector2 pushedDirection = new Vector2();
+    protected float pushedForce = 0f;
 
 
     // Public Attributes
@@ -54,22 +57,7 @@ abstract public class Enemy : MonoBehaviour
     public AudioClip hurtedAudioClip;
 
 
-    // Events
-    public delegate void EnemyDisappears();
-    public static event EnemyDisappears enemyDisappearsEvent;
-
-
     // Methods
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
-        {
-            FleeAndBanish();
-        }
-    }
-
-
 
     public void Spawn()
     {
@@ -113,6 +101,8 @@ abstract public class Enemy : MonoBehaviour
         audioSource.clip = hurtedAudioClip;
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.Play();
+
+        StartCoroutine(HurtedFlashEffect());
     }
 
     protected void DealDamageToPlayer()
@@ -122,11 +112,10 @@ abstract public class Enemy : MonoBehaviour
 
 
 
-    protected void Die()
+    protected virtual void Die()
     {
         // Play death animation
         DropItem();
-        Banish();
     }
 
     protected void DropItem()
@@ -135,52 +124,35 @@ abstract public class Enemy : MonoBehaviour
         item.DropsDown();
     }
 
-    public void Banish()
-    {
-        startedBanishing = true;
-        StartCoroutine("StartBanishing");
 
-        enemyDisappearsEvent();
+    public void GetsPushed(Vector2 direction, float force)
+    {
+        getsPushed = true;
+        pushedDirection = direction;
+        pushedForce = force;
     }
 
-    IEnumerator StartBanishing()
+    protected void Pushed()
     {
-        float preDespawnTime = Random.Range(0.0f, 0.3f);
-        while (preDespawnTime > 0.0f)
+        rigidbody.AddForce(pushedDirection * pushedForce, ForceMode2D.Impulse);
+        getsPushed = false;
+    }
+
+    IEnumerator HurtedFlashEffect()
+    {
+        int count = 3;
+        //Color transparent = new Color(1, 1, 1, 0.1f);
+        Color normal = spriteRenderer.color;
+        Color transparent = spriteRenderer.color;
+        transparent.a = 0.1f;
+
+
+        while (--count > 0)
         {
-            preDespawnTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
+            spriteRenderer.color = transparent;
+            yield return new WaitForSeconds(0.2f);
+            spriteRenderer.color = normal;
+            yield return new WaitForSeconds(0.2f);
         }
-
-        // Play banish audio sound
-        audioSource.clip = banishAudioClip;
-        audioSource.volume = Random.Range(0.1f, 0.2f);
-        audioSource.pitch = Random.Range(0.7f, 1.5f);
-        audioSource.Play();
-
-        // Fading
-        ResetColor();
-        Color fadeColor = spriteRenderer.material.color;
-        while (currentBanishTime > 0f)
-        {
-            fadeColor.a = currentBanishTime / BANISH_TIME;
-            spriteRenderer.material.color = fadeColor;
-
-            currentBanishTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-        Destroy(gameObject);
-    }
-
-    protected void ResetColor()
-    {
-        spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-    }
-
-    public virtual void FleeAndBanish()
-    {
-        enemyState = EnemyState.SCARED;
-        attackState = AttackState.MOVING_TOWARDS_PLAYER;
-        Banish();
     }
 }

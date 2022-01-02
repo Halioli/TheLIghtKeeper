@@ -45,8 +45,8 @@ public class HealingStation : MonoBehaviour
     {
         if (playerHealthSystem.GetHealth() < playerHealthSystem.maxHealth)
         {
-            playerHealthSystem.RestoreHealthToMaxHealth();
             ShowPlayerHealedMessage();
+            playerHealthSystem.RestoreHealthToMaxHealth();
         }
         else
         {
