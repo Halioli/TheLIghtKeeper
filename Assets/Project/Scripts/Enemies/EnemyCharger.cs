@@ -22,7 +22,6 @@ public class EnemyCharger : HostileEnemy
     public float MAX_SPEED;
     public const float ACCELERATION = 0.25f;
 
-    public float pushForce = 16f;
     public float distanceToCharge = 4f;
 
     // Sinusoidal movement
@@ -196,7 +195,7 @@ public class EnemyCharger : HostileEnemy
 
     private void PushPlayer()
     {
-        player.GetComponent<PlayerMovement>().GetsPushed(directionOnChargeStart, pushForce);
+        player.GetComponent<PlayerMovement>().GetsPushed(directionOnChargeStart, attackSystem.pushValue);
     }
 
     IEnumerator StartRecovering()

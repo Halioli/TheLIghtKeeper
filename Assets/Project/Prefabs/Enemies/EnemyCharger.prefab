@@ -5042,6 +5042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackValue: 6
+  pushValue: 15
 --- !u!114 &4708902000198877501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5062,7 +5063,6 @@ MonoBehaviour:
   hurtedAudioClip: {fileID: 8300000, guid: c7f2d9ee469a9174bb54f515fcad7976, type: 3}
   CHARGE_SPEED: 50
   MAX_SPEED: 10
-  pushForce: 30
   distanceToCharge: 5
   amplitude: 0.2
   sinWaveDistance: 0
