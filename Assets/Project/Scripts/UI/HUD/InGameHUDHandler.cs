@@ -212,8 +212,8 @@ public class InGameHUDHandler : MonoBehaviour
         clawStrikeGroup.alpha = fadeInEndVector.x;
 
         // Shake
-        clawStrikeGameObject.transform.DOShakeRotation(3f, CLAW_SHAKE_STRENGHT);
-        yield return null;
+        clawStrikeGameObject.transform.DOShakeRotation(1f, CLAW_SHAKE_STRENGHT);
+        yield return new WaitForSeconds(0.5f);
 
         // Fade out
         for (float t = 0f; t < CLAW_FADE_TIME; t += Time.deltaTime)
