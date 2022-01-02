@@ -93,6 +93,11 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
+    public bool ItemCanBeAdded(Item itemToCompare)
+    {
+        return (NextEmptyInventorySlot() != -1) ||
+               (NextInventorySlotWithAvailableSpaceToAddItem(itemToCompare) != -1);
+    }
 
 
     // Modifier Methods
