@@ -15,7 +15,7 @@ public class PlayerCombat : PlayerBase
     private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
-    private float pushForce = 5f;
+    private float pushForce = 50f;
 
     private PlayerAreas playerAreas;
 

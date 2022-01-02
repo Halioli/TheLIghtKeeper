@@ -25,22 +25,19 @@ public class HostileEnemy : Enemy
             FleeAndBanish();
         }
     }
+
+
     public void Banish()
     {
         startedBanishing = true;
-        StartCoroutine("StartBanishing");
+        StartCoroutine(StartBanishing());
 
         enemyDisappearsEvent();
     }
 
     IEnumerator StartBanishing()
     {
-        float preDespawnTime = Random.Range(0.0f, 0.3f);
-        while (preDespawnTime > 0.0f)
-        {
-            preDespawnTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
+        yield return new WaitForSeconds(Random.Range(0.0f, 0.3f));
 
         // Play banish audio sound
         audioSource.clip = banishAudioClip;
@@ -49,7 +46,6 @@ public class HostileEnemy : Enemy
         audioSource.Play();
 
         // Fading
-        ResetColor();
         Color fadeColor = spriteRenderer.material.color;
         while (currentBanishTime > 0f)
         {
@@ -61,6 +57,7 @@ public class HostileEnemy : Enemy
         }
         Destroy(gameObject);
     }
+
     protected override void Die()
     {
         // Play death animation

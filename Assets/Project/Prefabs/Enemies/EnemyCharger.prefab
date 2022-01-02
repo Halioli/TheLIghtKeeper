@@ -4992,7 +4992,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -5010,7 +5010,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.1}
@@ -5056,13 +5056,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyState: 0
   attackState: 0
-  dropOnDeathItem: {fileID: 9018237891161031051, guid: e2c57d1dc2d45ed4cac975acf415c722, type: 3}
+  dropOnDeathItem: {fileID: 6144850676992826713, guid: e2c57d1dc2d45ed4cac975acf415c722, type: 3}
   audioSource: {fileID: -7492661058434659146}
   banishAudioClip: {fileID: 8300000, guid: ef4502d77da2eb144a72097639169831, type: 3}
   hurtedAudioClip: {fileID: 8300000, guid: c7f2d9ee469a9174bb54f515fcad7976, type: 3}
-  CHARGE_SPEED: 15
+  CHARGE_SPEED: 50
   MAX_SPEED: 10
-  pushForce: 16
+  pushForce: 30
   distanceToCharge: 5
   amplitude: 0.2
   sinWaveDistance: 0
