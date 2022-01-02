@@ -5,8 +5,9 @@ using UnityEngine;
 public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 2f;
+    private const float FADE_TIME = 1f;
     private int coreTimeValue;
+    private bool showingCountdown;
     private CanvasGroup coreGroup;
 
     // Public Attributes
@@ -15,6 +16,8 @@ public class HUDHandler : MonoBehaviour
 
     private void Start()
     {
+        showingCountdown = false;
+
         // Initialize core variables
         coreGroup = GetComponentInChildren<CanvasGroup>();
         coreTimeValue = furnace.GetMaxFuel();
@@ -24,6 +27,17 @@ public class HUDHandler : MonoBehaviour
 
     private void Update()
     {
+        if (furnace.countdownActive && !showingCountdown)
+        {
+            StopCoroutine(CanvasFadeOut(coreGroup));
+            StartCoroutine(CanvasFadeIn(coreGroup));
+        }
+        else if (!furnace.countdownActive && showingCountdown)
+        {
+            StopCoroutine(CanvasFadeIn(coreGroup));
+            StartCoroutine(CanvasFadeOut(coreGroup));
+        }
+
         coreTimeValue = furnace.GetCurrentFuel();
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
     }
@@ -44,5 +58,39 @@ public class HUDHandler : MonoBehaviour
     {
         bar.SetValue(value);
         bar.UpdateText(CheckTextForZeros(text));
+    }
+
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = false;
+    }
+
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = true;
     }
 }
