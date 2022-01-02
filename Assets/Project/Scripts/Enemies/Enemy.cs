@@ -41,7 +41,7 @@ abstract public class Enemy : MonoBehaviour
     public const float SPAWN_TIME = 0.5f;
     protected float currentSpawnTime = 0f;
 
-    protected const float BANISH_TIME = 1f;
+    protected const float BANISH_TIME = 0.5f;
     protected float currentBanishTime;
 
     protected bool getsPushed = false;
@@ -101,6 +101,8 @@ abstract public class Enemy : MonoBehaviour
         audioSource.clip = hurtedAudioClip;
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.Play();
+
+        StartCoroutine(HurtedFlashEffect());
     }
 
     protected void DealDamageToPlayer()
@@ -123,11 +125,6 @@ abstract public class Enemy : MonoBehaviour
     }
 
 
-    protected void ResetColor()
-    {
-        spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-    }
-
     public void GetsPushed(Vector2 direction, float force)
     {
         getsPushed = true;
@@ -139,5 +136,23 @@ abstract public class Enemy : MonoBehaviour
     {
         rigidbody.AddForce(pushedDirection * pushedForce, ForceMode2D.Impulse);
         getsPushed = false;
+    }
+
+    IEnumerator HurtedFlashEffect()
+    {
+        int count = 3;
+        //Color transparent = new Color(1, 1, 1, 0.1f);
+        Color normal = spriteRenderer.color;
+        Color transparent = spriteRenderer.color;
+        transparent.a = 0.1f;
+
+
+        while (--count > 0)
+        {
+            spriteRenderer.color = transparent;
+            yield return new WaitForSeconds(0.2f);
+            spriteRenderer.color = normal;
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }
