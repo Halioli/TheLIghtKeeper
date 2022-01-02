@@ -7,12 +7,14 @@ using TMPro;
 
 public class Furnace : InteractStation
 {
+
     // Public Attributes
     public bool countdownActive { get; set; }
 
     public Item fuelItem;
     public Item upgradeItem;
     public GameObject player;
+    FURNACE_EVENTS furnaceEvents;
 
     //TextMesh gameobjects
     public GameObject interactText;
@@ -33,7 +35,8 @@ public class Furnace : InteractStation
     private const int STARTING_FUEL_AMOUNT = 35;
     private const int LOW_FUEL_AMOUNT = 30;
     private const int MAX_CORE_LEVEL = 3;
-    private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f;
+    private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f; 
+    private enum FURNACE_EVENTS { CALM, NEEDS_COAL, NEEDS_REPAIRS };
 
     //Core light 
     private int lightLevel = 0;
@@ -41,7 +44,6 @@ public class Furnace : InteractStation
     //Fuel variables
     private int currentFuel = STARTING_FUEL_AMOUNT;
     private int numCoalAdded = 0;
-    private int maxFuel = 250;
     
     //Allways false here
     private bool couroutineStartedAddCoal = false;
@@ -55,29 +57,29 @@ public class Furnace : InteractStation
     private int fuelAmountPerCoalUnit = 10;
     private float currentTextTime = 0f;
 
+    // Methods
     private void Start()
     {
-        countdownActive = true;
+        furnaceEvents = FURNACE_EVENTS.CALM;
         addCoalParticleSystem.Stop();
         numCoalAddedText.text = "";
         interactText.SetActive(false);
         warning.SetActive(false);
         endGameMessage.SetActive(false);
     }
-
     
     void Update()
     {
-        if (countdownActive)
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            ConsumesFuel();
-            CheckWarningMessageAppears();
+            furnaceEvents = FURNACE_EVENTS.CALM;
         }
-        else if (!countdownActive && couroutineStartedConsumeCoal)
+        else if (Input.GetKeyDown(KeyCode.P))
         {
-            couroutineStartedConsumeCoal = false;
-            StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
+            furnaceEvents = FURNACE_EVENTS.NEEDS_COAL;
         }
+
+        SwitchFurnaceEvents();
 
         CheckForEndGame();
 
@@ -113,7 +115,7 @@ public class Furnace : InteractStation
         }
     }
 
-    //Interactive pop up disappears
+    //Interactive pop up appears
     private void PopUpAppears()
     {
         interactText.SetActive(true);
@@ -215,31 +217,44 @@ public class Furnace : InteractStation
         }
     }
 
-    //Waits x seconds to pop up disappear
-    IEnumerator UsingYieldAddCoal(int seconds)
+    private void SwitchFurnaceEvents()
     {
-        couroutineStartedAddCoal = true;
-
-        yield return new WaitForSeconds(seconds);
-
-        numCoalAddedText.text = "";
-        addCoalParticleSystem.Stop();
-
-        couroutineStartedAddCoal = false;
-    }
-
-    //Waits x seconds to consume coal
-    IEnumerator UsingYieldCosumeCoal(float seconds)
-    {
-        couroutineStartedConsumeCoal = true;
-
-        yield return new WaitForSeconds(seconds);
-        if (currentFuel > 0)
+        switch (furnaceEvents)
         {
-            currentFuel -= fuelConsumedByTime;
+            case FURNACE_EVENTS.CALM:
+                countdownActive = false;
 
+                if (couroutineStartedConsumeCoal)
+                {
+                    couroutineStartedConsumeCoal = false;
+                    StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
+                }
+                break;
+
+            case FURNACE_EVENTS.NEEDS_COAL:
+                countdownActive = true;
+                
+                ConsumesFuel();
+                CheckWarningMessageAppears();
+                break;
+
+            case FURNACE_EVENTS.NEEDS_REPAIRS:
+                countdownActive = true;
+
+                ConsumesFuel();
+                CheckWarningMessageAppears();
+                break;
+
+            default:
+                countdownActive = false;
+
+                if (couroutineStartedConsumeCoal)
+                {
+                    couroutineStartedConsumeCoal = false;
+                    StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
+                }
+                break;
         }
-        couroutineStartedConsumeCoal = false;
     }
 
     // Public Methods
@@ -266,5 +281,32 @@ public class Furnace : InteractStation
     public int GetCurrentFuel()
     {
         return currentFuel;
+    }
+
+    //Waits x seconds to pop up disappear
+    IEnumerator UsingYieldAddCoal(int seconds)
+    {
+        couroutineStartedAddCoal = true;
+
+        yield return new WaitForSeconds(seconds);
+
+        numCoalAddedText.text = "";
+        addCoalParticleSystem.Stop();
+
+        couroutineStartedAddCoal = false;
+    }
+
+    //Waits x seconds to consume coal
+    IEnumerator UsingYieldCosumeCoal(float seconds)
+    {
+        couroutineStartedConsumeCoal = true;
+
+        yield return new WaitForSeconds(seconds);
+        if (currentFuel > 0)
+        {
+            currentFuel -= fuelConsumedByTime;
+
+        }
+        couroutineStartedConsumeCoal = false;
     }
 }

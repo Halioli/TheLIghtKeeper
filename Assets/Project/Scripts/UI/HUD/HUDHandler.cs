@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class HUDHandler : MonoBehaviour
 {
-    enum FURNACE_EVENTS { CALM, NEEDS_COAL, NEEDS_REPAIRS };
-
     // Private Attributes
-    private const float FADE_TIME = 2f;
+    private const float FADE_TIME = 1f;
     private int coreTimeValue;
     private bool showingCountdown;
     private CanvasGroup coreGroup;
