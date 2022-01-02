@@ -5,63 +5,38 @@ using UnityEngine;
 public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 2f;
-
-    private float currentFadeTime;
-    private int playerHealthValue;
-    private int lampTimeValue;
+    private const float FADE_TIME = 1f;
     private int coreTimeValue;
-    private CanvasGroup healthGroup;
-    private CanvasGroup lampGroup;
+    private bool showingCountdown;
     private CanvasGroup coreGroup;
-    private CanvasGroup quickAccessGroup;
 
     // Public Attributes
-    public HUDBar healthBar;
-    public HUDBar lampBar;
     public HUDBar coreBar;
-
-    public HUDItem itemRight;
-    public HUDItem itemCenter;
-    public HUDItem itemLeft;
-
-    public HealthSystem playerHealthSystem;
-    public Lamp lamp;
     public Furnace furnace;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        currentFadeTime = 0f;
-
-        // Initalize health variables
-        healthGroup = GetComponentsInChildren<CanvasGroup>()[0];
-        playerHealthValue = playerHealthSystem.GetMaxHealth();
-        healthBar.SetMaxValue(playerHealthValue);
-        healthBar.UpdateText(CheckTextForZeros(playerHealthValue.ToString()));
-
-        // Initialize lamp variables
-        lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
-        lampBar.SetMaxValue(lampTimeValue);
+        showingCountdown = false;
 
         // Initialize core variables
-        coreGroup = GetComponentsInChildren<CanvasGroup>()[2];
+        coreGroup = GetComponentInChildren<CanvasGroup>();
         coreTimeValue = furnace.GetMaxFuel();
         coreBar.SetMaxValue(coreTimeValue);
         coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
-
-        // Initialize quick access variables
-        quickAccessGroup = GetComponentsInChildren<CanvasGroup>()[3];
     }
 
     private void Update()
     {
-        playerHealthValue = playerHealthSystem.GetHealth();
-        ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
-
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
-        ChangeValueInHUD(lampBar, lampTimeValue, null);
+        if (furnace.countdownActive && !showingCountdown)
+        {
+            StopCoroutine(CanvasFadeOut(coreGroup));
+            StartCoroutine(CanvasFadeIn(coreGroup));
+        }
+        else if (!furnace.countdownActive && showingCountdown)
+        {
+            StopCoroutine(CanvasFadeIn(coreGroup));
+            StartCoroutine(CanvasFadeOut(coreGroup));
+        }
 
         coreTimeValue = furnace.GetCurrentFuel();
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
@@ -82,19 +57,40 @@ public class HUDHandler : MonoBehaviour
     private void ChangeValueInHUD(HUDBar bar, int value, string text)
     {
         bar.SetValue(value);
-
-        if (text != null)
-            bar.UpdateText(CheckTextForZeros(text));
+        bar.UpdateText(CheckTextForZeros(text));
     }
 
-    public void ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
     {
-        while (currentFadeTime < FADE_TIME)
-        {
-            currentFadeTime += Time.deltaTime;
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
 
-            canvasGroup.alpha = 1f - Mathf.Clamp01(currentFadeTime / FADE_TIME);
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
         }
-        currentFadeTime = 0f;
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = false;
+    }
+
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = true;
     }
 }

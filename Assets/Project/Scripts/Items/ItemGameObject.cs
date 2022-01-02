@@ -38,6 +38,12 @@ public class ItemGameObject : MonoBehaviour
         canBePickedUp = true;
     }
 
+    private void Start()
+    {
+        rigidbody2D.gravityScale = 0f;
+    }
+
+
 
     public void DropsDown()
     {
@@ -68,7 +74,8 @@ public class ItemGameObject : MonoBehaviour
     IEnumerator StopDroping(float secondsToWait)
     {
         yield return new WaitForSeconds(secondsToWait);
-        rigidbody2D.bodyType = RigidbodyType2D.Static;
+        //rigidbody2D.bodyType = RigidbodyType2D.Static;
+        rigidbody2D.gravityScale = 0f;
     }
 
 
@@ -113,4 +120,16 @@ public class ItemGameObject : MonoBehaviour
     {
         // Consumible does functionality
     }
+
+    public void SetSelfStatic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
+    }
+
+    public void SetSelfDynamic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+
 }

@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class InventoryQuickAccess : MonoBehaviour
 {
+    [SerializeField] int time;
+
     // Private Attributes
+    private const float FADE_TIME = 0.5f;
+
     private Inventory playerInventory;
     private PlayerInputs playerInputs;
     private int mouseScrollDirection;
@@ -37,6 +41,18 @@ public class InventoryQuickAccess : MonoBehaviour
     {
         mouseScrollDirection = (int)playerInputs.PlayerMouseScroll().y;
 
+        // Check Inputs & Act Accordingly
+        if (PlayerInputs.instance.PlayerPressedQuickAccessButton())
+        {
+            StartCoroutine(CanvasFadeIn(quickAccessGroup));
+            StopCoroutine(CanvasFadeOut(quickAccessGroup));
+        }
+        else if (PlayerInputs.instance.PlayerReleasedQuickAccessButton())
+        {
+            StopCoroutine(CanvasFadeIn(quickAccessGroup));
+            StartCoroutine(CanvasFadeOut(quickAccessGroup));
+        }
+
         if (mouseScrollDirection > 0)
         {
             playerInventory.CycleRightSelectedItemIndex();
@@ -47,6 +63,7 @@ public class InventoryQuickAccess : MonoBehaviour
             playerInventory.CycleLeftSelectedItemIndex();
             printedAlready = false;
         }
+
         if (!printedAlready)
         {
             Debug.Log(playerInventory.indexOfSelectedInventorySlot);
@@ -63,8 +80,6 @@ public class InventoryQuickAccess : MonoBehaviour
 
     private void UpdateQuickAccessItems()
     {
-        int n = 4;
-
         if (itemsToDisplay != null)
             itemsToDisplay.Clear();
         
@@ -72,7 +87,6 @@ public class InventoryQuickAccess : MonoBehaviour
 
         // Update Right Item
         rightItem.image.sprite = itemsToDisplay[0].sprite;
-        rightItem.textQuantity.text = CheckTextForZeros(itemsToDisplay[0].quantity.ToString());
 
         // Update Center Item
         centerItem.image.sprite = itemsToDisplay[1].sprite;
@@ -81,7 +95,6 @@ public class InventoryQuickAccess : MonoBehaviour
 
         // Update Left Item
         leftItem.image.sprite = itemsToDisplay[2].sprite;
-        leftItem.textQuantity.text = CheckTextForZeros(itemsToDisplay[2].quantity.ToString());
     }
 
     private string CheckTextForZeros(string text)
@@ -94,5 +107,35 @@ public class InventoryQuickAccess : MonoBehaviour
         }
 
         return text;
+    }
+
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+    }
+
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
     }
 }

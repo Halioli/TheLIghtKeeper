@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 178599511410445274}
   - component: {fileID: 178599511410445278}
   - component: {fileID: 178599511410445275}
+  - component: {fileID: 1646346330158301172}
   m_Layer: 0
   m_Name: CoalOre
   m_TagString: Ore
@@ -147,6 +148,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+--- !u!114 &1646346330158301172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178599511410445279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4851340e7e27147bbc119a88ae37a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5305445299640113223
 GameObject:
   m_ObjectHideFlags: 0

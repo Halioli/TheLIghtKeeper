@@ -12,8 +12,9 @@ public class PlayerInputs : MonoBehaviour
     public bool facingLeft = true;
     public bool canFlip = true;
     public bool canMove = true;
+    public float playerReach = 3f;
 
-
+    public GameObject selectSpotGameObject;
 
     private void Awake()
     {
@@ -26,8 +27,6 @@ public class PlayerInputs : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-
 
     // Methods
     public bool PlayerClickedMineButton()
@@ -46,6 +45,12 @@ public class PlayerInputs : MonoBehaviour
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
+    public Vector2 GetMousePositionInWorld()
+    {
+        SetNewMousePosition();
+        return mouseWorldPosition;
+    }
+
     public bool PlayerPressedInteractButton()
     {
         return Input.GetKeyDown(KeyCode.E);
@@ -59,6 +64,21 @@ public class PlayerInputs : MonoBehaviour
     public bool PlayerPressedInventoryButton()
     {
         return Input.GetKeyDown(KeyCode.Tab);
+    }
+
+    public bool PlayerPressedQuickAccessButton()
+    {
+        return Input.GetKeyDown(KeyCode.LeftShift);
+    }
+
+    public bool PlayerReleasedQuickAccessButton()
+    {
+        return Input.GetKeyUp(KeyCode.LeftShift);
+    }
+
+    public bool PlayerPressedExitButton()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
     }
 
     public Vector2 PlayerPressedMovementButtons()
@@ -76,5 +96,28 @@ public class PlayerInputs : MonoBehaviour
     public Vector2 PlayerMouseScroll()
     {
         return Input.mouseScrollDelta;
+    }
+
+    public void SpawnSelectSpotAtTransform(Transform transform)
+    {
+        Instantiate(selectSpotGameObject, transform);
+    }
+
+    public void FlipSprite(Vector2 direction)
+    {
+        if (!instance.canFlip)
+            return;
+
+        if ((direction.x > 0 && !instance.facingLeft) || direction.x < 0 && instance.facingLeft)
+        {
+            instance.facingLeft = !instance.facingLeft;
+            GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+        }
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Closing application...");
+        Application.Quit();
     }
 }

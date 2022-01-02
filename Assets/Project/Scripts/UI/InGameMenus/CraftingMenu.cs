@@ -48,10 +48,10 @@ public class CraftingMenu : MonoBehaviour
     {
         recepieButtonsGameObjects.Clear();
         int buttonNumb = 0;
-
         foreach (Recepie recepie in craftingSystem.availableRecepies)
         {
             GameObject gameObjectButton = Instantiate(buttonPrefab, craftingList.transform);
+
             recepieButtonsGameObjects.Add(gameObjectButton);
 
             gameObjectButton.GetComponent<Image>().sprite = smallCraftingRecepieFrame;
@@ -70,6 +70,7 @@ public class CraftingMenu : MonoBehaviour
 
             ++buttonNumb;
         }
+        craftingList.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, buttonPrefab.GetComponent<RectTransform>().sizeDelta.y * recepieButtonsGameObjects.Count);
     }
 
     private void SetFirstElemtTextToRed()
