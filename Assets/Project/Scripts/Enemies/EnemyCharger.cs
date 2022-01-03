@@ -41,6 +41,7 @@ public class EnemyCharger : HostileEnemy
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        collider = GetComponent<CapsuleCollider2D>();
 
         currentAttackRecoverTime = ATTACK_RECOVER_TIME;
         currentChargeTime = CHARGE_TIME;
@@ -127,6 +128,13 @@ public class EnemyCharger : HostileEnemy
                 movementAudioSource.Stop();
             }
         }
+
+
+        if (collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
+        {
+            FleeAndBanish();
+        }
+
     }
 
 
