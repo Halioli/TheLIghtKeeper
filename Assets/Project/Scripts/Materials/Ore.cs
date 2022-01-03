@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.Experimental.Rendering.Universal;
 
 public enum OreState { WHOLE, BROKEN};
+public enum Hardness { NORMAL , HARD };
 
 public class Ore : MonoBehaviour
 {
@@ -15,6 +15,7 @@ public class Ore : MonoBehaviour
     protected Sprite currentSprite;
 
     // Public Attributes
+    [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
@@ -41,7 +42,6 @@ public class Ore : MonoBehaviour
 
     public virtual void GetsMined(int damageAmount)
     {
-        
         transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
