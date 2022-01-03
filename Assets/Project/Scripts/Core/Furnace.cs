@@ -287,13 +287,14 @@ public class Furnace : InteractStation
 
             case FURNACE_EVENTS.STABILIZING:
                 countdownActive = false;
-                currentFuel = STARTING_FUEL_AMOUNT;
 
                 if (couroutineStartedConsumeCoal)
                 {
                     couroutineStartedConsumeCoal = false;
                     StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
                 }
+
+                currentFuel = STARTING_FUEL_AMOUNT;
                 furnaceEvents = FURNACE_EVENTS.CALM;
                 break;
 
@@ -327,6 +328,11 @@ public class Furnace : InteractStation
     public void StopEvent()
     {
         furnaceEvents = FURNACE_EVENTS.STABILIZING;
+    }
+
+    public int GetCurrentEventID()
+    {
+        return (int)furnaceEvents;
     }
 
     public int GetMaxFuel()
