@@ -15,9 +15,9 @@ public class PlayerCombat : PlayerBase
     private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
-    private float pushForce = 50f;
 
     private PlayerAreas playerAreas;
+    private InGameHUDHandler inGameHUD;
 
     protected AttackSystem attackSystem;
     protected HealthSystem healthSystem;
@@ -40,6 +40,7 @@ public class PlayerCombat : PlayerBase
         playerAreas = GetComponent<PlayerAreas>();
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        inGameHUD = GetComponentInChildren<InGameHUDHandler>();
         playerBlood.Stop();
     }
 
@@ -49,6 +50,17 @@ public class PlayerCombat : PlayerBase
         {
             StartAttacking();
         }
+    }
+
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     private void StartAttacking()
@@ -94,7 +106,7 @@ public class PlayerCombat : PlayerBase
     public void DealDamageToEnemy(Enemy enemy)
     {
         enemy.ReceiveDamage(attackSystem.attackValue);
-        enemy.GetsPushed((enemy.transform.position - transform.position).normalized, pushForce);
+        enemy.GetsPushed((enemy.transform.position - transform.position).normalized, attackSystem.pushValue);
     }
 
     public void ReceiveDamage(int damageValue)
@@ -106,6 +118,7 @@ public class PlayerCombat : PlayerBase
         else
         {
             StartCoroutine(Invulnerability());
+            inGameHUD.DoRecieveDamageFadeAndShake();
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -168,4 +181,7 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(ATTACK_COOLDOWN);
         canAttack = true;
     }
+
+
+
 }
