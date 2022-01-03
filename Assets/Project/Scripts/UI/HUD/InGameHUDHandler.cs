@@ -7,6 +7,9 @@ public class InGameHUDHandler : MonoBehaviour
 {
     // Private Attributes
     private const float FADE_TIME = 0.5f;
+    private const float CLAW_FADE_TIME = 0.2f;
+    private const float SHAKE_AMOUNT = 0.1f;
+    private const float CLAW_SHAKE_STRENGHT = 40f;
 
     private int playerHealthValue;
     private int lampTimeValue;
@@ -16,6 +19,7 @@ public class InGameHUDHandler : MonoBehaviour
     private bool lampIsTrembeling;
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
+    private CanvasGroup clawStrikeGroup;
 
     // Public Attributes
     public HUDBar healthBar;
@@ -23,6 +27,7 @@ public class InGameHUDHandler : MonoBehaviour
 
     public GameObject healthBarGameObject;
     public GameObject lampBarGameObject;
+    public GameObject clawStrikeGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -43,6 +48,9 @@ public class InGameHUDHandler : MonoBehaviour
         lampBar.SetMaxValue(lampTimeValue);
         lampIsOn = false;
         lampIsTrembeling = false;
+
+        // Initialize claw variables
+        clawStrikeGroup = clawStrikeGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -113,6 +121,11 @@ public class InGameHUDHandler : MonoBehaviour
         bar.SetValue(value);
     }
 
+    public void DoRecieveDamageFadeAndShake()
+    {
+        StartCoroutine(RecieveDamageFadeAndShake());
+    }
+
     IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(1f, 1f);
@@ -147,12 +160,11 @@ public class InGameHUDHandler : MonoBehaviour
     {
         Vector2 startingPos = lampBarGameObject.transform.localPosition;
         Vector2 currentPos = startingPos;
-        float amount = 0.03f;
 
         while (lampIsTrembeling)
         {
-            currentPos.x += Random.Range(-amount, amount);
-            currentPos.y += Random.Range(-amount, amount);
+            currentPos.x += Random.Range(-SHAKE_AMOUNT, SHAKE_AMOUNT);
+            currentPos.y += Random.Range(-SHAKE_AMOUNT, SHAKE_AMOUNT);
             lampBarGameObject.transform.localPosition = currentPos;
 
             yield return null;
@@ -168,12 +180,11 @@ public class InGameHUDHandler : MonoBehaviour
     {
         Vector2 startingPos = healthBarGameObject.transform.localPosition;
         Vector2 currentPos = startingPos;
-        float amount = 0.03f;
 
         while (healthIsTrembeling)
         {
-            currentPos.x += Random.Range(-amount, amount);
-            currentPos.y += Random.Range(-amount, amount);
+            currentPos.x += Random.Range(-SHAKE_AMOUNT, SHAKE_AMOUNT);
+            currentPos.y += Random.Range(-SHAKE_AMOUNT, SHAKE_AMOUNT);
             healthBarGameObject.transform.localPosition = currentPos;
 
             yield return null;
@@ -183,5 +194,35 @@ public class InGameHUDHandler : MonoBehaviour
 
         yield return new WaitWhile(() => healthIsTrembeling);
         healthBarGameObject.transform.localPosition = startingPos;
+    }
+
+    IEnumerator RecieveDamageFadeAndShake()
+    {
+        Vector2 fadeInStartVector = new Vector2(0f, 0f);
+        Vector2 fadeInEndVector = new Vector2(1f, 1f);
+
+        // Fade in
+        for (float t = 0f; t < CLAW_FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / CLAW_FADE_TIME;
+
+            clawStrikeGroup.alpha = Vector2.Lerp(fadeInStartVector, fadeInEndVector, normalizedTime).x;
+            yield return null;
+        }
+        clawStrikeGroup.alpha = fadeInEndVector.x;
+
+        // Shake
+        clawStrikeGameObject.transform.DOShakeRotation(1f, CLAW_SHAKE_STRENGHT);
+        yield return new WaitForSeconds(0.5f);
+
+        // Fade out
+        for (float t = 0f; t < CLAW_FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / CLAW_FADE_TIME;
+
+            clawStrikeGroup.alpha = Vector2.Lerp(fadeInEndVector, fadeInStartVector, normalizedTime).x;
+            yield return null;
+        }
+        clawStrikeGroup.alpha = fadeInStartVector.x;
     }
 }
