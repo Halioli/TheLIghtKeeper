@@ -41,6 +41,7 @@ public class EnemyCharger : HostileEnemy
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        collider = GetComponent<CapsuleCollider2D>();
 
         currentAttackRecoverTime = ATTACK_RECOVER_TIME;
         currentChargeTime = CHARGE_TIME;
@@ -69,12 +70,14 @@ public class EnemyCharger : HostileEnemy
         {
             if (movementAudioSource.isPlaying)
                 movementAudioSource.Stop();
+            return;
         }
 
         if (healthSystem.IsDead())
         {
             Die();
         }
+
 
         if (enemyState == EnemyState.SCARED)
         {
@@ -168,6 +171,10 @@ public class EnemyCharger : HostileEnemy
         {
             DealDamageToPlayer();
             PushPlayer();
+        }
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
+        {
+            FleeAndBanish();
         }
     }
 
