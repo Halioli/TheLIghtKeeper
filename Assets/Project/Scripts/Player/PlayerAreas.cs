@@ -117,7 +117,7 @@ public class PlayerAreas : MonoBehaviour
             {
                 // DOWN
                 StartCoroutine(SpawnAttackArea(attackAreaDownPosition, Vector3.zero));
-                animator.SetInteger("attackDirection", 0);
+                animator.SetInteger("attackDirection", -1);
             }
         }
     }
