@@ -2,76 +2,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : PlayerInputs
+public class PlayerMovement : PlayerBase
 {
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
+    private bool beingPushed = false;
+    private Vector2 pushDirection = new Vector2();
+    private float pushForce = 0f;
 
     // Public attributes
     public float moveSpeed;
     public ParticleSystem walkingParticleSystem;
-    public PlayerMiner playerMiner;
+    public Animator animator;
 
-    private Vector3 playerPos;
+    // Events
+    public delegate void PlayerWalkingSound();
+    public static event PlayerWalkingSound playPlayerWalkingSoundEvent;
+    public static event PlayerWalkingSound pausePlayerWalkingSoundEvent;
+
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        facingRight = false;
-        walkingParticleSystem.Stop();
-        playerMiner = GetComponent<PlayerMiner>();
+        walkingParticleSystem.Play();
     }
 
     private void Update()
     {
-        FlipSpriteIfClickedAnOre();
-
-        if (!playerMiner.IsMining())
+        if (playerStates.PlayerStateIsFree())
         {
-            moveDirection = PlayerPressedMovementButtons();
-            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
-            FlipSprite();
-            CheckPartlicleSystemActive();
-        }else
-        {
-            rigidbody2D.velocity = Vector2.zero;
-        }
-        playerPos = transform.position;
-    }
-
-    private void FlipSprite()
-    {
-        if((moveDirection.x > 0 && facingRight) || moveDirection.x < 0 && !facingRight){
-            facingRight = !facingRight;
-            transform.Rotate(new Vector3(0, 180, 0));
-        }
-    }
-
-    private void CheckPartlicleSystemActive()
-    {
-        if (rigidbody2D.velocity.x != 0f || rigidbody2D.velocity.y != 0f)
-        {
-            if (!walkingParticleSystem.isPlaying)
+            moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
+            if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
             {
-                walkingParticleSystem.Play();
+                playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+                //Update speed for walk animation
+                animator.SetBool("isWalking", false);
+                pausePlayerWalkingSoundEvent();
+            }
+            else if (moveDirection != Vector2.zero)
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
+                PlayerInputs.instance.FlipSprite(moveDirection);
+                animator.SetBool("isWalking", true);
+                playPlayerWalkingSoundEvent();
             }
         }
-        else
+                
+    }
+
+    private void FixedUpdate()
+    {
+        if (beingPushed)
         {
-            walkingParticleSystem.Stop();
+            rigidbody2D.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+            beingPushed = false;
+        }
+        if (playerStates.PlayerActionIsWalking())
+        {
+            rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
+            if (rigidbody2D.velocity.magnitude > 3f)
+                rigidbody2D.velocity = rigidbody2D.velocity.normalized * Mathf.Lerp(rigidbody2D.velocity.magnitude, 3f, Time.fixedDeltaTime * 30f);
         }
     }
 
-    private void FlipSpriteIfClickedAnOre()
+    public void GetsPushed(Vector2 newPushDirection, float newPushForce)
     {
-        if (PlayerClickedMineButton())
-        {
-            if (mousePosition.x > playerPos.x && !facingRight || mousePosition.x < playerPos.x && facingRight)
-            {
-                facingRight = !facingRight;
-                transform.Rotate(new Vector3(0, 180, 0));
-            }
-        }
-      
+        beingPushed = true;
+        pushDirection = newPushDirection;
+        pushForce = newPushForce;
     }
 }

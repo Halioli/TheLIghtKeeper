@@ -5,7 +5,9 @@ using UnityEngine;
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
-    private Rigidbody2D rigidbody2D;
+    protected Rigidbody2D rigidbody2D;
+    public bool canBePickedUp;
+
     
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
@@ -23,16 +25,32 @@ public class ItemGameObject : MonoBehaviour
     public Item item;
 
 
+    // Audio
+    public AudioSource audioSource;
+    public AudioClip itemIsDropped;
+
+
+
+
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        canBePickedUp = true;
     }
+
+    private void Start()
+    {
+        rigidbody2D.gravityScale = 0f;
+    }
+
 
 
     public void DropsDown()
     {
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         rigidbody2D.AddForce(transform.up * DROP_DOWN_FORCE_Y, ForceMode2D.Impulse);
+
+        PlayDropSound();
 
         StartCoroutine("StopDroping", DROP_DOWN_TIME);
     }
@@ -42,13 +60,22 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         rigidbody2D.AddForce(new Vector2(directionX * DROP_FORWARD_FORCE_X, DROP_FORWARD_FORCE_Y), ForceMode2D.Impulse);
 
+        PlayDropSound();
+
         StartCoroutine("StopDroping", DROP_FORWARD_TIME);
+    }
+
+    private void PlayDropSound()
+    {
+        audioSource.clip = itemIsDropped;
+        audioSource.Play();
     }
 
     IEnumerator StopDroping(float secondsToWait)
     {
         yield return new WaitForSeconds(secondsToWait);
-        rigidbody2D.bodyType = RigidbodyType2D.Static;
+        //rigidbody2D.bodyType = RigidbodyType2D.Static;
+        rigidbody2D.gravityScale = 0f;
     }
 
 
@@ -88,4 +115,21 @@ public class ItemGameObject : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    public virtual void DoFunctionality()
+    {
+        // Consumible does functionality
+    }
+
+    public void SetSelfStatic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
+    }
+
+    public void SetSelfDynamic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+
 }

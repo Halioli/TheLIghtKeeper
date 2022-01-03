@@ -7,6 +7,9 @@ public class PlayerHandler : MonoBehaviour
     // Public Attributes
     private HealthSystem playerHealthSystem;
     private Rigidbody2D playerRigidbody2D;
+    private bool animationEnds = false;
+
+    public Animator animator;
 
     private void Start()
     {
@@ -18,9 +21,28 @@ public class PlayerHandler : MonoBehaviour
     {
         if (playerHealthSystem.IsDead())
         {
+            //Start corroutine and play animation
+            if (!animationEnds)
+            {
+                StartCoroutine("DeathAnimation");
+            }
             // Teleport to starting position (0, 0)
-            playerRigidbody2D.transform.position = Vector3.zero;
-            playerHealthSystem.RevivePlayer();
+            else
+            {
+                playerRigidbody2D.transform.position = Vector3.zero;
+                playerHealthSystem.RestoreHealthToMaxHealth();
+   
+            }
         }
+
+        if (PlayerInputs.instance.PlayerPressedExitButton())
+            PlayerInputs.instance.QuitGame();
+    }
+    IEnumerator DeathAnimation()
+    {
+        animator.SetBool("isDead", true);
+        yield return new WaitForSeconds(2.5f);
+        animator.SetBool("isDead", false);
+        animationEnds = true;
     }
 }

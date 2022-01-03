@@ -5,50 +5,38 @@ using UnityEngine;
 public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private int playerHealthValue;
-    private int lampTimeValue;
+    private const float FADE_TIME = 1f;
     private int coreTimeValue;
+    private bool showingCountdown;
+    private CanvasGroup coreGroup;
 
     // Public Attributes
-    public HUDBar healthBar;
-    public HUDBar lampBar;
     public HUDBar coreBar;
-
-    public HUDItem itemRight;
-    public HUDItem itemCenter;
-    public HUDItem itemLeft;
-
-    public HealthSystem playerhealthSystem;
-    public Lamp lamp;
     public Furnace furnace;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        // Initalize health variables
-        playerHealthValue = playerhealthSystem.GetMaxHealth();
-        healthBar.SetMaxValue(playerHealthValue);
-        healthBar.UpdateText(CheckTextForZeros(playerHealthValue.ToString()));
-
-        // Initialize lamp variables
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
-        lampBar.SetMaxValue(lampTimeValue);
-        lampBar.UpdateText(CheckTextForZeros(lampTimeValue.ToString()));
+        showingCountdown = false;
 
         // Initialize core variables
+        coreGroup = GetComponentInChildren<CanvasGroup>();
         coreTimeValue = furnace.GetMaxFuel();
         coreBar.SetMaxValue(coreTimeValue);
         coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        playerHealthValue = playerhealthSystem.GetHealth();
-        ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
-
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
-        ChangeValueInHUD(lampBar, lampTimeValue, lampTimeValue.ToString());
+        if (furnace.countdownActive && !showingCountdown)
+        {
+            StopCoroutine(CanvasFadeOut(coreGroup));
+            StartCoroutine(CanvasFadeIn(coreGroup));
+        }
+        else if (!furnace.countdownActive && showingCountdown)
+        {
+            StopCoroutine(CanvasFadeIn(coreGroup));
+            StartCoroutine(CanvasFadeOut(coreGroup));
+        }
 
         coreTimeValue = furnace.GetCurrentFuel();
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
@@ -70,5 +58,39 @@ public class HUDHandler : MonoBehaviour
     {
         bar.SetValue(value);
         bar.UpdateText(CheckTextForZeros(text));
+    }
+
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = false;
+    }
+
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = true;
     }
 }

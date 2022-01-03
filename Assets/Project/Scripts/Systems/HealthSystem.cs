@@ -11,15 +11,13 @@ public class HealthSystem : MonoBehaviour
     // Public Attributes
     public int maxHealth;
 
-
-
     void Start()
     {
         health = maxHealth;
         canBeDamaged = true;
     }
 
-    public void RevivePlayer() { health = maxHealth; }
+    public void RestoreHealthToMaxHealth() { health = maxHealth; }
 
     public int GetMaxHealth() { return maxHealth; }
 
@@ -34,8 +32,8 @@ public class HealthSystem : MonoBehaviour
     }
 
     virtual public bool IsDead() { return health <= 0; }
- 
 
+ 
 
 
 }

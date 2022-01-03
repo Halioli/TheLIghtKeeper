@@ -19,14 +19,7 @@ public abstract class Item : ScriptableObject
 
 
     // Private Attributes
-    private Sprite sprite;
-
-
-    //private void Start()
-    //{
-    //    sprite = GetComponent<Sprite>();
-    //}
-
+    public Sprite sprite;
 
 
     // Getter Methods
@@ -48,7 +41,4 @@ public abstract class Item : ScriptableObject
         return ID != other.ID;
     }
 
-
-    // Virtual Methods
-    public virtual void DoFunctionality() { }
 }
