@@ -90,11 +90,13 @@ public class InGameHUDHandler : MonoBehaviour
     {
         if ((playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && !playerIsDamaged)
         {
+            StopCoroutine(CanvasFadeOut(healthGroup));
             StartCoroutine(CanvasFadeIn(healthGroup));
             playerIsDamaged = true;
         }
         else if (!(playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && playerIsDamaged)
         {
+            StopCoroutine(CanvasFadeIn(healthGroup));
             StartCoroutine(CanvasFadeOut(healthGroup));
             playerIsDamaged = false;
             healthIsTrembeling = false;
@@ -105,11 +107,13 @@ public class InGameHUDHandler : MonoBehaviour
     {
         if (lamp.turnedOn && !lampIsOn)
         {
+            StopCoroutine(CanvasFadeOut(lampGroup));
             StartCoroutine(CanvasFadeIn(lampGroup));
             lampIsOn = true;
         }
         else if (!lamp.turnedOn && lampIsOn)
         {
+            StopCoroutine(CanvasFadeIn(lampGroup));
             StartCoroutine(CanvasFadeOut(lampGroup));
             lampIsOn = false;
             lampIsTrembeling = false;
@@ -212,8 +216,8 @@ public class InGameHUDHandler : MonoBehaviour
         clawStrikeGroup.alpha = fadeInEndVector.x;
 
         // Shake
-        clawStrikeGameObject.transform.DOShakeRotation(3f, CLAW_SHAKE_STRENGHT);
-        yield return null;
+        clawStrikeGameObject.transform.DOShakeRotation(1f, CLAW_SHAKE_STRENGHT);
+        yield return new WaitForSeconds(0.5f);
 
         // Fade out
         for (float t = 0f; t < CLAW_FADE_TIME; t += Time.deltaTime)

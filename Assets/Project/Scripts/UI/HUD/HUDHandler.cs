@@ -5,7 +5,7 @@ using UnityEngine;
 public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 1f;
+    private const float FADE_TIME = 0.5f;
     private int coreTimeValue;
     private bool showingCountdown;
     private CanvasGroup coreGroup;
