@@ -8,17 +8,12 @@ public class EnemyCharger : HostileEnemy
 {
     // Private Attributes
     private Animator animator;
-    bool died = false;
 
     private Vector2 directionOnChargeStart;
     private Vector2 angleDirection;
     private Vector2 fleeDirection;
-
     private float currentSpeed;
-    private float currentAttackRecoverTime;
-    private float currentChargeTime;
-    private bool hasRecovered;
-    private bool collidedWithPlayer;
+    private float insideLightTime = 0.5f;
 
     // Public Attributes
     public const float ATTACK_RECOVER_TIME = 2f;
@@ -28,6 +23,7 @@ public class EnemyCharger : HostileEnemy
     public const float ACCELERATION = 0.25f;
 
     public float distanceToCharge = 4f;
+
 
     // Sinusoidal movement
     public float amplitude = 0.1f;
@@ -50,11 +46,6 @@ public class EnemyCharger : HostileEnemy
         player = GameObject.FindGameObjectWithTag("Player");
         collider = GetComponent<CapsuleCollider2D>();
 
-        currentAttackRecoverTime = ATTACK_RECOVER_TIME;
-        currentChargeTime = CHARGE_TIME;
-        currentSpeed = 1f;
-        hasRecovered = false;
-        collidedWithPlayer = false;
         enemyState = EnemyState.SPAWNING;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
 
@@ -116,8 +107,6 @@ public class EnemyCharger : HostileEnemy
                     UpdatePlayerPosition();
                     directionOnChargeStart = (playerPosition - rigidbody.position).normalized;
                     attackState = AttackState.CHARGING; // Change state
-
-                    transform.DOPunchRotation(new Vector3(0, 0, 20), CHARGE_TIME);
                 }
             }
             else if (attackState == AttackState.CHARGING)
@@ -184,14 +173,9 @@ public class EnemyCharger : HostileEnemy
             DealDamageToPlayer();
             PushPlayer();
         }
-        else if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("Light") && !insideLight)
         {
-            // Play banish audio sound
-            audioSource.clip = banishAudioClip;
-            audioSource.volume = Random.Range(0.1f, 0.2f);
-            audioSource.pitch = Random.Range(0.7f, 1.5f);
-            audioSource.Play();
-            FleeAndBanish();
+            EnteredLight();
         }
     }
 
@@ -239,18 +223,40 @@ public class EnemyCharger : HostileEnemy
 
     IEnumerator StartRecovering()
     {
-        transform.DOPunchScale(new Vector3(-0.1f, -0.1f, 0), ATTACK_RECOVER_TIME, 0);
         yield return new WaitForSeconds(ATTACK_RECOVER_TIME);
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
     }
 
 
 
+    protected override void EnteredLight()
+    {
+        insideLight = true; 
+
+        // Play banish audio sound
+        audioSource.clip = banishAudioClip;
+        audioSource.volume = Random.Range(0.1f, 0.2f);
+        audioSource.pitch = Random.Range(0.7f, 1.5f);
+        audioSource.Play();
+
+        StartCoroutine(InsideLight());        
+    }
+
+    IEnumerator InsideLight()
+    {
+        transform.DOShakePosition(insideLightTime);
+        
+        yield return new WaitForSeconds(insideLightTime);
+        
+        FleeAndBanish();
+    }
+
+
     protected override void FleeAndBanish()
     {
         enemyState = EnemyState.SCARED;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
-        Banish();
+        Banish(BANISH_TIME);
     }
 
 
@@ -264,6 +270,13 @@ public class EnemyCharger : HostileEnemy
         audioSource.volume = Random.Range(0.1f, 0.2f);
         audioSource.pitch = Random.Range(0.7f, 1.5f);
         audioSource.Play();
+    }
+
+    protected override void Die()
+    {
+        // Play death animation
+        DropItem();
+        Banish(0.2f);
     }
 
 }
