@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class MainMenuEnemy : HostileEnemy
 {
+    private const float MIN_X_TARGET = -20f;
+    private const float MAX_X_TARGET = 20f;
+    private const float MIN_Y_TARGET = -20f;
+    private const float MAX_Y_TARGET = -30f;
+
+    private const float MIN_X_SPAWN = -20f;
+    private const float MAX_X_SPAWN = 20f;
+    private const float MIN_Y_SPAWN = 20f;
+    private const float MAX_Y_SPAWN = 30f;
+
     private Vector2 targetArea = new Vector2(10, 10);
     private Vector2 targetPosition;
 
@@ -13,7 +23,6 @@ public class MainMenuEnemy : HostileEnemy
     private float speedVariationInterval = 2f;
     private float waitTime = 0.5f;
     private bool doSpeedVariation = true;
-
 
     // Sinusoidal movement
     public float amplitude = 0.1f;
@@ -28,7 +37,6 @@ public class MainMenuEnemy : HostileEnemy
         healthSystem = GetComponent<HealthSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        //player = GameObject.FindGameObjectWithTag("Player");
         player = null;
         collider = GetComponent<CapsuleCollider2D>();
 
@@ -40,15 +48,14 @@ public class MainMenuEnemy : HostileEnemy
         period = Random.Range(0.10f, 0.15f);
         collider = GetComponent<CapsuleCollider2D>();
 
-
+        SetRandomTargetPosition();
         Spawn();
         StartCoroutine(SpeedVariation());
     }
 
-
     private void Update()
     {
-        if (enemyState == EnemyState.WANDERING)
+        if (enemyState == EnemyState.AGGRO)
         {
             // Sinusoidal movement
             theta = Time.timeSinceLevelLoad / period;
@@ -56,12 +63,12 @@ public class MainMenuEnemy : HostileEnemy
 
             if (transform.position.Equals(targetPosition))
             {
-                Disappear();
+                RandomRespawn();
             }
 
             if (collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
             {
-                FleeAndBanish();
+                RandomRespawn();
             }
 
             if (doSpeedVariation)
@@ -69,16 +76,17 @@ public class MainMenuEnemy : HostileEnemy
                 StartCoroutine(SpeedVariation());
             }
         }
+
+        Debug.Log(targetPosition);
     }
 
     private void FixedUpdate()
     {
-        if (enemyState == EnemyState.WANDERING)
+        if (enemyState == EnemyState.AGGRO)
         {
             MoveTowardsTarget();
         }
     }
-
 
     private void MoveTowardsTarget()
     {
@@ -86,6 +94,25 @@ public class MainMenuEnemy : HostileEnemy
         rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * sinWaveDistance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
     }
 
+    private void SetRandomTargetPosition()
+    {
+        targetPosition = new Vector2(Random.Range(MIN_X_TARGET, MAX_X_TARGET), Random.Range(MAX_Y_TARGET, MIN_Y_TARGET));
+    }
+
+    private void RandomRespawn()
+    {
+        transform.position = new Vector2(Random.Range(MIN_X_SPAWN, MAX_X_SPAWN), Random.Range(MIN_Y_SPAWN, MAX_Y_SPAWN));
+        ResetStates();
+        SetRandomTargetPosition();
+    }
+
+    private void ResetStates()
+    {
+        enemyState = EnemyState.SPAWNING;
+        attackState = AttackState.MOVING_TOWARDS_PLAYER;
+
+        currentBanishTime = BANISH_TIME;
+    }
 
     IEnumerator SpeedVariation()
     {
