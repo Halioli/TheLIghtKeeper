@@ -24,6 +24,7 @@ public class Furnace : InteractStation
     //Text references
     public TextMeshProUGUI numElementAddedText;
     public TextMeshProUGUI currentFuelText;
+    public TextMeshProUGUI eventText;
 
     //Core light 
     public GameObject coreLight;
@@ -58,6 +59,7 @@ public class Furnace : InteractStation
     private int fuelAmountPerIronUnit = 25;
     private float currentTextTime = 0f;
 
+    private string[] eventTextToDisplay = { "", "Needs Coal", "Needs Iron", "Sabilizing..." };
     private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Sabilizing..." };
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
@@ -271,11 +273,13 @@ public class Furnace : InteractStation
         {
             case FurnaceEvents.CALM:
                 countdownActive = false;
+                eventText.text = eventTextToDisplay[0];
                 break;
 
             case FurnaceEvents.NEEDS_COAL:
                 countdownActive = true;
-                
+                eventText.text = eventTextToDisplay[1];
+
                 ConsumesFuel();
                 CheckWarningMessageAppears();
 
@@ -287,6 +291,7 @@ public class Furnace : InteractStation
 
             case FurnaceEvents.NEEDS_REPAIRS:
                 countdownActive = true;
+                eventText.text = eventTextToDisplay[2];
 
                 ConsumesFuel();
                 CheckWarningMessageAppears();
@@ -299,6 +304,7 @@ public class Furnace : InteractStation
 
             case FurnaceEvents.STABILIZING:
                 countdownActive = false;
+                eventText.text = eventTextToDisplay[3];
 
                 if (couroutineStartedConsumeCoal)
                 {
