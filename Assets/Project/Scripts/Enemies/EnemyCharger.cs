@@ -130,6 +130,13 @@ public class EnemyCharger : HostileEnemy
                 movementAudioSource.Stop();
             }
         }
+
+
+        if (collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
+        {
+            FleeAndBanish();
+        }
+
     }
 
 

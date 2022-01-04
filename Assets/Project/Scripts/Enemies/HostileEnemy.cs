@@ -75,4 +75,25 @@ public class HostileEnemy : Enemy
     }
 
 
+
+    protected void Disappear()
+    {
+        StartCoroutine(StartDisappearing());
+    }
+
+
+    IEnumerator StartDisappearing()
+    {
+        // Fading
+        Color fadeColor = spriteRenderer.material.color;
+        while (currentBanishTime > 0f)
+        {
+            fadeColor.a = currentBanishTime / BANISH_TIME;
+            spriteRenderer.material.color = fadeColor;
+
+            currentBanishTime -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        Destroy(gameObject);
+    }
 }
