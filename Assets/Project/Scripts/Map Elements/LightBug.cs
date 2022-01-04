@@ -31,11 +31,11 @@ public class LightBug : Enemy
 
     private float timeCounter;
 
-    private float initialIntensity = 0.3f;
-    private float maxIntensity = 1f;
-    private float time;
-    private bool cycleFinished;
-    
+    //private float initialIntensity = 0.3f;
+    //private float maxIntensity = 1f;
+    //private float time;
+    //private bool cycleFinished;
+
     void Start()
     {
         horizontalLerp = new Interpolator(timeToReachEachPoint, Interpolator.Type.SMOOTH);
@@ -47,8 +47,6 @@ public class LightBug : Enemy
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
-        cycleFinished = true;
-
     }
 
     void Update()
@@ -66,7 +64,8 @@ public class LightBug : Enemy
         if(lightBugMovement == LightBugMovement.LINEAR)
         {
             UpdateInterpolators();
-            transform.position = new Vector3(initialPositionX + (finalPositionX - initialPositionX) * horizontalLerp.Value, initialPositionY + (finalPositionX - initialPositionY) * horizontalLerp.Value, 0f);
+
+            transform.position = new Vector3(initialPositionX + (finalPositionX - initialPositionX) * horizontalLerp.Value, initialPositionY + (finalPositionY - initialPositionY) * horizontalLerp.Value, 0f);
             if (initialPositionX - finalPositionX != 0)
             {
                 transform.position = new Vector3(transform.position.x, (transform.position.y + 1f) - (transform.position.y + 1f) * verticalLerp.Value, 0f);
@@ -79,9 +78,7 @@ public class LightBug : Enemy
         else
         {
             timeCounter += Time.deltaTime * speed;
-            transform.position = new Vector3(Mathf.Cos(timeCounter) * width, Mathf.Sin(timeCounter) * height, 0);
-
-            
+            transform.position = new Vector3(Mathf.Cos(timeCounter) * width, Mathf.Sin(timeCounter) * height, 0);    
         }
 
     }
