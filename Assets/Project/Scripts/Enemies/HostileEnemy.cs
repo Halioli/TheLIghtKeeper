@@ -5,7 +5,7 @@ using UnityEngine;
 public class HostileEnemy : Enemy
 {
     protected Collider2D collider;
-
+    protected bool insideLight = false;
 
     public AudioClip deathAudioClip;
 
@@ -33,15 +33,15 @@ public class HostileEnemy : Enemy
     }
 
 
-    public void Banish()
+    public void Banish(float banishTime)
     {
         startedBanishing = true;
-        StartCoroutine(StartBanishing());
+        StartCoroutine(StartBanishing(banishTime));
 
         enemyDisappearsEvent();
     }
 
-    IEnumerator StartBanishing()
+    IEnumerator StartBanishing(float banishTime)
     {
 
         // Play banish audio sound
@@ -52,7 +52,7 @@ public class HostileEnemy : Enemy
 
         // Fading
         Color fadeColor = spriteRenderer.material.color;
-        currentBanishTime = BANISH_TIME;
+        currentBanishTime = banishTime;
         while (currentBanishTime > 0f)
         {
             fadeColor.a = currentBanishTime / BANISH_TIME;
@@ -68,14 +68,18 @@ public class HostileEnemy : Enemy
     {
         // Play death animation
         DropItem();
-        Banish();
+        Banish(BANISH_TIME);
+    }
+
+    protected virtual void EnteredLight()
+    {
     }
 
     protected virtual void FleeAndBanish()
     {
         enemyState = EnemyState.SCARED;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
-        Banish();
+        Banish(BANISH_TIME);
     }
 
 
