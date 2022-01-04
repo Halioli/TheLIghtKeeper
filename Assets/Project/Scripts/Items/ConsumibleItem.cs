@@ -12,10 +12,4 @@ public class ConsumibleItem : Item
         itemType = ItemType.CONSUMIBLE;
     }
 
-
-    // Overrided Methods
-    public override void DoFunctionality()
-    {
-        // Consumible does functionality
-    }
 }

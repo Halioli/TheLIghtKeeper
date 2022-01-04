@@ -8,7 +8,14 @@ public class DarknessSystem : MonoBehaviour
     private PlayerLightChecker playerLightChecker;
     private bool playerInLight;
     private List<GameObject> enemySpawners = new List<GameObject>();
-    
+
+    private int ENEMY_CAP = 8;
+    private int numberOfAliveEnemies = 0;
+    public bool enemyCapIsFull = false;
+
+    public delegate void PlayerEntersLightAction();
+    public static event PlayerEntersLightAction OnPlayerEntersLight;
+
     void Start()
     {
         playerLightChecker = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLightChecker>();
@@ -19,17 +26,45 @@ public class DarknessSystem : MonoBehaviour
 
     void Update()
     {
+        if (enemyCapIsFull)
+        {
+            DisableEnemySpawners();
+            return;
+        }
+        else if (!playerInLight)
+        {
+            EnableEnemySpawners();
+        }
+
+
+
         if (!playerInLight && playerLightChecker.IsPlayerInLight())
         {
             playerInLight = true;
             DisableEnemySpawners();
-            MakeAllEnemiesBanish();
+            if(OnPlayerEntersLight != null)
+            {
+                OnPlayerEntersLight();
+            }
         }
         else if (playerInLight && !playerLightChecker.IsPlayerInLight())
         {
             playerInLight = false;
             EnableEnemySpawners();
         }
+    }
+
+
+    void OnEnable()
+    {
+        EnemySpawner.spawnEnemyEvent += AddingEnemy;
+        HostileEnemy.enemyDisappearsEvent += RemovingEnemy;
+    }
+
+    void OnDisable()
+    {
+        EnemySpawner.spawnEnemyEvent -= AddingEnemy;
+        HostileEnemy.enemyDisappearsEvent -= RemovingEnemy;
     }
 
     private void EnableEnemySpawners()
@@ -47,14 +82,15 @@ public class DarknessSystem : MonoBehaviour
             enemySpawners[i].SetActive(false);
         }
     }
-
-    private void MakeAllEnemiesBanish()
+    private void AddingEnemy()
     {
-        List<GameObject> spawnedEnemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
-        for (int i = 0; i < spawnedEnemies.Count; i++)
-        {
-            spawnedEnemies[i].GetComponent<Enemy>().Banish();
-        }
+        numberOfAliveEnemies++;
+        enemyCapIsFull = numberOfAliveEnemies >= ENEMY_CAP;
     }
 
+    private void RemovingEnemy()
+    {
+        numberOfAliveEnemies--;
+        enemyCapIsFull = numberOfAliveEnemies >= ENEMY_CAP;
+    }
 }

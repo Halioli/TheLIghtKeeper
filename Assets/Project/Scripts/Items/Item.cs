@@ -19,7 +19,7 @@ public abstract class Item : ScriptableObject
 
 
     // Private Attributes
-    private Sprite sprite;
+    public Sprite sprite;
 
 
     // Getter Methods
@@ -41,7 +41,4 @@ public abstract class Item : ScriptableObject
         return ID != other.ID;
     }
 
-
-    // Virtual Methods
-    public virtual void DoFunctionality() { }
 }

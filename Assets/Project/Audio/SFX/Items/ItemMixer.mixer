@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-8678659247790652328
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 418365fd1eec6b14b8895e62e7eb22f0
+  m_EffectName: Attenuation
+  m_MixLevel: 2c45b31d85b7acc4d9826991afd17e3c
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-123133213935785130
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LightRod
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 49b0487ab400aa142b8764fb45209b03
+  m_Children:
+  - {fileID: 6012742860343178912}
+  m_Volume: d666bcc875dc73845915b3cb1c22c87c
+  m_Pitch: efd59357a8983604ca9dc4dfec5f2c4b
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 1235359145031126794}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ItemMixer
+  m_OutputGroup: {fileID: 8877487684945081726, guid: ac2435bde2d2bc24a9b5ab7d1fa221b1, type: 2}
+  m_MasterGroup: {fileID: 24300002}
+  m_Snapshots:
+  - {fileID: 24500006}
+  m_StartSnapshot: {fileID: 24500006}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters: []
+  m_AudioMixerGroupViews:
+  - guids:
+    - fcd08df1bcad1b14d975623b0e69b43c
+    - d3a1e8e025bb42441b44d7e6f3511717
+    - 49b0487ab400aa142b8764fb45209b03
+    - 27ac7e14f4c4b0541994e6638bf596a7
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500006}
+--- !u!243 &24300002
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: fcd08df1bcad1b14d975623b0e69b43c
+  m_Children:
+  - {fileID: 7109267689836506996}
+  - {fileID: -123133213935785130}
+  m_Volume: 32bcf15892184a7479eb1d0d4f5554a0
+  m_Pitch: 09b510846d3eea9469d47a68382e5cca
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 24400004}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400004
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 67b93fe18eec1ab4f9e6eff90d497a13
+  m_EffectName: Attenuation
+  m_MixLevel: 3f0c53f7938b8284c8661ecb7c0d6021
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500006
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Snapshot
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: 39251b0d86adb8746bed3a84004ec35b
+  m_FloatValues: {}
+  m_TransitionOverrides: {}
+--- !u!244 &1235359145031126794
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: cc150e103274b064ebd4d7a508ec52cb
+  m_EffectName: Attenuation
+  m_MixLevel: 0b143b3f822a69644be49648421602a1
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &2872574371735831680
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 84fbc833fd88d6a4295e9728f18449c7
+  m_EffectName: Attenuation
+  m_MixLevel: 4a6b6b1fa9da14f42b516a353e0038d8
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &6012742860343178912
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LightRodActivation
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 27ac7e14f4c4b0541994e6638bf596a7
+  m_Children: []
+  m_Volume: 0f420df442f45194b9ce0279947b3e2d
+  m_Pitch: 4a6ff22e65499d54cb874450ca6c371b
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 2872574371735831680}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &7109267689836506996
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ItemDrop
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: d3a1e8e025bb42441b44d7e6f3511717
+  m_Children: []
+  m_Volume: d4a3264a86c7c8b4c80aeb6890f9335d
+  m_Pitch: fc7a010aaa8b1dc4b90037d23b8ba82c
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -8678659247790652328}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0

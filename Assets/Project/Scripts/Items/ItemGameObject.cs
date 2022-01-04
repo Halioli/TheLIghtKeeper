@@ -5,7 +5,9 @@ using UnityEngine;
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
-    private Rigidbody2D rigidbody2D;
+    protected Rigidbody2D rigidbody2D;
+    public bool canBePickedUp;
+
     
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
@@ -33,7 +35,14 @@ public class ItemGameObject : MonoBehaviour
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        canBePickedUp = true;
     }
+
+    private void Start()
+    {
+        rigidbody2D.gravityScale = 0f;
+    }
+
 
 
     public void DropsDown()
@@ -65,7 +74,8 @@ public class ItemGameObject : MonoBehaviour
     IEnumerator StopDroping(float secondsToWait)
     {
         yield return new WaitForSeconds(secondsToWait);
-        rigidbody2D.bodyType = RigidbodyType2D.Static;
+        //rigidbody2D.bodyType = RigidbodyType2D.Static;
+        rigidbody2D.gravityScale = 0f;
     }
 
 
@@ -105,4 +115,21 @@ public class ItemGameObject : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    public virtual void DoFunctionality()
+    {
+        // Consumible does functionality
+    }
+
+    public void SetSelfStatic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
+    }
+
+    public void SetSelfDynamic()
+    {
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+
 }

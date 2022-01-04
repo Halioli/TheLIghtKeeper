@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 
 abstract public class Enemy : MonoBehaviour
 {
-    protected enum EnemyState
+    public enum EnemyState
     {
+        SPAWNING,
         WANDERING,
-        AGGRO
+        AGGRO,
+        SCARED
     }
 
-    protected enum AttackState
+    public enum AttackState
     {
         MOVING_TOWARDS_PLAYER,
         CHARGING,
@@ -20,8 +22,8 @@ abstract public class Enemy : MonoBehaviour
 
 
     // Protected Attributes
-    protected EnemyState enemyState;
-    protected AttackState attackState;
+    public EnemyState enemyState;
+    public AttackState attackState;
 
     protected GameObject player;
     protected Vector2 playerPosition;
@@ -36,19 +38,52 @@ abstract public class Enemy : MonoBehaviour
     protected int damageToDeal;
     protected bool startedBanishing = false;
 
-    protected const float BANISH_TIME = 2f;
+    public const float SPAWN_TIME = 0.5f;
+    protected float currentSpawnTime = 0f;
+
+    protected const float BANISH_TIME = 2.5f;
     protected float currentBanishTime;
 
+    protected bool getsPushed = false;
+    protected Vector2 pushedDirection = new Vector2();
+    protected float pushedForce = 0f;
 
 
     // Public Attributes
     public ItemGameObject dropOnDeathItem;
 
-    public AudioSource banishAudioSource;
+    public AudioSource audioSource;
+    public AudioClip banishAudioClip;
+    public AudioClip hurtedAudioClip;
 
 
     // Methods
-    protected void UpdatePlayerPosition() { 
+
+    public void Spawn()
+    {
+        StartCoroutine("Spawning");
+    }
+
+    IEnumerator Spawning()
+    {
+        enemyState = EnemyState.SPAWNING;
+
+        Color fadeColor = spriteRenderer.material.color;
+
+        while (currentSpawnTime <= SPAWN_TIME)
+        {
+            fadeColor.a = currentSpawnTime / SPAWN_TIME;
+            spriteRenderer.material.color = fadeColor;
+
+            currentSpawnTime += Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        enemyState = EnemyState.AGGRO;
+    }
+
+    protected void UpdatePlayerPosition()
+    {
         playerPosition = player.transform.position;
     }
 
@@ -57,16 +92,30 @@ abstract public class Enemy : MonoBehaviour
         directionTowardsPlayerPosition = (playerPosition - rigidbody.position).normalized;
     }
 
-    protected void DamagePlayer()
+    public void ReceiveDamage(int damageValue)
     {
-        attackSystem.DamageHealthSystemWithAttackValue(player.GetComponent<HealthSystem>());        
+        healthSystem.ReceiveDamage(damageValue);
+
+        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), 0.15f);
+
+        audioSource.clip = hurtedAudioClip;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
+
+        StartCoroutine(HurtedFlashEffect());
     }
 
-    protected void Die()
+    protected void DealDamageToPlayer()
+    {
+        player.GetComponent<PlayerCombat>().ReceiveDamage(attackSystem.attackValue);
+    }
+
+
+
+    protected virtual void Die()
     {
         // Play death animation
         DropItem();
-        Destroy(gameObject);
     }
 
     protected void DropItem()
@@ -75,26 +124,35 @@ abstract public class Enemy : MonoBehaviour
         item.DropsDown();
     }
 
-    public void Banish()
+
+    public void GetsPushed(Vector2 direction, float force)
     {
-        startedBanishing = true;
-        StartCoroutine("StartBanishing");
+        getsPushed = true;
+        pushedDirection = direction;
+        pushedForce = force;
     }
 
-    IEnumerator StartBanishing()
+    protected void Pushed()
     {
-        banishAudioSource.Play();
+        rigidbody.AddForce(pushedDirection * pushedForce, ForceMode2D.Impulse);
+        getsPushed = false;
+    }
 
-        Color fadeColor = spriteRenderer.material.color;
-        fadeColor.a = 0.5f;
+    IEnumerator HurtedFlashEffect()
+    {
+        int count = 3;
+        Color normal = spriteRenderer.color;
+        Color transparent = spriteRenderer.color;
+        transparent.a = 0.1f;
 
-        spriteRenderer.material.color = fadeColor;
 
-        while (currentBanishTime > 0f)
+        while (--count > 0)
         {
-            currentBanishTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
+            spriteRenderer.color = transparent;
+            yield return new WaitForSeconds(0.2f);
+            spriteRenderer.color = normal;
+            yield return new WaitForSeconds(0.2f);
         }
-        Destroy(gameObject);
+        spriteRenderer.color = normal;
     }
 }

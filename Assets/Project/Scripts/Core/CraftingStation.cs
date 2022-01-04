@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class CraftingStation : InteractStation
 {
+    //Private Atributes
+    private float particleTime;
     // Public Attributes
     public GameObject interactText;
     public GameObject craftingCanvasGameObject;
     public GameObject playerHUDGameObject;
 
     public InventoryMenu inventoryMenu;
+    public ParticleSystem[] craftingParticles;
 
+    private void Start()
+    {
+        foreach (ParticleSystem particle in craftingParticles)
+        {
+            particle.Stop();
+        }
+
+        particleTime = 1.89f;
+    }
     void Update()
     {
         // If player enters the trigger area the interactionText will appears
@@ -30,6 +42,15 @@ public class CraftingStation : InteractStation
         }
     }
 
+    private void OnEnable()
+    {
+        CraftingSystem.OnCrafting += PlayCraftingParticles;
+    }
+
+    private void OnDisable()
+    {
+        CraftingSystem.OnCrafting -= PlayCraftingParticles;
+    }
     //From InteractStation script
     public override void StationFunction()
     {
@@ -56,5 +77,25 @@ public class CraftingStation : InteractStation
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+    }
+
+    private void PlayCraftingParticles()
+    {
+        StartCoroutine(CraftingParticleSystem());
+    }
+
+    IEnumerator CraftingParticleSystem()
+    {
+        foreach (ParticleSystem particle in craftingParticles)
+        {
+            particle.Play();
+        }
+
+        yield return new WaitForSeconds(particleTime);
+
+        foreach (ParticleSystem particle in craftingParticles)
+        {
+            particle.Stop();
+        }
     }
 }
