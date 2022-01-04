@@ -27,6 +27,7 @@ public class MainMenuEnemy : MonoBehaviour
     private const float SPAWN_TIME = 0.5f;
     private const float MAX_SPEED = 10f;
 
+    private Animator animator;
     private Rigidbody2D rigidbody;
     private SpriteRenderer spriteRenderer;
     private float currentBanishTime;
@@ -45,6 +46,7 @@ public class MainMenuEnemy : MonoBehaviour
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -87,6 +89,8 @@ public class MainMenuEnemy : MonoBehaviour
         {
             enteredInLight = true;
             enemyState = EnemyState.WAITING;
+
+            animator.SetTrigger("isDead");
             StartCoroutine(StartBanishing());
         }
     }
