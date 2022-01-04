@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenuEnemy : HostileEnemy
+public class MainMenuEnemy : MonoBehaviour
 {
+    private enum EnemyState
+    {
+        SPAWNING,
+        WANDERING
+    }
+    private EnemyState enemyState;
+
     private const float MIN_X_TARGET = -20f;
     private const float MAX_X_TARGET = 20f;
     private const float MIN_Y_TARGET = -20f;
     private const float MAX_Y_TARGET = -30f;
-
     private const float MIN_X_SPAWN = -20f;
     private const float MAX_X_SPAWN = 20f;
     private const float MIN_Y_SPAWN = 20f;
     private const float MAX_Y_SPAWN = 30f;
+    private const float BANISH_TIME = 0.5f;
+    private const float SPAWN_TIME = 0.5f;
 
     private Vector2 targetArea = new Vector2(10, 10);
     private Vector2 targetPosition;
@@ -24,6 +32,13 @@ public class MainMenuEnemy : HostileEnemy
     private float waitTime = 0.5f;
     private bool doSpeedVariation = true;
 
+    private Rigidbody2D rigidbody;
+    private SpriteRenderer spriteRenderer;
+    private CapsuleCollider2D collider;
+    private float currentBanishTime;
+    private float currentSpawnTime;
+    private Vector2 directionTowardsTaergetPosition;
+
     // Sinusoidal movement
     public float amplitude = 0.1f;
     private float period;
@@ -33,29 +48,25 @@ public class MainMenuEnemy : HostileEnemy
 
     private void Awake()
     {
-        attackSystem = GetComponent<AttackSystem>();
-        healthSystem = GetComponent<HealthSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        player = null;
         collider = GetComponent<CapsuleCollider2D>();
 
         enemyState = EnemyState.SPAWNING;
-        attackState = AttackState.MOVING_TOWARDS_PLAYER;
 
         currentBanishTime = BANISH_TIME;
+        currentSpawnTime = SPAWN_TIME;
 
         period = Random.Range(0.10f, 0.15f);
         collider = GetComponent<CapsuleCollider2D>();
 
-        SetRandomTargetPosition();
-        Spawn();
+        RandomRespawn();
         StartCoroutine(SpeedVariation());
     }
 
     private void Update()
     {
-        if (enemyState == EnemyState.AGGRO)
+        if (enemyState == EnemyState.WANDERING)
         {
             // Sinusoidal movement
             theta = Time.timeSinceLevelLoad / period;
@@ -82,7 +93,7 @@ public class MainMenuEnemy : HostileEnemy
 
     private void FixedUpdate()
     {
-        if (enemyState == EnemyState.AGGRO)
+        if (enemyState == EnemyState.WANDERING)
         {
             MoveTowardsTarget();
         }
@@ -90,8 +101,8 @@ public class MainMenuEnemy : HostileEnemy
 
     private void MoveTowardsTarget()
     {
-        directionTowardsPlayerPosition = targetPosition - (Vector2)transform.position;
-        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * sinWaveDistance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
+        directionTowardsTaergetPosition = targetPosition - (Vector2)transform.position;
+        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * sinWaveDistance) + directionTowardsTaergetPosition * (currentSpeed * Time.deltaTime));
     }
 
     private void SetRandomTargetPosition()
@@ -102,16 +113,16 @@ public class MainMenuEnemy : HostileEnemy
     private void RandomRespawn()
     {
         transform.position = new Vector2(Random.Range(MIN_X_SPAWN, MAX_X_SPAWN), Random.Range(MIN_Y_SPAWN, MAX_Y_SPAWN));
-        ResetStates();
+        ResetValues();
+
+        StartCoroutine(Spawning());
         SetRandomTargetPosition();
     }
 
-    private void ResetStates()
+    private void ResetValues()
     {
-        enemyState = EnemyState.SPAWNING;
-        attackState = AttackState.MOVING_TOWARDS_PLAYER;
-
         currentBanishTime = BANISH_TIME;
+        currentSpawnTime = SPAWN_TIME;
     }
 
     IEnumerator SpeedVariation()
@@ -124,5 +135,23 @@ public class MainMenuEnemy : HostileEnemy
         targetPosition = Random.insideUnitCircle * targetArea;
         yield return new WaitForSeconds(speedVariationInterval);
         doSpeedVariation = true;
+    }
+
+    IEnumerator Spawning()
+    {
+        enemyState = EnemyState.SPAWNING;
+
+        Color fadeColor = spriteRenderer.material.color;
+
+        while (currentSpawnTime <= SPAWN_TIME)
+        {
+            fadeColor.a = currentSpawnTime / SPAWN_TIME;
+            spriteRenderer.material.color = fadeColor;
+
+            currentSpawnTime += Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        enemyState = EnemyState.WANDERING;
     }
 }

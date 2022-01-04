@@ -4897,9 +4897,6 @@ GameObject:
   - component: {fileID: 8544967693152852782}
   - component: {fileID: 8544967693152852772}
   - component: {fileID: 7370466414862781722}
-  - component: {fileID: 3341138568974776310}
-  - component: {fileID: 8544967693152852768}
-  - component: {fileID: 9201744423051164653}
   - component: {fileID: 6117950751276494049}
   - component: {fileID: 1578453667016470713}
   - component: {fileID: 3443014883542701737}
@@ -5016,45 +5013,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.1}
   m_Size: {x: 1, y: 1.2}
   m_Direction: 0
---- !u!114 &3341138568974776310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8544967693152852783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae1eb2b336aa104697b3fb5afa7d565, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 1
---- !u!114 &8544967693152852768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8544967693152852783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffe77c0808617b846a3acbadd13161d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackValue: 0
-  pushValue: 0
---- !u!114 &9201744423051164653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8544967693152852783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df0670c3f6153e145b292f64538fbcff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &6117950751276494049
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5374,11 +5332,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbd91ecf60c466840b188a473764d358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyState: 0
-  attackState: 0
-  dropOnDeathItem: {fileID: 0}
-  audioSource: {fileID: 6117950751276494049}
-  banishAudioClip: {fileID: 8300000, guid: ef4502d77da2eb144a72097639169831, type: 3}
-  hurtedAudioClip: {fileID: 8300000, guid: c7f2d9ee469a9174bb54f515fcad7976, type: 3}
   amplitude: 0.1
   sinWaveDistance: 0
