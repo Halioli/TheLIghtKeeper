@@ -29,12 +29,12 @@ public class Furnace : InteractStation
     public GameObject coreLight;
 
     // Private Attributes
-    private const int MAX_FUEL_AMOUNT = 250;
-    private const int STARTING_FUEL_AMOUNT = 35;
+    private const int MAX_FUEL_AMOUNT = 150;
+    private const int STARTING_FUEL_AMOUNT = 50;
     private const int LOW_FUEL_AMOUNT = 30;
-    private const int MAX_CORE_LEVEL = 3;
+    private const int MAX_CORE_LEVEL = 5;
     private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f; 
-    private enum FURNACE_EVENTS { CALM, NEEDS_COAL, NEEDS_REPAIRS };
+    private enum FURNACE_EVENTS { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
     FURNACE_EVENTS furnaceEvents;
 
     //Core light 
@@ -57,8 +57,8 @@ public class Furnace : InteractStation
     private int fuelAmountPerCoalUnit = 10;
     private float currentTextTime = 0f;
 
-    private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron" };
-    private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron" };
+    private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Sabilizing..." };
+    private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
     // Methods
     private void Start()
@@ -81,11 +81,11 @@ public class Furnace : InteractStation
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
-            furnaceEvents = FURNACE_EVENTS.NEEDS_COAL;
+            StartEvent(1);
         }
         else if (Input.GetKeyDown(KeyCode.O))
         {
-            furnaceEvents = FURNACE_EVENTS.NEEDS_REPAIRS;
+            StartEvent(2);
         }
 
         SwitchFurnaceEvents();
@@ -103,9 +103,7 @@ public class Furnace : InteractStation
             numElementAdded = 0;
             PopUpDisappears();
         }
-
     }
-
 
     private void OnEnable()
     {
@@ -116,8 +114,6 @@ public class Furnace : InteractStation
     {
         CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
     }
-
-
 
     //From InteractStation script
     public override void StationFunction()
@@ -147,6 +143,9 @@ public class Furnace : InteractStation
                 {
                     NoFuelToAdd((int)furnaceEvents);
                 }
+                break;
+
+            case FURNACE_EVENTS.STABILIZING:
                 break;
 
             default:
@@ -260,12 +259,6 @@ public class Furnace : InteractStation
         {
             case FURNACE_EVENTS.CALM:
                 countdownActive = false;
-
-                if (couroutineStartedConsumeCoal)
-                {
-                    couroutineStartedConsumeCoal = false;
-                    StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
-                }
                 break;
 
             case FURNACE_EVENTS.NEEDS_COAL:
@@ -276,8 +269,7 @@ public class Furnace : InteractStation
 
                 if (currentFuel >= MAX_FUEL_AMOUNT)
                 {
-                    currentFuel -= 1;
-                    furnaceEvents = FURNACE_EVENTS.CALM;
+                    furnaceEvents = FURNACE_EVENTS.STABILIZING;
                 }
                 break;
 
@@ -286,9 +278,14 @@ public class Furnace : InteractStation
 
                 ConsumesFuel();
                 CheckWarningMessageAppears();
+
+                if (currentFuel >= MAX_FUEL_AMOUNT)
+                {
+                    furnaceEvents = FURNACE_EVENTS.STABILIZING;
+                }
                 break;
 
-            default:
+            case FURNACE_EVENTS.STABILIZING:
                 countdownActive = false;
 
                 if (couroutineStartedConsumeCoal)
@@ -296,6 +293,13 @@ public class Furnace : InteractStation
                     couroutineStartedConsumeCoal = false;
                     StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
                 }
+
+                currentFuel = STARTING_FUEL_AMOUNT;
+                furnaceEvents = FURNACE_EVENTS.CALM;
+                break;
+
+            default:
+                furnaceEvents = FURNACE_EVENTS.STABILIZING;
                 break;
         }
     }
@@ -314,6 +318,21 @@ public class Furnace : InteractStation
                 StartCoroutine(UsingYieldAddCoal(1));
             }
         }
+    }
+
+    public void StartEvent(int eventID)
+    {
+        furnaceEvents = (FURNACE_EVENTS)eventID;
+    }
+
+    public void StopEvent()
+    {
+        furnaceEvents = FURNACE_EVENTS.STABILIZING;
+    }
+
+    public int GetCurrentEventID()
+    {
+        return (int)furnaceEvents;
     }
 
     public int GetMaxFuel()

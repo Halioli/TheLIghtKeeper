@@ -10307,7 +10307,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7233089400078776426}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10706,7 +10706,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!50 &2927284238126075485
 Rigidbody2D:
   serializedVersion: 4
@@ -16082,6 +16082,10 @@ PrefabInstance:
     - target: {fileID: 3601792722224175337, guid: bca81fd2da1ffa64c9fa0910deb928b7, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601792722645728632, guid: bca81fd2da1ffa64c9fa0910deb928b7, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1514593013
       objectReference: {fileID: 0}
     - target: {fileID: 3601792722645728635, guid: bca81fd2da1ffa64c9fa0910deb928b7, type: 3}
       propertyPath: m_PresetInfoIsWorld
