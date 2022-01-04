@@ -7,37 +7,35 @@ public class MainMenuEnemy : MonoBehaviour
     private enum EnemyState
     {
         SPAWNING,
-        WANDERING
+        WANDERING,
+        WAITING
     }
     private EnemyState enemyState;
 
+    //Target
     private const float MIN_X_TARGET = -20f;
     private const float MAX_X_TARGET = 20f;
     private const float MIN_Y_TARGET = -20f;
     private const float MAX_Y_TARGET = -30f;
+    //Spawn
     private const float MIN_X_SPAWN = -20f;
     private const float MAX_X_SPAWN = 20f;
     private const float MIN_Y_SPAWN = 20f;
     private const float MAX_Y_SPAWN = 30f;
+    //Other
     private const float BANISH_TIME = 0.5f;
     private const float SPAWN_TIME = 0.5f;
-
-    private Vector2 targetArea = new Vector2(10, 10);
-    private Vector2 targetPosition;
-
-    private float currentSpeed;
-    private float minSpeed = 4f;
-    private float maxSpeed = 8f;
-    private float speedVariationInterval = 2f;
-    private float waitTime = 0.5f;
-    private bool doSpeedVariation = true;
+    private const float MAX_SPEED = 10f;
 
     private Rigidbody2D rigidbody;
     private SpriteRenderer spriteRenderer;
-    private CapsuleCollider2D collider;
     private float currentBanishTime;
     private float currentSpawnTime;
-    private Vector2 directionTowardsTaergetPosition;
+    private float targetRadius = 0.1f;
+    private Vector2 targetPosition;
+    private Vector2 directionTarget;
+    private Vector2 angleDirection;
+    private bool enteredInLight = false;
 
     // Sinusoidal movement
     public float amplitude = 0.1f;
@@ -45,12 +43,10 @@ public class MainMenuEnemy : MonoBehaviour
     private float theta;
     public float sinWaveDistance;
 
-
-    private void Awake()
+    private void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        collider = GetComponent<CapsuleCollider2D>();
 
         enemyState = EnemyState.SPAWNING;
 
@@ -58,37 +54,23 @@ public class MainMenuEnemy : MonoBehaviour
         currentSpawnTime = SPAWN_TIME;
 
         period = Random.Range(0.10f, 0.15f);
-        collider = GetComponent<CapsuleCollider2D>();
+
+        angleDirection = Vector2.zero;
+        transform.position = Vector2.zero;
 
         RandomRespawn();
-        StartCoroutine(SpeedVariation());
     }
 
     private void Update()
     {
+        Debug.Log(targetPosition);
         if (enemyState == EnemyState.WANDERING)
         {
-            // Sinusoidal movement
-            theta = Time.timeSinceLevelLoad / period;
-            sinWaveDistance = amplitude * Mathf.Sin(theta);
-
-            if (transform.position.Equals(targetPosition))
+            if (Vector2.Distance(targetPosition, transform.position) < targetRadius)
             {
                 RandomRespawn();
-            }
-
-            if (collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
-            {
-                RandomRespawn();
-            }
-
-            if (doSpeedVariation)
-            {
-                StartCoroutine(SpeedVariation());
             }
         }
-
-        Debug.Log(targetPosition);
     }
 
     private void FixedUpdate()
@@ -99,10 +81,28 @@ public class MainMenuEnemy : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Light") && !enteredInLight)
+        {
+            enteredInLight = true;
+            enemyState = EnemyState.WAITING;
+            StartCoroutine(StartBanishing());
+        }
+    }
+
     private void MoveTowardsTarget()
     {
-        directionTowardsTaergetPosition = targetPosition - (Vector2)transform.position;
-        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * sinWaveDistance) + directionTowardsTaergetPosition * (currentSpeed * Time.deltaTime));
+        directionTarget = (targetPosition - (Vector2)transform.position).normalized;
+
+        // Sinusoidal movement
+        theta = Time.timeSinceLevelLoad / period;
+        sinWaveDistance = amplitude * Mathf.Sin(theta);
+
+        angleDirection = Vector2.Perpendicular(directionTarget);
+        angleDirection *= sinWaveDistance;
+
+        rigidbody.MovePosition((Vector2)transform.position + angleDirection + directionTarget * (MAX_SPEED * Time.deltaTime));
     }
 
     private void SetRandomTargetPosition()
@@ -121,20 +121,9 @@ public class MainMenuEnemy : MonoBehaviour
 
     private void ResetValues()
     {
+        enteredInLight = false;
         currentBanishTime = BANISH_TIME;
         currentSpawnTime = SPAWN_TIME;
-    }
-
-    IEnumerator SpeedVariation()
-    {
-        doSpeedVariation = false;
-        currentSpeed = 0f;
-        yield return new WaitForSeconds(waitTime);
-
-        currentSpeed = Random.Range(minSpeed, maxSpeed);
-        targetPosition = Random.insideUnitCircle * targetArea;
-        yield return new WaitForSeconds(speedVariationInterval);
-        doSpeedVariation = true;
     }
 
     IEnumerator Spawning()
@@ -153,5 +142,28 @@ public class MainMenuEnemy : MonoBehaviour
         }
 
         enemyState = EnemyState.WANDERING;
+    }
+
+    IEnumerator StartBanishing()
+    {
+        // Play banish audio sound
+        //audioSource.clip = banishAudioClip;
+        //audioSource.volume = Random.Range(0.1f, 0.2f);
+        //audioSource.pitch = Random.Range(0.7f, 1.5f);
+        //audioSource.Play();
+
+        // Fading
+        Color fadeColor = spriteRenderer.material.color;
+        currentBanishTime = BANISH_TIME;
+        while (currentBanishTime > 0f)
+        {
+            fadeColor.a = currentBanishTime / BANISH_TIME;
+            spriteRenderer.material.color = fadeColor;
+
+            currentBanishTime -= Time.deltaTime;
+            yield return null;
+        }
+
+        RandomRespawn();
     }
 }
