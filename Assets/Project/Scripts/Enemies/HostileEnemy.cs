@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HostileEnemy : Enemy
 {
+    protected Collider2D collider;
+
     // Events
     public delegate void EnemyDisappears();
     public static event EnemyDisappears enemyDisappearsEvent;
@@ -20,7 +22,7 @@ public class HostileEnemy : Enemy
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
+        if (this.collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
         {
             FleeAndBanish();
         }

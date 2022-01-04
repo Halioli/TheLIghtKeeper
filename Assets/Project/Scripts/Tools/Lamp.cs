@@ -6,7 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-    private const float LIGHT_INTENSITY_ON = 0.5f;
+    private const float LIGHT_INTENSITY_ON = 1f;
     private const float LIGHT_INTENSITY_OFF = 0.0f;
 
     private const float RADIUS_DIFFERENCE = 20f;
