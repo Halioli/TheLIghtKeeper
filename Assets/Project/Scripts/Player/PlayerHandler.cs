@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
-    // Public Attributes
+    // Private Attributes
+    private bool animationEnds = false;
     private HealthSystem playerHealthSystem;
     private Rigidbody2D playerRigidbody2D;
-    private bool animationEnds = false;
 
+    // Public Attributes
     public Animator animator;
+    public HUDHandler hudHandler;
 
     private void Start()
     {
@@ -24,25 +26,47 @@ public class PlayerHandler : MonoBehaviour
             //Start corroutine and play animation
             if (!animationEnds)
             {
+                gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
                 StartCoroutine("DeathAnimation");
             }
             // Teleport to starting position (0, 0)
             else
             {
+                gameObject.layer = LayerMask.NameToLayer("Player");
                 playerRigidbody2D.transform.position = Vector3.zero;
                 playerHealthSystem.RestoreHealthToMaxHealth();
-   
+                animationEnds = false;
             }
         }
 
         if (PlayerInputs.instance.PlayerPressedExitButton())
             PlayerInputs.instance.QuitGame();
     }
+
+    public void DoDeathImageFade()
+    {
+        hudHandler.DoDeathImageFade();
+    }
+
+    public void DoFadeToBlack()
+    {
+        hudHandler.DoFadeToBlack();
+    }
+
+    public void RestoreHUD()
+    {
+        hudHandler.RestoreFades();
+    }
+
+    public void DeathAnimationFinished()
+    {
+        animationEnds = true;
+    }
+
     IEnumerator DeathAnimation()
     {
         animator.SetBool("isDead", true);
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitUntil(() => animationEnds);
         animator.SetBool("isDead", false);
-        animationEnds = true;
     }
 }

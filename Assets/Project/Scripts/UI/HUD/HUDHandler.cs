@@ -1,14 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
+    private const float COUNTDOWN_FADE_TIME = 0.5f;
+    private const float DEATH_FADE_TIME = 1f;
     private const float FADE_TIME = 0.5f;
+
     private int coreTimeValue;
     private bool showingCountdown;
     private CanvasGroup coreGroup;
+    private CanvasGroup deathImageGroup;
+    private CanvasGroup fadeOutGroup;
 
     // Public Attributes
     public HUDBar coreBar;
@@ -19,23 +25,26 @@ public class HUDHandler : MonoBehaviour
         showingCountdown = false;
 
         // Initialize core variables
-        coreGroup = GetComponentInChildren<CanvasGroup>();
+        coreGroup = GetComponentsInChildren<CanvasGroup>()[0];
         coreTimeValue = furnace.GetMaxFuel();
         coreBar.SetMaxValue(coreTimeValue);
         coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
+
+        deathImageGroup = GetComponentsInChildren<CanvasGroup>()[1];
+        fadeOutGroup = GetComponentsInChildren<CanvasGroup>()[2];
     }
 
     private void Update()
     {
         if (furnace.countdownActive && !showingCountdown)
         {
-            StopCoroutine(CanvasFadeOut(coreGroup));
-            StartCoroutine(CanvasFadeIn(coreGroup));
+            StopCoroutine(CanvasFadeOut(coreGroup, COUNTDOWN_FADE_TIME));
+            StartCoroutine(CanvasFadeIn(coreGroup, COUNTDOWN_FADE_TIME));
         }
         else if (!furnace.countdownActive && showingCountdown)
         {
-            StopCoroutine(CanvasFadeIn(coreGroup));
-            StartCoroutine(CanvasFadeOut(coreGroup));
+            StopCoroutine(CanvasFadeIn(coreGroup, COUNTDOWN_FADE_TIME));
+            StartCoroutine(CanvasFadeOut(coreGroup, COUNTDOWN_FADE_TIME));
         }
 
         coreTimeValue = furnace.GetCurrentFuel();
@@ -60,14 +69,33 @@ public class HUDHandler : MonoBehaviour
         bar.UpdateText(CheckTextForZeros(text));
     }
 
-    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
+    public void DoDeathImageFade()
+    {
+        StartCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
+    }
+
+    public void DoFadeToBlack()
+    {
+        StartCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
+    }
+
+    public void RestoreFades()
+    {
+        StopCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
+        StopCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
+
+        deathImageGroup.alpha = 0f;
+        fadeOutGroup.alpha = 0f;
+    }
+
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup, float fadeTime)
     {
         Vector2 startVector = new Vector2(1f, 1f);
         Vector2 endVector = new Vector2(0f, 0f);
 
-        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
         {
-            float normalizedTime = t / FADE_TIME;
+            float normalizedTime = t / fadeTime;
 
             canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
             yield return null;
@@ -77,14 +105,14 @@ public class HUDHandler : MonoBehaviour
         showingCountdown = false;
     }
 
-    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup, float fadeTime)
     {
         Vector2 startVector = new Vector2(0f, 0f);
         Vector2 endVector = new Vector2(1f, 1f);
 
-        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
         {
-            float normalizedTime = t / FADE_TIME;
+            float normalizedTime = t / fadeTime;
 
             canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
             yield return null;
