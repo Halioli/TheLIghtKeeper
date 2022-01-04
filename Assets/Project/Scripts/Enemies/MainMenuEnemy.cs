@@ -11,14 +11,17 @@ public class MainMenuEnemy : MonoBehaviour
     }
     private EnemyState enemyState;
 
+    //Target
     private const float MIN_X_TARGET = -20f;
     private const float MAX_X_TARGET = 20f;
     private const float MIN_Y_TARGET = -20f;
     private const float MAX_Y_TARGET = -30f;
+    //Spawn
     private const float MIN_X_SPAWN = -20f;
     private const float MAX_X_SPAWN = 20f;
     private const float MIN_Y_SPAWN = 20f;
     private const float MAX_Y_SPAWN = 30f;
+    //Other
     private const float BANISH_TIME = 0.5f;
     private const float SPAWN_TIME = 0.5f;
 
@@ -79,7 +82,7 @@ public class MainMenuEnemy : MonoBehaviour
 
             if (collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
             {
-                RandomRespawn();
+                Die();
             }
 
             if (doSpeedVariation)
@@ -87,8 +90,6 @@ public class MainMenuEnemy : MonoBehaviour
                 StartCoroutine(SpeedVariation());
             }
         }
-
-        Debug.Log(targetPosition);
     }
 
     private void FixedUpdate()
@@ -117,6 +118,11 @@ public class MainMenuEnemy : MonoBehaviour
 
         StartCoroutine(Spawning());
         SetRandomTargetPosition();
+    }
+
+    private void Die()
+    {
+        Debug.Log("AAAAAAAAAAAAAAAAA");
     }
 
     private void ResetValues()
