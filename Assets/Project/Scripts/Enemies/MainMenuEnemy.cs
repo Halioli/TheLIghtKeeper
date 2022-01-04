@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MainMenuEnemy : MonoBehaviour
 {
@@ -23,10 +24,13 @@ public class MainMenuEnemy : MonoBehaviour
     private const float MIN_Y_SPAWN = 20f;
     private const float MAX_Y_SPAWN = 30f;
     //Other
-    private const float BANISH_TIME = 0.5f;
+    private const float BANISH_TIME = 1.07f;
     private const float SPAWN_TIME = 0.5f;
-    private const float MAX_SPEED = 10f;
+    private const float MAX_SPEED = 20f;
 
+    private AudioSource movementAudioSource;
+    private AudioSource screamAudioSource;
+    private Animator animator;
     private Rigidbody2D rigidbody;
     private SpriteRenderer spriteRenderer;
     private float currentBanishTime;
@@ -37,16 +41,23 @@ public class MainMenuEnemy : MonoBehaviour
     private Vector2 angleDirection;
     private bool enteredInLight = false;
 
-    // Sinusoidal movement
+    //Sinusoidal movement
     public float amplitude = 0.1f;
     private float period;
     private float theta;
     public float sinWaveDistance;
 
+    // Public Attributes
+    public AudioClip deathAudioClip;
+    public AudioClip movementAudioClip;
+
     private void Start()
     {
+        animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        movementAudioSource = GetComponents<AudioSource>()[0];
+        screamAudioSource = GetComponents<AudioSource>()[1];
 
         enemyState = EnemyState.SPAWNING;
 
@@ -63,7 +74,6 @@ public class MainMenuEnemy : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(targetPosition);
         if (enemyState == EnemyState.WANDERING)
         {
             if (Vector2.Distance(targetPosition, transform.position) < targetRadius)
@@ -87,7 +97,8 @@ public class MainMenuEnemy : MonoBehaviour
         {
             enteredInLight = true;
             enemyState = EnemyState.WAITING;
-            StartCoroutine(StartBanishing());
+
+            animator.SetTrigger("isDead");
         }
     }
 
@@ -122,20 +133,38 @@ public class MainMenuEnemy : MonoBehaviour
     private void ResetValues()
     {
         enteredInLight = false;
+        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         currentBanishTime = BANISH_TIME;
         currentSpawnTime = SPAWN_TIME;
     }
 
+    private void StartDying()
+    {
+        StartCoroutine(StartBanishing());
+    }
+
+    private void Die()
+    {
+        RandomRespawn();
+    }
+
     IEnumerator Spawning()
     {
+        //Play move audio sound
+        screamAudioSource.Stop();
+        movementAudioSource.clip = movementAudioClip;
+        movementAudioSource.volume = Random.Range(0.1f, 0.2f);
+        movementAudioSource.pitch = Random.Range(0.7f, 1.5f);
+        movementAudioSource.Play();
+
         enemyState = EnemyState.SPAWNING;
 
-        Color fadeColor = spriteRenderer.material.color;
+        Color fadeColor = spriteRenderer.color;
 
         while (currentSpawnTime <= SPAWN_TIME)
         {
             fadeColor.a = currentSpawnTime / SPAWN_TIME;
-            spriteRenderer.material.color = fadeColor;
+            spriteRenderer.color = fadeColor;
 
             currentSpawnTime += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
@@ -146,24 +175,24 @@ public class MainMenuEnemy : MonoBehaviour
 
     IEnumerator StartBanishing()
     {
-        // Play banish audio sound
-        //audioSource.clip = banishAudioClip;
-        //audioSource.volume = Random.Range(0.1f, 0.2f);
-        //audioSource.pitch = Random.Range(0.7f, 1.5f);
-        //audioSource.Play();
+        //Play death audio sound
+        movementAudioSource.Stop();
+        screamAudioSource.clip = deathAudioClip;
+        screamAudioSource.volume = Random.Range(0.1f, 0.2f);
+        screamAudioSource.pitch = Random.Range(0.7f, 1.5f);
+        screamAudioSource.Play();
 
         // Fading
-        Color fadeColor = spriteRenderer.material.color;
+        Color fadeColor = spriteRenderer.color;
         currentBanishTime = BANISH_TIME;
+
         while (currentBanishTime > 0f)
         {
             fadeColor.a = currentBanishTime / BANISH_TIME;
-            spriteRenderer.material.color = fadeColor;
+            spriteRenderer.color = fadeColor;
 
             currentBanishTime -= Time.deltaTime;
             yield return null;
         }
-
-        RandomRespawn();
     }
 }
