@@ -90,13 +90,11 @@ public class InGameHUDHandler : MonoBehaviour
     {
         if ((playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && !playerIsDamaged)
         {
-            StopCoroutine(CanvasFadeOut(healthGroup));
             StartCoroutine(CanvasFadeIn(healthGroup));
             playerIsDamaged = true;
         }
         else if (!(playerHealthSystem.GetHealth() < playerHealthSystem.GetMaxHealth()) && playerIsDamaged)
         {
-            StopCoroutine(CanvasFadeIn(healthGroup));
             StartCoroutine(CanvasFadeOut(healthGroup));
             playerIsDamaged = false;
             healthIsTrembeling = false;
@@ -107,13 +105,11 @@ public class InGameHUDHandler : MonoBehaviour
     {
         if (lamp.turnedOn && !lampIsOn)
         {
-            StopCoroutine(CanvasFadeOut(lampGroup));
             StartCoroutine(CanvasFadeIn(lampGroup));
             lampIsOn = true;
         }
         else if (!lamp.turnedOn && lampIsOn)
         {
-            StopCoroutine(CanvasFadeIn(lampGroup));
             StartCoroutine(CanvasFadeOut(lampGroup));
             lampIsOn = false;
             lampIsTrembeling = false;
