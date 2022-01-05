@@ -6,18 +6,22 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
-    private const int MAX_LEVELS = 4;
-    private int level = 1;
-
-    private const float LIGHT_INTENSITY_ON = 0.5f;
+    private const float LIGHT_INTENSITY_ON = 1f;
     private const float LIGHT_INTENSITY_OFF = 0.0f;
 
     private const float RADIUS_DIFFERENCE = 20f;
 
+    private const int MAX_SOURCE_LEVELS = 4;
+    private int sourceLevel = 1;
     private float[] LIGHT_ANGLE_LVL = { 55f, 75f, 95f, 115f };
     private float[] LIGHT_DISTANCE_LVL = { 10f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
+
+    private const int MAX_TIME_LEVELS = 3;
+    private int timeLevel = 1;
+    private float lampTime;
+    private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
 
     private const float LIGHT_CIRCLE_OUTER_RADIUS = 2f;
     private const float LIGHT_CIRCLE_INNER_RADIUS = 1.5f;
@@ -32,7 +36,6 @@ public class Lamp : MonoBehaviour
 
     // Public Attributes
     public bool turnedOn;
-    public float lampTime;
     public bool active = false;
     public bool canRefill;
 
@@ -77,11 +80,18 @@ public class Lamp : MonoBehaviour
         {
             UpdateLamp();
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LevelUp();
-        }
+    private void OnEnable()
+    {
+        LanternSourceUpgrade.OnLanternSourceUpgrade += UpgradeLampSource;
+        LanternTimeUpgrade.OnLanternTimeUpgrade += UpgradeLampTime;
+    }
+
+    private void OnDisable()
+    {
+        LanternSourceUpgrade.OnLanternSourceUpgrade -= UpgradeLampSource;
+        LanternTimeUpgrade.OnLanternTimeUpgrade -= UpgradeLampTime;
     }
 
     public void UpdateLamp()
@@ -236,20 +246,32 @@ public class Lamp : MonoBehaviour
         return lampTime;
     }
 
-    public void LevelUp()
+    private void UpgradeLampSource()
     {
-        if (level >= MAX_LEVELS)
+        if (sourceLevel >= MAX_SOURCE_LEVELS)
         {
             return;
         }
 
-        ++level;
-
-        lightAngle = LIGHT_ANGLE_LVL[level - 1];
-        lightDistance = LIGHT_DISTANCE_LVL[level - 1];
+        lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
+        lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
         lampConeLight.GetComponent<Light2D>().pointLightInnerRadius = lightDistance - 5f;
         lampConeLight.GetComponent<Light2D>().pointLightOuterRadius = lightDistance;
+
+        ++sourceLevel;
+    }
+
+    private void UpgradeLampTime()
+    {
+        if (timeLevel >= MAX_TIME_LEVELS)
+        {
+            return;
+        }
+
+        maxLampTime += LAMP_TIME_LVL[timeLevel];
+        lampTime = maxLampTime;
+        ++lampTime;
     }
 
 

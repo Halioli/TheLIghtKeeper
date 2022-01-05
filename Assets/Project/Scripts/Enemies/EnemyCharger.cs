@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine.Audio;
 
 
-public class EnemyCharger : Enemy
+public class EnemyCharger : HostileEnemy
 {
     // Private Attributes
     private Vector2 directionOnChargeStart;
@@ -24,7 +24,6 @@ public class EnemyCharger : Enemy
     public float MAX_SPEED;
     public const float ACCELERATION = 0.25f;
 
-    public float pushForce = 16f;
     public float distanceToCharge = 4f;
     public AudioMixerSnapshot[] snapshots;
 
@@ -44,7 +43,7 @@ public class EnemyCharger : Enemy
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
-        enemyAudioSource = GetComponent<AudioSource>();
+        collider = GetComponent<CapsuleCollider2D>();
 
         currentAttackRecoverTime = ATTACK_RECOVER_TIME;
         currentChargeTime = CHARGE_TIME;
@@ -82,7 +81,11 @@ public class EnemyCharger : Enemy
         }
 
 
-        if (enemyState == EnemyState.AGGRO)
+        if (enemyState == EnemyState.SCARED)
+        {
+            return;
+        }
+        else if (enemyState == EnemyState.AGGRO)
         {
             if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
             {
@@ -106,7 +109,6 @@ public class EnemyCharger : Enemy
                 theta = Time.timeSinceLevelLoad / period;
                 sinWaveDistance = amplitude * Mathf.Sin(theta);
 
-
                 // Change to CHARGE
                 if (Vector2.Distance(transform.position, player.transform.position) <= distanceToCharge)
                 {
@@ -124,25 +126,10 @@ public class EnemyCharger : Enemy
                     screamAudioSource.pitch = Random.Range(0.8f, 1.3f);
                     screamAudioSource.Play();
                 }
-
-                spriteRenderer.color = new Color(1f, 0f, 0f, 1f);
-                if (collidedWithPlayer)
-                {
-                    PushPlayer();
-                    collidedWithPlayer = false;
-
-                    currentChargeTime = CHARGE_TIME; // Reset value
-                    spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-                    attackState = AttackState.RECOVERING; // Change state
-                }
             }
             else if (attackState == AttackState.RECOVERING)
             {
                 movementAudioSource.Stop();
-
-                spriteRenderer.color = new Color(0.36f, 0.36f, 0.36f, 1f);
-                currentSpeed = 0f;
-                Recovering();
             }
         }
     }
@@ -151,39 +138,45 @@ public class EnemyCharger : Enemy
 
     private void FixedUpdate()
     {
+        if (getsPushed)
+        {
+            Pushed();
+            return;
+        }
+
         if (enemyState == EnemyState.SPAWNING)
         {
             return;
         }
-
-        if (startedBanishing)
+        else if (enemyState == EnemyState.SCARED)
         {
-            if (enemyState == EnemyState.SCARED)
-            {
-                FleeAway();
-            }
+            FleeAway();
             return;
         }
-        else if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
+
+        if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();
         }
         else if (attackState == AttackState.CHARGING)
         {
-            if (!collidedWithPlayer)
-            {
-                Charge();
-            }
+            Charge();
+            StartCoroutine(StartRecovering());
         }
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.collider.gameObject.CompareTag("Player"))
+        if (collider.gameObject.CompareTag("Player"))
         {
             DealDamageToPlayer();
-            collidedWithPlayer = true;
+            PushPlayer();
+        }
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
+        {
+            FleeAndBanish();
         }
     }
 
@@ -197,57 +190,34 @@ public class EnemyCharger : Enemy
 
     private void FleeAway()
     {
-        rigidbody.MovePosition((Vector2)transform.position + (-1 * directionTowardsPlayerPosition) * (MAX_SPEED * Time.deltaTime));
+        UpdatePlayerPosition();
+        UpdateDirectionTowardsPlayerPosition();
+        rigidbody.MovePosition((Vector2)transform.position - (Vector2.up * sinWaveDistance) - directionTowardsPlayerPosition * (MAX_SPEED * Time.deltaTime));
     }
 
     private void Charge()
     {
-        rigidbody.MovePosition((Vector2)transform.position + directionOnChargeStart * (CHARGE_SPEED * Time.deltaTime));
-
-        currentChargeTime -= Time.deltaTime;
-        if (currentChargeTime <= 0)
-        {
-            currentChargeTime = CHARGE_TIME; // Reset value
-            attackState = AttackState.RECOVERING; // Change state
-            ResetColor();
-        }
+        rigidbody.AddForce(directionOnChargeStart.normalized * CHARGE_SPEED, ForceMode2D.Impulse);
+        attackState = AttackState.RECOVERING; // Change state
     }
 
 
     private void PushPlayer()
     {
-        player.GetComponent<PlayerMovement>().GetsPushed(directionOnChargeStart, pushForce);
+        player.GetComponent<PlayerMovement>().GetsPushed(directionOnChargeStart, attackSystem.pushValue);
     }
 
-    private void Recovering()
+    IEnumerator StartRecovering()
     {
-        if (currentAttackRecoverTime == ATTACK_RECOVER_TIME)
-        {
-            transform.DOPunchScale(new Vector3(-0.1f, -0.1f, 0), ATTACK_RECOVER_TIME, 0);
-        }
-
-        currentAttackRecoverTime -= Time.deltaTime;
-        rigidbody.isKinematic = true;
-
-
-        if (currentAttackRecoverTime <= 0)
-        {
-            hasRecovered = true;
-
-            rigidbody.isKinematic = false;
-            currentAttackRecoverTime = ATTACK_RECOVER_TIME; // Reset value
-            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-            attackState = AttackState.MOVING_TOWARDS_PLAYER; // Change state
-        }
+        transform.DOPunchScale(new Vector3(-0.1f, -0.1f, 0), ATTACK_RECOVER_TIME, 0);
+        yield return new WaitForSeconds(ATTACK_RECOVER_TIME);
+        attackState = AttackState.MOVING_TOWARDS_PLAYER;
     }
 
-    public override void FleeAndBanish()
-    {
-        if (attackState == AttackState.RECOVERING)
-        {
-            rigidbody.isKinematic = false;
-        }
 
+
+    protected override void FleeAndBanish()
+    {
         enemyState = EnemyState.SCARED;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
         Banish();

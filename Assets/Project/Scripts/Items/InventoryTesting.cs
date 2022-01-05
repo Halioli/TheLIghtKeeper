@@ -17,20 +17,7 @@ public class InventoryTesting : MonoBehaviour
 
     void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            inventory.UpgradeInventory();
-        }
-        //else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        //{
-        //    inventory.CycleLeftSelectedItemIndex();
-        //}
-        //else if (Input.GetKeyDown(KeyCode.RightArrow))
-        //{
-        //    inventory.CycleRightSelectedItemIndex();
-        //}
-        else if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             inventory.SubstractItemToInventory(coalItemGameObject.item);
         }
