@@ -8,9 +8,9 @@ enum CriticalMiningState { NONE, FAILED, SUCCEESSFUL };
 public class PlayerMiner : PlayerBase
 {
     // Private Attributes
-    private Collider2D colliderDetectedByMouse = null;
-    private Ore oreToMine;
+    private const float OVERLAP_CIRCLE_RADIUS = 1.5f;
 
+    private Ore oreToMine;
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
     private const float MINING_TIME = 1.0f;
     private float miningTime = 0;
@@ -19,12 +19,17 @@ public class PlayerMiner : PlayerBase
     private bool miningAnOre = false;
     private Vector2 raycastStartingPosition;
     private Vector2 raycastEndingPosition;
+    private Vector2 overlapCirclePosition;
+    private Vector2 mouseDirection;
+    private Vector2 oreDirection;
+    private Collider2D[] collidedElements;
 
     [SerializeField] Pickaxe pickaxe;
 
     // Public Attributes
     public GameObject interactArea;
     public LayerMask defaultLayerMask;
+    public static Collider2D OverlapCircle;
 
     // Events
     public delegate void PlayPlayerSound();
@@ -36,9 +41,20 @@ public class PlayerMiner : PlayerBase
 
     void Update()
     {
-
         if (PlayerInputs.instance.PlayerClickedMineButton() && playerStates.PlayerStateIsFree() && !playerStates.PlayerActionIsMining())
         {
+            // Update & check all colliders
+            UpdateOverlapCirlcePositionAndMouseDirection();
+            collidedElements = ReturnAllOverlapedColliders();
+
+            for (int i = 0; i < collidedElements.Length; i++)
+            {
+                oreDirection = (transform.position - collidedElements[i].transform.position).normalized;
+
+                Debug.Log(collidedElements[i]);
+                Debug.Log(Vector2.Dot(mouseDirection, oreDirection));
+            }
+
             PlayerInputs.instance.SetNewMousePosition();
 
             miningAnOre = MineRaycast();
@@ -48,7 +64,6 @@ public class PlayerMiner : PlayerBase
 
             StartMining();
         }
-        
     }
 
     // METHODS
@@ -80,25 +95,12 @@ public class PlayerMiner : PlayerBase
         return false;
     }
 
-    private bool PlayerIsInReachToMine(Vector2 mousePosition)
-    {
-        float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
-    }
-
-    private bool MouseClickedOnAnOre(Vector2 mousePosition)
-    {
-        colliderDetectedByMouse = Physics2D.OverlapCircle(mousePosition, 0.05f);
-        return colliderDetectedByMouse != null && colliderDetectedByMouse.gameObject.CompareTag("Ore");
-    }
-
     private void SetOreToMine(Ore ore)
     {
         oreToMine = ore;
 
         PlayerInputs.instance.SpawnSelectSpotAtTransform(oreToMine.transform);
     }
-
 
     private void CheckCriticalMining()
     {
@@ -115,16 +117,6 @@ public class PlayerMiner : PlayerBase
                 failCriticalMiningSoundEvent();
             }
         }
-    }
-
-    public void StartCriticalInterval()
-    {
-        canCriticalMine = true;
-    }
-
-    public void FinishCriticalInterval()
-    {
-        canCriticalMine = false;
     }
 
     private void StartMining()
@@ -164,7 +156,6 @@ public class PlayerMiner : PlayerBase
                 Debug.Log("!!! Pickaxe NOT strong enough !!!");
             }
         }
-
     }
 
     private void ResetMining()
@@ -189,6 +180,29 @@ public class PlayerMiner : PlayerBase
         {
             MineOre(pickaxe.damageValue);
         }
+    }
+
+    private void UpdateOverlapCirlcePositionAndMouseDirection()
+    {
+        overlapCirclePosition = transform.position;
+        overlapCirclePosition.y -= 1;
+
+        mouseDirection = ((Vector2)transform.position - PlayerInputs.instance.GetMousePositionInWorld()).normalized;
+    }
+
+    private Collider2D[] ReturnAllOverlapedColliders()
+    {
+        return Physics2D.OverlapCircleAll(overlapCirclePosition, OVERLAP_CIRCLE_RADIUS, defaultLayerMask);
+    }
+
+    public void StartCriticalInterval()
+    {
+        canCriticalMine = true;
+    }
+
+    public void FinishCriticalInterval()
+    {
+        canCriticalMine = false;
     }
 
     IEnumerator Mining()
