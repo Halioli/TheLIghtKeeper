@@ -24,6 +24,7 @@ public class PlayerCombat : PlayerBase
 
     // Public Attributes
     public GameObject attackArea;
+    public HUDHandler hudHandler;
 
     //Particles
     public ParticleSystem playerBlood;
@@ -119,6 +120,7 @@ public class PlayerCombat : PlayerBase
         {
             StartCoroutine(Invulnerability());
             inGameHUD.DoRecieveDamageFadeAndShake();
+            hudHandler.ShowRecieveDamageFades();
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -181,7 +183,4 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(ATTACK_COOLDOWN);
         canAttack = true;
     }
-
-
-
 }

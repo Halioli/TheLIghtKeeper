@@ -57,6 +57,7 @@ public class Furnace : InteractStation
     private int fuelAmountPerCoalUnit = 10;
     private float currentTextTime = 0f;
 
+    private string[] currentEventTextsToDisplay = { "Furnace is stable", "Furnace needs Coal", "Furnace needs Iron", "Sabilizing..." };
     private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Sabilizing..." };
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
