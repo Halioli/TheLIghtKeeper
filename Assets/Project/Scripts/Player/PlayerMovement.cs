@@ -52,7 +52,7 @@ public class PlayerMovement : PlayerBase
 
     private void FixedUpdate()
     {
-        if (beingPushed)
+        if (beingPushed && !playerStates.PlayerStateIsDead())
         {
             rigidbody2D.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
             beingPushed = false;

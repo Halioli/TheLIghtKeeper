@@ -44,8 +44,8 @@ public class InventoryQuickAccess : MonoBehaviour
         // Check Inputs & Act Accordingly
         if (PlayerInputs.instance.PlayerPressedQuickAccessButton())
         {
-            StopCoroutine(CanvasFadeOut(quickAccessGroup));
             StartCoroutine(CanvasFadeIn(quickAccessGroup));
+            StopCoroutine(CanvasFadeOut(quickAccessGroup));
         }
         else if (PlayerInputs.instance.PlayerReleasedQuickAccessButton())
         {
