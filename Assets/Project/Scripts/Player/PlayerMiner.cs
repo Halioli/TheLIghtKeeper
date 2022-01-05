@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 enum CriticalMiningState { NONE, FAILED, SUCCEESSFUL };
 
@@ -19,10 +19,15 @@ public class PlayerMiner : PlayerBase
     private bool miningAnOre = false;
     private Vector2 raycastStartingPosition;
     private Vector2 raycastEndingPosition;
+
+    // Overlap Circle & Dot Product
     private Vector2 overlapCirclePosition;
     private Vector2 mouseDirection;
     private Vector2 oreDirection;
     private Collider2D[] collidedElements;
+    private Collider2D maxColl;
+    private float max = -2f;
+    private float dotRes;
 
     [SerializeField] Pickaxe pickaxe;
 
@@ -43,21 +48,35 @@ public class PlayerMiner : PlayerBase
     {
         if (PlayerInputs.instance.PlayerClickedMineButton() && playerStates.PlayerStateIsFree() && !playerStates.PlayerActionIsMining())
         {
+            PlayerInputs.instance.SetNewMousePosition();
+
             // Update & check all colliders
             UpdateOverlapCirlcePositionAndMouseDirection();
             collidedElements = ReturnAllOverlapedColliders();
 
+            // Get the dot product from every collider in reach
+
             for (int i = 0; i < collidedElements.Length; i++)
             {
-                oreDirection = (transform.position - collidedElements[i].transform.position).normalized;
+                if (collidedElements[i].CompareTag("Ore"))
+                {
+                    oreDirection = (transform.position - collidedElements[i].transform.position).normalized;
+                    dotRes = Vector2.Dot(mouseDirection, oreDirection);
 
-                Debug.Log(collidedElements[i]);
-                Debug.Log(Vector2.Dot(mouseDirection, oreDirection));
+                    if (dotRes > max)
+                    {
+                        max = dotRes;
+                        maxColl = collidedElements[i];
+                    }
+                    
+                    miningAnOre = true;
+                }
             }
 
-            PlayerInputs.instance.SetNewMousePosition();
+            if (miningAnOre)
+                SetOreToMine(maxColl.GetComponent<Ore>());
 
-            miningAnOre = MineRaycast();
+            //miningAnOre = MineRaycast();
 
             if (!miningAnOre)
                 PlayerInputs.instance.SpawnSelectSpotAtTransform(interactArea.transform);
@@ -165,6 +184,12 @@ public class PlayerMiner : PlayerBase
 
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+
+        Array.Clear(collidedElements, 0, collidedElements.Length);
+        miningAnOre = false;
+        maxColl = null;
+        max = -2f;
+        dotRes = max;
     }
 
     private void Mine()
