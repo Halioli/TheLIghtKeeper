@@ -8,7 +8,6 @@ public class ItemGameObject : MonoBehaviour
     protected Rigidbody2D rigidbody2D;
     public bool canBePickedUp;
 
-    
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
 
@@ -34,6 +33,7 @@ public class ItemGameObject : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log( GetComponent<SpriteRenderer>().material.shader.GetPropertyCount());
         rigidbody2D = GetComponent<Rigidbody2D>();
         canBePickedUp = true;
     }
@@ -88,11 +88,10 @@ public class ItemGameObject : MonoBehaviour
     IEnumerator Despawning()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
-        Color transparentColor = spriteRenderer.material.color;
+        Color transparentColor = spriteRenderer.color;
         transparentColor.a = 0.0f;
 
-        Color semiTransparentColor = spriteRenderer.material.color;
+        Color semiTransparentColor = spriteRenderer.color;
         semiTransparentColor.a = 0.8f;
 
         while (currentDespawnTimeInSeconds > START_DESPAWN_FADING_TIME)
@@ -103,9 +102,10 @@ public class ItemGameObject : MonoBehaviour
 
         while (currentDespawnTimeInSeconds > 0.0f)
         {
-            spriteRenderer.material.color = semiTransparentColor;
+            spriteRenderer.color = semiTransparentColor;
             yield return new WaitForSeconds(currentDespawnTimeInSeconds / DESPAWN_TIME_IN_SECONDS);
-            spriteRenderer.material.color = transparentColor;
+
+            spriteRenderer.color = transparentColor;
             yield return new WaitForSeconds(currentDespawnTimeInSeconds / DESPAWN_TIME_IN_SECONDS);
 
             semiTransparentColor.a -= 0.025f;
