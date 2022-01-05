@@ -41,12 +41,13 @@ abstract public class Enemy : MonoBehaviour
     public const float SPAWN_TIME = 0.5f;
     protected float currentSpawnTime = 0f;
 
-    protected const float BANISH_TIME = 0.5f;
+    protected const float BANISH_TIME = 2.5f;
     protected float currentBanishTime;
 
     protected bool getsPushed = false;
     protected Vector2 pushedDirection = new Vector2();
     protected float pushedForce = 0f;
+    protected bool died = false;
 
 
     // Public Attributes
@@ -94,9 +95,9 @@ abstract public class Enemy : MonoBehaviour
 
     public void ReceiveDamage(int damageValue)
     {
-        healthSystem.ReceiveDamage(damageValue);
+        if (died) return;
 
-        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), 0.15f);
+        healthSystem.ReceiveDamage(damageValue);
 
         audioSource.clip = hurtedAudioClip;
         audioSource.pitch = Random.Range(0.8f, 1.3f);
@@ -121,7 +122,8 @@ abstract public class Enemy : MonoBehaviour
     protected void DropItem()
     {
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
-        item.DropsDown();
+        //item.DropsDown();
+        item.DropsForward(4);
     }
 
 
@@ -141,7 +143,6 @@ abstract public class Enemy : MonoBehaviour
     IEnumerator HurtedFlashEffect()
     {
         int count = 3;
-        //Color transparent = new Color(1, 1, 1, 0.1f);
         Color normal = spriteRenderer.color;
         Color transparent = spriteRenderer.color;
         transparent.a = 0.1f;
@@ -154,5 +155,6 @@ abstract public class Enemy : MonoBehaviour
             spriteRenderer.color = normal;
             yield return new WaitForSeconds(0.2f);
         }
+        spriteRenderer.color = normal;
     }
 }
