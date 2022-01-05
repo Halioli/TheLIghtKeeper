@@ -46,7 +46,7 @@ public class PlayerCombat : PlayerBase
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
         {
             StartAttacking();
         }
