@@ -13,28 +13,23 @@ public class HUDHandler : MonoBehaviour
 
     private int coreTimeValue;
     private bool showingCountdown;
-    private CanvasGroup coreGroup;
-    private CanvasGroup deathImageGroup;
-    private CanvasGroup fadeOutGroup;
-    private CanvasGroup recieveDamageGroup;
 
     // Public Attributes
     public HUDBar coreBar;
     public Furnace furnace;
+    public CanvasGroup coreGroup;
+    public CanvasGroup deathImageGroup;
+    public CanvasGroup fadeOutGroup;
+    public CanvasGroup recieveDamageGroup;
 
     private void Start()
     {
         showingCountdown = false;
 
         // Initialize core variables
-        coreGroup = GetComponentsInChildren<CanvasGroup>()[0];
         coreTimeValue = furnace.GetMaxFuel();
         coreBar.SetMaxValue(coreTimeValue);
         coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
-
-        deathImageGroup = GetComponentsInChildren<CanvasGroup>()[1];
-        fadeOutGroup = GetComponentsInChildren<CanvasGroup>()[2];
-        recieveDamageGroup = GetComponentsInChildren<CanvasGroup>()[3];
     }
 
     private void Update()

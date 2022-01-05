@@ -180,6 +180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coreBar: {fileID: 4271121150774115832}
   furnace: {fileID: 0}
+  coreGroup: {fileID: 6374643671064962161}
+  deathImageGroup: {fileID: 6872972547714269027}
+  fadeOutGroup: {fileID: 1778607560427591274}
+  recieveDamageGroup: {fileID: 2196426072703925455}
 --- !u!1 &271418067792035713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,7 +1478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.19607843}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
