@@ -80,10 +80,7 @@ public class Ore : MonoBehaviour
     protected void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
-        droppedMineralItem.transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f,0.5f),transform.position.y + Random.Range(-0.5f, 0.5f),0),0.1f,1,0.3f);
-        //droppedMineralItem.transform.DOPunchPosition(new Vector3(Random.Range(-0.3f,0.3f), Random.Range(0.4f, 0.6f), 0), 0.3f);
-        //droppedMineralItem.DropsDown();
-        droppedMineralItem.StartDespawning();
+        droppedMineralItem.DropsRandom();
     }
 
     protected Vector2 GetDropSpawnPosition()

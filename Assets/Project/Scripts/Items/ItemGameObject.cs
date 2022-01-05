@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
+
 
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
+    private Interpolator lerp;
+    private float lerpDistance = 0.6f;
+    private float halfLerpDistance = 0.3f;
+    private float startYLerp;
+
     protected Rigidbody2D rigidbody2D;
     public bool canBePickedUp;
 
@@ -40,9 +48,16 @@ public class ItemGameObject : MonoBehaviour
 
     private void Start()
     {
+        lerp = new Interpolator(1f, Interpolator.Type.SMOOTH);
+        startYLerp = transform.position.y;
+
         rigidbody2D.gravityScale = 0f;
     }
 
+    private void Update()
+    {
+        ItemFloating();
+    }
 
 
     public void DropsDown()
@@ -65,6 +80,19 @@ public class ItemGameObject : MonoBehaviour
         StartCoroutine("StopDroping", DROP_FORWARD_TIME);
     }
 
+    public void DropsRandom(float despawnTime)
+    {
+        transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), 0), 0.1f, 1, 0.3f);
+        StartDespawning(despawnTime);
+    }
+
+    public void DropsRandom()
+    {
+        transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), 0), 0.1f, 1, 0.3f);
+        StartDespawning(DESPAWN_TIME_IN_SECONDS);
+    }
+
+
     private void PlayDropSound()
     {
         audioSource.clip = itemIsDropped;
@@ -80,20 +108,21 @@ public class ItemGameObject : MonoBehaviour
 
 
 
-    public void StartDespawning()
+    public void StartDespawning(float despawnTime)
     {
-        StartCoroutine("Despawning");
+        StartCoroutine(Despawning(despawnTime));
     }
 
-    IEnumerator Despawning()
+    IEnumerator Despawning(float despawnTime)
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         Color transparentColor = spriteRenderer.color;
         transparentColor.a = 0.0f;
 
         Color semiTransparentColor = spriteRenderer.color;
-        semiTransparentColor.a = 0.8f;
+        semiTransparentColor.a = 0.5f;
 
+        currentDespawnTimeInSeconds = despawnTime;
         while (currentDespawnTimeInSeconds > START_DESPAWN_FADING_TIME)
         {
             yield return new WaitForSeconds(Time.deltaTime);
@@ -131,5 +160,16 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 
+
+    private void ItemFloating()
+    {
+        lerp.Update(Time.deltaTime);
+        if (lerp.isMinPrecise)
+            lerp.ToMax();
+        else if (lerp.isMaxPrecise)
+            lerp.ToMin();
+
+        transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
+    }
 
 }
