@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHandler : MonoBehaviour
+public class PlayerHandler : PlayerBase
 {
     // Private Attributes
-    private bool animationEnds = false;
     private HealthSystem playerHealthSystem;
     private Rigidbody2D playerRigidbody2D;
 
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
+
+    public bool animationEnds = false;
 
     private void Start()
     {
@@ -26,12 +27,13 @@ public class PlayerHandler : MonoBehaviour
             //Start corroutine and play animation
             if (!animationEnds)
             {
+                playerStates.SetCurrentPlayerState(PlayerState.DEAD);
                 gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
                 StartCoroutine("DeathAnimation");
             }
-            // Teleport to starting position (0, 0)
             else
             {
+                // Teleport to starting position (0, 0)
                 gameObject.layer = LayerMask.NameToLayer("Player");
                 playerRigidbody2D.transform.position = Vector3.zero;
                 playerHealthSystem.RestoreHealthToMaxHealth();
@@ -66,7 +68,9 @@ public class PlayerHandler : MonoBehaviour
     IEnumerator DeathAnimation()
     {
         animator.SetBool("isDead", true);
-        yield return new WaitUntil(() => animationEnds);
+        while (!animationEnds) { yield return null; }
+
         animator.SetBool("isDead", false);
+        playerStates.SetCurrentPlayerState(PlayerState.FREE);
     }
 }
