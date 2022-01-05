@@ -13,71 +13,147 @@ public class PlayerAreas : MonoBehaviour
     private const float ROTATION = 90f;
 
     private Vector2 playerMovement;
+    private Vector3 mouseWorldPos;
+    private Vector3 areaRotationOnHorizontal;
+
+    //Attack
+    private Vector3 attackAreaLeftPosition;
+    private Vector3 attackAreaRightPosition;
+    private Vector3 attackAreaTopPosition;
+    private Vector3 attackAreaDownPosition;
+    private Quaternion currentAttackAreaRotation;
+
+    //Interact
     private Vector3 interactAreaPosition;
-    private Vector3 attackAreaPosition;
-    private Quaternion attackAreaRotation;
+    private Vector3 interactAreaLeftPosition;
+    private Vector3 interactAreaRightPosition;
+    private Vector3 interactAreaTopPosition;
+    private Vector3 interactAreaDownPosition;
+
+    //Animator
+    private Animator animator;
 
     // Public Attributes
     public GameObject interactArea;
     public GameObject attackArea;
 
+    
     private void Start()
     {
+        areaRotationOnHorizontal = new Vector3(0f, 0f, ROTATION);
+
         playerMovement = PlayerInputs.instance.PlayerPressedMovementButtons();
         interactAreaPosition = interactArea.transform.localPosition;
-        attackAreaPosition = attackArea.transform.localPosition;
-        attackAreaRotation = attackArea.transform.rotation;
+
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        playerMovement = PlayerInputs.instance.PlayerPressedMovementButtons();
+        CheckInteractButtonInput();
+    }
 
-        if (playerMovement.y != 0)
+    private void UpdateAttackArea()
+    {
+        attackAreaLeftPosition = attackAreaRightPosition = attackAreaTopPosition = attackAreaDownPosition = transform.position;
+
+        attackAreaLeftPosition.x += LEFT;
+        attackAreaLeftPosition.y += DEFAULT_Y;
+
+        attackAreaRightPosition.x += RIGHT;
+        attackAreaRightPosition.y += DEFAULT_Y;
+
+        attackAreaTopPosition.y += TOP;
+
+        attackAreaDownPosition.y += DOWN;
+    }
+
+    private void UpdateInteractArea()
+    {
+        interactAreaLeftPosition = interactAreaRightPosition = interactAreaTopPosition = interactAreaDownPosition = transform.position;
+
+        interactAreaLeftPosition.x += LEFT;
+        interactAreaLeftPosition.y += DEFAULT_Y;
+
+        interactAreaRightPosition.x += RIGHT;
+        interactAreaRightPosition.y += DEFAULT_Y;
+
+        interactAreaTopPosition.y += TOP;
+
+        interactAreaDownPosition.y += DOWN;
+    }
+
+    private void CheckAndSpawnAttackArea()
+    {
+        UpdateAttackArea();
+        mouseWorldPos = PlayerInputs.instance.GetMousePositionInWorld();
+
+        if (Mathf.Abs(mouseWorldPos.x - transform.position.x) > Mathf.Abs(mouseWorldPos.y - transform.position.y))
         {
-            interactAreaPosition.x = 0f;
-            attackAreaPosition.x = 0f;
-            attackAreaRotation.Set(0f, 0f, 0f, 0f);
-
-            if (playerMovement.y > 0)
+            // Horizontal Axis
+            if (mouseWorldPos.x > transform.position.x)
             {
-                interactAreaPosition.y = TOP;
-                attackAreaPosition.y = TOP;
+                // RIGHT
+                StartCoroutine(SpawnAttackArea(attackAreaRightPosition, areaRotationOnHorizontal));
+                animator.SetInteger("attackDirection", 0);
             }
-            else if (playerMovement.y < 0)
+            else
             {
-                interactAreaPosition.y = DOWN;
-                attackAreaPosition.y = DOWN;
+                // LEFT
+                StartCoroutine(SpawnAttackArea(attackAreaLeftPosition, areaRotationOnHorizontal));
+                animator.SetInteger("attackDirection", 0);
             }
-
-            UpdateAreas();
         }
-        else if (playerMovement.x != 0 && playerMovement.y == 0)
+        else
         {
-            interactAreaPosition.y = DEFAULT_Y;
-            attackAreaPosition.y = DEFAULT_Y;
-            attackAreaRotation.Set(0f, 0f, ROTATION, 0f);
-
-            if (playerMovement.x > 0)
+            // Vertical Axis
+            if (mouseWorldPos.y > transform.position.y)
             {
-                interactAreaPosition.x = RIGHT;
-                attackAreaPosition.x = RIGHT;
+                // TOP
+                StartCoroutine(SpawnAttackArea(attackAreaTopPosition, Vector3.zero));
+                animator.SetInteger("attackDirection", 1);
             }
-            else if (playerMovement.x < 0)
+            else
             {
-                interactAreaPosition.x = LEFT;
-                attackAreaPosition.x = LEFT;
+                // DOWN
+                StartCoroutine(SpawnAttackArea(attackAreaDownPosition, Vector3.zero));
+                animator.SetInteger("attackDirection", -1);
             }
-
-            Debug.Log(attackAreaRotation.z);
-            UpdateAreas();
         }
     }
 
-    private void UpdateAreas()
+    private void CheckInteractButtonInput()
     {
-        interactArea.transform.localPosition = interactAreaPosition;
-        attackArea.transform.localPosition = attackAreaPosition;
-        attackArea.transform.rotation = attackAreaRotation;
+        Vector2 vector2;
+
+        if (PlayerInputs.instance.PlayerClickedMineButton())
+        {
+            UpdateInteractArea();
+            mouseWorldPos = PlayerInputs.instance.GetMousePositionInWorld();
+
+            vector2 = mouseWorldPos - transform.position;
+            vector2.Normalize();
+            vector2.y += DEFAULT_Y;
+            vector2 *= 1f;
+
+            interactArea.transform.position = vector2 + (Vector2)transform.position;
+        }
+    }
+
+    public void DoSpawnAttackArea()
+    {
+        CheckAndSpawnAttackArea();
+    }
+
+    IEnumerator SpawnAttackArea(Vector3 areaPos, Vector3 areaRotation)
+    {
+        yield return new WaitForSeconds(0.1f);
+        attackArea.SetActive(true);
+        attackArea.transform.position = areaPos;
+        currentAttackAreaRotation.eulerAngles = areaRotation;
+        attackArea.transform.rotation = currentAttackAreaRotation;
+
+        yield return new WaitForSeconds(0.1f);
+        attackArea.SetActive(false);
     }
 }

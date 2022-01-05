@@ -4,82 +4,63 @@ using UnityEngine;
 using DG.Tweening;
 
 public class PlayerCombat : PlayerBase
-{  
+{
     // Private Attributes
-    private const float ATTACK_TIME_DURATION = 0.5f;
-    private float attackingTime = ATTACK_TIME_DURATION;
+    private const float ATTACK_TIME_DURATION = 0.22f;
+    private float ATTACK_COOLDOWN = 0.7f;
+    private float ATTACK_DASH_FORCE = 8f;
 
-    protected AttackSystem attackSystem; 
-    protected HealthSystem healthSystem;
-
-    private bool attacking = false;
-    private bool attackingAnEnemy = false;
+    private bool canAttack = true;
 
     private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
+    private PlayerMovement playerMovement;
+    private PlayerAreas playerAreas;
+    private InGameHUDHandler inGameHUD;
 
-    private Collider2D colliderDetectedByMouse = null;
-    private Enemy enemyToAttack;
+    protected AttackSystem attackSystem;
+    protected HealthSystem healthSystem;
+
+    // Public Attributes
+    public GameObject attackArea;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
     public GameObject swordLight;
 
-    // Audio
+    //Audio
     public AudioSource audioSource;
     public AudioClip hurtedAudioClip;
     public AudioClip attackAudioClip;
 
-
     private void Start()
     {
+        playerMovement = GetComponent<PlayerMovement>();
+        playerAreas = GetComponent<PlayerAreas>();
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        inGameHUD = GetComponentInChildren<InGameHUDHandler>();
         playerBlood.Stop();
     }
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack)
         {
-            PlayerInputs.instance.SetNewMousePosition();
-            if (PlayerIsInReachToAttack(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnEnemy(PlayerInputs.instance.mouseWorldPosition))
-            {
-                SetEnemyToAttack();
-            }
             StartAttacking();
         }
     }
 
-    private bool PlayerIsInReachToAttack(Vector2 mousePosition)
-    {
-        float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
-    }
-
-    private bool MouseClickedOnAnEnemy(Vector2 mousePosition)
-    {
-        colliderDetectedByMouse = Physics2D.OverlapCircle(mousePosition, 0.05f);
-        return colliderDetectedByMouse != null && colliderDetectedByMouse.gameObject.CompareTag("Enemy");
-    }
-
-    private void SetEnemyToAttack()
-    {
-        attackingAnEnemy = true;
-        enemyToAttack = colliderDetectedByMouse.gameObject.GetComponent<Enemy>();
-
-        PlayerInputs.instance.SpawnSelectSpotAtTransform(enemyToAttack.transform);
-    }
 
     private void StartAttacking()
     {
-        attacking = true;
         FlipPlayerSpriteFacingWhereToAttack();
         playerStates.SetCurrentPlayerAction(PlayerAction.ATTACKING);
-        StartCoroutine("Attacking");
+        StartCoroutine(Attacking());
+        StartCoroutine(AttackCooldown());
     }
 
 
@@ -89,16 +70,14 @@ public class PlayerCombat : PlayerBase
         animator.SetBool("isAttacking", true);
         swordLight.SetActive(true);
 
-        if (attackingAnEnemy)
-        {
-            DealDamageToEnemy();
-        }
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.clip = attackAudioClip;
+        audioSource.Play();
 
-        while (attackingTime > 0.0f)
-        {
-            attackingTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
+        playerMovement.GetsPushed((PlayerInputs.instance.GetMousePositionInWorld() - (Vector2)transform.position).normalized, ATTACK_DASH_FORCE);
+        playerAreas.DoSpawnAttackArea();
+
+        yield return new WaitForSeconds(ATTACK_TIME_DURATION);
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
@@ -108,21 +87,14 @@ public class PlayerCombat : PlayerBase
 
     private void ResetAttack()
     {
-        attackingTime = ATTACK_TIME_DURATION;
-        attacking = false;
-        attackingAnEnemy = false;
-
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
 
-    public void DealDamageToEnemy()
+    public void DealDamageToEnemy(Enemy enemy)
     {
-        enemyToAttack.GetComponent<Enemy>().ReceiveDamage(attackSystem.attackValue);
-
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = attackAudioClip;
-        audioSource.Play();
+        enemy.ReceiveDamage(attackSystem.attackValue);
+        enemy.GetsPushed((enemy.transform.position - transform.position).normalized, attackSystem.pushValue);
     }
 
     public void ReceiveDamage(int damageValue)
@@ -133,7 +105,8 @@ public class PlayerCombat : PlayerBase
         }
         else
         {
-            StartCoroutine("Invulnerability");
+            StartCoroutine(Invulnerability());
+            inGameHUD.DoRecieveDamageFadeAndShake();
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -173,8 +146,6 @@ public class PlayerCombat : PlayerBase
 
     private void FlipPlayerSpriteFacingWhereToAttack()
     {
-        //if (playerStates.PlayerActionIsWalking())
-        //    return;
         Vector2 mousePosition = PlayerInputs.instance.GetMousePositionInWorld();
         
         if ((transform.position.x < mousePosition.x && !PlayerInputs.instance.facingLeft) ||
@@ -191,4 +162,14 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(0.3f);
         playerBlood.Stop();
     }
+
+    IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(ATTACK_COOLDOWN);
+        canAttack = true;
+    }
+
+
+
 }
