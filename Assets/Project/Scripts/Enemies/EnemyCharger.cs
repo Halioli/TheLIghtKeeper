@@ -7,13 +7,13 @@ using DG.Tweening;
 public class EnemyCharger : HostileEnemy
 {
     // Private Attributes
-    private Animator animator;
-
     private Vector2 directionOnChargeStart;
-    private Vector2 angleDirection;
-    private Vector2 fleeDirection;
+
     private float currentSpeed;
-    private float insideLightTime = 0.5f;
+    private float currentAttackRecoverTime;
+    private float currentChargeTime;
+    private bool hasRecovered;
+    private bool collidedWithPlayer;
 
     // Public Attributes
     public const float ATTACK_RECOVER_TIME = 2f;
@@ -23,7 +23,6 @@ public class EnemyCharger : HostileEnemy
     public const float ACCELERATION = 0.25f;
 
     public float distanceToCharge = 4f;
-
 
     // Sinusoidal movement
     public float amplitude = 0.1f;
@@ -37,8 +36,6 @@ public class EnemyCharger : HostileEnemy
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
-
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
@@ -46,6 +43,11 @@ public class EnemyCharger : HostileEnemy
         player = GameObject.FindGameObjectWithTag("Player");
         collider = GetComponent<CapsuleCollider2D>();
 
+        currentAttackRecoverTime = ATTACK_RECOVER_TIME;
+        currentChargeTime = CHARGE_TIME;
+        currentSpeed = 1f;
+        hasRecovered = false;
+        collidedWithPlayer = false;
         enemyState = EnemyState.SPAWNING;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
 
@@ -71,13 +73,13 @@ public class EnemyCharger : HostileEnemy
             return;
         }
 
-        if (healthSystem.IsDead() && !died)
+        if (healthSystem.IsDead())
         {
-            animator.SetTrigger("isDead");
-            died = true;
+            Die();
         }
 
-        if (enemyState == EnemyState.SCARED || enemyState == EnemyState.WANDERING || died)
+
+        if (enemyState == EnemyState.SCARED)
         {
             return;
         }
@@ -101,12 +103,18 @@ public class EnemyCharger : HostileEnemy
                     currentSpeed = MAX_SPEED;
                 }
 
+                // Sinusoidal movement
+                theta = Time.timeSinceLevelLoad / period;
+                sinWaveDistance = amplitude * Mathf.Sin(theta);
+
                 // Change to CHARGE
                 if (Vector2.Distance(transform.position, player.transform.position) <= distanceToCharge)
                 {
                     UpdatePlayerPosition();
                     directionOnChargeStart = (playerPosition - rigidbody.position).normalized;
                     attackState = AttackState.CHARGING; // Change state
+
+                    transform.DOPunchRotation(new Vector3(0, 0, 20), CHARGE_TIME);
                 }
             }
             else if (attackState == AttackState.CHARGING)
@@ -122,13 +130,6 @@ public class EnemyCharger : HostileEnemy
                 movementAudioSource.Stop();
             }
         }
-
-
-        if (collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
-        {
-            FleeAndBanish();
-        }
-
     }
 
 
@@ -141,7 +142,7 @@ public class EnemyCharger : HostileEnemy
             return;
         }
 
-        if (enemyState == EnemyState.SPAWNING || enemyState == EnemyState.WANDERING || died)
+        if (enemyState == EnemyState.SPAWNING)
         {
             return;
         }
@@ -154,12 +155,10 @@ public class EnemyCharger : HostileEnemy
         if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();
-            fleeDirection = directionTowardsPlayerPosition;
         }
         else if (attackState == AttackState.CHARGING)
         {
             Charge();
-            fleeDirection = directionOnChargeStart;
             StartCoroutine(StartRecovering());
         }
     }
@@ -168,14 +167,14 @@ public class EnemyCharger : HostileEnemy
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Player") && !died)
+        if (collider.gameObject.CompareTag("Player"))
         {
             DealDamageToPlayer();
             PushPlayer();
         }
-        else if (collider.gameObject.layer == LayerMask.NameToLayer("Light") && !insideLight)
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
         {
-            EnteredLight();
+            FleeAndBanish();
         }
     }
 
@@ -184,29 +183,14 @@ public class EnemyCharger : HostileEnemy
         UpdatePlayerPosition();
         UpdateDirectionTowardsPlayerPosition();
 
-        // Sinusoidal movement
-        theta = Time.timeSinceLevelLoad / period;
-        sinWaveDistance = amplitude * Mathf.Sin(theta);
-
-        angleDirection = Vector2.Perpendicular(directionTowardsPlayerPosition);
-        angleDirection *= sinWaveDistance;
-
-        rigidbody.MovePosition((Vector2)transform.position + angleDirection + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position + (Vector2.up * sinWaveDistance) + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
     }
 
     private void FleeAway()
     {
         UpdatePlayerPosition();
         UpdateDirectionTowardsPlayerPosition();
-
-        // Sinusoidal movement
-        theta = Time.timeSinceLevelLoad / period;
-        sinWaveDistance = amplitude * Mathf.Sin(theta);
-
-        angleDirection = Vector2.Perpendicular(directionOnChargeStart);
-        angleDirection *= sinWaveDistance;
-
-        rigidbody.MovePosition((Vector2)transform.position - angleDirection - fleeDirection * (MAX_SPEED * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position - (Vector2.up * sinWaveDistance) - directionTowardsPlayerPosition * (MAX_SPEED * Time.deltaTime));
     }
 
     private void Charge()
@@ -223,60 +207,19 @@ public class EnemyCharger : HostileEnemy
 
     IEnumerator StartRecovering()
     {
+        transform.DOPunchScale(new Vector3(-0.1f, -0.1f, 0), ATTACK_RECOVER_TIME, 0);
         yield return new WaitForSeconds(ATTACK_RECOVER_TIME);
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
     }
 
 
 
-    protected override void EnteredLight()
-    {
-        insideLight = true; 
-
-        // Play banish audio sound
-        audioSource.clip = banishAudioClip;
-        audioSource.volume = Random.Range(0.1f, 0.2f);
-        audioSource.pitch = Random.Range(0.7f, 1.5f);
-        audioSource.Play();
-
-        StartCoroutine(InsideLight());        
-    }
-
-    IEnumerator InsideLight()
-    {
-        transform.DOShakePosition(insideLightTime);
-        
-        yield return new WaitForSeconds(insideLightTime);
-        
-        FleeAndBanish();
-    }
-
-
     protected override void FleeAndBanish()
     {
         enemyState = EnemyState.SCARED;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
-        Banish(BANISH_TIME);
+        Banish();
     }
 
-
-    private void StartDying()
-    {
-        //Play death audio sound
-        transform.DOShakePosition(2, 0.5f);
-
-        audioSource.Stop();
-        audioSource.clip = deathAudioClip;
-        audioSource.volume = Random.Range(0.1f, 0.2f);
-        audioSource.pitch = Random.Range(0.7f, 1.5f);
-        audioSource.Play();
-    }
-
-    protected override void Die()
-    {
-        // Play death animation
-        DropItem();
-        Banish(0.2f);
-    }
 
 }
