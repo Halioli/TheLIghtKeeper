@@ -8,30 +8,28 @@ public class HUDHandler : MonoBehaviour
     // Private Attributes
     private const float COUNTDOWN_FADE_TIME = 0.5f;
     private const float DEATH_FADE_TIME = 1f;
+    private const float DAMAGE_FADE_TIME = 0.2f;
     private const float FADE_TIME = 0.5f;
 
     private int coreTimeValue;
     private bool showingCountdown;
-    private CanvasGroup coreGroup;
-    private CanvasGroup deathImageGroup;
-    private CanvasGroup fadeOutGroup;
 
     // Public Attributes
     public HUDBar coreBar;
     public Furnace furnace;
+    public CanvasGroup coreGroup;
+    public CanvasGroup deathImageGroup;
+    public CanvasGroup fadeOutGroup;
+    public CanvasGroup recieveDamageGroup;
 
     private void Start()
     {
         showingCountdown = false;
 
         // Initialize core variables
-        coreGroup = GetComponentsInChildren<CanvasGroup>()[0];
         coreTimeValue = furnace.GetMaxFuel();
         coreBar.SetMaxValue(coreTimeValue);
         coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
-
-        deathImageGroup = GetComponentsInChildren<CanvasGroup>()[1];
-        fadeOutGroup = GetComponentsInChildren<CanvasGroup>()[2];
     }
 
     private void Update()
@@ -88,6 +86,11 @@ public class HUDHandler : MonoBehaviour
         fadeOutGroup.alpha = 0f;
     }
 
+    public void ShowRecieveDamageFades()
+    {
+        StartCoroutine(RecieveDamageFadeInAndOut());
+    }
+
     IEnumerator CanvasFadeOut(CanvasGroup canvasGroup, float fadeTime)
     {
         Vector2 startVector = new Vector2(1f, 1f);
@@ -120,5 +123,31 @@ public class HUDHandler : MonoBehaviour
         canvasGroup.alpha = endVector.x;
 
         showingCountdown = true;
+    }
+
+    IEnumerator RecieveDamageFadeInAndOut()
+    {
+        Vector2 fadeInStartVector = new Vector2(0f, 0f);
+        Vector2 fadeInEndVector = new Vector2(1f, 1f);
+
+        // Fade in
+        for (float t = 0f; t < DAMAGE_FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / DAMAGE_FADE_TIME;
+
+            recieveDamageGroup.alpha = Vector2.Lerp(fadeInStartVector, fadeInEndVector, normalizedTime).x;
+            yield return null;
+        }
+        recieveDamageGroup.alpha = fadeInEndVector.x;
+
+        // Fade out
+        for (float t = 0f; t < DAMAGE_FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / DAMAGE_FADE_TIME;
+
+            recieveDamageGroup.alpha = Vector2.Lerp(fadeInEndVector, fadeInStartVector, normalizedTime).x;
+            yield return null;
+        }
+        recieveDamageGroup.alpha = fadeInStartVector.x;
     }
 }
