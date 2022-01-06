@@ -10675,7 +10675,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1896f50d26086324ea290b0028997aad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10696,12 +10696,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 6296046598606813886, guid: e438808a614c09648947e8962c25bd62, type: 3}
+  m_Sprite: {fileID: -3632914750921412230, guid: 2395cf98e36d0e2499f2c838eba61b7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.25, y: 6.25}
+  m_Size: {x: 6.25, y: 6.3125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -10886,6 +10886,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5742222722491315820}
+  hudHandler: {fileID: 0}
+  animationEnds: 0
 --- !u!114 &8397354122656166637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10899,6 +10901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackArea: {fileID: 7233089400078776426}
+  hudHandler: {fileID: 0}
   playerBlood: {fileID: 3410508154403687448}
   animator: {fileID: 5742222722491315820}
   swordLight: {fileID: 1954897529}
