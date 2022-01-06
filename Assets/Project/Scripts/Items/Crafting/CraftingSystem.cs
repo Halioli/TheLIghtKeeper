@@ -139,8 +139,7 @@ public class CraftingSystem : MonoBehaviour
             {
                 // instantiate item in map instead
                 GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
-                item.GetComponent<ItemGameObject>().DropsDown();
-                item.GetComponent<ItemGameObject>().StartDespawning();
+                item.GetComponent<ItemGameObject>().DropsRandom();
             }
         }
         
