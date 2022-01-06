@@ -41,7 +41,7 @@ abstract public class Enemy : MonoBehaviour
     public const float SPAWN_TIME = 0.5f;
     protected float currentSpawnTime = 0f;
 
-    protected const float BANISH_TIME = 2.5f;
+    protected const float BANISH_TIME = 0.5f;
     protected float currentBanishTime;
 
     protected bool getsPushed = false;
@@ -121,7 +121,7 @@ abstract public class Enemy : MonoBehaviour
     protected void DropItem()
     {
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
-        item.DropsDown();
+        item.DropsRandom();
     }
 
 
@@ -141,6 +141,7 @@ abstract public class Enemy : MonoBehaviour
     IEnumerator HurtedFlashEffect()
     {
         int count = 3;
+        //Color transparent = new Color(1, 1, 1, 0.1f);
         Color normal = spriteRenderer.color;
         Color transparent = spriteRenderer.color;
         transparent.a = 0.1f;
@@ -153,6 +154,5 @@ abstract public class Enemy : MonoBehaviour
             spriteRenderer.color = normal;
             yield return new WaitForSeconds(0.2f);
         }
-        spriteRenderer.color = normal;
     }
 }
