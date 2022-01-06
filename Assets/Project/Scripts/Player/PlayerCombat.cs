@@ -7,8 +7,8 @@ public class PlayerCombat : PlayerBase
 {
     // Private Attributes
     private const float ATTACK_TIME_DURATION = 0.22f;
-    private float attackingTime = ATTACK_TIME_DURATION;
     private float ATTACK_COOLDOWN = 0.7f;
+    private float ATTACK_DASH_FORCE = 8f;
 
     private bool canAttack = true;
 
@@ -16,6 +16,7 @@ public class PlayerCombat : PlayerBase
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
+    private PlayerMovement playerMovement;
     private PlayerAreas playerAreas;
     private InGameHUDHandler inGameHUD;
 
@@ -37,6 +38,7 @@ public class PlayerCombat : PlayerBase
 
     private void Start()
     {
+        playerMovement = GetComponent<PlayerMovement>();
         playerAreas = GetComponent<PlayerAreas>();
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
@@ -52,16 +54,6 @@ public class PlayerCombat : PlayerBase
         }
     }
 
-
-    private void OnEnable()
-    {
-        
-    }
-
-    private void OnDisable()
-    {
-        
-    }
 
     private void StartAttacking()
     {
@@ -82,12 +74,10 @@ public class PlayerCombat : PlayerBase
         audioSource.clip = attackAudioClip;
         audioSource.Play();
 
+        playerMovement.GetsPushed((PlayerInputs.instance.GetMousePositionInWorld() - (Vector2)transform.position).normalized, ATTACK_DASH_FORCE);
         playerAreas.DoSpawnAttackArea();
-        while (attackingTime > 0.0f)
-        {
-            attackingTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
+
+        yield return new WaitForSeconds(ATTACK_TIME_DURATION);
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
@@ -97,8 +87,6 @@ public class PlayerCombat : PlayerBase
 
     private void ResetAttack()
     {
-        attackingTime = ATTACK_TIME_DURATION;
-
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
