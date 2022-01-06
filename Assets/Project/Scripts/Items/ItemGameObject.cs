@@ -1,21 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-
-
 
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
-    private Interpolator lerp;
-    private float lerpDistance = 0.6f;
-    private float halfLerpDistance = 0.3f;
-    private float startYLerp;
-
     protected Rigidbody2D rigidbody2D;
     public bool canBePickedUp;
 
+    
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
 
@@ -41,23 +34,15 @@ public class ItemGameObject : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log( GetComponent<SpriteRenderer>().material.shader.GetPropertyCount());
         rigidbody2D = GetComponent<Rigidbody2D>();
         canBePickedUp = true;
     }
 
     private void Start()
     {
-        lerp = new Interpolator(1f, Interpolator.Type.SMOOTH);
-        startYLerp = transform.position.y;
-
         rigidbody2D.gravityScale = 0f;
     }
 
-    private void Update()
-    {
-        ItemFloating();
-    }
 
 
     public void DropsDown()
@@ -80,19 +65,6 @@ public class ItemGameObject : MonoBehaviour
         StartCoroutine("StopDroping", DROP_FORWARD_TIME);
     }
 
-    public void DropsRandom(float despawnTime)
-    {
-        transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), 0), 0.1f, 1, 0.3f);
-        StartDespawning(despawnTime);
-    }
-
-    public void DropsRandom()
-    {
-        transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), 0), 0.1f, 1, 0.3f);
-        StartDespawning(DESPAWN_TIME_IN_SECONDS);
-    }
-
-
     private void PlayDropSound()
     {
         audioSource.clip = itemIsDropped;
@@ -108,21 +80,21 @@ public class ItemGameObject : MonoBehaviour
 
 
 
-    public void StartDespawning(float despawnTime)
+    public void StartDespawning()
     {
-        StartCoroutine(Despawning(despawnTime));
+        StartCoroutine("Despawning");
     }
 
-    IEnumerator Despawning(float despawnTime)
+    IEnumerator Despawning()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        Color transparentColor = spriteRenderer.color;
+
+        Color transparentColor = spriteRenderer.material.color;
         transparentColor.a = 0.0f;
 
-        Color semiTransparentColor = spriteRenderer.color;
-        semiTransparentColor.a = 0.5f;
+        Color semiTransparentColor = spriteRenderer.material.color;
+        semiTransparentColor.a = 0.8f;
 
-        currentDespawnTimeInSeconds = despawnTime;
         while (currentDespawnTimeInSeconds > START_DESPAWN_FADING_TIME)
         {
             yield return new WaitForSeconds(Time.deltaTime);
@@ -131,10 +103,9 @@ public class ItemGameObject : MonoBehaviour
 
         while (currentDespawnTimeInSeconds > 0.0f)
         {
-            spriteRenderer.color = semiTransparentColor;
+            spriteRenderer.material.color = semiTransparentColor;
             yield return new WaitForSeconds(currentDespawnTimeInSeconds / DESPAWN_TIME_IN_SECONDS);
-
-            spriteRenderer.color = transparentColor;
+            spriteRenderer.material.color = transparentColor;
             yield return new WaitForSeconds(currentDespawnTimeInSeconds / DESPAWN_TIME_IN_SECONDS);
 
             semiTransparentColor.a -= 0.025f;
@@ -160,16 +131,5 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 
-
-    private void ItemFloating()
-    {
-        lerp.Update(Time.deltaTime);
-        if (lerp.isMinPrecise)
-            lerp.ToMax();
-        else if (lerp.isMaxPrecise)
-            lerp.ToMin();
-
-        transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
-    }
 
 }
