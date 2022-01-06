@@ -76,8 +76,6 @@ public class PlayerMiner : PlayerBase
             if (miningAnOre)
                 SetOreToMine(maxColl.GetComponent<Ore>());
 
-            //miningAnOre = MineRaycast();
-
             if (!miningAnOre)
                 PlayerInputs.instance.SpawnSelectSpotAtTransform(interactArea.transform);
 
@@ -90,28 +88,6 @@ public class PlayerMiner : PlayerBase
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(raycastStartingPosition, raycastEndingPosition * 3f);
-    }
-
-    private bool MineRaycast()
-    {
-        raycastStartingPosition = transform.position;
-        raycastStartingPosition.y += -1f;
-
-        raycastEndingPosition = PlayerInputs.instance.GetMousePositionInWorld() - raycastStartingPosition;
-        raycastEndingPosition.Normalize();
-
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(raycastStartingPosition, raycastEndingPosition, PlayerInputs.instance.playerReach, defaultLayerMask);
-
-        if (raycastHit2D.collider != null)
-        {
-            if (raycastHit2D.collider.gameObject.CompareTag("Ore"))
-            {
-                SetOreToMine(raycastHit2D.collider.gameObject.GetComponent<Ore>());
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void SetOreToMine(Ore ore)
@@ -252,12 +228,17 @@ public class PlayerMiner : PlayerBase
 
     private void FlipPlayerSpriteFacingOreToMine()
     {
-        Vector2 mousePosition = PlayerInputs.instance.GetMousePositionInWorld();
+        Vector2 targetPosition = Vector2.zero;
 
-        if ((transform.position.x < mousePosition.x && !PlayerInputs.instance.facingLeft) ||
-            (transform.position.x > mousePosition.x && PlayerInputs.instance.facingLeft))
+        if (miningAnOre)
+            targetPosition = oreToMine.transform.position;
+        else
+            targetPosition = PlayerInputs.instance.GetMousePositionInWorld();
+
+        if ((transform.position.x < targetPosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > targetPosition.x && PlayerInputs.instance.facingLeft))
         {
-            Vector2 direction = mousePosition - (Vector2)transform.position;
+            Vector2 direction = targetPosition - (Vector2)transform.position;
             PlayerInputs.instance.FlipSprite(direction);
         }
     }
