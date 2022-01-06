@@ -7,7 +7,7 @@ public class Lamp : MonoBehaviour
 {
     // Private Attributes
     private const float LIGHT_INTENSITY_ON = 1f;
-    private const float LIGHT_INTENSITY_OFF = 0.0f;
+    private const float LIGHT_INTENSITY_OFF = 0.3f;
 
     private const float RADIUS_DIFFERENCE = 20f;
 
@@ -44,6 +44,10 @@ public class Lamp : MonoBehaviour
 
     public float flickerIntensity;
     public float flickerTime;
+    private const float START_FLICK_COOLDOWN = 3f;
+    private float flickCooldown = START_FLICK_COOLDOWN;
+    private float lowLightflickCooldown = 0.3f;
+    private const float SECONDS_HIGH_FREQUENCY_FLICK = 10f;
 
     System.Random rg;
 
@@ -102,10 +106,16 @@ public class Lamp : MonoBehaviour
             playerAnimator.SetBool("light", false);
             DeactivateConeLight();
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
+            flickCooldown = START_FLICK_COOLDOWN;
+            lampCircleLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_OFF;
         }
         else
         {
             ConsumeLampTime();
+            if (lampTime <= SECONDS_HIGH_FREQUENCY_FLICK)
+            {
+                flickCooldown = lowLightflickCooldown;
+            }
         }
     }
 
@@ -134,6 +144,7 @@ public class Lamp : MonoBehaviour
         {
             lampTime += time;
         }
+        flickCooldown = START_FLICK_COOLDOWN;
     }
 
     public bool CanRefill()
@@ -278,33 +289,44 @@ public class Lamp : MonoBehaviour
 
     IEnumerator LightFlicking()
     {
+        float lightingTime;
+        int flickerCount;
+        float flickingIntensity;
+        float flickingTime;
+
         while (turnedOn)
         {
             lampCircleLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
             lampConeLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_ON;
 
-            float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
+            lightingTime = flickCooldown + ((float)rg.NextDouble() - 0.5f);
+            Debug.Log(lightingTime);
             yield return new WaitForSeconds(lightingTime);
 
-            int flickerCount = rg.Next(4, 9);
+            flickerCount = rg.Next(4, 9);
+            
 
-            for (int i = 0; i < flickerCount; i++)
+            for (int i = 0; i < flickerCount; ++i)
             {
-                float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
+                flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
                 lampCircleLight.GetComponent<Light2D>().intensity = flickingIntensity;
                 lampConeLight.GetComponent<Light2D>().intensity = flickingIntensity;
 
-                float flickingTime = (float)rg.NextDouble() * flickerTime;
-                if (lampTime < flickingTime)
+                flickingTime = (float)rg.NextDouble() * flickerTime;
+                if (lampTime < SECONDS_HIGH_FREQUENCY_FLICK)
                 {
-                    yield return new WaitForSeconds(lampTime - Time.deltaTime);
+                    //yield return new WaitForSeconds(lampTime - Time.deltaTime);
                     if (!turnedOn) break;
+                    //i = flickerCount;
+                    yield return new WaitForSeconds(flickingTime);
+                    Debug.Log("highFlick");
                 }
                 else
                 {
                     yield return new WaitForSeconds(flickingTime);
                 }
             }
+
         }
 
 
@@ -335,7 +357,8 @@ public class Lamp : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        lampConeLight.SetActive(false);
+        if (!coneIsActive)
+            lampConeLight.SetActive(false);
     }
 
 
@@ -358,9 +381,11 @@ public class Lamp : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        lampCircleLight.GetComponent<Light2D>().intensity = LIGHT_INTENSITY_OFF;
 
-        lampCircleLight.SetActive(false);
+        if (!active)
+        {
+            lampCircleLight.SetActive(false);
+        }
     }
 
 }
