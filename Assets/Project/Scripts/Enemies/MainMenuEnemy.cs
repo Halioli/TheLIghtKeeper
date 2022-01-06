@@ -76,7 +76,7 @@ public class MainMenuEnemy : MonoBehaviour
     {
         if (enemyState == EnemyState.WANDERING)
         {
-            if (Vector2.Distance(targetPosition, transform.position) < targetRadius)
+            if (transform.position.y <= targetPosition.y)
             {
                 RandomRespawn();
             }
