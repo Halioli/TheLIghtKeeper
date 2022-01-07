@@ -76,7 +76,7 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyUp(KeyCode.LeftShift);
     }
 
-    public bool PlayerPressedExitButton()
+    public bool PlayerPressedPauseButton()
     {
         return Input.GetKeyDown(KeyCode.Escape);
     }
