@@ -2,27 +2,77 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHandler : MonoBehaviour
+public class PlayerHandler : PlayerBase
 {
+    // Private Attributes
+    private HealthSystem playerHealthSystem;
+    private Rigidbody2D playerRigidbody2D;
+
     // Public Attributes
-    public HealthSystem playerHealthSystem;
-    public Rigidbody2D playerRigidbody2D;
+    public Animator animator;
+    public HUDHandler hudHandler;
+
+    public bool animationEnds = false;
+
+    private void Start()
+    {
+        playerHealthSystem = GetComponent<HealthSystem>();
+        playerRigidbody2D = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
         if (playerHealthSystem.IsDead())
         {
-            // Teleport to starting position (0, 0)
+            //Start corroutine and play animation
+            if (!animationEnds)
+            {
+                playerStates.SetCurrentPlayerState(PlayerState.DEAD);
+                gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+                StartCoroutine("DeathAnimation");
+            }
+            else
+            {
+                // Teleport to starting position (0, 0)
+                gameObject.layer = LayerMask.NameToLayer("Player");
+                playerRigidbody2D.transform.position = Vector3.zero;
+                playerHealthSystem.RestoreHealthToMaxHealth();
+                animationEnds = false;
+            }
+        }
+
+        if (PlayerInputs.instance.PlayerPressedPauseButton())
+        {
+            // Pause game
         }
     }
 
-    public void SetPlayerToStatic()
+    public void DoDeathImageFade()
     {
-        playerRigidbody2D.bodyType = RigidbodyType2D.Static;
+        hudHandler.DoDeathImageFade();
     }
 
-    public void SetPlayerToDynamic()
+    public void DoFadeToBlack()
     {
-        playerRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        hudHandler.DoFadeToBlack();
+    }
+
+    public void RestoreHUD()
+    {
+        hudHandler.RestoreFades();
+    }
+
+    public void DeathAnimationFinished()
+    {
+        animationEnds = true;
+    }
+
+    IEnumerator DeathAnimation()
+    {
+        animator.SetBool("isDead", true);
+        while (!animationEnds) { yield return null; }
+
+        animator.SetBool("isDead", false);
+        playerStates.SetCurrentPlayerState(PlayerState.FREE);
     }
 }

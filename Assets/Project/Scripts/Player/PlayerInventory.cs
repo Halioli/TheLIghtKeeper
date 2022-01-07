@@ -2,24 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : PlayerInputs
+public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
     private bool inventoryIsOpen = false;
-    private Inventory inventory;
+    private Collider2D itemCollectionCollider;
 
     // Public Attributes
+    public Inventory inventory { get; private set; }
     public Canvas inventoryCanvas;
     public InventoryMenu inventoryMenu;
+
+    // Events
+    public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerPicksUpItemEvent;
+
+
 
     private void Start()
     {
         inventory = GetComponentInChildren<Inventory>();
+        itemCollectionCollider = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
     {
-        if (PlayerPressedInventoryButton())
+        if (PlayerInputs.instance.PlayerPressedInventoryButton())
         {
             if (inventoryIsOpen)
             {
@@ -32,14 +40,35 @@ public class PlayerInventory : PlayerInputs
         }
     }
 
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Item"))
         {
             ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-            PickUpItem(itemGameObject);
+
+            if (collider.IsTouching(itemCollectionCollider))
+            {
+                if (itemGameObject.canBePickedUp)
+                {
+                    PickUpItem(itemGameObject);
+                }
+            }
+            
         }
     }
+
+
+    private void OnEnable()
+    {
+        InventoryUpgrade.OnInventoryUpgrade += UpgradeInventory;
+    }
+
+    private void OnDisable()
+    {
+        InventoryUpgrade.OnInventoryUpgrade -= UpgradeInventory;
+    }
+
 
     private void OpenInventory()
     {
@@ -59,14 +88,17 @@ public class PlayerInventory : PlayerInputs
         return collider.GetComponent<ItemGameObject>();
     }
 
-    private void PickUpItem(ItemGameObject itemToPickUp)
+    private bool PickUpItem(ItemGameObject itemToPickUp)
     {
-        bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
-        if (couldAddItem)
-        {
-            // Play picking up sound
+        if (playerPicksUpItemEvent != null)
+            playerPicksUpItemEvent();
 
-            Destroy(itemToPickUp.gameObject);
-        }
+        Destroy(itemToPickUp.gameObject);
+        return false;
+    }
+
+    private void UpgradeInventory()
+    {
+        inventory.UpgradeInventory();
     }
 }
