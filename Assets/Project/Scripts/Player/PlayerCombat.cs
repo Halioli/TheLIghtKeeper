@@ -29,7 +29,6 @@ public class PlayerCombat : PlayerBase
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
-    public GameObject swordLight;
 
     //Audio
     public AudioSource audioSource;
@@ -77,7 +76,6 @@ public class PlayerCombat : PlayerBase
     {
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
-        swordLight.SetActive(true);
 
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.clip = attackAudioClip;
@@ -92,7 +90,6 @@ public class PlayerCombat : PlayerBase
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
-        swordLight.SetActive(false);
         ResetAttack();
     }
 

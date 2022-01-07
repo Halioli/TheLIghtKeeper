@@ -1,77 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1954897529
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1954897530}
-  - component: {fileID: 1954897531}
-  m_Layer: 3
-  m_Name: Freeform Light 2D
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1954897530
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954897529}
-  m_LocalRotation: {x: -0, y: -0, z: -0.5298696, w: 0.84807914}
-  m_LocalPosition: {x: 0.98, y: -0.62, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7987370481941902185}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45.531}
---- !u!114 &1954897531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954897529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_LightType: 3
-  m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.4
-  m_Color: {r: 0.09927912, g: 0.8656973, b: 0.9150943, a: 1}
-  m_Intensity: 0.3
-  m_LightVolumeOpacity: 0.035
-  m_ApplyToSortingLayers: 00000000
-  m_LightCookieSprite: {fileID: 0}
-  m_UseNormalMap: 0
-  m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
-  m_ShadowIntensity: 0
-  m_ShadowVolumeIntensity: 0
-  m_PointLightInnerAngle: 360
-  m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0.2
-  m_PointLightOuterRadius: 1
-  m_PointLightDistance: 3
-  m_PointLightQuality: 1
-  m_ShapeLightParametricSides: 5
-  m_ShapeLightParametricAngleOffset: 0
-  m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 0.91
-  m_ShapeLightFalloffOffset: {x: -0.02, y: 0}
-  m_ShapePath:
-  - {x: -0.0327036, y: -0.3358495, z: 0}
-  - {x: 0.2273735, y: -0.42442214, z: 0}
-  - {x: 0.19731715, y: 0.33634424, z: 0}
-  - {x: 0.028186312, y: 0.7586161, z: 0}
 --- !u!1 &603848428865087472
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +132,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7987370481941902185}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6473599654679710743
 SpriteRenderer:
@@ -5308,7 +5236,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7987370481941902185}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &3410508154403687448
 ParticleSystem:
@@ -10225,7 +10153,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 7987370481941902185}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2385498757763074010
 SpriteRenderer:
@@ -10417,7 +10345,6 @@ Transform:
   - {fileID: 6637408502466100895}
   - {fileID: 1134328832226733103}
   - {fileID: 6290915648933478593}
-  - {fileID: 1954897530}
   - {fileID: 8859901917660419642}
   - {fileID: 3520741590723993506}
   - {fileID: 2254708442522175721}
@@ -10673,7 +10600,7 @@ MonoBehaviour:
   hudHandler: {fileID: 0}
   playerBlood: {fileID: 3410508154403687448}
   animator: {fileID: 5742222722491315820}
-  swordLight: {fileID: 1954897529}
+  swordLight: {fileID: 0}
   audioSource: {fileID: 2109840049878452791}
   hurtedAudioClip: {fileID: 8300000, guid: f86cc0477ce388d438823c8614629861, type: 3}
   attackAudioClip: {fileID: 8300000, guid: c71f21078ef7bde41ac74114199b0f9f, type: 3}
@@ -10690,7 +10617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5742222722491315820}
-  swordLight: {fileID: 1954897529}
+  swordLight: {fileID: 0}
 --- !u!114 &9058898689219941533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15881,7 +15808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3601792722645728637, guid: bca81fd2da1ffa64c9fa0910deb928b7, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3601792722645728637, guid: bca81fd2da1ffa64c9fa0910deb928b7, type: 3}
       propertyPath: m_AnchorMax.x
@@ -16055,6 +15982,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
+--- !u!4 &7842633779062082003 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3231333304631915568, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
+  m_PrefabInstance: {fileID: 4615804082815303139}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7842633779062082002 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3231333304631915569, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
@@ -16066,11 +15998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217c67c11acd8fa49ac447edf010a03f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &7842633779062082003 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3231333304631915568, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
-  m_PrefabInstance: {fileID: 4615804082815303139}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7207599775178301182
 PrefabInstance:
   m_ObjectHideFlags: 0
