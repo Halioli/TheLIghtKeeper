@@ -73,7 +73,7 @@ public class EnemyCharger : HostileEnemy
             return;
         }
 
-        if (startedBanishing)
+        if (startedBanishing || PauseMenu.gameIsPaused)
         {
             if (movementAudioSource.isPlaying)
                 movementAudioSource.Stop();
@@ -98,7 +98,10 @@ public class EnemyCharger : HostileEnemy
                 {
                     movementAudioSource.pitch = Random.Range(0.8f, 1.3f);
                     movementAudioSource.Play();
-
+                }
+                else if (PauseMenu.gameIsPaused)
+                {
+                    movementAudioSource.Stop();
                 }
 
                 if (currentSpeed < MAX_SPEED)
