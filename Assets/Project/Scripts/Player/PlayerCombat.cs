@@ -24,11 +24,11 @@ public class PlayerCombat : PlayerBase
 
     // Public Attributes
     public GameObject attackArea;
+    public HUDHandler hudHandler;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
-    public GameObject swordLight;
 
     //Audio
     public AudioSource audioSource;
@@ -76,7 +76,6 @@ public class PlayerCombat : PlayerBase
     {
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
-        swordLight.SetActive(true);
 
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.clip = attackAudioClip;
@@ -91,7 +90,6 @@ public class PlayerCombat : PlayerBase
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
-        swordLight.SetActive(false);
         ResetAttack();
     }
 
@@ -119,6 +117,7 @@ public class PlayerCombat : PlayerBase
         {
             StartCoroutine(Invulnerability());
             inGameHUD.DoRecieveDamageFadeAndShake();
+            hudHandler.ShowRecieveDamageFades();
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -181,7 +180,4 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(ATTACK_COOLDOWN);
         canAttack = true;
     }
-
-
-
 }

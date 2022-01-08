@@ -38,12 +38,14 @@ public class Teleporter : MonoBehaviour
                 if (canvasTeleportSelection.activeInHierarchy)
                 {
                     PlayerInputs.instance.canMove = true;
+                    PauseMenu.gameIsPaused = false;
 
                     canvasTeleportSelection.SetActive(false);
                 }
                 else
                 {
                     PlayerInputs.instance.canMove = false;
+                    PauseMenu.gameIsPaused = true;
 
                     canvasTeleportSelection.SetActive(true);
                     OnActivation(teleportName);
