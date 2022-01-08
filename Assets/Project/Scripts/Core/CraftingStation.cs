@@ -6,6 +6,7 @@ public class CraftingStation : InteractStation
 {
     //Private Atributes
     private float particleTime;
+
     // Public Attributes
     public GameObject interactText;
     public GameObject craftingCanvasGameObject;
@@ -51,6 +52,7 @@ public class CraftingStation : InteractStation
     {
         CraftingSystem.OnCrafting -= PlayCraftingParticles;
     }
+
     //From InteractStation script
     public override void StationFunction()
     {
