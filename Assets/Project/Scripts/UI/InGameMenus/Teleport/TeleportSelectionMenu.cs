@@ -15,7 +15,6 @@ public class TeleportSelectionMenu : MonoBehaviour
     public GameObject teleportList;
     public GameObject buttonPrefab;
 
-
     void Start()
     {
         teleportSystem = GameObject.FindGameObjectWithTag("TeleportSystem").GetComponent<TeleportSystem>();
