@@ -15,20 +15,20 @@ public class PlayerCombat : PlayerBase
     private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
-    private float pushForce = 50f;
 
     private PlayerAreas playerAreas;
+    private InGameHUDHandler inGameHUD;
 
     protected AttackSystem attackSystem;
     protected HealthSystem healthSystem;
 
     // Public Attributes
     public GameObject attackArea;
+    public HUDHandler hudHandler;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
-    public GameObject swordLight;
 
     //Audio
     public AudioSource audioSource;
@@ -40,15 +40,27 @@ public class PlayerCombat : PlayerBase
         playerAreas = GetComponent<PlayerAreas>();
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        inGameHUD = GetComponentInChildren<InGameHUDHandler>();
         playerBlood.Stop();
     }
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
         {
             StartAttacking();
         }
+    }
+
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     private void StartAttacking()
@@ -64,7 +76,6 @@ public class PlayerCombat : PlayerBase
     {
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
-        swordLight.SetActive(true);
 
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.clip = attackAudioClip;
@@ -79,7 +90,6 @@ public class PlayerCombat : PlayerBase
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
-        swordLight.SetActive(false);
         ResetAttack();
     }
 
@@ -94,7 +104,7 @@ public class PlayerCombat : PlayerBase
     public void DealDamageToEnemy(Enemy enemy)
     {
         enemy.ReceiveDamage(attackSystem.attackValue);
-        enemy.GetsPushed((enemy.transform.position - transform.position).normalized, pushForce);
+        enemy.GetsPushed((enemy.transform.position - transform.position).normalized, attackSystem.pushValue);
     }
 
     public void ReceiveDamage(int damageValue)
@@ -106,6 +116,8 @@ public class PlayerCombat : PlayerBase
         else
         {
             StartCoroutine(Invulnerability());
+            inGameHUD.DoRecieveDamageFadeAndShake();
+            hudHandler.ShowRecieveDamageFades();
         }
 
         healthSystem.ReceiveDamage(damageValue);

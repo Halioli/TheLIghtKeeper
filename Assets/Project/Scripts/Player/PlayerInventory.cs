@@ -41,7 +41,6 @@ public class PlayerInventory : MonoBehaviour
     }
 
 
-
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Item"))
@@ -53,11 +52,21 @@ public class PlayerInventory : MonoBehaviour
                 if (itemGameObject.canBePickedUp)
                 {
                     PickUpItem(itemGameObject);
-                    Debug.Log("adding");
                 }
             }
             
         }
+    }
+
+
+    private void OnEnable()
+    {
+        InventoryUpgrade.OnInventoryUpgrade += UpgradeInventory;
+    }
+
+    private void OnDisable()
+    {
+        InventoryUpgrade.OnInventoryUpgrade -= UpgradeInventory;
     }
 
 
@@ -81,17 +90,6 @@ public class PlayerInventory : MonoBehaviour
 
     private bool PickUpItem(ItemGameObject itemToPickUp)
     {
-        //bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
-        //if (couldAddItem)
-        //{
-        //    if (playerPicksUpItemEvent != null)
-        //        playerPicksUpItemEvent();
-
-        //    Destroy(itemToPickUp.gameObject);
-        //}
-
-        //return couldAddItem;
-
         if (playerPicksUpItemEvent != null)
             playerPicksUpItemEvent();
 
@@ -99,4 +97,8 @@ public class PlayerInventory : MonoBehaviour
         return false;
     }
 
+    private void UpgradeInventory()
+    {
+        inventory.UpgradeInventory();
+    }
 }

@@ -322,7 +322,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!61 &2334290291206200891
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -406,13 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106e4f906e185574ea0d90c4f2292054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mousePosition: {x: 0, y: 0}
-  mouseWorldPosition: {x: 0, y: 0}
-  facingLeft: 1
-  canFlip: 1
-  canMove: 1
-  playerReach: 4
-  selectSpotGameObject: {fileID: 0}
   triggerArea: {fileID: 2334290291206200889}
   interactText: {fileID: 2334290290006228159}
   craftingCanvasGameObject: {fileID: 0}

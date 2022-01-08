@@ -31,11 +31,15 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public bool PlayerClickedMineButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.Mouse0);
     }
 
     public bool PlayerClickedAttackButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.Mouse1);
     }
 
@@ -53,37 +57,47 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedInteractButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.E);
     }
 
     public bool PlayerPressedUseButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.Q);
     }
 
     public bool PlayerPressedInventoryButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.Tab);
     }
 
     public bool PlayerPressedQuickAccessButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.LeftShift);
     }
 
     public bool PlayerReleasedQuickAccessButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyUp(KeyCode.LeftShift);
     }
 
-    public bool PlayerPressedExitButton()
+    public bool PlayerPressedPauseButton()
     {
         return Input.GetKeyDown(KeyCode.Escape);
     }
 
     public Vector2 PlayerPressedMovementButtons()
     {
-        if (canMove)
+        if (canMove && !PauseMenu.gameIsPaused)
         {
             return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
