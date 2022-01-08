@@ -44,13 +44,13 @@ public class InventoryQuickAccess : MonoBehaviour
         // Check Inputs & Act Accordingly
         if (PlayerInputs.instance.PlayerPressedQuickAccessButton())
         {
-            StartCoroutine(ChangeCanvasGroupAlphaToOne(quickAccessGroup));
-            StopCoroutine(ChangeCanvasGroupAlphaToZero(quickAccessGroup));
+            StopCoroutine(CanvasFadeOut(quickAccessGroup));
+            StartCoroutine(CanvasFadeIn(quickAccessGroup));
         }
         else if (PlayerInputs.instance.PlayerReleasedQuickAccessButton())
         {
-            StopCoroutine(ChangeCanvasGroupAlphaToOne(quickAccessGroup));
-            StartCoroutine(ChangeCanvasGroupAlphaToZero(quickAccessGroup));
+            StopCoroutine(CanvasFadeIn(quickAccessGroup));
+            StartCoroutine(CanvasFadeOut(quickAccessGroup));
         }
 
         if (mouseScrollDirection > 0)
@@ -109,7 +109,7 @@ public class InventoryQuickAccess : MonoBehaviour
         return text;
     }
 
-    IEnumerator ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(1f, 1f);
         Vector2 endVector = new Vector2(0f, 0f);
@@ -124,7 +124,7 @@ public class InventoryQuickAccess : MonoBehaviour
         canvasGroup.alpha = endVector.x;
     }
 
-    IEnumerator ChangeCanvasGroupAlphaToOne(CanvasGroup canvasGroup)
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(0f, 0f);
         Vector2 endVector = new Vector2(1f, 1f);

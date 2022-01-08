@@ -1,27 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 enum CriticalMiningState { NONE, FAILED, SUCCEESSFUL };
 
 public class PlayerMiner : PlayerBase
 {
     // Private Attributes
-    private Collider2D colliderDetectedByMouse = null;
+    private const float OVERLAP_CIRCLE_RADIUS = 1.5f;
+
     private Ore oreToMine;
-
-    private const int START_MINING_DAMAGE = 1;
-    private int miningDamage = START_MINING_DAMAGE;
-    private const int START_CRITICAL_MINING_DAMAGE = 2;
-    private int criticalMiningDamage = START_CRITICAL_MINING_DAMAGE;
-
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
     private const float MINING_TIME = 1.0f;
     private float miningTime = 0;
-    private const float LOWER_INTERVAL_CRITICAL_MINING = 0.4f;
-    private const float UPPER_INTERVAL_CRITICAL_MINING = 0.9f;
 
+    private bool canCriticalMine = false;
+    private bool miningAnOre = false;
+    private Vector2 raycastStartingPosition;
+    private Vector2 raycastEndingPosition;
+
+    // Overlap Circle & Dot Product
+    private Vector2 overlapCirclePosition;
+    private Vector2 mouseDirection;
+    private Vector2 oreDirection;
+    private Collider2D[] collidedElements;
+    private Collider2D maxColl;
+    private float max = -2f;
+    private float dotRes;
+
+    [SerializeField] Pickaxe pickaxe;
+
+    // Public Attributes
+    public GameObject interactArea;
+    public LayerMask defaultLayerMask;
+    public static Collider2D OverlapCircle;
 
     // Events
     public delegate void PlayPlayerSound();
@@ -31,47 +44,64 @@ public class PlayerMiner : PlayerBase
     public static event PlayPlayerSound playerMinesOreEvent;
     public static event PlayPlayerSound playerBreaksOreEvent;
 
-
     void Update()
     {
         if (PlayerInputs.instance.PlayerClickedMineButton() && playerStates.PlayerStateIsFree() && !playerStates.PlayerActionIsMining())
         {
             PlayerInputs.instance.SetNewMousePosition();
-            if (PlayerIsInReachToMine(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnOre(PlayerInputs.instance.mouseWorldPosition))
+
+            // Update & check all colliders
+            UpdateOverlapCirlcePositionAndMouseDirection();
+            collidedElements = ReturnAllOverlapedColliders();
+
+            // Get the dot product from every collider in reach
+
+            for (int i = 0; i < collidedElements.Length; i++)
             {
-                SetOreToMine();
-                StartMining();
+                if (collidedElements[i].CompareTag("Ore"))
+                {
+                    oreDirection = (transform.position - collidedElements[i].transform.position).normalized;
+                    dotRes = Vector2.Dot(mouseDirection, oreDirection);
+
+                    if (dotRes > max)
+                    {
+                        max = dotRes;
+                        maxColl = collidedElements[i];
+                    }
+                    
+                    miningAnOre = true;
+                }
             }
+
+            if (miningAnOre)
+                SetOreToMine(maxColl.GetComponent<Ore>());
+
+            if (!miningAnOre)
+                PlayerInputs.instance.SpawnSelectSpotAtTransform(interactArea.transform);
+
+            StartMining();
         }
-        
     }
 
     // METHODS
-    private bool PlayerIsInReachToMine(Vector2 mousePosition)
+    private void OnDrawGizmosSelected()
     {
-        float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(raycastStartingPosition, raycastEndingPosition * 3f);
     }
 
-    private bool MouseClickedOnAnOre(Vector2 mousePosition)
+    private void SetOreToMine(Ore ore)
     {
-        colliderDetectedByMouse = Physics2D.OverlapCircle(mousePosition, 0.05f);
-        return colliderDetectedByMouse != null && colliderDetectedByMouse.gameObject.CompareTag("Ore");
-    }
-
-    private void SetOreToMine()
-    {
-        oreToMine = colliderDetectedByMouse.gameObject.GetComponent<Ore>();
+        oreToMine = ore;
 
         PlayerInputs.instance.SpawnSelectSpotAtTransform(oreToMine.transform);
     }
-
 
     private void CheckCriticalMining()
     {
         if (PlayerInputs.instance.PlayerClickedMineButton())
         {
-            if (WithinCriticalInterval())
+            if (canCriticalMine)
             {
                 criticalMiningState = CriticalMiningState.SUCCEESSFUL;
                 successCriticalMiningSoundEvent();
@@ -83,12 +113,6 @@ public class PlayerMiner : PlayerBase
             }
         }
     }
-
-    private bool WithinCriticalInterval()
-    {
-        return miningTime >= LOWER_INTERVAL_CRITICAL_MINING && miningTime <= UPPER_INTERVAL_CRITICAL_MINING;
-    }
-
 
     private void StartMining()
     {
@@ -105,19 +129,26 @@ public class PlayerMiner : PlayerBase
     {
         if (oreToMine.CanBeMined())
         {
-            oreToMine.GetsMined(damageToDeal);
-
-            if (oreToMine.Broke())
+            if (oreToMine.hardness <= pickaxe.hardness)
             {
-                // Play normal mine sound
-                if (playerBreaksOreEvent != null)
-                    playerBreaksOreEvent();
+                oreToMine.GetsMined(damageToDeal);
+
+                if (oreToMine.Broke())
+                {
+                    // Play normal mine sound
+                    if (playerBreaksOreEvent != null)
+                        playerBreaksOreEvent();
+                }
+                else
+                {
+                    // Play break sound
+                    if (playerMinesOreEvent != null) { }
+                    playerMinesOreEvent();
+                }
             }
             else
             {
-                // Play break sound
-                if (playerMinesOreEvent != null) { }
-                    playerMinesOreEvent();
+                Debug.Log("!!! Pickaxe NOT strong enough !!!");
             }
         }
     }
@@ -129,18 +160,50 @@ public class PlayerMiner : PlayerBase
 
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+
+        Array.Clear(collidedElements, 0, collidedElements.Length);
+        miningAnOre = false;
+        maxColl = null;
+        max = -2f;
+        dotRes = max;
     }
 
     private void Mine()
     {
+        if (!miningAnOre)
+            return;
+
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
         {
-            MineOre(criticalMiningDamage);
+            MineOre(pickaxe.criticalDamageValue);
         }
         else
         {
-            MineOre(miningDamage);
+            MineOre(pickaxe.damageValue);
         }
+    }
+
+    private void UpdateOverlapCirlcePositionAndMouseDirection()
+    {
+        overlapCirclePosition = transform.position;
+        overlapCirclePosition.y -= 1;
+
+        mouseDirection = ((Vector2)transform.position - PlayerInputs.instance.GetMousePositionInWorld()).normalized;
+    }
+
+    private Collider2D[] ReturnAllOverlapedColliders()
+    {
+        return Physics2D.OverlapCircleAll(overlapCirclePosition, OVERLAP_CIRCLE_RADIUS, defaultLayerMask);
+    }
+
+    public void StartCriticalInterval()
+    {
+        canCriticalMine = true;
+    }
+
+    public void FinishCriticalInterval()
+    {
+        canCriticalMine = false;
     }
 
     IEnumerator Mining()
@@ -165,10 +228,17 @@ public class PlayerMiner : PlayerBase
 
     private void FlipPlayerSpriteFacingOreToMine()
     {
-        if ((transform.position.x < oreToMine.transform.position.x && !PlayerInputs.instance.facingLeft) ||
-            (transform.position.x > oreToMine.transform.position.x && PlayerInputs.instance.facingLeft))
+        Vector2 targetPosition = Vector2.zero;
+
+        if (miningAnOre)
+            targetPosition = oreToMine.transform.position;
+        else
+            targetPosition = PlayerInputs.instance.GetMousePositionInWorld();
+
+        if ((transform.position.x < targetPosition.x && !PlayerInputs.instance.facingLeft) ||
+            (transform.position.x > targetPosition.x && PlayerInputs.instance.facingLeft))
         {
-            Vector2 direction = oreToMine.transform.position - transform.position;
+            Vector2 direction = targetPosition - (Vector2)transform.position;
             PlayerInputs.instance.FlipSprite(direction);
         }
     }

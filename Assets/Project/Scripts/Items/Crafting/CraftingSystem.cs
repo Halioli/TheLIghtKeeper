@@ -34,6 +34,10 @@ public class CraftingSystem : MonoBehaviour
 
         droppedItemPosition = new Vector2(transform.position.x, transform.position.y - 1f);
 
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        playerInventoryItems = new Dictionary<Item, int>();
+
+
         //foreach (ParticleSystem particle in craftingParticles)
         //{
         //    particle.Stop();
@@ -86,9 +90,7 @@ public class CraftingSystem : MonoBehaviour
 
     private void UpdatePlayerInventoryData()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-
-        playerInventoryItems = new Dictionary<Item, int>();
+        playerInventoryItems.Clear();
         numberOfEmptySlotsInPlayerInventory = 0;
 
         foreach (ItemStack playerInventoryItemStack in playerInventory.inventory)
@@ -137,8 +139,7 @@ public class CraftingSystem : MonoBehaviour
             {
                 // instantiate item in map instead
                 GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
-                item.GetComponent<ItemGameObject>().DropsDown();
-                item.GetComponent<ItemGameObject>().StartDespawning();
+                item.GetComponent<ItemGameObject>().DropsRandom();
             }
         }
         
