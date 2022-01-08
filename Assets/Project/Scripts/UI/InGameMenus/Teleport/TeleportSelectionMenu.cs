@@ -37,7 +37,6 @@ public class TeleportSelectionMenu : MonoBehaviour
         }
     }
 
-
     private void OnEnable()
     {
         Teleporter.OnActivation += UpdateTeleportSelectionMenu;
