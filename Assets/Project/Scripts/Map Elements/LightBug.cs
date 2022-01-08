@@ -30,6 +30,7 @@ public class LightBug : Enemy
     public float height;
 
     private float timeCounter;
+    private Vector3 centerPosition;
 
     //private float initialIntensity = 0.3f;
     //private float maxIntensity = 1f;
@@ -47,6 +48,7 @@ public class LightBug : Enemy
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        centerPosition = transform.position;
     }
 
     void Update()
@@ -78,7 +80,7 @@ public class LightBug : Enemy
         else
         {
             timeCounter += Time.deltaTime * speed;
-            transform.position = new Vector3(Mathf.Cos(timeCounter) * width, Mathf.Sin(timeCounter) * height, 0);    
+            transform.position = new Vector3(Mathf.Cos(timeCounter) * width, Mathf.Sin(timeCounter) * height, 0) + centerPosition;    
         }
 
     }
