@@ -61,11 +61,13 @@ public class CraftingStation : InteractStation
             playerHUDGameObject.SetActive(false);
             craftingCanvasGameObject.SetActive(true);
             inventoryMenu.UpdateInventory();
+            PauseMenu.gameIsPaused = true;
         }
         else
         {
             playerHUDGameObject.SetActive(true);
             craftingCanvasGameObject.SetActive(false);
+            PauseMenu.gameIsPaused = false;
         }
     }
 
