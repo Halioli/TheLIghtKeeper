@@ -142,8 +142,9 @@ public class PlayerMiner : PlayerBase
                 else
                 {
                     // Play break sound
-                    if (playerMineEvent != null) { }
-                    playerMineEvent();
+                    if (playerMineEvent != null) { 
+                        playerMineEvent();
+                    }
                 }
             }
             else

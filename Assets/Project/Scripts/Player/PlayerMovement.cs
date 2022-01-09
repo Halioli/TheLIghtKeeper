@@ -33,11 +33,11 @@ public class PlayerMovement : PlayerBase
         //if (playerStates.PlayerStateIsFree())
         //{
         //    moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
-        //    if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
+        //    if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking() && walking)
         //    {
         //        StopWalking();
         //    }
-        //    else if (moveDirection != Vector2.zero)
+        //    else if (moveDirection != Vector2.zero && !walking)
         //    {
         //        StartWalking();
         //    }

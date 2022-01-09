@@ -9,13 +9,23 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] AudioSource attackAndMineAudioSource;
     [SerializeField] AudioSource receiveDamageAudioSource;
     [SerializeField] AudioSource mineBuildUpAudioSource;
+    [SerializeField] AudioSource lanternDroneAudioSource;
+    [SerializeField] AudioSource lanternDroneOnOffAudioSource;
+    [SerializeField] AudioSource lanternOnOffAudioSource;
 
     [SerializeField] AudioClip attackAudioSound;
+    [SerializeField] AudioClip missAttackAudioSound;
     [SerializeField] AudioClip mineAudioSound;
+    [SerializeField] AudioClip mineBreakAudioSound;
 
     [SerializeField] AudioClip miningBuildUpSound;
     [SerializeField] AudioClip successCriticalMiningSound;
     [SerializeField] AudioClip failCriticalMiningSound;
+
+    [SerializeField] AudioClip turnOnLanternSound;
+    [SerializeField] AudioClip turnOffLanternSound;
+    [SerializeField] AudioClip turnOnLanternDroneSound;
+    [SerializeField] AudioClip turnOffLanternDroneSound;
 
 
 
@@ -35,12 +45,21 @@ public class PlayerAudio : MonoBehaviour
         PlayerCombat.playerReceivesDamageEvent += PlayReceiveDamageSound;
 
         // Mine sound
-        PlayerMiner.playerMineEvent -= PlayMineSound;
+        PlayerMiner.playerMineEvent += PlayMineSound;
+        PlayerMiner.playerBreaksOreEvent += PlayMineBreakSound;
 
         // MineBuildUp sound
         PlayerMiner.playerMinesEvent += PlayMineBuildUpSound;
         PlayerMiner.playerSucceessfulMineEvent += PlaySuccessfulMineSound;
         PlayerMiner.playerFailMineEvent += PlayFailMineSound;
+
+        // Lantern sound
+        Lamp.turnOnLanternEvent += PlayLanternDroneSound;
+        Lamp.turnOffLanternEvent += StopLanternDroneSound;
+        Lamp.turnOnLanternDroneSoundEvent += PlayTurnOnLanternDroneSound;
+        Lamp.turnOffLanternDroneSoundEvent += PlayTurnOffLanternDroneSound;
+        Lamp.turnOnLanternEvent += PlayTurnOnLanternSound;
+        Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
     }
 
 
@@ -61,11 +80,20 @@ public class PlayerAudio : MonoBehaviour
 
         // Mine sound
         PlayerMiner.playerMineEvent -= PlayMineSound;
+        PlayerMiner.playerBreaksOreEvent -= PlayMineBreakSound;
 
         // MineBuildUp sound
         PlayerMiner.playerMinesEvent -= PlayMineBuildUpSound;
         PlayerMiner.playerSucceessfulMineEvent -= PlaySuccessfulMineSound;
         PlayerMiner.playerFailMineEvent -= PlayFailMineSound;
+
+        // Lantern sound
+        Lamp.turnOnLanternEvent -= PlayLanternDroneSound;
+        Lamp.turnOffLanternEvent -= StopLanternDroneSound;
+        Lamp.turnOnLanternDroneSoundEvent -= PlayTurnOnLanternDroneSound;
+        Lamp.turnOffLanternDroneSoundEvent -= PlayTurnOffLanternDroneSound;
+        Lamp.turnOnLanternEvent -= PlayTurnOnLanternSound;
+        Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
     }
 
 
@@ -92,7 +120,13 @@ public class PlayerAudio : MonoBehaviour
     // Attack sound
     public void PlayAttackSound()
     {
+        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
         attackAndMineAudioSource.clip = attackAudioSound;
+        attackAndMineAudioSource.Play();
+    }
+    public void PlayMissAttackSound()
+    {
+        attackAndMineAudioSource.clip = missAttackAudioSound;
         attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
         attackAndMineAudioSource.Play();
     }
@@ -109,6 +143,14 @@ public class PlayerAudio : MonoBehaviour
     public void PlayMineSound()
     {
         attackAndMineAudioSource.clip = mineAudioSound;
+        attackAndMineAudioSource.pitch = Random.Range(0.3f, 0.5f);
+        attackAndMineAudioSource.Play();
+    }
+
+    public void PlayMineBreakSound()
+    {
+        attackAndMineAudioSource.clip = mineBreakAudioSound;
+        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.2f);
         attackAndMineAudioSource.Play();
     }
 
@@ -116,20 +158,60 @@ public class PlayerAudio : MonoBehaviour
     public void PlayMineBuildUpSound()
     {
         mineBuildUpAudioSource.clip = miningBuildUpSound;
+        mineBuildUpAudioSource.pitch = 0.7f;
         mineBuildUpAudioSource.Play();
     }
 
     public void PlaySuccessfulMineSound()
     {
         mineBuildUpAudioSource.clip = successCriticalMiningSound;
+        mineBuildUpAudioSource.pitch = 1f;
         mineBuildUpAudioSource.Play();
     }
 
     public void PlayFailMineSound()
     {
         mineBuildUpAudioSource.clip = failCriticalMiningSound;
+        mineBuildUpAudioSource.pitch = 1.2f;
         mineBuildUpAudioSource.Play();
     }
+
+
+    // Lantern sound
+    public void PlayLanternDroneSound()
+    {
+        lanternDroneAudioSource.Play();
+    }
+
+    public void StopLanternDroneSound()
+    {
+        lanternDroneAudioSource.Stop();
+    }
+
+    private void PlayTurnOnLanternDroneSound()
+    {
+        lanternDroneOnOffAudioSource.clip = turnOnLanternDroneSound;
+        lanternDroneOnOffAudioSource.Play();
+    }
+
+    private void PlayTurnOffLanternDroneSound()
+    {
+        lanternDroneOnOffAudioSource.clip = turnOffLanternDroneSound;
+        lanternDroneOnOffAudioSource.Play();
+    }
+
+    private void PlayTurnOnLanternSound()
+    {
+        lanternOnOffAudioSource.clip = turnOnLanternSound;
+        lanternOnOffAudioSource.Play();
+    }
+
+    private void PlayTurnOffLanternSound()
+    {
+        lanternOnOffAudioSource.clip = turnOffLanternSound;
+        lanternOnOffAudioSource.Play();
+    }
+
 
 
 }

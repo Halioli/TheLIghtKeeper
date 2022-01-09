@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-8701950012342210743
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 299313fdf7dc02c4b979ce366e529e97
+  m_EffectName: Attenuation
+  m_MixLevel: b4f8efcbf02bf424a901742098eb8dcf
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-8346182052742166094
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -10,6 +24,72 @@ AudioMixerEffectController:
   m_EffectID: a2c94a04a5cc4444d8b44ce081409a7d
   m_EffectName: Attenuation
   m_MixLevel: 82f71b332794bad4eaed0f1e25e31799
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-8323241100489561441
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LanternOnOff
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 96e6b1ce7b00726469d42f7aa57a2cfc
+  m_Children: []
+  m_Volume: fb46937a2d6fb584ab3ff11e2c2c4e24
+  m_Pitch: 6739abb44d3f2744d8c44db198fd6613
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -5799884607570908078}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-5799884607570908078
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 1df3d68a473a0a34d93a3c2b75751b2f
+  m_EffectName: Attenuation
+  m_MixLevel: 0d8ecf69ee195984a87a6c2e752859bd
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-1401930538377367880
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LanternDrone
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: eed2cff241b324447b7ea69024f7981f
+  m_Children: []
+  m_Volume: b71b79b8a6479bf48a44efee55437e7a
+  m_Pitch: ede8c178d7eb6034a8cd033443e8b032
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -365649361412634000}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-365649361412634000
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 9848d6db0547c544e881974f2e2333ff
+  m_EffectName: Attenuation
+  m_MixLevel: 8f897a4fe531f874082e45fc92fd1373
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
@@ -38,6 +118,9 @@ AudioMixerController:
     - df5880154ee89834ab22427562a815ab
     - 2734bbe42675f9e429160eddec92ab91
     - 48804b6a30b0bb3448f2c42bdf9be1d6
+    - eed2cff241b324447b7ea69024f7981f
+    - 96e6b1ce7b00726469d42f7aa57a2cfc
+    - 0f00a44f9fc56464591e60c1603f16be
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -56,6 +139,9 @@ AudioMixerGroupController:
   - {fileID: 2388706920342391718}
   - {fileID: 1166042634230200416}
   - {fileID: 6008658307929477001}
+  - {fileID: -1401930538377367880}
+  - {fileID: -8323241100489561441}
+  - {fileID: 1541136038042301786}
   m_Volume: 61d4052c4d320744e9e4d208cad887aa
   m_Pitch: c8cb2247204cc2b48b40f0c561888a30
   m_Send: 00000000000000000000000000000000
@@ -152,6 +238,25 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 6248136506859470838}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &1541136038042301786
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LanternDroneOnOff
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 0f00a44f9fc56464591e60c1603f16be
+  m_Children: []
+  m_Volume: 33bee146492a0c442bc29b08e77af11a
+  m_Pitch: 1d44107dfcacdf34f9b28a60bdb70953
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -8701950012342210743}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0

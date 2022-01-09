@@ -25,6 +25,7 @@ public class PlayerCombat : PlayerBase
     // Public Attributes
     public GameObject attackArea;
     public HUDHandler hudHandler;
+    public bool targetWasHitAlready = false;
 
     //Particles
     public ParticleSystem playerBlood;
@@ -33,6 +34,7 @@ public class PlayerCombat : PlayerBase
     // Events
     public delegate void PlayerAttackSound();
     public static event PlayerAttackSound playerAttackEvent;
+    public static event PlayerAttackSound playerMissesAttackEvent;
     public static event PlayerAttackSound playerReceivesDamageEvent;
 
 
@@ -168,4 +170,15 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(ATTACK_COOLDOWN);
         canAttack = true;
     }
+
+
+    public void TargetWasHit()
+    {
+        //if (!targetWasHitAlready)
+        //{
+        //    targetWasHitAlready = true;
+        //    playerAttackEvent();
+        //}
+    }
+
 }
