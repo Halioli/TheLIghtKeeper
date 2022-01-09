@@ -2,21 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Teleporter : MonoBehaviour
+public class Teleporter : InteractStation
 {
     // Private Attributes
     private Vector2 spawnPosition;
     private Animator animatior;
-    private bool playerOnTrigger = false;
 
     // Public Attributes
+    //Station
+    public GameObject interactText;
+    public GameObject canvasTeleportSelection;
+    public GameObject hudGameObject;
+
+    //Teleport
     public string teleportName;
     public Vector3 teleportTransformPosition;
     public bool activated = false;
     public GameObject[] teleporterLights;
-    public GameObject canvasTeleportSelection;
 
-    // Events
+    //Events / Actions
     public delegate void TeleportActivation(string teleportName);
     public static event TeleportActivation OnActivation;
 
@@ -30,54 +34,64 @@ public class Teleporter : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerInputs.instance.PlayerPressedInteractButton() && playerOnTrigger)
+        if (playerInsideTriggerArea)
         {
-            //Do the activate teleport animation and stay teleport
-            if (activated)
+            GetInput();
+            PopUpAppears();
+        }
+        else
+        {
+            PopUpDisappears();
+            if (canvasTeleportSelection.activeInHierarchy)
             {
-                if (canvasTeleportSelection.activeInHierarchy)
-                {
-                    PlayerInputs.instance.canMove = true;
-                    PauseMenu.gameIsPaused = false;
+                hudGameObject.SetActive(true);
+                canvasTeleportSelection.SetActive(false);
+            }
+        }
+    }
 
-                    canvasTeleportSelection.SetActive(false);
-                }
-                else
-                {
-                    PlayerInputs.instance.canMove = false;
-                    PauseMenu.gameIsPaused = true;
+    // Interactive pop up disappears
+    private void PopUpAppears()
+    {
+        interactText.SetActive(true);
+    }
 
-                    canvasTeleportSelection.SetActive(true);
-                    OnActivation(teleportName);
-                }
+    // Interactive pop up disappears
+    private void PopUpDisappears()
+    {
+        interactText.SetActive(false);
+    }
+
+    public override void StationFunction()
+    {
+        if (!activated)
+        {
+            PlayerInputs.instance.canMove = false;
+            animatior.SetBool("isActivated", true);
+            OnActivation(teleportName);
+        }
+        else
+        {
+            if (!canvasTeleportSelection.activeInHierarchy)
+            {
+                OnActivation(teleportName);
+                hudGameObject.SetActive(false);
+                canvasTeleportSelection.SetActive(true);
+                PauseMenu.gameIsPaused = true;
             }
             else
             {
-                PlayerInputs.instance.canMove = false;
-
-                animatior.SetBool("isActivated", true);
-                OnActivation(teleportName);
+                hudGameObject.SetActive(true);
+                canvasTeleportSelection.SetActive(false);
+                PauseMenu.gameIsPaused = false;
             }
         }
-
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        playerOnTrigger = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        playerOnTrigger = false;
-    }
-
 
     public void SetTeleporterActive()
     {
         activated = true;
-
-        canvasTeleportSelection.SetActive(true);
+        PlayerInputs.instance.canMove = true;
 
         if (OnActivation != null)
             OnActivation(teleportName);
