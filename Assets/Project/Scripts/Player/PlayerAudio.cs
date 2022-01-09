@@ -35,10 +35,10 @@ public class PlayerAudio : MonoBehaviour
         PlayerCombat.playerReceivesDamageEvent += PlayReceiveDamageSound;
 
         // Mine sound
-        PlayerMiner.playerAttackEvent -= PlayMineSound;
+        PlayerMiner.playerMineEvent -= PlayMineSound;
 
         // MineBuildUp sound
-        PlayerMiner.playerMinesOreEvent += PlayMineBuildUpSound;
+        PlayerMiner.playerMinesEvent += PlayMineBuildUpSound;
         PlayerMiner.playerSucceessfulMineEvent += PlaySuccessfulMineSound;
         PlayerMiner.playerFailMineEvent += PlayFailMineSound;
     }
@@ -60,10 +60,10 @@ public class PlayerAudio : MonoBehaviour
         PlayerCombat.playerReceivesDamageEvent -= PlayReceiveDamageSound;
 
         // Mine sound
-        PlayerMiner.playerAttackEvent -= PlayMineSound;
+        PlayerMiner.playerMineEvent -= PlayMineSound;
 
         // MineBuildUp sound
-        PlayerMiner.playerMinesOreEvent -= PlayMineBuildUpSound;
+        PlayerMiner.playerMinesEvent -= PlayMineBuildUpSound;
         PlayerMiner.playerSucceessfulMineEvent -= PlaySuccessfulMineSound;
         PlayerMiner.playerFailMineEvent -= PlayFailMineSound;
     }
@@ -93,12 +93,14 @@ public class PlayerAudio : MonoBehaviour
     public void PlayAttackSound()
     {
         attackAndMineAudioSource.clip = attackAudioSound;
+        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
         attackAndMineAudioSource.Play();
     }
 
     // ReceiveDamage sound
     public void PlayReceiveDamageSound()
     {
+        receiveDamageAudioSource.pitch = Random.Range(0.8f, 1.3f);
         receiveDamageAudioSource.Play();
     }
 

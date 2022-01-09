@@ -38,10 +38,10 @@ public class PlayerMiner : PlayerBase
 
     // Events
     public delegate void PlayPlayerSound();
-    public static event PlayPlayerSound playerMiningBuildUpSoundEvent;
-    public static event PlayPlayerSound successCriticalMiningSoundEvent;
-    public static event PlayPlayerSound failCriticalMiningSoundEvent;
-    public static event PlayPlayerSound playerMinesOreEvent;
+    public static event PlayPlayerSound playerMinesEvent;
+    public static event PlayPlayerSound playerSucceessfulMineEvent;
+    public static event PlayPlayerSound playerFailMineEvent;
+    public static event PlayPlayerSound playerMineEvent;
     public static event PlayPlayerSound playerBreaksOreEvent;
 
     void Update()
@@ -104,19 +104,19 @@ public class PlayerMiner : PlayerBase
             if (canCriticalMine)
             {
                 criticalMiningState = CriticalMiningState.SUCCEESSFUL;
-                successCriticalMiningSoundEvent();
+                playerSucceessfulMineEvent();
             }
             else
             {
                 criticalMiningState = CriticalMiningState.FAILED;
-                failCriticalMiningSoundEvent();
+                playerFailMineEvent();
             }
         }
     }
 
     private void StartMining()
     {
-        playerMiningBuildUpSoundEvent();
+        playerMinesEvent();
 
         FlipPlayerSpriteFacingOreToMine();
         playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
@@ -142,8 +142,8 @@ public class PlayerMiner : PlayerBase
                 else
                 {
                     // Play break sound
-                    if (playerMinesOreEvent != null) { }
-                    playerMinesOreEvent();
+                    if (playerMineEvent != null) { }
+                    playerMineEvent();
                 }
             }
             else
