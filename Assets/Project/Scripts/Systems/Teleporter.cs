@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Teleporter : InteractStation
 {
     // Private Attributes
     private Vector2 spawnPosition;
     private Animator animatior;
+    private string[] messagesToShow = { "", "No dark essence found", "Dark essence consumed" };
 
     // Public Attributes
     //Station
     public GameObject interactText;
     public GameObject canvasTeleportSelection;
     public GameObject hudGameObject;
+    public TextMeshProUGUI mssgText;
 
     //Teleport
+    public Item darkEssence;
     public string teleportName;
     public Vector3 teleportTransformPosition;
     public bool activated = false;
@@ -42,11 +46,6 @@ public class Teleporter : InteractStation
         else
         {
             PopUpDisappears();
-            if (canvasTeleportSelection.activeInHierarchy)
-            {
-                hudGameObject.SetActive(true);
-                canvasTeleportSelection.SetActive(false);
-            }
         }
     }
 
@@ -54,21 +53,30 @@ public class Teleporter : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
+        OnActivation(teleportName);
     }
 
     // Interactive pop up disappears
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        mssgText.text = messagesToShow[0];
     }
 
     public override void StationFunction()
     {
-        if (!activated)
+        if (!activated && playerInventory.InventoryContainsItem(darkEssence))
         {
+            playerInventory.SubstractItemToInventory(darkEssence);
+            mssgText.text = messagesToShow[2];
+
             PlayerInputs.instance.canMove = false;
             animatior.SetBool("isActivated", true);
             OnActivation(teleportName);
+        }
+        else if (!activated && !playerInventory.InventoryContainsItem(darkEssence))
+        {
+            mssgText.text = messagesToShow[1];
         }
         else
         {
@@ -92,6 +100,7 @@ public class Teleporter : InteractStation
     {
         activated = true;
         PlayerInputs.instance.canMove = true;
+        mssgText.text = messagesToShow[0];
 
         if (OnActivation != null)
             OnActivation(teleportName);

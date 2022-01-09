@@ -14,6 +14,7 @@ public class TeleportSelectionMenu : MonoBehaviour
     // Public Attributes
     public GameObject teleportList;
     public GameObject buttonPrefab;
+    public GameObject hudGameObject;
 
     void Start()
     {
@@ -73,6 +74,9 @@ public class TeleportSelectionMenu : MonoBehaviour
 
     private void DeactivateSelf(int teleportIndex)
     {
+        hudGameObject.SetActive(true);
+        PauseMenu.gameIsPaused = false;
+
         gameObject.SetActive(false);
     }
 
