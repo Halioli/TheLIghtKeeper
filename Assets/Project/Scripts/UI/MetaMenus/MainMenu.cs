@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     public Image loadingBarImage;
     public CanvasGroup loadingGroup;
     public GameObject optionsMenuGameObject;
+    public GameObject creditsMenuGameObject;
 
     public void PlayButtonClick(int sceneIndex)
     {
@@ -25,6 +26,7 @@ public class MainMenu : MonoBehaviour
     public void CreditsButtonClick()
     {
         StopRespawns();
+        creditsMenuGameObject.SetActive(true);
     }
 
     public void ExitButtonClick()
