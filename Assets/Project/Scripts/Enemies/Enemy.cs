@@ -47,7 +47,6 @@ abstract public class Enemy : MonoBehaviour
     protected bool getsPushed = false;
     protected Vector2 pushedDirection = new Vector2();
     protected float pushedForce = 0f;
-    protected bool died = false;
 
 
     // Public Attributes
@@ -95,9 +94,9 @@ abstract public class Enemy : MonoBehaviour
 
     public void ReceiveDamage(int damageValue)
     {
-        if (died) return;
-
         healthSystem.ReceiveDamage(damageValue);
+
+        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), 0.15f);
 
         audioSource.clip = hurtedAudioClip;
         audioSource.pitch = Random.Range(0.8f, 1.3f);
@@ -122,8 +121,7 @@ abstract public class Enemy : MonoBehaviour
     protected void DropItem()
     {
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
-        //item.DropsDown();
-        item.DropsForward(4);
+        item.DropsRandom();
     }
 
 
