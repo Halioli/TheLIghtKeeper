@@ -53,6 +53,12 @@ public class PlayerMovement : PlayerBase
             StartWalking();
         }
 
+        if (((moveDirection.x < 0 && PlayerInputs.instance.facingLeft) || 
+            (moveDirection.x > 0 && !PlayerInputs.instance.facingLeft)) && 
+            PlayerInputs.instance.canFlip)
+        {
+            PlayerInputs.instance.FlipSprite(moveDirection);
+        }
     }
 
     private void FixedUpdate()
