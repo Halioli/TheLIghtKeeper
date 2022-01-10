@@ -121,7 +121,7 @@ abstract public class Enemy : MonoBehaviour
     protected void DropItem()
     {
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
-        item.DropsDown();
+        item.DropsRandom();
     }
 
 

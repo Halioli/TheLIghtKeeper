@@ -25,16 +25,19 @@ public class PlayerCombat : PlayerBase
     // Public Attributes
     public GameObject attackArea;
     public HUDHandler hudHandler;
+    public bool targetWasHitAlready = false;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
-    public GameObject swordLight;
 
-    //Audio
-    public AudioSource audioSource;
-    public AudioClip hurtedAudioClip;
-    public AudioClip attackAudioClip;
+    // Events
+    public delegate void PlayerAttackSound();
+    public static event PlayerAttackSound playerAttackEvent;
+    public static event PlayerAttackSound playerMissesAttackEvent;
+    public static event PlayerAttackSound playerReceivesDamageEvent;
+
+
 
     private void Start()
     {
@@ -53,17 +56,6 @@ public class PlayerCombat : PlayerBase
         }
     }
 
-
-    private void OnEnable()
-    {
-        
-    }
-
-    private void OnDisable()
-    {
-        
-    }
-
     private void StartAttacking()
     {
         FlipPlayerSpriteFacingWhereToAttack();
@@ -77,11 +69,8 @@ public class PlayerCombat : PlayerBase
     {
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
-        swordLight.SetActive(true);
 
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = attackAudioClip;
-        audioSource.Play();
+        playerAttackEvent();
 
         playerAreas.DoSpawnAttackArea();
         while (attackingTime > 0.0f)
@@ -92,7 +81,6 @@ public class PlayerCombat : PlayerBase
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
-        swordLight.SetActive(false);
         ResetAttack();
     }
 
@@ -128,9 +116,8 @@ public class PlayerCombat : PlayerBase
         transform.DOPunchScale(new Vector3(-0.4f, 0.2f, 0), 0.5f);
         transform.DOPunchRotation(new Vector3(0, 0, 10), 0.2f);
 
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = hurtedAudioClip;
-        audioSource.Play();
+        playerReceivesDamageEvent();
+
         StartCoroutine(PlayerBloodParticleSystem());
     }
 
@@ -183,4 +170,15 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(ATTACK_COOLDOWN);
         canAttack = true;
     }
+
+
+    public void TargetWasHit()
+    {
+        //if (!targetWasHitAlready)
+        //{
+        //    targetWasHitAlready = true;
+        //    playerAttackEvent();
+        //}
+    }
+
 }

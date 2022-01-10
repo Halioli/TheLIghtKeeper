@@ -20,6 +20,7 @@ public class InGameHUDHandler : MonoBehaviour
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
     private CanvasGroup clawStrikeGroup;
+    private CanvasGroup exclamationGroup;
 
     // Public Attributes
     public HUDBar healthBar;
@@ -28,6 +29,7 @@ public class InGameHUDHandler : MonoBehaviour
     public GameObject healthBarGameObject;
     public GameObject lampBarGameObject;
     public GameObject clawStrikeGameObject;
+    public GameObject exclamationGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -41,7 +43,7 @@ public class InGameHUDHandler : MonoBehaviour
         healthBar.SetMaxValue(playerHealthValue);
         playerIsDamaged = false;
         healthIsTrembeling = false;
-
+        
         // Initialize lamp variables
         lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
@@ -51,6 +53,9 @@ public class InGameHUDHandler : MonoBehaviour
 
         // Initialize claw variables
         clawStrikeGroup = clawStrikeGameObject.GetComponent<CanvasGroup>();
+
+        // Initialize claw variables
+        exclamationGroup = exclamationGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -85,6 +90,18 @@ public class InGameHUDHandler : MonoBehaviour
             }
         }
     }
+
+
+    private void OnEnable()
+    {
+        PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
+    }
+
+    private void OnDisable()
+    {
+        PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
+    }
+
 
     private void ManageShowingHealth()
     {
@@ -229,4 +246,21 @@ public class InGameHUDHandler : MonoBehaviour
         }
         clawStrikeGroup.alpha = fadeInStartVector.x;
     }
+
+
+    private void ExclamationAppears()
+    {
+        StartCoroutine(StartExclamationAppears());
+    }
+
+    IEnumerator StartExclamationAppears()
+    {
+        exclamationGroup.alpha = 1f;
+
+        exclamationGameObject.transform.DOPunchPosition(new Vector2(0f, 0.5f), 0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        exclamationGroup.alpha = 0f;
+    }
+
 }
