@@ -134,7 +134,7 @@ public class PlayerAudio : MonoBehaviour
     // ReceiveDamage sound
     public void PlayReceiveDamageSound()
     {
-        receiveDamageAudioSource.pitch = Random.Range(0.8f, 1.3f);
+        receiveDamageAudioSource.pitch = Random.Range(1.8f, 2f);
         receiveDamageAudioSource.Play();
     }
 
