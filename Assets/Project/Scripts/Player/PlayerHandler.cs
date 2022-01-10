@@ -41,8 +41,10 @@ public class PlayerHandler : PlayerBase
             }
         }
 
-        if (PlayerInputs.instance.PlayerPressedExitButton())
-            PlayerInputs.instance.QuitGame();
+        if (PlayerInputs.instance.PlayerPressedPauseButton())
+        {
+            // Pause game
+        }
     }
 
     public void DoDeathImageFade()

@@ -21,10 +21,19 @@ public class OptionsMenu : MonoBehaviour
     // Private Attributes
     private Resolution[] resolutions;
     private MainMenu mainMenu;
+    private bool inMainMenu;
 
     private void Start()
     {
-        mainMenu = mainMenuGameObject.GetComponent<MainMenu>();
+        if (mainMenuGameObject.GetComponent<MainMenu>() != null)
+        {
+            mainMenu = mainMenuGameObject.GetComponent<MainMenu>();
+            inMainMenu = true;
+        }
+        else
+        {
+            inMainMenu = false;
+        }
 
         // Get aviable resolutions & clear dropdown
         resolutions = Screen.resolutions;
@@ -86,7 +95,9 @@ public class OptionsMenu : MonoBehaviour
     public void ClickedBackButton()
     {
         mainMenuGameObject.SetActive(true);
-        mainMenu.ResetRespawns();
+
+        if (inMainMenu)
+            mainMenu.ResetRespawns();
 
         gameObject.SetActive(false);
     }
