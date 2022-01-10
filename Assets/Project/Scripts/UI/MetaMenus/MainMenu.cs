@@ -54,10 +54,11 @@ public class MainMenu : MonoBehaviour
     {
         // LoadSceneMode.Single unloads current scene
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
-
+        
+        float progress;
         while (!operation.isDone)
         {
-            float progress = Mathf.Clamp01(operation.progress / .9f);
+            progress = Mathf.Clamp01(operation.progress / .9f);
 
             loadingBarImage.fillAmount = progress;
             yield return null;
