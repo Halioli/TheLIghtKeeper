@@ -8,19 +8,22 @@ public class OreRespawner : Spawner
     private const float TIME_BETWEEN_RESPAWN = 5f;
 
     private Transform respawnTransform;
-    private bool canSpawn = false;
 
     // Public Attributes
     public GameObject oreToRespawn;
 
     private void Start()
     {
-        respawnTransform = transform;
+        canSpawn = true;
+        respawnTransform = GetComponent<Transform>();
+
         SetSpawnCooldown(TIME_BETWEEN_RESPAWN);
+        Spawn();
     }
 
     protected override void Spawn()
     {
         Instantiate(oreToRespawn, respawnTransform);
+        canSpawn = false;
     }
 }
