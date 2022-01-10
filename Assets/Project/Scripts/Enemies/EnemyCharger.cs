@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Audio;
 
 
 public class EnemyCharger : HostileEnemy
@@ -19,6 +20,7 @@ public class EnemyCharger : HostileEnemy
     private float currentChargeTime;
     private bool hasRecovered;
     private bool collidedWithPlayer;
+    private AudioSource enemyAudioSource;
 
     // Public Attributes
     public const float ATTACK_RECOVER_TIME = 2f;
@@ -28,6 +30,7 @@ public class EnemyCharger : HostileEnemy
     public const float ACCELERATION = 0.25f;
 
     public float distanceToCharge = 4f;
+    public AudioMixerSnapshot[] snapshots;
 
     // Sinusoidal movement
     public float amplitude = 0.1f;
@@ -37,7 +40,6 @@ public class EnemyCharger : HostileEnemy
 
     public AudioSource movementAudioSource;
     public AudioSource screamAudioSource;
-
 
     private void Start()
     {
