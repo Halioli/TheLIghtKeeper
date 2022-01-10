@@ -12,6 +12,7 @@ public class AttackArea : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy")) 
         {
             playerCombat.DealDamageToEnemy(collision.gameObject.GetComponent<Enemy>());
+            playerCombat.TargetWasHit();
         }
     }
 }

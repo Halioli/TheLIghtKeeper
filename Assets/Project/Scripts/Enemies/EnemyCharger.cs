@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Audio;
 
 
 public class EnemyCharger : HostileEnemy
@@ -19,15 +20,18 @@ public class EnemyCharger : HostileEnemy
     private float currentChargeTime;
     private bool hasRecovered;
     private bool collidedWithPlayer;
+    private AudioSource enemyAudioSource;
 
     // Public Attributes
     public const float ATTACK_RECOVER_TIME = 2f;
     public float CHARGE_SPEED;
     public const float CHARGE_TIME = 0.5f;
     public float MAX_SPEED;
+    public float FLEE_SPEED = 60f;
     public const float ACCELERATION = 0.25f;
 
     public float distanceToCharge = 4f;
+    public AudioMixerSnapshot[] snapshots;
 
     // Sinusoidal movement
     public float amplitude = 0.1f;
@@ -37,7 +41,6 @@ public class EnemyCharger : HostileEnemy
 
     public AudioSource movementAudioSource;
     public AudioSource screamAudioSource;
-
 
     private void Start()
     {
@@ -73,7 +76,7 @@ public class EnemyCharger : HostileEnemy
             return;
         }
 
-        if (startedBanishing)
+        if (startedBanishing || PauseMenu.gameIsPaused)
         {
             if (movementAudioSource.isPlaying)
                 movementAudioSource.Stop();
@@ -98,7 +101,10 @@ public class EnemyCharger : HostileEnemy
                 {
                     movementAudioSource.pitch = Random.Range(0.8f, 1.3f);
                     movementAudioSource.Play();
-
+                }
+                else if (PauseMenu.gameIsPaused)
+                {
+                    movementAudioSource.Stop();
                 }
 
                 if (currentSpeed < MAX_SPEED)
@@ -222,7 +228,7 @@ public class EnemyCharger : HostileEnemy
         angleDirection = Vector2.Perpendicular(directionOnChargeStart);
         angleDirection *= sinWaveDistance;
 
-        rigidbody.MovePosition((Vector2)transform.position - angleDirection - fleeDirection * (MAX_SPEED * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position - angleDirection - fleeDirection * (FLEE_SPEED * Time.deltaTime));
     }
 
     private void Charge()
