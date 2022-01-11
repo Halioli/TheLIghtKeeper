@@ -7,7 +7,6 @@ public class PlayerCombat : PlayerBase
 {
     // Private Attributes
     private const float ATTACK_TIME_DURATION = 0.22f;
-    private float attackingTime = ATTACK_TIME_DURATION;
     private float ATTACK_COOLDOWN = 0.7f;
 
     private bool canAttack = true;
@@ -73,11 +72,7 @@ public class PlayerCombat : PlayerBase
         playerAttackEvent();
 
         playerAreas.DoSpawnAttackArea();
-        while (attackingTime > 0.0f)
-        {
-            attackingTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
+        yield return new WaitForSeconds(ATTACK_TIME_DURATION);
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
@@ -86,8 +81,6 @@ public class PlayerCombat : PlayerBase
 
     private void ResetAttack()
     {
-        attackingTime = ATTACK_TIME_DURATION;
-
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
