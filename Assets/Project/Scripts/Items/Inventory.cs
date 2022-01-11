@@ -14,19 +14,22 @@ public class Inventory : MonoBehaviour
 
     public int indexOfSelectedInventorySlot;
 
-
+    public bool gotChanged = false;
 
     // Private Attributes
-    private int numberOfInventorySlots;
+    [SerializeField] private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
     private bool inventoryIsEmpty;
 
-    private const int MAX_NUMBER_OF_SLOTS = 9;
+    [SerializeField] private int maxNumberOfSlots;
+
+
+    private Inventory otherInventory = null; 
+
 
     // Initializer Methods
-    public void Start()
+    public void Awake()
     {
-        numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
         inventoryIsEmpty = true;
@@ -41,7 +44,7 @@ public class Inventory : MonoBehaviour
         {
             inventory.Add(Instantiate(emptyStack, transform));
         }
-        
+        gotChanged = true;
     }
 
     // Getter Methods
@@ -98,10 +101,11 @@ public class Inventory : MonoBehaviour
     // Modifier Methods
     public void UpgradeInventory()
     {
-        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
+        if (numberOfInventorySlots < maxNumberOfSlots)
         {
             numberOfInventorySlots++;
             inventory.Add(Instantiate(emptyStack, transform));
+            gotChanged = true;
         }
     }
 
@@ -174,10 +178,16 @@ public class Inventory : MonoBehaviour
             }
         }
 
+        if (couldAddItem)
+        {
+            gotChanged = true;
+        }
+
         return couldAddItem;
     }
 
-    public bool SubstractItemToInventory(Item itemToSubstract)
+
+    public bool SubstractItemFromInventory(Item itemToSubstract)
     {
         bool couldRemoveItem = false;
 
@@ -202,6 +212,11 @@ public class Inventory : MonoBehaviour
             couldRemoveItem = true;
         }
 
+        if (couldRemoveItem)
+        {
+            gotChanged = true;
+        }
+    
         return couldRemoveItem;
     }
 
@@ -209,7 +224,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < numberOfItemsToSubstract; ++i)
         {
-            if (!SubstractItemToInventory(itemToSubstract))
+            if (!SubstractItemFromInventory(itemToSubstract))
             {
                 return false;
             }
@@ -232,6 +247,8 @@ public class Inventory : MonoBehaviour
                 inventoryIsEmpty = true;
             }
         }
+
+        gotChanged = true;
     }
 
     // Other Methods
@@ -278,4 +295,26 @@ public class Inventory : MonoBehaviour
             SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
         }
     }
+
+
+    public void MoveItemToOtherInventory(int itemCellIndex)
+    {
+        if (otherInventory == null) return;
+        if (inventory[itemCellIndex].itemInStack == itemNull) return;
+
+
+        bool canSwap = otherInventory.ItemCanBeAdded(inventory[itemCellIndex].itemInStack);
+
+        if (canSwap)
+        {
+            otherInventory.AddItemToInventory(inventory[itemCellIndex].itemInStack);
+            SubstractItemFromInventory(inventory[itemCellIndex].itemInStack);
+        }
+    }
+
+    public void SetOtherInventory(Inventory otherInventory)
+    {
+        this.otherInventory = otherInventory;
+    }
+
 }
