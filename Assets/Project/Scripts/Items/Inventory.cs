@@ -23,8 +23,6 @@ public class Inventory : MonoBehaviour
 
     private const int MAX_NUMBER_OF_SLOTS = 9;
 
-
-
     // Initializer Methods
     public void Start()
     {
@@ -37,8 +35,6 @@ public class Inventory : MonoBehaviour
         InitInventory();
     }
 
-
-
     public void InitInventory()
     {
         for (int i = 0; i < numberOfInventorySlots; i++)
@@ -47,7 +43,6 @@ public class Inventory : MonoBehaviour
         }
         
     }
-
 
     // Getter Methods
     public int GetInventorySize() { return numberOfInventorySlots; }
@@ -80,7 +75,6 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
-
     public int NextEmptyInventorySlot()
     {
         int i = 0;
@@ -101,7 +95,6 @@ public class Inventory : MonoBehaviour
                (NextInventorySlotWithAvailableSpaceToAddItem(itemToCompare) != -1);
     }
 
-
     // Modifier Methods
     public void UpgradeInventory()
     {
@@ -111,7 +104,6 @@ public class Inventory : MonoBehaviour
             inventory.Add(Instantiate(emptyStack, transform));
         }
     }
-
 
     // Bool Methods
     public bool InventoryIsEmpty()
@@ -147,7 +139,6 @@ public class Inventory : MonoBehaviour
         }
         return hasEnough;
     }
-
 
     public bool AddItemToInventory(Item itemToAdd)
     {
@@ -186,7 +177,6 @@ public class Inventory : MonoBehaviour
         return couldAddItem;
     }
 
-
     public bool SubstractItemToInventory(Item itemToSubstract)
     {
         bool couldRemoveItem = false;
@@ -214,7 +204,6 @@ public class Inventory : MonoBehaviour
 
         return couldRemoveItem;
     }
-
 
     public bool SubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
     {
@@ -245,8 +234,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-
-
     // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
     {
@@ -269,7 +256,6 @@ public class Inventory : MonoBehaviour
         return itemsToDisplay;
     }
 
-
     public void CycleLeftSelectedItemIndex()
     {
         --indexOfSelectedInventorySlot;
@@ -281,7 +267,6 @@ public class Inventory : MonoBehaviour
     {
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
     }
-
 
     public void UseSelectedConsumibleItem()
     {
