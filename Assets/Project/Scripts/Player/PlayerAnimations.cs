@@ -19,6 +19,7 @@ public class PlayerAnimations : PlayerBase
     // Update is called once per frame
     void Update()
     {
+        //Mining animation
         if (playerStates.PlayerActionIsMining())
         {
             animator.SetBool("isMining", true);
@@ -27,11 +28,24 @@ public class PlayerAnimations : PlayerBase
         {
             animator.SetBool("isMining", false);
         }
+
+        ////Attacking animation
+        //if (playerStates.PlayerActionIsAttacking()) 
+        //{
+        //    animator.SetBool("isAttacking", true);
+        //    swordLight.SetActive(true);
+        //}
+        //else
+        //{
+        //    animator.SetBool("isAttacking", false);
+        //    swordLight.SetActive(false);
+        //}
     }
+
 
     public void ActivateShake()
     {
-        CinemachineShake.Instance.ShakeCamera(10f, 1f);
+        CinemachineShake.Instance.ShakeCamera(5f, 1f);
     }
 
     public void DesactivateShake()
@@ -44,6 +58,7 @@ public class PlayerAnimations : PlayerBase
     public void DestroyOre()
     {
         //Explote (Shake effects)
-        CinemachineShake.Instance.ShakeCamera(5f, 1f);
+        CinemachineShake.Instance.ShakeCamera(10f, 1f);
     }
+
 }

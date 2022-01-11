@@ -49,6 +49,7 @@ public class InventoryMenu : MonoBehaviour
 
     }
 
+
     public void UpdateInventory()
     {
         if (itemCellsList.Count < inventory.GetInventorySize())

@@ -17,7 +17,12 @@ public class CraftingSystem : MonoBehaviour
     // Public Attributes
     public List<RecepieCollection> recepiesLvl;
     public List<Recepie> availableRecepies;
+    // public ParticleSystem[] craftingParticles;
 
+    //Events
+
+    public delegate void CraftAction();
+    public static event CraftAction OnCrafting;
 
     void Start()
     {
@@ -28,7 +33,17 @@ public class CraftingSystem : MonoBehaviour
         AddAvailableRecepies();
 
         droppedItemPosition = new Vector2(transform.position.x, transform.position.y - 1f);
+
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        playerInventoryItems = new Dictionary<Item, int>();
+
+
+        //foreach (ParticleSystem particle in craftingParticles)
+        //{
+        //    particle.Stop();
+        //}
     }
+
 
     private void Update()
     {
@@ -75,9 +90,7 @@ public class CraftingSystem : MonoBehaviour
 
     private void UpdatePlayerInventoryData()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-
-        playerInventoryItems = new Dictionary<Item, int>();
+        playerInventoryItems.Clear();
         numberOfEmptySlotsInPlayerInventory = 0;
 
         foreach (ItemStack playerInventoryItemStack in playerInventory.inventory)
@@ -126,8 +139,7 @@ public class CraftingSystem : MonoBehaviour
             {
                 // instantiate item in map instead
                 GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
-                item.GetComponent<ItemGameObject>().DropsDown();
-                item.GetComponent<ItemGameObject>().StartDespawning();
+                item.GetComponent<ItemGameObject>().DropsRandom();
             }
         }
         
@@ -148,13 +160,28 @@ public class CraftingSystem : MonoBehaviour
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex]))
         {
+            OnCrafting();
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
-            Debug.Log("Crafted " + availableRecepies[selectedRecepieIndex].recepieName);
         }
         else
         {
             Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepieName);
         }
     }
+
+   /* IEnumerator CraftingParticleSystem()
+    {
+        foreach (ParticleSystem particle in craftingParticles)
+        {
+            particle.Play();
+        }
+
+        yield return new WaitForSeconds(3.4f);
+
+        foreach (ParticleSystem particle in craftingParticles)
+        {
+            particle.Play();
+        }
+    }*/
 }

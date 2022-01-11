@@ -37,6 +37,8 @@ public class Inventory : MonoBehaviour
         InitInventory();
     }
 
+
+
     public void InitInventory()
     {
         for (int i = 0; i < numberOfInventorySlots; i++)
@@ -66,14 +68,14 @@ public class Inventory : MonoBehaviour
 
     public int NextInventorySlotWithAvailableItemToSubstract(Item itemToCompare)
     {
-        int i = 0;
-        while (i < numberOfInventorySlots)
+        int i = numberOfInventorySlots-1;
+        while (i >= 0)
         {
             if (inventory[i].StackContainsItem(itemToCompare))
             {
                 return i;
             }
-            i++;
+            --i;
         }
         return -1;
     }
@@ -93,6 +95,11 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
+    public bool ItemCanBeAdded(Item itemToCompare)
+    {
+        return (NextEmptyInventorySlot() != -1) ||
+               (NextInventorySlotWithAvailableSpaceToAddItem(itemToCompare) != -1);
+    }
 
 
     // Modifier Methods
@@ -248,7 +255,14 @@ public class Inventory : MonoBehaviour
 
         List<ItemStack.itemStackToDisplay> itemsToDisplay = new List<ItemStack.itemStackToDisplay>();
 
-        itemsToDisplay.Add(inventory[(i - 1) % n].GetStackToDisplay());
+        if (((i - 1) % n) < 0)
+        {
+            itemsToDisplay.Add(inventory[3].GetStackToDisplay());
+        }
+        else
+        {
+            itemsToDisplay.Add(inventory[(i - 1) % n].GetStackToDisplay());
+        }
         itemsToDisplay.Add(inventory[i].GetStackToDisplay());
         itemsToDisplay.Add(inventory[(i + 1) % n].GetStackToDisplay());
 
@@ -273,7 +287,9 @@ public class Inventory : MonoBehaviour
     {
         if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
         {
-            inventory[indexOfSelectedInventorySlot].itemInStack.prefab.GetComponent<ItemGameObject>().DoFunctionality();
+            GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
+            consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
+
             SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
         }
     }
