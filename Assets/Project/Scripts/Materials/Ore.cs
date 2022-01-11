@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public enum OreState { WHOLE, BROKEN};
-public enum Hardness { NORMAL , HARD };
+public enum OreState { WHOLE, BROKEN };
+public enum Hardness { NORMAL, HARD };
 
 public class Ore : MonoBehaviour
 {
@@ -33,8 +33,6 @@ public class Ore : MonoBehaviour
             particleSystem.Stop();
         }
     }
-
-
 
     public bool CanBeMined() { return breakState == OreState.WHOLE; }
 
@@ -102,7 +100,7 @@ public class Ore : MonoBehaviour
 
         Color semiTransparentColor = spriteRenderer.material.color;
         semiTransparentColor.a = 0.5f;
-        
+
         spriteRenderer.material.color = semiTransparentColor;
         yield return new WaitForSeconds(0.2f);
         spriteRenderer.material.color = transparentColor;

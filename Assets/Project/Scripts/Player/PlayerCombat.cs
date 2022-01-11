@@ -8,7 +8,6 @@ public class PlayerCombat : PlayerBase
     // Private Attributes
     private const float ATTACK_TIME_DURATION = 0.22f;
     private float ATTACK_COOLDOWN = 0.7f;
-    private float ATTACK_DASH_FORCE = 8f;
 
     private bool canAttack = true;
 
@@ -16,7 +15,6 @@ public class PlayerCombat : PlayerBase
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
-    private PlayerMovement playerMovement;
     private PlayerAreas playerAreas;
     private InGameHUDHandler inGameHUD;
 
@@ -25,20 +23,23 @@ public class PlayerCombat : PlayerBase
 
     // Public Attributes
     public GameObject attackArea;
+    public HUDHandler hudHandler;
+    public bool targetWasHitAlready = false;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
-    public GameObject swordLight;
 
-    //Audio
-    public AudioSource audioSource;
-    public AudioClip hurtedAudioClip;
-    public AudioClip attackAudioClip;
+    // Events
+    public delegate void PlayerAttackSound();
+    public static event PlayerAttackSound playerAttackEvent;
+    public static event PlayerAttackSound playerMissesAttackEvent;
+    public static event PlayerAttackSound playerReceivesDamageEvent;
+
+
 
     private void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
         playerAreas = GetComponent<PlayerAreas>();
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
@@ -48,12 +49,11 @@ public class PlayerCombat : PlayerBase
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
         {
             StartAttacking();
         }
     }
-
 
     private void StartAttacking()
     {
@@ -68,20 +68,14 @@ public class PlayerCombat : PlayerBase
     {
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
-        swordLight.SetActive(true);
 
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = attackAudioClip;
-        audioSource.Play();
+        playerAttackEvent();
 
-        playerMovement.GetsPushed((PlayerInputs.instance.GetMousePositionInWorld() - (Vector2)transform.position).normalized, ATTACK_DASH_FORCE);
         playerAreas.DoSpawnAttackArea();
-
         yield return new WaitForSeconds(ATTACK_TIME_DURATION);
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
-        swordLight.SetActive(false);
         ResetAttack();
     }
 
@@ -107,6 +101,7 @@ public class PlayerCombat : PlayerBase
         {
             StartCoroutine(Invulnerability());
             inGameHUD.DoRecieveDamageFadeAndShake();
+            hudHandler.ShowRecieveDamageFades();
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -114,9 +109,8 @@ public class PlayerCombat : PlayerBase
         transform.DOPunchScale(new Vector3(-0.4f, 0.2f, 0), 0.5f);
         transform.DOPunchRotation(new Vector3(0, 0, 10), 0.2f);
 
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = hurtedAudioClip;
-        audioSource.Play();
+        playerReceivesDamageEvent();
+
         StartCoroutine(PlayerBloodParticleSystem());
     }
 
@@ -171,5 +165,13 @@ public class PlayerCombat : PlayerBase
     }
 
 
+    public void TargetWasHit()
+    {
+        //if (!targetWasHitAlready)
+        //{
+        //    targetWasHitAlready = true;
+        //    playerAttackEvent();
+        //}
+    }
 
 }

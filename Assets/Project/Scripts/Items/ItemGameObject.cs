@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-
-
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
@@ -27,21 +25,16 @@ public class ItemGameObject : MonoBehaviour
     public float currentDespawnTimeInSeconds = DESPAWN_TIME_IN_SECONDS;
     private const float START_DESPAWN_FADING_TIME = 3.0f;
 
-
     // Public Attributes
     public Item item;
-
 
     // Audio
     public AudioSource audioSource;
     public AudioClip itemIsDropped;
 
-
-
-
     private void Awake()
     {
-        Debug.Log( GetComponent<SpriteRenderer>().material.shader.GetPropertyCount());
+        Debug.Log(GetComponent<SpriteRenderer>().material.shader.GetPropertyCount());
         rigidbody2D = GetComponent<Rigidbody2D>();
         canBePickedUp = true;
     }
@@ -58,7 +51,6 @@ public class ItemGameObject : MonoBehaviour
     {
         ItemFloating();
     }
-
 
     public void DropsDown()
     {
@@ -92,7 +84,6 @@ public class ItemGameObject : MonoBehaviour
         StartDespawning(DESPAWN_TIME_IN_SECONDS);
     }
 
-
     private void PlayDropSound()
     {
         audioSource.clip = itemIsDropped;
@@ -105,8 +96,6 @@ public class ItemGameObject : MonoBehaviour
         //rigidbody2D.bodyType = RigidbodyType2D.Static;
         rigidbody2D.gravityScale = 0f;
     }
-
-
 
     public void StartDespawning(float despawnTime)
     {
@@ -160,7 +149,6 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 
-
     private void ItemFloating()
     {
         lerp.Update(Time.deltaTime);
@@ -171,5 +159,4 @@ public class ItemGameObject : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
     }
-
 }

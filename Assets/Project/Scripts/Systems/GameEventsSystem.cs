@@ -39,8 +39,7 @@ public class GameEventsSystem : MonoBehaviour
 
             randomEventID = Random.Range(0, MAX_FURNACE_EVENTS);
 
-            Debug.Log(randomEventID);
-            if (randomEventID == 1 || randomEventID == 2)
+            if (randomEventID == 1)// || randomEventID == 2)
             {
                 furnace.StartEvent(randomEventID);
                 eventInAction = true;
