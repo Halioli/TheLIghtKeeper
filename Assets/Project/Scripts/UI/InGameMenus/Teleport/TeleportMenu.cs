@@ -10,6 +10,8 @@ public class TeleportMenu : MonoBehaviour
 
     // Public Attributes
     public Button[] teleportButtonsGameObjects;
+    public Sprite[] currentTeleportSprites;
+    public Image currentTeleportRuneImage;
     public TeleportSystem teleportSystem;
     public GameObject hudGameObject;
 
@@ -19,7 +21,7 @@ public class TeleportMenu : MonoBehaviour
         {
             if (!teleportSystem.teleports[i].activated)
             {
-                teleportButtonsGameObjects[i].gameObject.SetActive(false);
+                teleportButtonsGameObjects[i].interactable = false;
             }
         }
     }
@@ -40,11 +42,13 @@ public class TeleportMenu : MonoBehaviour
 
     public void UpdateTeleportSelectionMenu(string currentTeleportInUse)
     {
+        currentTeleportRuneImage.sprite = currentTeleportSprites[teleportSystem.currentTeleportInUse];
+
         for (int i = 0; i < teleportSystem.teleports.Count; ++i)
         {
             if (teleportSystem.teleports[i].activated)
             {
-                teleportButtonsGameObjects[i].gameObject.SetActive(true);
+                teleportButtonsGameObjects[i].interactable = true;
 
                 if (i == teleportSystem.currentTeleportInUse)
                 {
