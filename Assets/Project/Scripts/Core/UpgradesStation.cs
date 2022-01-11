@@ -47,11 +47,13 @@ public class UpgradesStation : InteractStation
             hudGameObject.SetActive(false);
             upgradesCanvasGameObject.SetActive(true);
             inventoryMenu.UpdateInventory();
+            PauseMenu.gameIsPaused = true;
         }
         else
         {
             hudGameObject.SetActive(true);
             upgradesCanvasGameObject.SetActive(false);
+            PauseMenu.gameIsPaused = false;
         }
     }
 
