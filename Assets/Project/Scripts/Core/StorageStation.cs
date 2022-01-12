@@ -36,18 +36,18 @@ public class StorageStation : InteractStation
     {
         if (inventoryIsOpen)
         {
-            DoOnInteractClose();
             CloseStorageInventory();
         }
         else
         {
-            DoOnInteractOpen();
             OpenStorageInventory();
         }
     }
 
     private void OpenStorageInventory()
     {
+        DoOnInteractOpen();
+
         inventoryIsOpen = true;
         storageCanvasGameObject.SetActive(true);
         storageInventoryMenu.UpdateInventory();
@@ -60,6 +60,8 @@ public class StorageStation : InteractStation
 
     private void CloseStorageInventory()
     {
+        DoOnInteractClose();
+
         inventoryIsOpen = false;
         storageCanvasGameObject.SetActive(false);
 
