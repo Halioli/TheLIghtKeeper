@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpgradeMenuCanvas : MonoBehaviour
 {
     [SerializeField] UpgradeButton[] upgradeButtons;
-
+    public UpgradesSystem upgradesSystem;
 
     public void Init(List<UpgradeBranch> upgradeBranches)
     {
@@ -29,4 +29,10 @@ public class UpgradeMenuCanvas : MonoBehaviour
         }
     }
 
+    public void UpgradeBranchIsSelected(int index)
+    {
+        upgradesSystem.UpgradeBranchIsSelected(index);
+        
+        Init(upgradesSystem.upgradeBranches);
+    }
 }

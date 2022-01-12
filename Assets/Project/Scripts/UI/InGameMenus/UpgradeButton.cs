@@ -15,8 +15,6 @@ public class UpgradeButton : MonoBehaviour
     private int currentUpgradeStatus = 0;
     private bool canBeClicked = true;
 
-    public Inventory playerInventory;
-
     public void GetsClicked()
     {
         if (canBeClicked)
