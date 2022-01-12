@@ -11,10 +11,9 @@ public class UpgradeButton : MonoBehaviour
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] Image[] upgradeStatus;
     [SerializeField] GameObject[] requiredMaterials;
+
     private int currentUpgradeStatus = 0;
-
     private bool canBeClicked = true;
-
 
     public void GetsClicked()
     {
@@ -78,7 +77,7 @@ public class UpgradeButton : MonoBehaviour
     IEnumerator ClickCooldown()
     {
         canBeClicked = false;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         canBeClicked = true;
     }
 
