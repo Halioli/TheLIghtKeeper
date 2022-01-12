@@ -36,10 +36,12 @@ public class StorageStation : InteractStation
     {
         if (inventoryIsOpen)
         {
+            DoOnInteractClose();
             CloseStorageInventory();
         }
         else
         {
+            DoOnInteractOpen();
             OpenStorageInventory();
         }
     }
@@ -52,6 +54,8 @@ public class StorageStation : InteractStation
 
         playerInventory.SetOtherInventory(this.inventory);
         this.inventory.SetOtherInventory(playerInventory);
+
+        PauseMenu.gameIsPaused = true;
     }
 
     private void CloseStorageInventory()
@@ -61,6 +65,8 @@ public class StorageStation : InteractStation
 
         playerInventory.SetOtherInventory(null);
         this.inventory.SetOtherInventory(null);
+
+        PauseMenu.gameIsPaused = false;
     }
 
 

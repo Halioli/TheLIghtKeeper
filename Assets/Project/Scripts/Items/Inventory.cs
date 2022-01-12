@@ -24,7 +24,12 @@ public class Inventory : MonoBehaviour
     [SerializeField] private int maxNumberOfSlots;
 
 
-    private Inventory otherInventory = null; 
+    private Inventory otherInventory = null;
+
+
+    // Action
+    public delegate void InventoryAction();
+    public static event InventoryAction OnItemMove;
 
 
     // Initializer Methods
@@ -37,6 +42,7 @@ public class Inventory : MonoBehaviour
 
         InitInventory();
     }
+
 
     public void InitInventory()
     {
@@ -308,7 +314,9 @@ public class Inventory : MonoBehaviour
         if (canSwap)
         {
             otherInventory.AddItemToInventory(inventory[itemCellIndex].itemInStack);
-            SubstractItemFromInventory(inventory[itemCellIndex].itemInStack);
+            SubstractItemFromInventorySlot(itemCellIndex);
+
+            if (OnItemMove != null) OnItemMove();
         }
     }
 
