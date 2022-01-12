@@ -9,10 +9,10 @@ public class InventoryMenu : MonoBehaviour
     public ItemCell referenceItemCell;
 
     // Private
-    public List<ItemCell> itemCellsList = new List<ItemCell>();
+    private List<ItemCell> itemCellsList = new List<ItemCell>();
 
 
-    private void Awake()
+    private void Start()
     {
         InitInventoryCellsList();
     }
@@ -20,17 +20,18 @@ public class InventoryMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
+        if (inventory.gotChanged)
         {
+            inventory.gotChanged = false;
             UpdateInventory();
         }
     }
 
 
 
-    private void InitInventoryCellsList()
+    public void InitInventoryCellsList()
     {
-        for (int i = 0; i < inventory.GetInventorySize(); i++)
+        for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
             AddNewEmptyCell();
         }
@@ -39,14 +40,19 @@ public class InventoryMenu : MonoBehaviour
 
     public void AddNewEmptyCell()
     {
-        itemCellsList.Add(Instantiate(referenceItemCell, transform).GetComponent<ItemCell>());
-       
+        ItemCell newItemCell = Instantiate(referenceItemCell, transform).GetComponent<ItemCell>();
+
+        itemCellsList.Add(newItemCell);
+
+        newItemCell.InitItemCell(this, itemCellsList.Count - 1);
+
         SpriteRenderer sr = inventory.inventory[itemCellsList.Count - 1].itemInStack.prefab.GetComponent<SpriteRenderer>();
-        referenceItemCell.SetItemImage(sr.sprite);
+        //referenceItemCell.SetItemImage(sr.sprite);
+        newItemCell.SetItemImage(sr.sprite);
 
         int amount = inventory.inventory[itemCellsList.Count - 1].amountInStack;
-        referenceItemCell.SetItemAmount(amount);
-
+        //referenceItemCell.SetItemAmount(amount);
+        newItemCell.SetItemAmount(amount);
     }
 
 
@@ -54,13 +60,13 @@ public class InventoryMenu : MonoBehaviour
     {
         if (itemCellsList.Count < inventory.GetInventorySize())
         {
-            for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); i++)
+            for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); ++i)
             {
                 AddNewEmptyCell();
             }
         }
 
-        for (int i = 0; i < inventory.GetInventorySize(); i++)
+        for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
             SpriteRenderer sr = inventory.inventory[i].itemInStack.prefab.GetComponent<SpriteRenderer>();
             itemCellsList[i].SetItemImage(sr.sprite);
@@ -68,5 +74,11 @@ public class InventoryMenu : MonoBehaviour
             int amount = inventory.inventory[i].amountInStack;
             itemCellsList[i].SetItemAmount(amount);
         }
+    }
+
+
+    public void MoveItemToOtherInventory(int itemCellIndex)
+    {
+        inventory.MoveItemToOtherInventory(itemCellIndex);
     }
 }

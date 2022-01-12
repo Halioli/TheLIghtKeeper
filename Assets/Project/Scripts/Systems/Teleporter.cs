@@ -53,7 +53,6 @@ public class Teleporter : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
-        OnActivation(teleportName);
     }
 
     // Interactive pop up disappears
@@ -67,12 +66,11 @@ public class Teleporter : InteractStation
     {
         if (!activated && playerInventory.InventoryContainsItem(darkEssence))
         {
-            playerInventory.SubstractItemToInventory(darkEssence);
+            playerInventory.SubstractItemFromInventory(darkEssence);
             mssgText.text = messagesToShow[2];
 
             PlayerInputs.instance.canMove = false;
             animatior.SetBool("isActivated", true);
-            OnActivation(teleportName);
         }
         else if (!activated && !playerInventory.InventoryContainsItem(darkEssence))
         {
@@ -82,7 +80,6 @@ public class Teleporter : InteractStation
         {
             if (!canvasTeleportSelection.activeInHierarchy)
             {
-                OnActivation(teleportName);
                 hudGameObject.SetActive(false);
                 canvasTeleportSelection.SetActive(true);
                 PauseMenu.gameIsPaused = true;
