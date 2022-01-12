@@ -105,16 +105,6 @@ public class Furnace : InteractStation
         }
     }
 
-    private void OnEnable()
-    {
-        CoreUpgrade.OnCoreUpgrade += UpgradeFunction;
-    }
-
-    private void OnDisable()
-    {
-        CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
-    }
-
     //From InteractStation script
     public override void StationFunction()
     {
@@ -302,6 +292,16 @@ public class Furnace : InteractStation
                 furnaceEvents = FURNACE_EVENTS.STABILIZING;
                 break;
         }
+    }
+
+    private void OnEnable()
+    {
+        CoreUpgrade.OnCoreUpgrade += UpgradeFunction;
+    }
+
+    private void OnDisable()
+    {
+        CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
     }
 
     // Public Methods
