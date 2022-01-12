@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b69bf5647856226448733f6dfdba890c, type: 3}
-  m_Name: LanternFuel
+  m_Name: PikeBomb
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2404674692941011119, guid: 8d77cb8e231231d4f835717e765ddc14, type: 3}
-  itemName: Lantern Fuel
-  description: Allows the player refill the lantern during 5 seconds.
-  ID: 21
+  prefab: {fileID: 5284852591263328306, guid: 10654c109a43f384087f9b6fc3410d72, type: 3}
+  itemName: Pike Bomb
+  description: Produces a small explosion on impact damaging and mining everything
+    in its area.
+  ID: 22
   itemType: 2
   stackSize: 8
   sprite: {fileID: 21300000, guid: d244348ca42ef7c4d8fd8ce4efeccd5c, type: 3}
