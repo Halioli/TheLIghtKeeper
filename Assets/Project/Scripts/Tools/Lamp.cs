@@ -245,6 +245,11 @@ public class Lamp : MonoBehaviour
         return lampTime;
     }
 
+    public float GetMaxLampTime()
+    {
+        return maxLampTime;
+    }
+
     private void UpgradeLampSource()
     {
         if (sourceLevel >= MAX_SOURCE_LEVELS)

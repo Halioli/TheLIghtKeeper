@@ -25,7 +25,6 @@ public class UpgradesSystem : MonoBehaviour
         this.playerInventory = playerInventory;
     }
 
-
     public void UpgradeBranchIsSelected(int index)
     {
         UpdatePlayerInventoryData();
@@ -36,8 +35,6 @@ public class UpgradesSystem : MonoBehaviour
             upgradeBranches[index].Upgrade();
         }
     }
-
-
 
     private void UpdatePlayerInventoryData()
     {

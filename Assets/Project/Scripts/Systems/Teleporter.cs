@@ -66,7 +66,7 @@ public class Teleporter : InteractStation
     {
         if (!activated && playerInventory.InventoryContainsItem(darkEssence))
         {
-            playerInventory.SubstractItemToInventory(darkEssence);
+            playerInventory.SubstractItemFromInventory(darkEssence);
             mssgText.text = messagesToShow[2];
 
             PlayerInputs.instance.canMove = false;
