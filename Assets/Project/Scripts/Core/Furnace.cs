@@ -124,7 +124,7 @@ public class Furnace : InteractStation
                 break;
 
             case FURNACE_EVENTS.NEEDS_COAL:
-                if (playerInventory.SubstractItemToInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
+                if (playerInventory.SubstractItemFromInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
                 {
                     FuelAdded((int)furnaceEvents);
                 }
@@ -135,7 +135,7 @@ public class Furnace : InteractStation
                 break;
 
             case FURNACE_EVENTS.NEEDS_REPAIRS:
-                if (playerInventory.SubstractItemToInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
+                if (playerInventory.SubstractItemFromInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
                 {
                     FuelAdded((int)furnaceEvents);
                 }
