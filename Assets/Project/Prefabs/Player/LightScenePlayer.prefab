@@ -233,6 +233,8 @@ MonoBehaviour:
   emptyStack: {fileID: 2426600849371271658}
   inventory: []
   indexOfSelectedInventorySlot: 0
+  numberOfInventorySlots: 4
+  maxNumberOfSlots: 8
 --- !u!1 &1928852176627775710
 GameObject:
   m_ObjectHideFlags: 0
@@ -15938,7 +15940,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 1166042634230200416, guid: d395a2c4bd26b2647a6d68b33bcf4021, type: 2}
   m_audioClip: {fileID: 8300000, guid: f86cc0477ce388d438823c8614629861, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -16034,7 +16036,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 6008658307929477001, guid: d395a2c4bd26b2647a6d68b33bcf4021, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

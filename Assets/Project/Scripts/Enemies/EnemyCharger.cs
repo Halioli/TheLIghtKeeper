@@ -27,6 +27,7 @@ public class EnemyCharger : HostileEnemy
     public float CHARGE_SPEED;
     public const float CHARGE_TIME = 0.5f;
     public float MAX_SPEED;
+    public float FLEE_SPEED = 60f;
     public const float ACCELERATION = 0.25f;
 
     public float distanceToCharge = 4f;
@@ -227,7 +228,7 @@ public class EnemyCharger : HostileEnemy
         angleDirection = Vector2.Perpendicular(directionOnChargeStart);
         angleDirection *= sinWaveDistance;
 
-        rigidbody.MovePosition((Vector2)transform.position - angleDirection - fleeDirection * (MAX_SPEED * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position - angleDirection - fleeDirection * (FLEE_SPEED * Time.deltaTime));
     }
 
     private void Charge()

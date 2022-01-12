@@ -16,7 +16,6 @@ public class LightRodGameObject : ItemGameObject
         StartCoroutine("Functionality");
     }
 
-
     private void FunctionalitySound()
     {
         audioSource.clip = lightRodUseSound;
