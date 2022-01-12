@@ -27,6 +27,8 @@ public class UpgradesSystem : MonoBehaviour
 
     public void UpgradeBranchIsSelected(int index)
     {
+        if (upgradeBranches[index].IsCompleted()) return;
+
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToUpgrade(upgradeBranches[index].GetCurrentUpgrade()))
         {
