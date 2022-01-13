@@ -32,13 +32,17 @@ public class UpgradeMenuCanvas : MonoBehaviour
     public void UpgradeBranchIsSelected(int index)
     {
         upgradesSystem.UpgradeBranchIsSelected(index);
-
         UpdateUpgradeButton(upgradesSystem.upgradeBranches, index);
     }
 
     private void UpdateUpgradeButton(List<UpgradeBranch> upgradeBranches, int index)
     {
-        upgradeBranches[index].Init(index);
+        if (upgradeBranches[index].IsCompleted())
+        {
+            upgradeButtons[index].canBeClicked = false;
+            return;
+        }
+
 
         Upgrade upgrade = upgradeBranches[index].GetCurrentUpgrade();
         Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];

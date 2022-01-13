@@ -106,6 +106,5 @@ public class PlayerInventory : MonoBehaviour
     private void UpgradeInventory()
     {
         inventory.UpgradeInventory();
-        Debug.Log("aqui");
     }
 }

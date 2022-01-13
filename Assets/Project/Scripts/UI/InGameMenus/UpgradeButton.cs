@@ -13,7 +13,7 @@ public class UpgradeButton : MonoBehaviour
     [SerializeField] GameObject[] requiredMaterials;
 
     private int currentUpgradeStatus = 0;
-    private bool canBeClicked = true;
+    public bool canBeClicked = true;
 
     public void GetsClicked()
     {
@@ -79,6 +79,10 @@ public class UpgradeButton : MonoBehaviour
         canBeClicked = false;
         yield return new WaitForSeconds(1f);
         canBeClicked = true;
+    }
+
+    public void ClearButton()
+    {
     }
 
 }
