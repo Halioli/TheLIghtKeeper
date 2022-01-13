@@ -2,19 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class InteractStation : MonoBehaviour
 {
     public BoxCollider2D triggerArea;
 
     protected bool playerInsideTriggerArea;
     protected Inventory playerInventory;
-
-    // Action
-    public delegate void InteractStationAction();
-    public static event InteractStationAction OnInteractOpen;
-    public static event InteractStationAction OnInteractClose;
-
 
     private void Awake()
     {
@@ -26,7 +19,6 @@ public class InteractStation : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInsideTriggerArea = true;
-            
         }
         
     }
@@ -55,21 +47,5 @@ public class InteractStation : MonoBehaviour
     virtual public void UpgradeFunction()
     {
         //Code from child
-    }
-
-    protected void DoOnInteractOpen()
-    {
-        if (OnInteractOpen != null)
-        {
-            OnInteractOpen();
-        }
-    }
-
-    protected void DoOnInteractClose()
-    {
-        if (OnInteractClose != null)
-        {
-            OnInteractClose();
-        }
     }
 }

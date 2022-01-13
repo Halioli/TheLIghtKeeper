@@ -50,9 +50,4 @@ public class UpgradeBranch : ScriptableObject
         return upgrades[currentUpgrade];
     }
 
-    public bool IsCompleted()
-    {
-        return branchCompleted;
-    }
-
 }

@@ -10,7 +10,6 @@ public class PlayerMovement : PlayerBase
     private bool beingPushed = false;
     private Vector2 pushDirection = new Vector2();
     private float pushForce = 0f;
-    private bool walking = false;
 
     // Public attributes
     public float moveSpeed;
@@ -30,35 +29,25 @@ public class PlayerMovement : PlayerBase
 
     private void Update()
     {
-        //if (playerStates.PlayerStateIsFree())
-        //{
-        //    moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
-        //    if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking() && walking)
-        //    {
-        //        StopWalking();
-        //    }
-        //    else if (moveDirection != Vector2.zero && !walking)
-        //    {
-        //        StartWalking();
-        //    }
-        //}
-
-        moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
-        if (moveDirection == Vector2.zero && walking)
+        if (playerStates.PlayerStateIsFree())
         {
-            StopWalking();
+            moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
+            if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking())
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+                //Update speed for walk animation
+                animator.SetBool("isWalking", false);
+                pausePlayerWalkingSoundEvent();
+            }
+            else if (moveDirection != Vector2.zero)
+            {
+                playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
+                PlayerInputs.instance.FlipSprite(moveDirection);
+                animator.SetBool("isWalking", true);
+                playPlayerWalkingSoundEvent();
+            }
         }
-        else if (moveDirection != Vector2.zero && !walking)
-        {
-            StartWalking();
-        }
-
-        if (((moveDirection.x < 0 && PlayerInputs.instance.facingLeft) || 
-            (moveDirection.x > 0 && !PlayerInputs.instance.facingLeft)) && 
-            PlayerInputs.instance.canFlip)
-        {
-            PlayerInputs.instance.FlipSprite(moveDirection);
-        }
+                
     }
 
     private void FixedUpdate()
@@ -81,23 +70,5 @@ public class PlayerMovement : PlayerBase
         beingPushed = true;
         pushDirection = newPushDirection;
         pushForce = newPushForce;
-    }
-
-    private void StartWalking()
-    {
-        walking = true;
-        playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
-        PlayerInputs.instance.FlipSprite(moveDirection);
-        animator.SetBool("isWalking", true);
-        playPlayerWalkingSoundEvent();
-    }
-
-    private void StopWalking()
-    {
-        walking = false;
-        playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
-        //Update speed for walk animation
-        animator.SetBool("isWalking", false);
-        pausePlayerWalkingSoundEvent();
     }
 }

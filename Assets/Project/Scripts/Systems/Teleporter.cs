@@ -1,30 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public class Teleporter : InteractStation
+public class Teleporter : MonoBehaviour
 {
     // Private Attributes
     private Vector2 spawnPosition;
     private Animator animatior;
-    private string[] messagesToShow = { "", "No dark essence found", "Dark essence consumed" };
+    private bool playerOnTrigger = false;
 
     // Public Attributes
-    //Station
-    public GameObject interactText;
-    public GameObject canvasTeleportSelection;
-    public GameObject hudGameObject;
-    public TextMeshProUGUI mssgText;
-
-    //Teleport
-    public Item darkEssence;
     public string teleportName;
     public Vector3 teleportTransformPosition;
     public bool activated = false;
     public GameObject[] teleporterLights;
+    public GameObject canvasTeleportSelection;
 
-    //Events / Actions
+    // Events
     public delegate void TeleportActivation(string teleportName);
     public static event TeleportActivation OnActivation;
 
@@ -38,66 +30,52 @@ public class Teleporter : InteractStation
 
     private void Update()
     {
-        if (playerInsideTriggerArea)
+        if (PlayerInputs.instance.PlayerPressedInteractButton() && playerOnTrigger)
         {
-            GetInput();
-            PopUpAppears();
-        }
-        else
-        {
-            PopUpDisappears();
-        }
-    }
-
-    // Interactive pop up disappears
-    private void PopUpAppears()
-    {
-        interactText.SetActive(true);
-    }
-
-    // Interactive pop up disappears
-    private void PopUpDisappears()
-    {
-        interactText.SetActive(false);
-        mssgText.text = messagesToShow[0];
-    }
-
-    public override void StationFunction()
-    {
-        if (!activated && playerInventory.InventoryContainsItem(darkEssence))
-        {
-            playerInventory.SubstractItemFromInventory(darkEssence);
-            mssgText.text = messagesToShow[2];
-
-            PlayerInputs.instance.canMove = false;
-            animatior.SetBool("isActivated", true);
-        }
-        else if (!activated && !playerInventory.InventoryContainsItem(darkEssence))
-        {
-            mssgText.text = messagesToShow[1];
-        }
-        else
-        {
-            if (!canvasTeleportSelection.activeInHierarchy)
+            //Do the activate teleport animation and stay teleport
+            if (activated)
             {
-                hudGameObject.SetActive(false);
-                canvasTeleportSelection.SetActive(true);
-                PauseMenu.gameIsPaused = true;
+                if (canvasTeleportSelection.activeInHierarchy)
+                {
+                    PlayerInputs.instance.canMove = true;
+
+                    canvasTeleportSelection.SetActive(false);
+                }
+                else
+                {
+                    PlayerInputs.instance.canMove = false;
+
+                    canvasTeleportSelection.SetActive(true);
+                    OnActivation(teleportName);
+                }
             }
             else
             {
-                hudGameObject.SetActive(true);
-                canvasTeleportSelection.SetActive(false);
-                PauseMenu.gameIsPaused = false;
+                PlayerInputs.instance.canMove = false;
+
+                animatior.SetBool("isActivated", true);
+                OnActivation(teleportName);
             }
         }
+
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        playerOnTrigger = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        playerOnTrigger = false;
+    }
+
 
     public void SetTeleporterActive()
     {
         activated = true;
-        PlayerInputs.instance.canMove = true;
-        mssgText.text = messagesToShow[0];
+
+        canvasTeleportSelection.SetActive(true);
 
         if (OnActivation != null)
             OnActivation(teleportName);

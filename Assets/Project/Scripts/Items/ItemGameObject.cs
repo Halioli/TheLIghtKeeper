@@ -34,7 +34,9 @@ public class ItemGameObject : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log(GetComponent<SpriteRenderer>().material.shader.GetPropertyCount());
         rigidbody2D = GetComponent<Rigidbody2D>();
+        canBePickedUp = true;
     }
 
     private void Start()
@@ -47,8 +49,7 @@ public class ItemGameObject : MonoBehaviour
 
     private void Update()
     {
-        if (canBePickedUp)
-            ItemFloating();
+        ItemFloating();
     }
 
     public void DropsDown()

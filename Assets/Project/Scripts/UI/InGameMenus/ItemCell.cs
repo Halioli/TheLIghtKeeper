@@ -6,18 +6,9 @@ using TMPro;
 
 public class ItemCell : MonoBehaviour
 {
-    private InventoryMenu inventoryMenu;
-    private int index;
-
     public Image itemImage;
     public TextMeshProUGUI itemAmount;
     public Button button;
-
-    public void InitItemCell(InventoryMenu inventoryMenu, int index)
-    {
-        this.inventoryMenu = inventoryMenu;
-        this.index = index;
-    }
 
     public void SetItemImage(Sprite sprite)
     {
@@ -31,7 +22,7 @@ public class ItemCell : MonoBehaviour
 
     public void ClickedButton()
     {
-        inventoryMenu.MoveItemToOtherInventory(index);
+
     }
 
     public void SetToEmpty()

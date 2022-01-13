@@ -28,44 +28,44 @@ public class AudioEvents : MonoBehaviour
 
     private void OnEnable()
     {
-        //PlayerMovement.playPlayerWalkingSoundEvent += PlayWalkingSound;
-        //PlayerMovement.pausePlayerWalkingSoundEvent += PauseWalkingSound;
+        PlayerMovement.playPlayerWalkingSoundEvent += PlayWalkingSound;
+        PlayerMovement.pausePlayerWalkingSoundEvent += PauseWalkingSound;
 
-        //PlayerMiner.playerMiningBuildUpSoundEvent += PlayMiningBuildUpSound;
-        //PlayerMiner.successCriticalMiningSoundEvent += PlaySuccessCriticalMiningSound;
-        //PlayerMiner.failCriticalMiningSoundEvent += PlayFailCriticalMiningSound;
-        //PlayerMiner.playerMinesOreEvent += PlayMiningOreSound;
-        //PlayerMiner.playerBreaksOreEvent += PlayBreaksOreSound;
+        PlayerMiner.playerMiningBuildUpSoundEvent += PlayMiningBuildUpSound;
+        PlayerMiner.successCriticalMiningSoundEvent += PlaySuccessCriticalMiningSound;
+        PlayerMiner.failCriticalMiningSoundEvent += PlayFailCriticalMiningSound;
+        PlayerMiner.playerMinesOreEvent += PlayMiningOreSound;
+        PlayerMiner.playerBreaksOreEvent += PlayBreaksOreSound;
 
-        //Lamp.turnOnLanternSoundEvent += PlayTurnOnLampSound;
-        //Lamp.turnOffLanternSoundEvent += PlayTurnOffLampSound;
-        //Lamp.turnOnLanternDroneSoundEvent += PlayerTurnOnLanternDroneSound;
-        //Lamp.turnOffLanternDroneSoundEvent += PlayerTurnOffLanternDroneSound;
-        //Lamp.playLanternDroneSoundEvent += PlayLanternDroneSound;
-        //Lamp.stopLanternDroneSoundEvent += StopLanternDroneSound;
+        Lamp.turnOnLanternSoundEvent += PlayTurnOnLampSound;
+        Lamp.turnOffLanternSoundEvent += PlayTurnOffLampSound;
+        Lamp.turnOnLanternDroneSoundEvent += PlayerTurnOnLanternDroneSound;
+        Lamp.turnOffLanternDroneSoundEvent += PlayerTurnOffLanternDroneSound;
+        Lamp.playLanternDroneSoundEvent += PlayLanternDroneSound;
+        Lamp.stopLanternDroneSoundEvent += StopLanternDroneSound;
 
-        //PlayerInventory.playerPicksUpItemEvent += PlayPicksUpItemSound;
+        PlayerInventory.playerPicksUpItemEvent += PlayPicksUpItemSound;
     }
 
     private void OnDisable()
     {
-        //PlayerMovement.playPlayerWalkingSoundEvent -= PlayWalkingSound;
-        //PlayerMovement.pausePlayerWalkingSoundEvent -= PauseWalkingSound;
+        PlayerMovement.playPlayerWalkingSoundEvent -= PlayWalkingSound;
+        PlayerMovement.pausePlayerWalkingSoundEvent -= PauseWalkingSound;
 
-        //PlayerMiner.playerMiningBuildUpSoundEvent -= PlayMiningBuildUpSound;
-        //PlayerMiner.successCriticalMiningSoundEvent -= PlaySuccessCriticalMiningSound;
-        //PlayerMiner.failCriticalMiningSoundEvent -= PlayFailCriticalMiningSound;
-        //PlayerMiner.playerMinesOreEvent -= PlayMiningOreSound;
-        //PlayerMiner.playerBreaksOreEvent -= PlayBreaksOreSound;
+        PlayerMiner.playerMiningBuildUpSoundEvent -= PlayMiningBuildUpSound;
+        PlayerMiner.successCriticalMiningSoundEvent -= PlaySuccessCriticalMiningSound;
+        PlayerMiner.failCriticalMiningSoundEvent -= PlayFailCriticalMiningSound;
+        PlayerMiner.playerMinesOreEvent -= PlayMiningOreSound;
+        PlayerMiner.playerBreaksOreEvent -= PlayBreaksOreSound;
 
-        //Lamp.turnOnLanternSoundEvent -= PlayTurnOnLampSound;
-        //Lamp.turnOffLanternSoundEvent -= PlayTurnOffLampSound;
-        //Lamp.turnOnLanternDroneSoundEvent -= PlayerTurnOnLanternDroneSound;
-        //Lamp.turnOffLanternDroneSoundEvent -= PlayerTurnOffLanternDroneSound;
-        //Lamp.playLanternDroneSoundEvent -= PlayLanternDroneSound;
-        //Lamp.stopLanternDroneSoundEvent -= StopLanternDroneSound;
+        Lamp.turnOnLanternSoundEvent -= PlayTurnOnLampSound;
+        Lamp.turnOffLanternSoundEvent -= PlayTurnOffLampSound;
+        Lamp.turnOnLanternDroneSoundEvent -= PlayerTurnOnLanternDroneSound;
+        Lamp.turnOffLanternDroneSoundEvent -= PlayerTurnOffLanternDroneSound;
+        Lamp.playLanternDroneSoundEvent -= PlayLanternDroneSound;
+        Lamp.stopLanternDroneSoundEvent -= StopLanternDroneSound;
 
-        //PlayerInventory.playerPicksUpItemEvent -= PlayPicksUpItemSound;
+        PlayerInventory.playerPicksUpItemEvent -= PlayPicksUpItemSound;
     }
 
 

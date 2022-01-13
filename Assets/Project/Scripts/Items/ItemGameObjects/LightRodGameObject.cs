@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
+
+
 public class LightRodGameObject : ItemGameObject
 {
     public AudioClip lightRodUseSound;
@@ -13,6 +15,7 @@ public class LightRodGameObject : ItemGameObject
         canBePickedUp = false;
         StartCoroutine("Functionality");
     }
+
 
     private void FunctionalitySound()
     {

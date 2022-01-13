@@ -11,7 +11,7 @@ public class PlayerInventory : MonoBehaviour
     // Public Attributes
     public Inventory inventory { get; private set; }
     public Canvas inventoryCanvas;
-    [SerializeField] GameObject inventoryMenuGameObject;
+    public InventoryMenu inventoryMenu;
 
     // Events
     public delegate void PlayPlayerSound();
@@ -23,8 +23,6 @@ public class PlayerInventory : MonoBehaviour
     {
         inventory = GetComponentInChildren<Inventory>();
         itemCollectionCollider = GetComponent<CapsuleCollider2D>();
-
-        inventoryMenuGameObject.SetActive(inventoryIsOpen);
     }
 
     void Update()
@@ -64,26 +62,22 @@ public class PlayerInventory : MonoBehaviour
     private void OnEnable()
     {
         InventoryUpgrade.OnInventoryUpgrade += UpgradeInventory;
-        InteractStation.OnInteractOpen += OpenInventory;
-        InteractStation.OnInteractClose += CloseInventory;
     }
 
     private void OnDisable()
     {
         InventoryUpgrade.OnInventoryUpgrade -= UpgradeInventory;
-        InteractStation.OnInteractOpen -= OpenInventory;
-        InteractStation.OnInteractClose -= CloseInventory;
     }
 
 
-    public void OpenInventory()
+    private void OpenInventory()
     {
         inventoryIsOpen = true;
         inventoryCanvas.gameObject.SetActive(true);
-        //inventoryMenu.UpdateInventory();
+        inventoryMenu.UpdateInventory();
     }
 
-    public void CloseInventory()
+    private void CloseInventory()
     {
         inventoryIsOpen = false;
         inventoryCanvas.gameObject.SetActive(false);

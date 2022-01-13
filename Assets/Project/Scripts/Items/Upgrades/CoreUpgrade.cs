@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class CoreUpgrade : Upgrade
 {
-    public delegate void UpgradeAction();
     public static event UpgradeAction OnCoreUpgrade;
 
     public override void InvokeResultEvent()

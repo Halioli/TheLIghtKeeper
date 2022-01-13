@@ -14,27 +14,21 @@ public class Inventory : MonoBehaviour
 
     public int indexOfSelectedInventorySlot;
 
-    public bool gotChanged = false;
+
 
     // Private Attributes
-    [SerializeField] private int numberOfInventorySlots;
+    private int numberOfInventorySlots;
     private int numberOfOccuppiedInventorySlots;
     private bool inventoryIsEmpty;
 
-    [SerializeField] private int maxNumberOfSlots;
+    private const int MAX_NUMBER_OF_SLOTS = 9;
 
-
-    private Inventory otherInventory = null;
-
-
-    // Action
-    public delegate void InventoryAction();
-    public static event InventoryAction OnItemMove;
 
 
     // Initializer Methods
-    public void Awake()
+    public void Start()
     {
+        numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
         inventoryIsEmpty = true;
@@ -44,14 +38,16 @@ public class Inventory : MonoBehaviour
     }
 
 
+
     public void InitInventory()
     {
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
             inventory.Add(Instantiate(emptyStack, transform));
         }
-        gotChanged = true;
+        
     }
+
 
     // Getter Methods
     public int GetInventorySize() { return numberOfInventorySlots; }
@@ -84,6 +80,7 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
+
     public int NextEmptyInventorySlot()
     {
         int i = 0;
@@ -104,16 +101,17 @@ public class Inventory : MonoBehaviour
                (NextInventorySlotWithAvailableSpaceToAddItem(itemToCompare) != -1);
     }
 
+
     // Modifier Methods
     public void UpgradeInventory()
     {
-        if (numberOfInventorySlots < maxNumberOfSlots)
+        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
         {
             numberOfInventorySlots++;
             inventory.Add(Instantiate(emptyStack, transform));
-            gotChanged = true;
         }
     }
+
 
     // Bool Methods
     public bool InventoryIsEmpty()
@@ -150,6 +148,7 @@ public class Inventory : MonoBehaviour
         return hasEnough;
     }
 
+
     public bool AddItemToInventory(Item itemToAdd)
     {
         bool couldAddItem = false;
@@ -184,16 +183,11 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        if (couldAddItem)
-        {
-            gotChanged = true;
-        }
-
         return couldAddItem;
     }
 
 
-    public bool SubstractItemFromInventory(Item itemToSubstract)
+    public bool SubstractItemToInventory(Item itemToSubstract)
     {
         bool couldRemoveItem = false;
 
@@ -218,19 +212,15 @@ public class Inventory : MonoBehaviour
             couldRemoveItem = true;
         }
 
-        if (couldRemoveItem)
-        {
-            gotChanged = true;
-        }
-    
         return couldRemoveItem;
     }
+
 
     public bool SubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
     {
         for (int i = 0; i < numberOfItemsToSubstract; ++i)
         {
-            if (!SubstractItemFromInventory(itemToSubstract))
+            if (!SubstractItemToInventory(itemToSubstract))
             {
                 return false;
             }
@@ -253,9 +243,9 @@ public class Inventory : MonoBehaviour
                 inventoryIsEmpty = true;
             }
         }
-
-        gotChanged = true;
     }
+
+
 
     // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
@@ -279,6 +269,7 @@ public class Inventory : MonoBehaviour
         return itemsToDisplay;
     }
 
+
     public void CycleLeftSelectedItemIndex()
     {
         --indexOfSelectedInventorySlot;
@@ -291,6 +282,7 @@ public class Inventory : MonoBehaviour
         indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
     }
 
+
     public void UseSelectedConsumibleItem()
     {
         if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
@@ -301,28 +293,4 @@ public class Inventory : MonoBehaviour
             SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
         }
     }
-
-
-    public void MoveItemToOtherInventory(int itemCellIndex)
-    {
-        if (otherInventory == null) return;
-        if (inventory[itemCellIndex].itemInStack == itemNull) return;
-
-
-        bool canSwap = otherInventory.ItemCanBeAdded(inventory[itemCellIndex].itemInStack);
-
-        if (canSwap)
-        {
-            otherInventory.AddItemToInventory(inventory[itemCellIndex].itemInStack);
-            SubstractItemFromInventorySlot(itemCellIndex);
-
-            if (OnItemMove != null) OnItemMove();
-        }
-    }
-
-    public void SetOtherInventory(Inventory otherInventory)
-    {
-        this.otherInventory = otherInventory;
-    }
-
 }

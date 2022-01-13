@@ -7,6 +7,7 @@ public class PlayerCombat : PlayerBase
 {
     // Private Attributes
     private const float ATTACK_TIME_DURATION = 0.22f;
+    private float attackingTime = ATTACK_TIME_DURATION;
     private float ATTACK_COOLDOWN = 0.7f;
 
     private bool canAttack = true;
@@ -24,19 +25,15 @@ public class PlayerCombat : PlayerBase
     // Public Attributes
     public GameObject attackArea;
     public HUDHandler hudHandler;
-    public bool targetWasHitAlready = false;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
 
-    // Events
-    public delegate void PlayerAttackSound();
-    public static event PlayerAttackSound playerAttackEvent;
-    public static event PlayerAttackSound playerMissesAttackEvent;
-    public static event PlayerAttackSound playerReceivesDamageEvent;
-
-
+    //Audio
+    public AudioSource audioSource;
+    public AudioClip hurtedAudioClip;
+    public AudioClip attackAudioClip;
 
     private void Start()
     {
@@ -55,6 +52,17 @@ public class PlayerCombat : PlayerBase
         }
     }
 
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
     private void StartAttacking()
     {
         FlipPlayerSpriteFacingWhereToAttack();
@@ -69,10 +77,16 @@ public class PlayerCombat : PlayerBase
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
 
-        playerAttackEvent();
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.clip = attackAudioClip;
+        audioSource.Play();
 
         playerAreas.DoSpawnAttackArea();
-        yield return new WaitForSeconds(ATTACK_TIME_DURATION);
+        while (attackingTime > 0.0f)
+        {
+            attackingTime -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
@@ -81,6 +95,8 @@ public class PlayerCombat : PlayerBase
 
     private void ResetAttack()
     {
+        attackingTime = ATTACK_TIME_DURATION;
+
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
@@ -109,8 +125,9 @@ public class PlayerCombat : PlayerBase
         transform.DOPunchScale(new Vector3(-0.4f, 0.2f, 0), 0.5f);
         transform.DOPunchRotation(new Vector3(0, 0, 10), 0.2f);
 
-        playerReceivesDamageEvent();
-
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.clip = hurtedAudioClip;
+        audioSource.Play();
         StartCoroutine(PlayerBloodParticleSystem());
     }
 
@@ -163,15 +180,4 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(ATTACK_COOLDOWN);
         canAttack = true;
     }
-
-
-    public void TargetWasHit()
-    {
-        //if (!targetWasHitAlready)
-        //{
-        //    targetWasHitAlready = true;
-        //    playerAttackEvent();
-        //}
-    }
-
 }

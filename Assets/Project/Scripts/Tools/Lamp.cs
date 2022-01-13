@@ -38,16 +38,18 @@ public class Lamp : MonoBehaviour
     public float flickerTime;
     private const float START_FLICK_COOLDOWN = 5f;
     private float flickCooldown = START_FLICK_COOLDOWN;
-    private float lowLightflickCooldown = 0.75f;
+    private float lowLightflickCooldown = 0.3f;
     private const float SECONDS_HIGH_FREQUENCY_FLICK = 10f;
 
     System.Random rg;
 
     public delegate void PlayLanternSound();
-    public static event PlayLanternSound turnOnLanternEvent;
-    public static event PlayLanternSound turnOffLanternEvent;
+    public static event PlayLanternSound turnOnLanternSoundEvent;
+    public static event PlayLanternSound turnOffLanternSoundEvent;
     public static event PlayLanternSound turnOnLanternDroneSoundEvent;
     public static event PlayLanternSound turnOffLanternDroneSoundEvent;
+    public static event PlayLanternSound playLanternDroneSoundEvent;
+    public static event PlayLanternSound stopLanternDroneSoundEvent;
 
     private void Awake()
     {
@@ -100,11 +102,6 @@ public class Lamp : MonoBehaviour
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
             flickCooldown = START_FLICK_COOLDOWN;
             circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
-
-            if (turnOffLanternEvent != null){
-                turnOffLanternEvent();
-            }
-            
         }
         else
         {
@@ -175,8 +172,8 @@ public class Lamp : MonoBehaviour
         turnedOn = true;
         playerAnimator.SetBool("light", true);
 
-        if (!active && turnOnLanternEvent != null)
-            turnOnLanternEvent();
+        if (!active && turnOnLanternSoundEvent != null)
+            turnOnLanternSoundEvent();
 
         if (!coneIsActive)
             ActivateConeLight();
@@ -198,6 +195,9 @@ public class Lamp : MonoBehaviour
     }
     public void ActivateCircleLight()
     {
+        if (!active && playLanternDroneSoundEvent != null)
+            playLanternDroneSoundEvent();
+
         active = true;
 
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
@@ -207,8 +207,8 @@ public class Lamp : MonoBehaviour
 
     public void DeactivateLampLight()
     {
-        if (turnedOn && turnOffLanternEvent != null)
-            turnOffLanternEvent();
+        if (turnedOn && turnOffLanternSoundEvent != null)
+            turnOffLanternSoundEvent();
 
         turnedOn = false;
         playerAnimator.SetBool("light", false);
@@ -234,6 +234,9 @@ public class Lamp : MonoBehaviour
     }
     public void DeactivateCircleLight()
     {
+        if (active && stopLanternDroneSoundEvent != null)
+            stopLanternDroneSoundEvent();
+
         active = false;
 
         circleLight.Shrink();
@@ -243,11 +246,6 @@ public class Lamp : MonoBehaviour
     public float GetLampTimeRemaining()
     {
         return lampTime;
-    }
-
-    public float GetMaxLampTime()
-    {
-        return maxLampTime;
     }
 
     private void UpgradeLampSource()

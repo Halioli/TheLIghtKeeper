@@ -21,9 +21,7 @@ public class BeingHealthSystem : HealthSystem
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        normalColor = new Color(0, 0, 0);
-
-        //normalColor = spriteRenderer.material.color;
+        normalColor = spriteRenderer.material.color;
         hurtedColor = new Color(0.4f, 0, 0.1f, 0.8f);
     }
 

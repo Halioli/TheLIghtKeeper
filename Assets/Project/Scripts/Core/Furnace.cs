@@ -105,6 +105,16 @@ public class Furnace : InteractStation
         }
     }
 
+    private void OnEnable()
+    {
+        CoreUpgrade.OnCoreUpgrade += UpgradeFunction;
+    }
+
+    private void OnDisable()
+    {
+        CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
+    }
+
     //From InteractStation script
     public override void StationFunction()
     {
@@ -114,7 +124,7 @@ public class Furnace : InteractStation
                 break;
 
             case FURNACE_EVENTS.NEEDS_COAL:
-                if (playerInventory.SubstractItemFromInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
+                if (playerInventory.SubstractItemToInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
                 {
                     FuelAdded((int)furnaceEvents);
                 }
@@ -125,7 +135,7 @@ public class Furnace : InteractStation
                 break;
 
             case FURNACE_EVENTS.NEEDS_REPAIRS:
-                if (playerInventory.SubstractItemFromInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
+                if (playerInventory.SubstractItemToInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
                 {
                     FuelAdded((int)furnaceEvents);
                 }
@@ -292,16 +302,6 @@ public class Furnace : InteractStation
                 furnaceEvents = FURNACE_EVENTS.STABILIZING;
                 break;
         }
-    }
-
-    private void OnEnable()
-    {
-        CoreUpgrade.OnCoreUpgrade += UpgradeFunction;
-    }
-
-    private void OnDisable()
-    {
-        CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
     }
 
     // Public Methods
