@@ -13,7 +13,6 @@ public class CraftingMenu : MonoBehaviour
     private bool craftingRecepiesShown;
 
     // Public Attribute
-    public InventoryMenu inventoryMenu;
     public GameObject craftingList;
     public GameObject buttonPrefab;
     public GameObject requiredMaterialPrefab;
@@ -40,13 +39,17 @@ public class CraftingMenu : MonoBehaviour
             SetFirstElemtTextToRed();
         }
 
-        //craftingSystem.UpdatePlayerInventoryData();
-        inventoryMenu.UpdateInventory();
     }
 
     private void UpdateCraftingMenu()
     {
+        foreach (GameObject recepieButton in recepieButtonsGameObjects)
+        {
+            Destroy(recepieButton);
+        }
         recepieButtonsGameObjects.Clear();
+
+
         int buttonNumb = 0;
         foreach (Recepie recepie in craftingSystem.availableRecepies)
         {
@@ -76,5 +79,10 @@ public class CraftingMenu : MonoBehaviour
     private void SetFirstElemtTextToRed()
     {
         recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
+    }
+
+    public void ShowRecepies()
+    {
+        craftingRecepiesShown = false;
     }
 }
