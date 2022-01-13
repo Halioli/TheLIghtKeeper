@@ -9,10 +9,10 @@ public class Lamp : MonoBehaviour
     private const float LIGHT_INTENSITY_ON = 1f;
     private const float LIGHT_INTENSITY_OFF = 0.3f;
 
-    private const int MAX_SOURCE_LEVELS = 4;
-    private int sourceLevel = 1;
-    private float[] LIGHT_ANGLE_LVL = { 55f, 75f, 95f, 115f };
-    private float[] LIGHT_DISTANCE_LVL = { 10f, 15f, 20f, 25f };
+    private const int MAX_SOURCE_LEVELS = 6;
+    private int sourceLevel = 0;
+    private float[] LIGHT_ANGLE_LVL = { 40f, 50f, 60f, 70f, 80f, 90f };
+    private float[] LIGHT_DISTANCE_LVL = { 10f, 12.5f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
 
@@ -38,18 +38,16 @@ public class Lamp : MonoBehaviour
     public float flickerTime;
     private const float START_FLICK_COOLDOWN = 5f;
     private float flickCooldown = START_FLICK_COOLDOWN;
-    private float lowLightflickCooldown = 0.3f;
+    private float lowLightflickCooldown = 0.75f;
     private const float SECONDS_HIGH_FREQUENCY_FLICK = 10f;
 
     System.Random rg;
 
     public delegate void PlayLanternSound();
-    public static event PlayLanternSound turnOnLanternSoundEvent;
-    public static event PlayLanternSound turnOffLanternSoundEvent;
+    public static event PlayLanternSound turnOnLanternEvent;
+    public static event PlayLanternSound turnOffLanternEvent;
     public static event PlayLanternSound turnOnLanternDroneSoundEvent;
     public static event PlayLanternSound turnOffLanternDroneSoundEvent;
-    public static event PlayLanternSound playLanternDroneSoundEvent;
-    public static event PlayLanternSound stopLanternDroneSoundEvent;
 
     private void Awake()
     {
@@ -59,8 +57,8 @@ public class Lamp : MonoBehaviour
         flickerTime = 0.08f;
         flickerIntensity = 1f;
 
-        lightAngle = LIGHT_ANGLE_LVL[0];
-        lightDistance = LIGHT_DISTANCE_LVL[0];
+        lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
+        lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
     }
 
     private void Start()
@@ -102,6 +100,11 @@ public class Lamp : MonoBehaviour
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
             flickCooldown = START_FLICK_COOLDOWN;
             circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
+
+            if (turnOffLanternEvent != null){
+                turnOffLanternEvent();
+            }
+            
         }
         else
         {
@@ -172,8 +175,8 @@ public class Lamp : MonoBehaviour
         turnedOn = true;
         playerAnimator.SetBool("light", true);
 
-        if (!active && turnOnLanternSoundEvent != null)
-            turnOnLanternSoundEvent();
+        if (!active && turnOnLanternEvent != null)
+            turnOnLanternEvent();
 
         if (!coneIsActive)
             ActivateConeLight();
@@ -195,9 +198,6 @@ public class Lamp : MonoBehaviour
     }
     public void ActivateCircleLight()
     {
-        if (!active && playLanternDroneSoundEvent != null)
-            playLanternDroneSoundEvent();
-
         active = true;
 
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
@@ -207,8 +207,8 @@ public class Lamp : MonoBehaviour
 
     public void DeactivateLampLight()
     {
-        if (turnedOn && turnOffLanternSoundEvent != null)
-            turnOffLanternSoundEvent();
+        if (turnedOn && turnOffLanternEvent != null)
+            turnOffLanternEvent();
 
         turnedOn = false;
         playerAnimator.SetBool("light", false);
@@ -234,9 +234,6 @@ public class Lamp : MonoBehaviour
     }
     public void DeactivateCircleLight()
     {
-        if (active && stopLanternDroneSoundEvent != null)
-            stopLanternDroneSoundEvent();
-
         active = false;
 
         circleLight.Shrink();
@@ -248,20 +245,25 @@ public class Lamp : MonoBehaviour
         return lampTime;
     }
 
+    public float GetMaxLampTime()
+    {
+        return maxLampTime;
+    }
+
     private void UpgradeLampSource()
     {
         if (sourceLevel >= MAX_SOURCE_LEVELS)
         {
             return;
         }
+        ++sourceLevel;
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
-        coneLight.SetDistance(lightDistance);
-        coneLight.SetAngle(lightDistance);
+        coneLight.SetDistance(lightDistance);   
+        coneLight.SetAngle(lightAngle);
 
-        ++sourceLevel;
     }
 
     private void UpgradeLampTime()

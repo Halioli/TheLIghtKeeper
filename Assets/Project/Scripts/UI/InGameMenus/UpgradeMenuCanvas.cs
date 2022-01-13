@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpgradeMenuCanvas : MonoBehaviour
 {
     [SerializeField] UpgradeButton[] upgradeButtons;
-
+    public UpgradesSystem upgradesSystem;
 
     public void Init(List<UpgradeBranch> upgradeBranches)
     {
@@ -29,4 +29,32 @@ public class UpgradeMenuCanvas : MonoBehaviour
         }
     }
 
+    public void UpgradeBranchIsSelected(int index)
+    {
+        upgradesSystem.UpgradeBranchIsSelected(index);
+        UpdateUpgradeButton(upgradesSystem.upgradeBranches, index);
+    }
+
+    private void UpdateUpgradeButton(List<UpgradeBranch> upgradeBranches, int index)
+    {
+        if (upgradeBranches[index].IsCompleted())
+        {
+            upgradeButtons[index].canBeClicked = false;
+            return;
+        }
+
+
+        Upgrade upgrade = upgradeBranches[index].GetCurrentUpgrade();
+        Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
+        string[] amounts = new string[upgrade.requiredItems.Count];
+        int j = 0;
+
+        foreach (KeyValuePair<Item, int> requiredItemPair in upgrade.requiredItems)
+        {
+            sprites[j] = requiredItemPair.Key.sprite;
+            amounts[j] = requiredItemPair.Value.ToString();
+            ++j;
+        }
+        upgradeButtons[index].UpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
+    }
 }
