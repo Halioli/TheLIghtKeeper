@@ -47,11 +47,7 @@ public class CraftingSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LevelUp();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             RecepieWasSelected(0);
         }
@@ -61,6 +57,18 @@ public class CraftingSystem : MonoBehaviour
         }
     }
 
+
+    private void OnEnable()
+    {
+        CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
+        CoreUpgrade.OnCoreUpgrade += LevelUp;
+    }
+
+    private void OnDisable()
+    {
+        CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
+        CoreUpgrade.OnCoreUpgrade -= LevelUp;
+    }
 
     private void InitAllRecepies()
     {
@@ -145,15 +153,6 @@ public class CraftingSystem : MonoBehaviour
         
     }
 
-    private void OnEnable()
-    {
-        CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
-    }
-
-    private void OnDisable()
-    {
-        CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
-    }
 
     public void RecepieWasSelected(int selectedRecepieIndex)
     {
