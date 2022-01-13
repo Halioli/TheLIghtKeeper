@@ -6,43 +6,68 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Lamp : MonoBehaviour
 {
     // Private Attributes
+    private const float LIGHT_INTENSITY_ON = 1f;
+    private const float LIGHT_INTENSITY_OFF = 0.3f;
 
-    private const float POINTLIGHT_INNER_RADIUS_OFF = 1f;
-    private const float POINTLIGHT_INNER_RADIUS_ON = 6f;
-    private const float POINTLIGHT_OUTER_RADIUS_OFF = 2f;
-    private const float POINTLIGHT_OUTER_RADIUS_ON = 8f;
+    private const int MAX_SOURCE_LEVELS = 4;
+    private int sourceLevel = 1;
+    private float[] LIGHT_ANGLE_LVL = { 55f, 75f, 95f, 115f };
+    private float[] LIGHT_DISTANCE_LVL = { 10f, 15f, 20f, 25f };
+    private float lightAngle;
+    private float lightDistance;
+
+    private const int MAX_TIME_LEVELS = 3;
+    private int timeLevel = 0;
+    private float lampTime;
+    private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
+
+    private bool coneIsActive = false;
 
     private float maxLampTime;
-    private float lampTime;
-    private bool turnedOn;
-    private SpriteRenderer lampSpriteRenderer;
-    private Inventory playerInventory;
-    private Light2D pointLight2D;
-
-    public float flickerIntensity = 1f;
-    public float flickerTime = 0.08f;
+    private Animator playerAnimator;
 
     // Public Attributes
-    public GameObject lampLight;
-    public Animator animator;
+    public bool turnedOn;
+    public bool active = false;
+    public bool canRefill;
+
+    [SerializeField] private CircleLight circleLight;
+    [SerializeField] private ConeLight coneLight;
+
+    public float flickerIntensity;
+    public float flickerTime;
+    private const float START_FLICK_COOLDOWN = 5f;
+    private float flickCooldown = START_FLICK_COOLDOWN;
+    private float lowLightflickCooldown = 0.75f;
+    private const float SECONDS_HIGH_FREQUENCY_FLICK = 10f;
 
     System.Random rg;
+
+    public delegate void PlayLanternSound();
+    public static event PlayLanternSound turnOnLanternEvent;
+    public static event PlayLanternSound turnOffLanternEvent;
+    public static event PlayLanternSound turnOnLanternDroneSoundEvent;
+    public static event PlayLanternSound turnOffLanternDroneSoundEvent;
 
     private void Awake()
     {
         lampTime = maxLampTime = 20f;
         turnedOn = false;
-        lampSpriteRenderer = GetComponent<SpriteRenderer>();
         rg = new System.Random();
         flickerTime = 0.08f;
         flickerIntensity = 1f;
+
+        lightAngle = LIGHT_ANGLE_LVL[0];
+        lightDistance = LIGHT_DISTANCE_LVL[0];
     }
 
     private void Start()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-        pointLight2D = GetComponentsInChildren<Light2D>()[0];
-        StartCoroutine(Flicker());
+        playerAnimator = GetComponentInParent<Animator>();
+
+        circleLight.SetDistance(2f);
+        coneLight.SetDistance(lightDistance);
+        coneLight.SetAngle(lightAngle);
     }
 
     private void Update()
@@ -53,16 +78,41 @@ public class Lamp : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        LanternSourceUpgrade.OnLanternSourceUpgrade += UpgradeLampSource;
+        LanternTimeUpgrade.OnLanternTimeUpgrade += UpgradeLampTime;
+    }
+
+    private void OnDisable()
+    {
+        LanternSourceUpgrade.OnLanternSourceUpgrade -= UpgradeLampSource;
+        LanternTimeUpgrade.OnLanternTimeUpgrade -= UpgradeLampTime;
+    }
+
     public void UpdateLamp()
     {
         if (LampTimeExhausted())
         {
-            DeactivateConeLightButNotPointLight();
+            turnedOn = false;
+            playerAnimator.SetBool("light", false);
+            DeactivateConeLight();
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
+            flickCooldown = START_FLICK_COOLDOWN;
+            circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
+
+            if (turnOffLanternEvent != null){
+                turnOffLanternEvent();
+            }
+            
         }
         else
         {
             ConsumeLampTime();
+            if (lampTime <= SECONDS_HIGH_FREQUENCY_FLICK)
+            {
+                flickCooldown = lowLightflickCooldown;
+            }
         }
     }
 
@@ -81,55 +131,197 @@ public class Lamp : MonoBehaviour
         lampTime = maxLampTime;
     }
 
+    public void RefillLampTime(float time)
+    {
+        if (lampTime + time > maxLampTime)
+        {
+            FullyRefillLampTime();
+        }
+        else
+        {
+            lampTime += time;
+        }
+        flickCooldown = START_FLICK_COOLDOWN;
+    }
+
+    public bool CanRefill()
+    {
+        if (turnedOn)  //Player in darkness
+        {
+            if (lampTime == 0 || lampTime == maxLampTime) //Player don't has lamp fuel
+            {
+                return false;
+            }
+            else //Player has lamp fuel
+            {
+                return true;
+            }
+        }
+        else //Player in light
+        {
+            if(lampTime != maxLampTime) //Player has no max lamp fuel
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
     public void ActivateLampLight()
     {
         turnedOn = true;
-        animator.SetBool("light", true);
-        lampLight.SetActive(true);
-        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_ON;
-        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_ON;
-        pointLight2D.intensity = 1f;
+        playerAnimator.SetBool("light", true);
+
+        if (!active && turnOnLanternEvent != null)
+            turnOnLanternEvent();
+
+        if (!coneIsActive)
+            ActivateConeLight();
+        if (!active)
+            ActivateCircleLight();
+
+        StartCoroutine(LightFlicking());
     }
+
+    public void ActivateConeLight()
+    {
+        if (!coneIsActive && turnOnLanternDroneSoundEvent != null)
+            turnOnLanternDroneSoundEvent();
+
+        coneIsActive = true;
+
+        coneLight.SetIntensity(LIGHT_INTENSITY_ON);
+        coneLight.Expand();
+    }
+    public void ActivateCircleLight()
+    {
+        active = true;
+
+        circleLight.SetIntensity(LIGHT_INTENSITY_ON);
+        circleLight.Expand();
+    }
+
 
     public void DeactivateLampLight()
     {
+        if (turnedOn && turnOffLanternEvent != null)
+            turnOffLanternEvent();
+
         turnedOn = false;
-        animator.SetBool("light", false);
-        lampLight.SetActive(false);
+        playerAnimator.SetBool("light", false);
+
+        if (coneIsActive)
+            DeactivateConeLight();
+        if (active)
+            DeactivateCircleLight();
     }
 
-    public void DeactivateConeLightButNotPointLight()
+    public void DeactivateConeLight()
     {
-        pointLight2D.pointLightInnerRadius = POINTLIGHT_INNER_RADIUS_OFF;
-        pointLight2D.pointLightOuterRadius = POINTLIGHT_OUTER_RADIUS_OFF;
-        pointLight2D.intensity = 0.1f;
+        if (coneIsActive && turnOffLanternDroneSoundEvent != null)
+            turnOffLanternDroneSoundEvent();
+
+        coneIsActive = false;
+
+        StopCoroutine(LightFlicking());
+
+        coneLight.Shrink();
+
+        circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
     }
+    public void DeactivateCircleLight()
+    {
+        active = false;
+
+        circleLight.Shrink();
+    }
+
 
     public float GetLampTimeRemaining()
     {
         return lampTime;
     }
 
-
-    IEnumerator Flicker()
+    public float GetMaxLampTime()
     {
-        while (true)
-        {
-            pointLight2D.intensity = 1f;
+        return maxLampTime;
+    }
 
-            float lightingTime = 5 + ((float)rg.NextDouble() - 0.5f);
+    private void UpgradeLampSource()
+    {
+        if (sourceLevel >= MAX_SOURCE_LEVELS)
+        {
+            return;
+        }
+
+        lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
+        lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
+
+        coneLight.SetDistance(lightDistance);
+        coneLight.SetAngle(lightDistance);
+
+        ++sourceLevel;
+    }
+
+    private void UpgradeLampTime()
+    {
+        if (timeLevel >= MAX_TIME_LEVELS)
+        {
+            return;
+        }
+
+        maxLampTime += LAMP_TIME_LVL[timeLevel];
+        lampTime = maxLampTime;
+        ++lampTime;
+    }
+
+
+
+    IEnumerator LightFlicking()
+    {
+        float lightingTime;
+        int flickerCount;
+        float flickingIntensity;
+        float flickingTime;
+
+        while (turnedOn)
+        {
+            circleLight.SetIntensity(LIGHT_INTENSITY_ON);
+            coneLight.SetIntensity(LIGHT_INTENSITY_ON);
+
+            lightingTime = flickCooldown + ((float)rg.NextDouble() - 0.5f);
             yield return new WaitForSeconds(lightingTime);
 
-            int flickerCount = rg.Next(4, 9);
+            flickerCount = rg.Next(4, 9);
+            
 
-            for(int i = 0; i < flickerCount; i++)
+            for (int i = 0; i < flickerCount; ++i)
             {
-                float flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
-                pointLight2D.intensity = flickingIntensity;
+                flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
+                circleLight.SetIntensity(flickingIntensity);
+                coneLight.SetIntensity(flickingIntensity);
 
-                float flickingTime = (float)rg.NextDouble() * flickerTime;
-                yield return new WaitForSeconds(flickingTime);
+                flickingTime = (float)rg.NextDouble() * flickerTime;
+                if (lampTime < SECONDS_HIGH_FREQUENCY_FLICK)
+                {
+                    if (!turnedOn) break;
+                    yield return new WaitForSeconds(flickingTime);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(flickingTime);
+                }
             }
+
         }
+
+
+        DeactivateConeLight();
+
     }
+
+
 }

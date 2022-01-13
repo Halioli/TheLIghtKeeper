@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : PlayerInputs
+public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
     private bool inventoryIsOpen = false;
-    private Inventory inventory;
+    private Collider2D itemCollectionCollider;
 
     // Public Attributes
+    public Inventory inventory { get; private set; }
     public Canvas inventoryCanvas;
-    public InventoryMenu inventoryMenu;
+    [SerializeField] GameObject inventoryMenuGameObject;
 
     // Events
     public delegate void PlayPlayerSound();
@@ -21,11 +22,14 @@ public class PlayerInventory : PlayerInputs
     private void Start()
     {
         inventory = GetComponentInChildren<Inventory>();
+        itemCollectionCollider = GetComponent<CapsuleCollider2D>();
+
+        inventoryMenuGameObject.SetActive(inventoryIsOpen);
     }
 
     void Update()
     {
-        if (PlayerPressedInventoryButton())
+        if (PlayerInputs.instance.PlayerPressedInventoryButton())
         {
             if (inventoryIsOpen)
             {
@@ -38,26 +42,48 @@ public class PlayerInventory : PlayerInputs
         }
     }
 
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Item"))
         {
             ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-            if (itemGameObject.canBePickedUp)
+
+            if (collider.IsTouching(itemCollectionCollider))
             {
-                PickUpItem(itemGameObject);
+                if (itemGameObject.canBePickedUp)
+                {
+                    PickUpItem(itemGameObject);
+                }
             }
+            
         }
     }
 
-    private void OpenInventory()
+
+    private void OnEnable()
+    {
+        InventoryUpgrade.OnInventoryUpgrade += UpgradeInventory;
+        InteractStation.OnInteractOpen += OpenInventory;
+        InteractStation.OnInteractClose += CloseInventory;
+    }
+
+    private void OnDisable()
+    {
+        InventoryUpgrade.OnInventoryUpgrade -= UpgradeInventory;
+        InteractStation.OnInteractOpen -= OpenInventory;
+        InteractStation.OnInteractClose -= CloseInventory;
+    }
+
+
+    public void OpenInventory()
     {
         inventoryIsOpen = true;
         inventoryCanvas.gameObject.SetActive(true);
-        inventoryMenu.UpdateInventory();
+        //inventoryMenu.UpdateInventory();
     }
 
-    private void CloseInventory()
+    public void CloseInventory()
     {
         inventoryIsOpen = false;
         inventoryCanvas.gameObject.SetActive(false);
@@ -68,15 +94,17 @@ public class PlayerInventory : PlayerInputs
         return collider.GetComponent<ItemGameObject>();
     }
 
-    private void PickUpItem(ItemGameObject itemToPickUp)
+    private bool PickUpItem(ItemGameObject itemToPickUp)
     {
-        bool couldAddItem = inventory.AddItemToInventory(itemToPickUp.item);
-        if (couldAddItem)
-        {
-            if (playerPicksUpItemEvent != null)
-                playerPicksUpItemEvent();
+        if (playerPicksUpItemEvent != null)
+            playerPicksUpItemEvent();
 
-            Destroy(itemToPickUp.gameObject);
-        }
+        Destroy(itemToPickUp.gameObject);
+        return false;
+    }
+
+    private void UpgradeInventory()
+    {
+        inventory.UpgradeInventory();
     }
 }

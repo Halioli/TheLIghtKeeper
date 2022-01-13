@@ -1,72 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 2f;
-    
-    private float currentFadeTime;
-    private int playerHealthValue;
-    private int lampTimeValue;
+    private const float COUNTDOWN_FADE_TIME = 0.5f;
+    private const float DEATH_FADE_TIME = 1f;
+    private const float DAMAGE_FADE_TIME = 0.2f;
+    private const float FADE_TIME = 0.5f;
+
     private int coreTimeValue;
-    private CanvasGroup healthGroup;
-    private CanvasGroup lampGroup;
-    private CanvasGroup coreGroup;
-    private CanvasGroup quickAccessGroup;
+    private bool showingCountdown;
 
     // Public Attributes
-    public HUDBar healthBar;
-    public HUDBar lampBar;
     public HUDBar coreBar;
-
-    public HUDItem itemRight;
-    public HUDItem itemCenter;
-    public HUDItem itemLeft;
-
-    public HealthSystem playerhealthSystem;
-    public Lamp lamp;
     public Furnace furnace;
+    public CanvasGroup coreGroup;
+    public CanvasGroup deathImageGroup;
+    public CanvasGroup fadeOutGroup;
+    public CanvasGroup recieveDamageGroup;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        currentFadeTime = 0f;
-
-        // Initalize health variables
-        healthGroup = GetComponentsInChildren<CanvasGroup>()[0];
-        playerHealthValue = playerhealthSystem.GetMaxHealth();
-        healthBar.SetMaxValue(playerHealthValue);
-        healthBar.UpdateText(CheckTextForZeros(playerHealthValue.ToString()));
-
-        // Initialize lamp variables
-        lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
-        lampBar.SetMaxValue(lampTimeValue);
-        lampBar.UpdateText(CheckTextForZeros(lampTimeValue.ToString()));
+        showingCountdown = false;
 
         // Initialize core variables
-        coreGroup = GetComponentsInChildren<CanvasGroup>()[2];
         coreTimeValue = furnace.GetMaxFuel();
         coreBar.SetMaxValue(coreTimeValue);
         coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
-
-        // Initialize quick access variables
-        quickAccessGroup = GetComponentsInChildren<CanvasGroup>()[3];
     }
 
     private void Update()
     {
-        playerHealthValue = playerhealthSystem.GetHealth();
-        ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
-
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
-        ChangeValueInHUD(lampBar, lampTimeValue, lampTimeValue.ToString());
+        if (furnace.countdownActive && !showingCountdown)
+        {
+            StopCoroutine(CanvasFadeOut(coreGroup, COUNTDOWN_FADE_TIME));
+            StartCoroutine(CanvasFadeIn(coreGroup, COUNTDOWN_FADE_TIME));
+        }
+        else if (!furnace.countdownActive && showingCountdown)
+        {
+            StopCoroutine(CanvasFadeIn(coreGroup, COUNTDOWN_FADE_TIME));
+            StartCoroutine(CanvasFadeOut(coreGroup, COUNTDOWN_FADE_TIME));
+        }
 
         coreTimeValue = furnace.GetCurrentFuel();
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
     }
+
+
+
+
 
     private string CheckTextForZeros(string text)
     {
@@ -86,14 +71,87 @@ public class HUDHandler : MonoBehaviour
         bar.UpdateText(CheckTextForZeros(text));
     }
 
-    public void ChangeCanvasGroupAlphaToZero(CanvasGroup canvasGroup)
+    public void DoDeathImageFade()
     {
-        while (currentFadeTime < FADE_TIME)
-        {
-            currentFadeTime += Time.deltaTime;
+        StartCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
+    }
 
-            canvasGroup.alpha = 1f - Mathf.Clamp01(currentFadeTime / FADE_TIME);
+    public void DoFadeToBlack()
+    {
+        StartCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
+    }
+
+    public void RestoreFades()
+    {
+        StopCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
+        StopCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
+
+        deathImageGroup.alpha = 0f;
+        fadeOutGroup.alpha = 0f;
+    }
+
+    public void ShowRecieveDamageFades()
+    {
+        StartCoroutine(RecieveDamageFadeInAndOut());
+    }
+
+    IEnumerator CanvasFadeOut(CanvasGroup canvasGroup, float fadeTime)
+    {
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
         }
-        currentFadeTime = 0f;
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = false;
+    }
+
+    IEnumerator CanvasFadeIn(CanvasGroup canvasGroup, float fadeTime)
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        showingCountdown = true;
+    }
+
+    IEnumerator RecieveDamageFadeInAndOut()
+    {
+        Vector2 fadeInStartVector = new Vector2(0f, 0f);
+        Vector2 fadeInEndVector = new Vector2(1f, 1f);
+
+        // Fade in
+        for (float t = 0f; t < DAMAGE_FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / DAMAGE_FADE_TIME;
+
+            recieveDamageGroup.alpha = Vector2.Lerp(fadeInStartVector, fadeInEndVector, normalizedTime).x;
+            yield return null;
+        }
+        recieveDamageGroup.alpha = fadeInEndVector.x;
+
+        // Fade out
+        for (float t = 0f; t < DAMAGE_FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / DAMAGE_FADE_TIME;
+
+            recieveDamageGroup.alpha = Vector2.Lerp(fadeInEndVector, fadeInStartVector, normalizedTime).x;
+            yield return null;
+        }
+        recieveDamageGroup.alpha = fadeInStartVector.x;
     }
 }

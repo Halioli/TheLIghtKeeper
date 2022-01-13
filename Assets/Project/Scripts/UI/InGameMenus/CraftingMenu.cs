@@ -14,7 +14,6 @@ public class CraftingMenu : MonoBehaviour
     private bool updatedCraftingMenu;
 
     // Public Attribute
-    public InventoryMenu inventoryMenu;
     public GameObject craftingList;
     public GameObject buttonPrefab;
     public GameObject requiredMaterialPrefab;
@@ -41,17 +40,22 @@ public class CraftingMenu : MonoBehaviour
             SetFirstElemtTextToRed();
         }
 
-        inventoryMenu.UpdateInventory();
     }
 
     private void UpdateCraftingMenu()
     {
+        foreach (GameObject recepieButton in recepieButtonsGameObjects)
+        {
+            Destroy(recepieButton);
+        }
         recepieButtonsGameObjects.Clear();
-        int buttonNumb = 0;
 
+
+        int buttonNumb = 0;
         foreach (Recepie recepie in craftingSystem.availableRecepies)
         {
             GameObject gameObjectButton = Instantiate(buttonPrefab, craftingList.transform);
+
             recepieButtonsGameObjects.Add(gameObjectButton);
 
             RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
@@ -60,7 +64,7 @@ public class CraftingMenu : MonoBehaviour
 
             gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
-            gameObjectButton.GetComponentInChildren<Image>().sprite = recepie.resultingItemUnit.GetItemSprite();
+            gameObjectButton.GetComponentsInChildren<Image>()[1].sprite = recepie.resultingItemUnit.GetItemSprite();
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[1].text = recepie.resultingAmountUnit.ToString();
 
             for (int i = 0; i < recepie.requiredItemsList.Count; ++i)
@@ -73,10 +77,16 @@ public class CraftingMenu : MonoBehaviour
 
             ++buttonNumb;
         }
+        craftingList.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, buttonPrefab.GetComponent<RectTransform>().sizeDelta.y * recepieButtonsGameObjects.Count);
     }
 
     private void SetFirstElemtTextToRed()
     {
         recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
+    }
+
+    public void ShowRecepies()
+    {
+        craftingRecepiesShown = false;
     }
 }

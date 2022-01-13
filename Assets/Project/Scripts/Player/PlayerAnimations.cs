@@ -9,13 +9,11 @@ public class PlayerAnimations : PlayerBase
 
     //Protected Atributes
     protected bool startMiningAnimation = false;
-    public GameObject swordLight;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        swordLight.SetActive(false);
     }
 
     // Update is called once per frame
@@ -31,17 +29,17 @@ public class PlayerAnimations : PlayerBase
             animator.SetBool("isMining", false);
         }
 
-        //Attacking animation
-        if (playerStates.PlayerActionIsAttacking()) 
-        {
-            animator.SetBool("isAttacking", true);
-            swordLight.SetActive(true);
-        }
-        else
-        {
-            animator.SetBool("isAttacking", false);
-            swordLight.SetActive(false);
-        }
+        ////Attacking animation
+        //if (playerStates.PlayerActionIsAttacking()) 
+        //{
+        //    animator.SetBool("isAttacking", true);
+        //    swordLight.SetActive(true);
+        //}
+        //else
+        //{
+        //    animator.SetBool("isAttacking", false);
+        //    swordLight.SetActive(false);
+        //}
     }
 
 
