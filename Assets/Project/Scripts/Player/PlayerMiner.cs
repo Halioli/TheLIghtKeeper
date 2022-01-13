@@ -35,6 +35,7 @@ public class PlayerMiner : PlayerBase
     public GameObject interactArea;
     public LayerMask defaultLayerMask;
     public static Collider2D OverlapCircle;
+    public Animator animator;
 
     // Events
     public delegate void PlayPlayerSound();
@@ -44,6 +45,10 @@ public class PlayerMiner : PlayerBase
     public static event PlayPlayerSound playerMineEvent;
     public static event PlayPlayerSound playerBreaksOreEvent;
 
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
     void Update()
     {
         if (PlayerInputs.instance.PlayerClickedMineButton() && playerStates.PlayerStateIsFree() && !playerStates.PlayerActionIsMining())
@@ -105,6 +110,7 @@ public class PlayerMiner : PlayerBase
             {
                 criticalMiningState = CriticalMiningState.SUCCEESSFUL;
                 playerSucceessfulMineEvent();
+                animator.SetBool("isPerfect", true);
             }
             else
             {
@@ -200,6 +206,7 @@ public class PlayerMiner : PlayerBase
     public void StartCriticalInterval()
     {
         canCriticalMine = true;
+
     }
 
     public void FinishCriticalInterval()
@@ -225,6 +232,7 @@ public class PlayerMiner : PlayerBase
         ResetMining();
 
         PlayerInputs.instance.canMove = true;
+        animator.SetBool("isPerfect", false);
     }
 
     private void FlipPlayerSpriteFacingOreToMine()
