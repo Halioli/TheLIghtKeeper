@@ -12,7 +12,7 @@ public class InventoryMenu : MonoBehaviour
     private List<ItemCell> itemCellsList = new List<ItemCell>();
 
 
-    private void Start()
+    private void Awake()
     {
         InitInventoryCellsList();
     }
