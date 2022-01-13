@@ -118257,7 +118257,7 @@ PrefabInstance:
     - target: {fileID: 8397354122656166637, guid: aebec1cbf91102d4d93c7fe5a7b7e82f, type: 3}
       propertyPath: swordLight
       value: 
-      objectReference: {fileID: 934925013}
+      objectReference: {fileID: 0}
     - target: {fileID: 8397354122656166637, guid: aebec1cbf91102d4d93c7fe5a7b7e82f, type: 3}
       propertyPath: playerBlood
       value: 
@@ -118309,11 +118309,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &934925013 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1954897529, guid: aebec1cbf91102d4d93c7fe5a7b7e82f, type: 3}
-  m_PrefabInstance: {fileID: 588181658}
-  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1034583153
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571611931313920387, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230338549840677117, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
+      propertyPath: m_Name
+      value: ExitDoor
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d62cf702c45051040b3beb296ace6c87, type: 3}
 --- !u!1 &1311877107 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7233089400078776426, guid: aebec1cbf91102d4d93c7fe5a7b7e82f, type: 3}
