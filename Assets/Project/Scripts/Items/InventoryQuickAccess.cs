@@ -66,7 +66,6 @@ public class InventoryQuickAccess : MonoBehaviour
 
         if (!printedAlready)
         {
-            Debug.Log(playerInventory.indexOfSelectedInventorySlot);
             printedAlready = true;
         }
 

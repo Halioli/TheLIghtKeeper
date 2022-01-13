@@ -57,8 +57,6 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedInteractButton()
     {
-        if (PauseMenu.gameIsPaused) { return false; }
-
         return Input.GetKeyDown(KeyCode.E);
     }
 

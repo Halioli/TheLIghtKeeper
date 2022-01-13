@@ -35,15 +35,20 @@ public class PlayerMiner : PlayerBase
     public GameObject interactArea;
     public LayerMask defaultLayerMask;
     public static Collider2D OverlapCircle;
+    public Animator animator;
 
     // Events
     public delegate void PlayPlayerSound();
-    public static event PlayPlayerSound playerMiningBuildUpSoundEvent;
-    public static event PlayPlayerSound successCriticalMiningSoundEvent;
-    public static event PlayPlayerSound failCriticalMiningSoundEvent;
-    public static event PlayPlayerSound playerMinesOreEvent;
+    public static event PlayPlayerSound playerMinesEvent;
+    public static event PlayPlayerSound playerSucceessfulMineEvent;
+    public static event PlayPlayerSound playerFailMineEvent;
+    public static event PlayPlayerSound playerMineEvent;
     public static event PlayPlayerSound playerBreaksOreEvent;
 
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
     void Update()
     {
         if (PlayerInputs.instance.PlayerClickedMineButton() && playerStates.PlayerStateIsFree() && !playerStates.PlayerActionIsMining())
@@ -104,19 +109,20 @@ public class PlayerMiner : PlayerBase
             if (canCriticalMine)
             {
                 criticalMiningState = CriticalMiningState.SUCCEESSFUL;
-                successCriticalMiningSoundEvent();
+                playerSucceessfulMineEvent();
+                animator.SetBool("isPerfect", true);
             }
             else
             {
                 criticalMiningState = CriticalMiningState.FAILED;
-                failCriticalMiningSoundEvent();
+                playerFailMineEvent();
             }
         }
     }
 
     private void StartMining()
     {
-        playerMiningBuildUpSoundEvent();
+        playerMinesEvent();
 
         FlipPlayerSpriteFacingOreToMine();
         playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
@@ -142,8 +148,9 @@ public class PlayerMiner : PlayerBase
                 else
                 {
                     // Play break sound
-                    if (playerMinesOreEvent != null) { }
-                    playerMinesOreEvent();
+                    if (playerMineEvent != null) { 
+                        playerMineEvent();
+                    }
                 }
             }
             else
@@ -199,6 +206,7 @@ public class PlayerMiner : PlayerBase
     public void StartCriticalInterval()
     {
         canCriticalMine = true;
+
     }
 
     public void FinishCriticalInterval()
@@ -224,6 +232,7 @@ public class PlayerMiner : PlayerBase
         ResetMining();
 
         PlayerInputs.instance.canMove = true;
+        animator.SetBool("isPerfect", false);
     }
 
     private void FlipPlayerSpriteFacingOreToMine()
