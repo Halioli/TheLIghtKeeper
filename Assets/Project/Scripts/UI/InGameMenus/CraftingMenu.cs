@@ -87,6 +87,6 @@ public class CraftingMenu : MonoBehaviour
 
     public void ShowRecepies()
     {
-        craftingRecepiesShown = false;
+        updatedCraftingMenu = false;
     }
 }

@@ -73,16 +73,17 @@ public class ConeLight : CustomLight
 
     public override void SetDistance(float distance)
     {
-        coneLight.pointLightOuterRadius = distance;
         coneLight.pointLightInnerRadius = distance - DISTANCE_DIFFERENCE;
+        coneLight.pointLightOuterRadius = distance;
     }
 
     public void SetAngle(float angle)
     {
         lightAngle = angle;
 
-        coneLight.pointLightOuterAngle = lightAngle;
         coneLight.pointLightOuterAngle = lightAngle - RADIUS_DIFFERENCE;
+        coneLight.pointLightOuterAngle = lightAngle;
+
     }
 
 }
