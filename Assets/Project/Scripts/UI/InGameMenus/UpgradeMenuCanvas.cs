@@ -37,12 +37,14 @@ public class UpgradeMenuCanvas : MonoBehaviour
                 amounts[j] = requiredItemPair.Value.ToString();
                 ++j;
             }
-            upgradeButtons[i].UpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
+            upgradeButtons[i].InitUpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
         }
     }
 
     public void UpgradeBranchIsSelected(int index)
     {
+        if (!upgradeButtons[index].canBeClicked) return;
+
         upgradesSystem.UpgradeBranchIsSelected(index);
         UpdateUpgradeButton(index);
         SetButtonCanBeClicked(index);
@@ -53,6 +55,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
         if (upgradesSystem.upgradeBranches[index].IsCompleted())
         {
             upgradeButtons[index].canBeClicked = false;
+            upgradeButtons[index].DisableButton();
             return;
         }
 

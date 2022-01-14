@@ -43,7 +43,7 @@ public class PikeBombGameObject : ItemGameObject
         {
             if (collidedElements[i].CompareTag("Ore"))
             {
-                collidedElements[i].GetComponent<Ore>().GetsMined(DAMAGE);
+                collidedElements[i].GetComponent<Ore>().GetsMined(DAMAGE, 1);
             }
             else if (collidedElements[i].CompareTag("Enemy"))
             {
