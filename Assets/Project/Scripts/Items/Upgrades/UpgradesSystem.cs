@@ -56,7 +56,7 @@ public class UpgradesSystem : MonoBehaviour
 
     }
 
-    private bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade)
+    public bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade)
     {
         foreach (KeyValuePair<Item, int> requiredItem in upgrade.requiredItems)
         {
