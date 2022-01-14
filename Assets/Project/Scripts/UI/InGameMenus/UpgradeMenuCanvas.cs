@@ -7,14 +7,26 @@ public class UpgradeMenuCanvas : MonoBehaviour
     [SerializeField] UpgradeButton[] upgradeButtons;
     public UpgradesSystem upgradesSystem;
 
-    public void Init(List<UpgradeBranch> upgradeBranches)
+
+    private void OnEnable()
+    {
+        UpgradesStation.OnInteractOpen += SetButtonsCanBeClicked;
+    }
+
+    private void OnDisable()
+    {
+        UpgradesStation.OnInteractOpen -= SetButtonsCanBeClicked;
+    }
+
+
+    public void Init()
     {
         int j = 0;
 
-        for (int i = 0; i < upgradeBranches.Count; ++i)
+        for (int i = 0; i < upgradesSystem.upgradeBranches.Count; ++i)
         {
-            upgradeBranches[i].Init(i);
-            Upgrade upgrade = upgradeBranches[i].GetCurrentUpgrade();
+            upgradesSystem.upgradeBranches[i].Init(i);
+            Upgrade upgrade = upgradesSystem.upgradeBranches[i].GetCurrentUpgrade();
             Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
             string[] amounts = new string[upgrade.requiredItems.Count];
             j = 0;
@@ -32,19 +44,20 @@ public class UpgradeMenuCanvas : MonoBehaviour
     public void UpgradeBranchIsSelected(int index)
     {
         upgradesSystem.UpgradeBranchIsSelected(index);
-        UpdateUpgradeButton(upgradesSystem.upgradeBranches, index);
+        UpdateUpgradeButton(index);
+        SetButtonCanBeClicked(index);
     }
 
-    private void UpdateUpgradeButton(List<UpgradeBranch> upgradeBranches, int index)
+    private void UpdateUpgradeButton(int index)
     {
-        if (upgradeBranches[index].IsCompleted())
+        if (upgradesSystem.upgradeBranches[index].IsCompleted())
         {
             upgradeButtons[index].canBeClicked = false;
             return;
         }
 
 
-        Upgrade upgrade = upgradeBranches[index].GetCurrentUpgrade();
+        Upgrade upgrade = upgradesSystem.upgradeBranches[index].GetCurrentUpgrade();
         Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
         string[] amounts = new string[upgrade.requiredItems.Count];
         int j = 0;
@@ -57,4 +70,20 @@ public class UpgradeMenuCanvas : MonoBehaviour
         }
         upgradeButtons[index].UpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
     }
+
+
+    void SetButtonsCanBeClicked()
+    {
+        for (int i=0; i < upgradeButtons.Length; ++i)
+        {
+            SetButtonCanBeClicked(i);
+        }
+    }
+
+    void SetButtonCanBeClicked(int index)
+    {
+        bool canBeClicked = upgradesSystem.PlayerHasEnoughItemsToUpgrade(upgradesSystem.upgradeBranches[index].GetCurrentUpgrade());
+        upgradeButtons[index].StartClickCooldown(canBeClicked);
+    }
+
 }
