@@ -126,6 +126,8 @@ MonoBehaviour:
   triggerArea: {fileID: 5602225195291148011}
   materialVein: {fileID: 11400000, guid: 3ad1a6f564b80f743a80f5b6a541cd25, type: 2}
   autoMiner: {fileID: 0}
+  interactText: {fileID: 9079578517494608667}
+  mssgText: {fileID: 9079578516310212774}
 --- !u!1 &9079578516102728544
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +140,7 @@ GameObject:
   - component: {fileID: 9079578516102728547}
   - component: {fileID: 9079578516102728546}
   m_Layer: 0
-  m_Name: ElementInputText
+  m_Name: InyeractInputText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,8 +197,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
-  m_sharedMaterial: {fileID: 777905129303724322, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3f7f6b870ff2f214da977aaeb40ae188, type: 2}
+  m_sharedMaterial: {fileID: -5984977179782490302, guid: 3f7f6b870ff2f214da977aaeb40ae188, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -220,7 +222,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.3
+  m_fontSize: 0.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -274,7 +276,7 @@ GameObject:
   - component: {fileID: 9079578516310212775}
   - component: {fileID: 9079578516310212774}
   m_Layer: 0
-  m_Name: NumbOfElementAddedText
+  m_Name: MessageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,8 +331,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
-  m_sharedMaterial: {fileID: 777905129303724322, guid: 7e2e5d1eb2424464c8e18ee8f31d3fce, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3f7f6b870ff2f214da977aaeb40ae188, type: 2}
+  m_sharedMaterial: {fileID: -5984977179782490302, guid: 3f7f6b870ff2f214da977aaeb40ae188, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -361,8 +363,8 @@ MonoBehaviour:
   m_fontSizeMin: 0
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 1024
+  m_HorizontalAlignment: 32
+  m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
