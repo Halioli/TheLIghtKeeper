@@ -137,7 +137,7 @@ public class PlayerMiner : PlayerBase
         {
             if (oreToMine.hardness <= pickaxe.hardness)
             {
-                oreToMine.GetsMined(damageToDeal);
+                oreToMine.GetsMined(damageToDeal, pickaxe.extraDrop);
 
                 if (oreToMine.Broke())
                 {
