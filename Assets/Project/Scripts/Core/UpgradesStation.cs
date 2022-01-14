@@ -10,13 +10,14 @@ public class UpgradesStation : InteractStation
     public UpgradesSystem upgradesSystem;
 
     private bool isOpen = false;
-
+    private UpgradeMenuCanvas upgradeMenuCanvas;
     //private InventoryMenu inventoryMenu;
 
     void Start()
     {
         upgradesSystem = GetComponent<UpgradesSystem>();
         upgradesSystem.Init(playerInventory);
+        upgradeMenuCanvas = upgradesCanvasGameObject.GetComponent<UpgradeMenuCanvas>();
         InitUpgradesMenu();
     }
 
@@ -52,7 +53,7 @@ public class UpgradesStation : InteractStation
 
     private void InitUpgradesMenu()
     {
-        upgradesCanvasGameObject.GetComponent<UpgradeMenuCanvas>().Init(upgradesSystem.upgradeBranches);
+        upgradeMenuCanvas.Init();
     }
 
     //Interactive pop up disappears
@@ -70,23 +71,23 @@ public class UpgradesStation : InteractStation
 
     private void OpenStorageInventory()
     {
-        DoOnInteractOpen();
-
         isOpen = true;
 
         hudGameObject.SetActive(false);
         upgradesCanvasGameObject.SetActive(true);
         //inventoryMenu.UpdateInventory();
         PauseMenu.gameIsPaused = true;
+
+        DoOnInteractOpen();
     }
 
     private void CloseStorageInventory()
     {
-        DoOnInteractClose();
-
         isOpen = false;
         hudGameObject.SetActive(true);
         upgradesCanvasGameObject.SetActive(false);
         PauseMenu.gameIsPaused = false;
+
+        DoOnInteractClose();
     }
 }
