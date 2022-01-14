@@ -70,13 +70,7 @@ public class Lamp : MonoBehaviour
         coneLight.SetAngle(lightAngle);
     }
 
-    private void Update()
-    {
-        if (turnedOn)
-        {
-            UpdateLamp();
-        }
-    }
+
 
     private void OnEnable()
     {
@@ -123,6 +117,8 @@ public class Lamp : MonoBehaviour
 
     public void ConsumeLampTime()
     {
+        Debug.Log(lampTime);
+
         lampTime -= Time.deltaTime;
     }
 
@@ -275,13 +271,18 @@ public class Lamp : MonoBehaviour
 
         maxLampTime += LAMP_TIME_LVL[timeLevel];
         lampTime = maxLampTime;
-        ++lampTime;
+        ++timeLevel;
     }
 
 
 
     IEnumerator LightFlicking()
     {
+        if (lampTime > SECONDS_HIGH_FREQUENCY_FLICK)
+        {
+            flickCooldown = START_FLICK_COOLDOWN;
+        }
+
         float lightingTime;
         int flickerCount;
         float flickingIntensity;

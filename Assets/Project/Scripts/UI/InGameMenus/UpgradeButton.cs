@@ -20,12 +20,23 @@ public class UpgradeButton : MonoBehaviour
         if (canBeClicked)
         {
             transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
-            StartCoroutine(ClickCooldown());
         }
+    }
+
+
+    public void InitUpdateButtonElements(string descriptionText, Sprite[] requiredMaterialImages, string[] requiredMaterialAmountTexts)
+    {
+        SetDescriptionText(descriptionText);
+
+        UpdateRequiredMaterials(requiredMaterialImages.Length);
+        SetRequiredMaterialImages(requiredMaterialImages);
+        SetRequiredMaterialAmountTexts(requiredMaterialAmountTexts);
     }
 
     public void UpdateButtonElements(string descriptionText, Sprite[] requiredMaterialImages, string[] requiredMaterialAmountTexts)
     {
+        //if (!canBeClicked) return;
+
         upgradeStatus[currentUpgradeStatus].color = Color.cyan;
         ++currentUpgradeStatus;
 
@@ -74,15 +85,29 @@ public class UpgradeButton : MonoBehaviour
 
     }
 
-    IEnumerator ClickCooldown()
+    IEnumerator ClickCooldown(bool canBeClicked)
     {
-        canBeClicked = false;
+        this.canBeClicked = false;
         yield return new WaitForSeconds(1f);
-        canBeClicked = true;
+        this.canBeClicked = canBeClicked;
     }
 
-    public void ClearButton()
+    public void StartClickCooldown(bool canBeClicked)
     {
+        StartCoroutine(ClickCooldown(canBeClicked));
+    }
+
+    public void DisableButton()
+    {
+        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
+        ClearButton();
+        GetComponent<Button>().enabled = false;
+    }
+
+    private void ClearButton()
+    {
+        UpdateRequiredMaterials(0);
+        SetDescriptionText("Branch completed");
     }
 
 }
