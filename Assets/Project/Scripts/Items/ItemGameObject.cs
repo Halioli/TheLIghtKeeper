@@ -7,8 +7,8 @@ public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
     private Interpolator lerp;
-    private float lerpDistance = 0.6f;
-    private float halfLerpDistance = 0.3f;
+    private float lerpDistance = 0.3f;
+    private float halfLerpDistance = 0.15f;
     private float startYLerp;
 
     protected Rigidbody2D rigidbody2D;
@@ -34,9 +34,7 @@ public class ItemGameObject : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(GetComponent<SpriteRenderer>().material.shader.GetPropertyCount());
         rigidbody2D = GetComponent<Rigidbody2D>();
-        canBePickedUp = true;
     }
 
     private void Start()
@@ -49,7 +47,8 @@ public class ItemGameObject : MonoBehaviour
 
     private void Update()
     {
-        ItemFloating();
+        if (canBePickedUp)
+            ItemFloating();
     }
 
     public void DropsDown()
