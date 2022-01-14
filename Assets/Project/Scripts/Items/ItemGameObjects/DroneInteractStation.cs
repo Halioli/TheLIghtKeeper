@@ -21,18 +21,30 @@ public class DroneInteractStation : InteractStation
         if (playerInsideTriggerArea)
         {
             GetInput();            //Waits the input from InteractStation 
-
         }
         else
         {
             if (inventoryIsOpen)
             {
-                CloseStorageInventory();
+                CloseDroneInventory();
             }
         }
     }
 
-    private void OpenStorageInventory()
+
+    override public void StationFunction()
+    {
+        if (inventoryIsOpen)
+        {
+            CloseDroneInventory();
+        }
+        else
+        {
+            OpenDroneInventory();
+        }
+    }
+
+    private void OpenDroneInventory()
     {
         DoOnInteractOpen();
 
@@ -46,7 +58,7 @@ public class DroneInteractStation : InteractStation
         PauseMenu.gameIsPaused = true;
     }
 
-    private void CloseStorageInventory()
+    private void CloseDroneInventory()
     {
         DoOnInteractClose();
 
