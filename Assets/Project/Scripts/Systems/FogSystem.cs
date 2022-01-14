@@ -12,14 +12,17 @@ public class FogSystem : MonoBehaviour
 
     private Vector3 respawnPosition;
 
+    public GameObject skullEnemy;
+
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log(player.tag);
-        timer = 10f;
+        timer = 1f;
         respawnPosition = new Vector3(30f, -11f, 0);
+        skullEnemy.SetActive(false);
     }
 
     // Update is called once per frame
@@ -27,22 +30,27 @@ public class FogSystem : MonoBehaviour
     {
         if (playerInFog)
         {
+            skullEnemy.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 0);
             if (!playerLightChecker.IsPlayerInLight())
             {
+
                 if(timer > 0f)
                 {
                     timer -= Time.deltaTime;
                     Debug.Log(timer);
+                    skullEnemy.SetActive(true);
                 }
                 else
                 {
                     ResetTimer();
                     player.transform.position = respawnPosition;
+                    skullEnemy.SetActive(false);
                 }
             }
             else
             {
                 ResetTimer();
+                skullEnemy.SetActive(false);
             }
         }
     }
@@ -64,10 +72,11 @@ public class FogSystem : MonoBehaviour
             playerInFog = false;
             Debug.Log("PlayerOut");
             ResetTimer();
+            skullEnemy.SetActive(false);
         }
     }
     private void ResetTimer()
     {
-        timer = 10f;
+        timer = 1f;
     }
 }
