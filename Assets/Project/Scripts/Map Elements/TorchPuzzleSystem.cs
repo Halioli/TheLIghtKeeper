@@ -7,9 +7,10 @@ public class TorchPuzzleSystem : MonoBehaviour
 {
     public Torch[] linkedTorches;
     public GameObject reward;
-
+    public Animator animator;
 
     private int numberOfTorches;
+
 
     public int maxTorchesOff;
     public int maxTorchesOn;
@@ -20,11 +21,12 @@ public class TorchPuzzleSystem : MonoBehaviour
     void Start()
     {
         numberOfTorches = linkedTorches.Length;
-        Debug.Log(numberOfTorches);
+        //Debug.Log(numberOfTorches);
         TorchesChecker();
         reward.SetActive(false);
-        Debug.Log("MAX ON: " + maxTorchesOn);
-        Debug.Log("MAX OFF: " + maxTorchesOff);
+        animator = GetComponentInChildren<Animator>();
+        //Debug.Log("MAX ON: " + maxTorchesOn);
+        //Debug.Log("MAX OFF: " + maxTorchesOff);
     }
     private void TorchesChecker()
     {
@@ -39,5 +41,10 @@ public class TorchPuzzleSystem : MonoBehaviour
                 maxTorchesOff += 1;
             }
         }
+    }
+
+    public void GetReward()
+    {
+        reward.SetActive(true);
     }
 }

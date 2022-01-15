@@ -5,6 +5,7 @@ using UnityEngine;
 public class UpgradesStation : InteractStation
 {
     public GameObject interactText;
+    public GameObject backgroundText;
     public GameObject upgradesCanvasGameObject;
     public GameObject hudGameObject;
     public UpgradesSystem upgradesSystem;
@@ -19,6 +20,7 @@ public class UpgradesStation : InteractStation
         upgradesSystem.Init(playerInventory);
         upgradeMenuCanvas = upgradesCanvasGameObject.GetComponent<UpgradeMenuCanvas>();
         InitUpgradesMenu();
+        backgroundText.SetActive(false);
     }
 
     private void Update()
@@ -60,12 +62,14 @@ public class UpgradesStation : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
+        backgroundText.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        backgroundText.SetActive(false);
     }
 
 

@@ -30,6 +30,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2643936726853752953}
   - {fileID: 48118117191976312}
   m_Father: {fileID: 5321044159776248722}
   m_RootOrder: 0
@@ -175,7 +176,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 907748807686296869}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -470,6 +471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 2282730817057567500}
   interactText: {fileID: 3958853991927566911}
+  backgroundText: {fileID: 0}
   upgradesCanvasGameObject: {fileID: 4527701880250668366}
   hudGameObject: {fileID: 0}
   upgradesSystem: {fileID: 5321044159776248723}

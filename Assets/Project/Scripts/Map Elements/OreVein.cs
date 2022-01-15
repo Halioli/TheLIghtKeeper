@@ -9,8 +9,7 @@ public class OreVein : InteractStation
     public Item materialVein;
     public Item autoMiner;
     public GameObject autoMinerGameObject;
-    public GameObject interactText;
-    public TextMeshProUGUI mssgText;
+    public PopUp popUp;
 
     // Private Attributes
     private string[] messagesToShow = { "", "No Auto-Miner found" };
@@ -37,14 +36,14 @@ public class OreVein : InteractStation
     // Interactive pop up disappears
     private void PopUpAppears()
     {
-        interactText.SetActive(true);
+        popUp.ShowInteraction();
     }
 
     // Interactive pop up disappears
     private void PopUpDisappears()
     {
-        interactText.SetActive(false);
-        mssgText.text = messagesToShow[0];
+        popUp.HideAll();
+        popUp.ChangeMessageText(messagesToShow[0]);
     }
 
     public override void StationFunction()
@@ -52,19 +51,20 @@ public class OreVein : InteractStation
         if (activated) return;
         activated = true;
 
+        popUp.ShowMessage();
         if (playerInventory.InventoryContainsItem(autoMiner))
         {
             activated = true;
 
             playerInventory.SubstractItemFromInventory(autoMiner);
-            mssgText.text = messagesToShow[0];
+            popUp.ChangeMessageText(messagesToShow[0]);
             autoMinerGameObject.SetActive(true);
 
             autoMinerGameObject.GetComponent<AutoMiner>().GetsPlacedDown(materialVein);
         }
         else
         {
-            mssgText.text = messagesToShow[1];
+            popUp.ChangeMessageText(messagesToShow[1]);
         }
     }
 }
