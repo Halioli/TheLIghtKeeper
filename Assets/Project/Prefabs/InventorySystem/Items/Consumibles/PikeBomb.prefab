@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2017647053691287036}
   - component: {fileID: 6524155991628749535}
   - component: {fileID: 884613000234432602}
+  - component: {fileID: 4423875086134436771}
   m_Layer: 0
   m_Name: PikeBomb
   m_TagString: Item
@@ -140,8 +141,9 @@ MonoBehaviour:
   item: {fileID: 11400000, guid: fe1423d4f51c65e409f790eedd9d1249, type: 2}
   audioSource: {fileID: 884613000234432602}
   itemIsDropped: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
-  pikeBombUseSound: {fileID: 0}
+  pikeBombUseSound: {fileID: 8300000, guid: 2d5f1ac81cf348f46b344e312208fca9, type: 3}
   pikeBombExplosionSound: {fileID: 0}
+  animator: {fileID: 4423875086134436771}
 --- !u!82 &884613000234432602
 AudioSource:
   m_ObjectHideFlags: 0
@@ -238,3 +240,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &4423875086134436771
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5284852591263328306}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fcba0752ef049bc4b849113c2f7ba9e0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
