@@ -29,6 +29,9 @@ public class Teleporter : InteractStation
     public delegate void TeleportActivation(string teleportName);
     public static event TeleportActivation OnActivation;
 
+    public delegate void TeleportInteraction(string teleportName);
+    public static event TeleportInteraction OnInteraction;
+
     private void Start()
     {
         teleportTransformPosition = GetComponent<Transform>().position;
@@ -42,6 +45,9 @@ public class Teleporter : InteractStation
     {
         if (playerInsideTriggerArea)
         {
+            if (OnInteraction != null)
+                OnInteraction(teleportName);
+
             GetInput();
             PopUpAppears();
         }
