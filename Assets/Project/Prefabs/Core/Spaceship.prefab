@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7372807639885346850}
   - component: {fileID: 2820158260331159364}
   - component: {fileID: 1736984333909987013}
+  - component: {fileID: 1952573059567496164}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -119,10 +120,10 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 7.2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 10.25, y: 14.25}
     newSize: {x: 10.25, y: 14.25}
     adaptiveTilingThreshold: 0.5
@@ -132,8 +133,8 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 5.1300697, y: -6.4196997}
-      - {x: 5.13367, y: -2.1890907}
-      - {x: -4.95487, y: -2.1889472}
+      - {x: 5.0507116, y: -1.24926}
+      - {x: -5.132127, y: -1.260458}
       - {x: -5.0780606, y: -6.4956465}
       - {x: -1.9603273, y: -7.0060577}
       - {x: -1.6796103, y: -5.756796}
@@ -156,10 +157,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.56232285, y: -4.568102}
+  m_Offset: {x: -0.56232285, y: 2.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 10.25, y: 14.25}
     newSize: {x: 10.25, y: 14.25}
     adaptiveTilingThreshold: 0.5
@@ -169,3 +170,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8835378, y: 2.6050243}
   m_EdgeRadius: 0
+--- !u!114 &1952573059567496164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8350969126668680838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab51c3309718094fb12c2f36b95bfe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipInteriorPosition: {x: 0, y: 0}
+  hudHandler: {fileID: 0}

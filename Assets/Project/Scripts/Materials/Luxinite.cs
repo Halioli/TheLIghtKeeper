@@ -30,7 +30,7 @@ public class Luxinite : Ore
         maxIntensity = 3f;
     }
 
-    public override void GetsMined(int damageAmount)
+    public override void GetsMined(int damageAmount, int numberOfDrops)
     {
         StartCoroutine(FlashLightAppears());
 

@@ -49,7 +49,8 @@ public class InGameHUDHandler : MonoBehaviour
         
         // Initialize lamp variables
         lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
+        UpdateMaxLampValue();
+        lampTimeValue = (int)lamp.GetMaxLampTime();
         lampBar.SetMaxValue(lampTimeValue);
         lampIsOn = false;
         lampIsTrembeling = false;
@@ -69,6 +70,7 @@ public class InGameHUDHandler : MonoBehaviour
         playerHealthValue = playerHealthSystem.GetHealth();
         ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
 
+        UpdateMaxLampValue();
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         ChangeValueInHUD(lampBar, lampTimeValue, null);
 
@@ -97,19 +99,10 @@ public class InGameHUDHandler : MonoBehaviour
         }
     }
 
-
-    private void OnEnable()
+    private void UpdateMaxLampValue()
     {
-        PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
-        PlayerMiner.playerFailMineEvent += CrossAppears;
+        lampBar.SetMaxValue((int)lamp.GetMaxLampTime());
     }
-
-    private void OnDisable()
-    {
-        PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
-        PlayerMiner.playerFailMineEvent -= CrossAppears;
-    }
-
 
     private void ManageShowingHealth()
     {
@@ -255,6 +248,17 @@ public class InGameHUDHandler : MonoBehaviour
         clawStrikeGroup.alpha = fadeInStartVector.x;
     }
 
+    private void OnEnable()
+    {
+        PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
+        PlayerMiner.playerFailMineEvent += CrossAppears;
+    }
+
+    private void OnDisable()
+    {
+        PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
+        PlayerMiner.playerFailMineEvent -= CrossAppears;
+    }
 
     private void ExclamationAppears()
     {
@@ -270,7 +274,6 @@ public class InGameHUDHandler : MonoBehaviour
 
         exclamationGroup.alpha = 0f;
     }
-
 
     private void CrossAppears()
     {

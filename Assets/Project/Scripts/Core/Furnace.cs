@@ -24,6 +24,7 @@ public class Furnace : InteractStation
     //Text references
     public TextMeshProUGUI numElementAddedText;
     public TextMeshProUGUI currentFuelText;
+    public TextMeshProUGUI eventText;
 
     //Core light 
     public GameObject coreLight;
@@ -34,8 +35,8 @@ public class Furnace : InteractStation
     private const int LOW_FUEL_AMOUNT = 30;
     private const int MAX_CORE_LEVEL = 5;
     private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f; 
-    private enum FURNACE_EVENTS { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
-    FURNACE_EVENTS furnaceEvents;
+    private enum FurnaceEvents { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
+    FurnaceEvents furnaceEvents;
 
     //Core light 
     private int lightLevel = 0;
@@ -54,16 +55,18 @@ public class Furnace : InteractStation
     private TextMeshProUGUI elementInputText;
     private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
-    private int fuelAmountPerCoalUnit = 10;
+    private int fuelAmountPerCoalUnit = 15;
+    private int fuelAmountPerIronUnit = 25;
     private float currentTextTime = 0f;
 
+    private string[] eventTextToDisplay = { "", "Needs Coal", "Needs Iron", "Sabilizing..." };
     private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Sabilizing..." };
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
     // Methods
     private void Start()
     {
-        furnaceEvents = FURNACE_EVENTS.CALM;
+        furnaceEvents = FurnaceEvents.CALM;
         addCoalParticleSystem.Stop();
         numElementAddedText.text = "";
         elementInputText = interactText.GetComponent<TextMeshProUGUI>();
@@ -77,7 +80,7 @@ public class Furnace : InteractStation
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            furnaceEvents = FURNACE_EVENTS.CALM;
+            furnaceEvents = FurnaceEvents.CALM;
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
@@ -105,26 +108,17 @@ public class Furnace : InteractStation
         }
     }
 
-    private void OnEnable()
-    {
-        CoreUpgrade.OnCoreUpgrade += UpgradeFunction;
-    }
-
-    private void OnDisable()
-    {
-        CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
-    }
-
     //From InteractStation script
     public override void StationFunction()
     {
         switch (furnaceEvents)
         {
-            case FURNACE_EVENTS.CALM:
+            case FurnaceEvents.CALM:
+            case FurnaceEvents.STABILIZING:
                 break;
 
-            case FURNACE_EVENTS.NEEDS_COAL:
-                if (playerInventory.SubstractItemToInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
+            case FurnaceEvents.NEEDS_COAL:
+                if (playerInventory.SubstractItemFromInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
                 {
                     FuelAdded((int)furnaceEvents);
                 }
@@ -134,8 +128,8 @@ public class Furnace : InteractStation
                 }
                 break;
 
-            case FURNACE_EVENTS.NEEDS_REPAIRS:
-                if (playerInventory.SubstractItemToInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
+            case FurnaceEvents.NEEDS_REPAIRS:
+                if (playerInventory.SubstractItemFromInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
                 {
                     FuelAdded((int)furnaceEvents);
                 }
@@ -143,9 +137,6 @@ public class Furnace : InteractStation
                 {
                     NoFuelToAdd((int)furnaceEvents);
                 }
-                break;
-
-            case FURNACE_EVENTS.STABILIZING:
                 break;
 
             default:
@@ -171,7 +162,20 @@ public class Furnace : InteractStation
     //Ads coal and show pop up
     private void FuelAdded(int eventState)
     {
-        currentFuel += fuelAmountPerCoalUnit;
+        switch (eventState)
+        {
+            case 1:
+                currentFuel += fuelAmountPerCoalUnit;
+                break;
+
+            case 2:
+                currentFuel += fuelAmountPerIronUnit;
+                break;
+
+            default:
+                break;
+        }
+
         if (currentFuel > MAX_FUEL_AMOUNT)
         {
             currentFuel = MAX_FUEL_AMOUNT;
@@ -225,7 +229,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene("V0.1");
+                SceneManager.LoadScene(1);
             }
         }
         else if (CheckIfMaxCoreLevel())
@@ -235,7 +239,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene("V0.1");
+                SceneManager.LoadScene(0);
             }
         }
     }
@@ -257,36 +261,40 @@ public class Furnace : InteractStation
     {
         switch (furnaceEvents)
         {
-            case FURNACE_EVENTS.CALM:
+            case FurnaceEvents.CALM:
                 countdownActive = false;
+                eventText.text = eventTextToDisplay[0];
                 break;
 
-            case FURNACE_EVENTS.NEEDS_COAL:
+            case FurnaceEvents.NEEDS_COAL:
                 countdownActive = true;
-                
-                ConsumesFuel();
-                CheckWarningMessageAppears();
-
-                if (currentFuel >= MAX_FUEL_AMOUNT)
-                {
-                    furnaceEvents = FURNACE_EVENTS.STABILIZING;
-                }
-                break;
-
-            case FURNACE_EVENTS.NEEDS_REPAIRS:
-                countdownActive = true;
+                eventText.text = eventTextToDisplay[1];
 
                 ConsumesFuel();
                 CheckWarningMessageAppears();
 
                 if (currentFuel >= MAX_FUEL_AMOUNT)
                 {
-                    furnaceEvents = FURNACE_EVENTS.STABILIZING;
+                    furnaceEvents = FurnaceEvents.STABILIZING;
                 }
                 break;
 
-            case FURNACE_EVENTS.STABILIZING:
+            case FurnaceEvents.NEEDS_REPAIRS:
+                countdownActive = true;
+                eventText.text = eventTextToDisplay[2];
+
+                ConsumesFuel();
+                CheckWarningMessageAppears();
+
+                if (currentFuel >= MAX_FUEL_AMOUNT)
+                {
+                    furnaceEvents = FurnaceEvents.STABILIZING;
+                }
+                break;
+
+            case FurnaceEvents.STABILIZING:
                 countdownActive = false;
+                eventText.text = eventTextToDisplay[3];
 
                 if (couroutineStartedConsumeCoal)
                 {
@@ -295,13 +303,23 @@ public class Furnace : InteractStation
                 }
 
                 currentFuel = STARTING_FUEL_AMOUNT;
-                furnaceEvents = FURNACE_EVENTS.CALM;
+                furnaceEvents = FurnaceEvents.CALM;
                 break;
 
             default:
-                furnaceEvents = FURNACE_EVENTS.STABILIZING;
+                furnaceEvents = FurnaceEvents.STABILIZING;
                 break;
         }
+    }
+
+    private void OnEnable()
+    {
+        CoreUpgrade.OnCoreUpgrade += UpgradeFunction;
+    }
+
+    private void OnDisable()
+    {
+        CoreUpgrade.OnCoreUpgrade -= UpgradeFunction;
     }
 
     // Public Methods
@@ -322,12 +340,12 @@ public class Furnace : InteractStation
 
     public void StartEvent(int eventID)
     {
-        furnaceEvents = (FURNACE_EVENTS)eventID;
+        furnaceEvents = (FurnaceEvents)eventID;
     }
 
     public void StopEvent()
     {
-        furnaceEvents = FURNACE_EVENTS.STABILIZING;
+        furnaceEvents = FurnaceEvents.STABILIZING;
     }
 
     public int GetCurrentEventID()
@@ -343,6 +361,11 @@ public class Furnace : InteractStation
     public int GetCurrentFuel()
     {
         return currentFuel;
+    }
+
+    public int GetLightLevel()
+    {
+        return lightLevel;
     }
 
     //Waits x seconds to pop up disappear

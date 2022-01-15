@@ -10,6 +10,8 @@ public class Torch : InteractStation
     public Light2D torchLight;
     public TextMeshProUGUI interactText;
     public CircleCollider2D lightRadius;
+    public GameObject linkedRune;
+    public GameObject desactivatedTorch;
 
     public float torchIntensity = 1f;
     public float turnedOffIntensity = 0f;
@@ -39,7 +41,7 @@ public class Torch : InteractStation
             DoPuzzle();
         }
         PuzzleChecker();
-
+        linkedRune.SetActive(false);
     }
 
     private void Update()
@@ -68,6 +70,8 @@ public class Torch : InteractStation
         if (PuzzleChecker())
         {
             Debug.Log("Puzzle Completed");
+            puzzleSystem.reward.SetActive(true);
+
         }
 
     }
@@ -79,6 +83,10 @@ public class Torch : InteractStation
         turnedOn = false;
         lightRadius.radius = 0.1f;
         animTorch.SetBool("isBurning", false);
+        if (hasToBurn)
+        {
+            linkedRune.SetActive(false);
+        }
     }
 
     void SetTorchLightOn()
@@ -89,6 +97,10 @@ public class Torch : InteractStation
         turnedOn = true;
         lightRadius.radius = 2.8f;
         animTorch.SetBool("isBurning", true);
+        if (hasToBurn)
+        {
+            linkedRune.SetActive(true);
+        }
     }
 
     IEnumerator LightsOn()
@@ -156,5 +168,14 @@ public class Torch : InteractStation
         {
             return false;
         }
+    }
+
+    private void DesactivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(false);
+    }
+    private void ActivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(true);
     }
 }

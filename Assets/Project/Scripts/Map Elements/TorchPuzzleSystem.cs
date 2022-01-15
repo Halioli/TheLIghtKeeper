@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class TorchPuzzleSystem : MonoBehaviour
 {
     public Torch[] linkedTorches;
+    public GameObject reward;
+
 
     private int numberOfTorches;
 
@@ -19,6 +22,7 @@ public class TorchPuzzleSystem : MonoBehaviour
         numberOfTorches = linkedTorches.Length;
         Debug.Log(numberOfTorches);
         TorchesChecker();
+        reward.SetActive(false);
         Debug.Log("MAX ON: " + maxTorchesOn);
         Debug.Log("MAX OFF: " + maxTorchesOff);
     }
@@ -36,6 +40,4 @@ public class TorchPuzzleSystem : MonoBehaviour
             }
         }
     }
-
-    
 }

@@ -233,6 +233,9 @@ MonoBehaviour:
   emptyStack: {fileID: 2426600849371271658}
   inventory: []
   indexOfSelectedInventorySlot: 0
+  gotChanged: 0
+  numberOfInventorySlots: 4
+  maxNumberOfSlots: 8
 --- !u!1 &1928852176627775710
 GameObject:
   m_ObjectHideFlags: 0
@@ -10556,6 +10559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryCanvas: {fileID: 0}
+  inventoryMenuGameObject: {fileID: 0}
   inventoryMenu: {fileID: 0}
 --- !u!114 &4989443145165977615
 MonoBehaviour:
