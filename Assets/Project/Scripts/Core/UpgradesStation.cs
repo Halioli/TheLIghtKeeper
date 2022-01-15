@@ -83,6 +83,7 @@ public class UpgradesStation : InteractStation
         PauseMenu.PauseMineAndAttack();
 
         DoOnInteractOpen();
+        DoOnInteractDescriptionOpen();
     }
 
     private void CloseStorageInventory()

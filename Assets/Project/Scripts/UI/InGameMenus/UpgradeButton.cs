@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-public class UpgradeButton : MonoBehaviour
+public class UpgradeButton : HoverButton
 {
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] Image[] upgradeStatus;
