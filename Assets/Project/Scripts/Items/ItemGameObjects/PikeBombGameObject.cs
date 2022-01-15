@@ -58,6 +58,10 @@ public class PikeBombGameObject : ItemGameObject
         }
     }
 
+    private void DestroyBomb()
+    {
+        Destroy(gameObject);
+    }
     IEnumerator Functionality()
     {
         Vector2 dir;
@@ -75,7 +79,5 @@ public class PikeBombGameObject : ItemGameObject
         animator.SetBool("explosion", true);
         collidedElements = ReturnAllOverlapedColliders(transform.position);
         DamageAllCollided();
-        
-        Destroy(gameObject);
     }
 }
