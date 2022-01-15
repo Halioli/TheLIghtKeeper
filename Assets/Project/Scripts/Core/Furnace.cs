@@ -55,7 +55,7 @@ public class Furnace : InteractStation
     private TextMeshProUGUI elementInputText;
     private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
-    private int fuelAmountPerCoalUnit = 10;
+    private int fuelAmountPerCoalUnit = 15;
     private int fuelAmountPerIronUnit = 25;
     private float currentTextTime = 0f;
 
@@ -239,7 +239,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(0);
             }
         }
     }
@@ -361,6 +361,11 @@ public class Furnace : InteractStation
     public int GetCurrentFuel()
     {
         return currentFuel;
+    }
+
+    public int GetLightLevel()
+    {
+        return lightLevel;
     }
 
     //Waits x seconds to pop up disappear
