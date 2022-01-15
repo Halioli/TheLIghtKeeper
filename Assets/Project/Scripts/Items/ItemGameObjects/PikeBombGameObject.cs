@@ -11,11 +11,13 @@ public class PikeBombGameObject : ItemGameObject
 
     public AudioClip pikeBombUseSound;
     public AudioClip pikeBombExplosionSound;
+    public Animator animator;
 
     public override void DoFunctionality()
     {
         canBePickedUp = false;
         StartCoroutine("Functionality");
+        animator = GetComponent<Animator>();
     }
 
     private void FunctionalitySound()
@@ -70,6 +72,7 @@ public class PikeBombGameObject : ItemGameObject
         rigidbody2D.bodyType = RigidbodyType2D.Static;
 
         ExplosionSound();
+        animator.SetBool("explosion", true);
         collidedElements = ReturnAllOverlapedColliders(transform.position);
         DamageAllCollided();
         
