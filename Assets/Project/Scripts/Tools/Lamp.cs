@@ -114,8 +114,6 @@ public class Lamp : MonoBehaviour
 
     public void ConsumeLampTime()
     {
-        //Debug.Log(lampTime);
-
         lampTime -= Time.deltaTime;
     }
 
