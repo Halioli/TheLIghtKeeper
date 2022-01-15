@@ -26,6 +26,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
         for (int i = 0; i < upgradesSystem.upgradeBranches.Count; ++i)
         {
             upgradesSystem.upgradeBranches[i].Init(i);
+
             Upgrade upgrade = upgradesSystem.upgradeBranches[i].GetCurrentUpgrade();
             Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
             string[] amounts = new string[upgrade.requiredItems.Count];
@@ -38,6 +39,8 @@ public class UpgradeMenuCanvas : MonoBehaviour
                 ++j;
             }
             upgradeButtons[i].InitUpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
+            upgradeButtons[i].GetComponent<HoverButton>().SetDescription(upgradesSystem.upgradeBranches[i].GetCurrentUpgrade().upgradeDescription); //////////
+
         }
     }
 
@@ -59,7 +62,6 @@ public class UpgradeMenuCanvas : MonoBehaviour
             return;
         }
 
-
         Upgrade upgrade = upgradesSystem.upgradeBranches[index].GetCurrentUpgrade();
         Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
         string[] amounts = new string[upgrade.requiredItems.Count];
@@ -71,7 +73,10 @@ public class UpgradeMenuCanvas : MonoBehaviour
             amounts[j] = requiredItemPair.Value.ToString();
             ++j;
         }
+
         upgradeButtons[index].UpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
+        upgradeButtons[index].GetComponent<HoverButton>().SetDescription(upgradesSystem.upgradeBranches[index].GetCurrentUpgrade().upgradeDescription); //////////
+
     }
 
 

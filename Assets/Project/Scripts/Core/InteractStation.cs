@@ -15,6 +15,10 @@ public class InteractStation : MonoBehaviour
     public static event InteractStationAction OnInteractOpen;
     public static event InteractStationAction OnInteractClose;
 
+    public delegate void InteractStationDescriptionAction(string description);
+    public static event InteractStationAction OnDescriptionOpen;
+    public static event InteractStationDescriptionAction OnDescriptionSet;
+
 
     private void Awake()
     {
@@ -72,4 +76,13 @@ public class InteractStation : MonoBehaviour
             OnInteractClose();
         }
     }
+
+    protected void DoOnInteractDescriptionOpen()
+    {
+        if (OnDescriptionOpen != null)
+        {
+            OnDescriptionOpen();
+        }
+    }
+
 }
