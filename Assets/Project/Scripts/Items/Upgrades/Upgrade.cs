@@ -8,6 +8,7 @@ public class Upgrade : ScriptableObject
 {
     // Public Attributes
     public string upgradeDescription;
+    [TextArea(5, 20)] public string longDescription;
     public List<Item> requiredItemsList;
     public List<int> requiredAmountsList;
     public Dictionary<Item, int> requiredItems;
