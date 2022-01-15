@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
 using UnityEngine.Events;
+using UnityEngine.UI;
+
 public class Torch : InteractStation
 {
     public ParticleSystem smokeTorchParticles;
     public Light2D torchLight;
-    public TextMeshProUGUI interactText;
+    public CanvasGroup popUpCanvasGroup;
     public CircleCollider2D lightRadius;
     public GameObject linkedRune;
     public GameObject desactivatedTorch;
@@ -34,7 +36,7 @@ public class Torch : InteractStation
             torchLight.intensity = turnedOffIntensity;
         }
 
-        interactText.alpha = 0f;
+        popUpCanvasGroup.alpha = 0f;
 
         if(hasToBurn == false)
         {
@@ -48,12 +50,12 @@ public class Torch : InteractStation
     {
         if (playerInsideTriggerArea)
         {
-            interactText.alpha = 1f;
+            popUpCanvasGroup.alpha = 1f;
             GetInput();
         }
         else
         {
-            interactText.alpha = 0f;
+            popUpCanvasGroup.alpha = 0f;
         }
     }
     public override void StationFunction()
