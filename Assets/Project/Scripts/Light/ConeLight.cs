@@ -27,6 +27,8 @@ public class ConeLight : CustomLight
 
     public override void Expand()
     {
+        if (lightState == LightState.EXPANDING) return;
+
         StopCoroutine(ShrinkConeLight());
 
         active = true;
@@ -36,6 +38,7 @@ public class ConeLight : CustomLight
     IEnumerator ExpandConeLight()
     {
         lightGameObject.SetActive(true);
+        lightState = LightState.EXPANDING;
 
         for (float i = 0f; i < lightAngle; i += Time.deltaTime * lightAngle * 4)
         {
@@ -43,10 +46,14 @@ public class ConeLight : CustomLight
             coneLight.pointLightInnerAngle = (i >= RADIUS_DIFFERENCE ? i - RADIUS_DIFFERENCE : 0f);
             yield return new WaitForSeconds(Time.deltaTime);
         }
+
+        lightState = LightState.NONE;
     }
 
     public override void Shrink()
     {
+        if (lightState == LightState.SHIRINKING) return;
+
         StopCoroutine(ExpandConeLight());
 
         active = false;
@@ -55,6 +62,7 @@ public class ConeLight : CustomLight
 
     IEnumerator ShrinkConeLight()
     {
+        lightState = LightState.SHIRINKING;
         for (float i = lightAngle; i > 0f; i -= Time.deltaTime * lightAngle * 8)
         {
             coneLight.pointLightOuterAngle = i;
@@ -64,6 +72,8 @@ public class ConeLight : CustomLight
 
         if (!active)
             lightGameObject.SetActive(false);
+
+        lightState = LightState.NONE;
     }
 
     public override void SetIntensity(float intensity)
