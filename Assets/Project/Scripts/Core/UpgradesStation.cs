@@ -80,7 +80,7 @@ public class UpgradesStation : InteractStation
         hudGameObject.SetActive(false);
         upgradesCanvasGameObject.SetActive(true);
         //inventoryMenu.UpdateInventory();
-        PauseMenu.gameIsPaused = true;
+        PauseMenu.PauseMineAndAttack();
 
         DoOnInteractOpen();
     }
@@ -90,7 +90,7 @@ public class UpgradesStation : InteractStation
         isOpen = false;
         hudGameObject.SetActive(true);
         upgradesCanvasGameObject.SetActive(false);
-        PauseMenu.gameIsPaused = false;
+        PauseMenu.ResumeMineAndAttack();
 
         DoOnInteractClose();
     }

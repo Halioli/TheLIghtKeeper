@@ -21,7 +21,6 @@ public class StorageStation : InteractStation
         if (playerInsideTriggerArea)
         {
             GetInput();            //Waits the input from InteractStation 
-
         }
         else
         {
@@ -31,6 +30,18 @@ public class StorageStation : InteractStation
             }
         }
     }
+
+    private void OnEnable()
+    {
+        Inventory.OnItemMove += storageInventoryMenu.UpdateInventory;
+    }
+
+    private void OnDisable()
+    {
+        Inventory.OnItemMove -= storageInventoryMenu.UpdateInventory; 
+    }
+
+
 
     override public void StationFunction()
     {
