@@ -76,7 +76,7 @@ public class PlayerHandler : PlayerBase
 
         PlayerInputs.instance.canMove = false;
         animator.SetBool("isDead", true);
-        while (!animationEnds) { yield return null; }
+        yield return new WaitForSeconds(1f);
 
         animator.SetBool("isDead", false);
         playerStates.SetCurrentPlayerState(PlayerState.FREE);

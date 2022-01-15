@@ -87,10 +87,12 @@ public class FogSystem : MonoBehaviour
     {
         hasFaded = true;
         hudHandler.DoFadeToBlack();
+        PlayerInputs.instance.canMove = false;
         skullEnemy.SetActive(false);
         yield return new WaitForSeconds(3f);
         player.transform.position = respawnPosition;
         hudHandler.RestoreFades();
+        PlayerInputs.instance.canMove = true;
         hasFaded = false;
         ResetTimer();
     }
