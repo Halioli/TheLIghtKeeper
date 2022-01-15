@@ -62,6 +62,7 @@ public class PlayerHandler : PlayerBase
 
     public void RestoreHUD()
     {
+        Debug.Log("Restore HUD");
         hudHandler.RestoreFades();
     }
 
@@ -76,8 +77,8 @@ public class PlayerHandler : PlayerBase
 
         PlayerInputs.instance.canMove = false;
         animator.SetBool("isDead", true);
-        while (!animationEnds) { yield return null; }
-
+        yield return new WaitForSeconds(2f);
+        RestoreHUD();
         animator.SetBool("isDead", false);
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
 
