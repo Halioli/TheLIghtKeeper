@@ -52,4 +52,9 @@ public class InGameToolTips : MonoBehaviour
     {
         toolTipsCanvasGroup.alpha = 0f;
     }
+
+    public void SetTooltipsState(bool state)
+    {
+        toolTipsActive = state;
+    }
 }
