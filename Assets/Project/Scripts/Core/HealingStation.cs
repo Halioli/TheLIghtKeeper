@@ -9,6 +9,7 @@ public class HealingStation : MonoBehaviour
     private GameObject player;
     private HealthSystem playerHealthSystem;
     public TextMeshProUGUI maxHealthMessage;
+    public GameObject backgroundText;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class HealingStation : MonoBehaviour
         player = GameObject.Find("LightScenePlayer");
         playerHealthSystem = player.GetComponent<HealthSystem>();
         maxHealthMessage.alpha = 0;
+        backgroundText.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -38,6 +40,7 @@ public class HealingStation : MonoBehaviour
             Debug.Log(playerInside);
             RestorePlayerHealth();
             maxHealthMessage.alpha = 0;
+            backgroundText.SetActive(false);
         }
     }
 
@@ -57,11 +60,13 @@ public class HealingStation : MonoBehaviour
     private void ShowMaxHealthMessage()
     {
         maxHealthMessage.text = "Player at Max Health";
+        backgroundText.SetActive(true);
         maxHealthMessage.alpha = 100;
     }
     private void ShowPlayerHealedMessage()
     {
         maxHealthMessage.text = "Player Healed";
+        backgroundText.SetActive(true);
         maxHealthMessage.alpha = 100;
     }
 }

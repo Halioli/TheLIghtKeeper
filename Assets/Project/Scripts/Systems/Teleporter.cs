@@ -12,7 +12,7 @@ public class Teleporter : InteractStation
 
     // Public Attributes
     //Station
-    public GameObject interactText;
+    public GameObject popUp;
     public GameObject canvasTeleportSelection;
     public GameObject hudGameObject;
     public TextMeshProUGUI mssgText;
@@ -29,6 +29,9 @@ public class Teleporter : InteractStation
     public delegate void TeleportActivation(string teleportName);
     public static event TeleportActivation OnActivation;
 
+    public delegate void TeleportInteraction(string teleportName);
+    public static event TeleportInteraction OnInteraction;
+
     private void Start()
     {
         teleportTransformPosition = GetComponent<Transform>().position;
@@ -42,6 +45,9 @@ public class Teleporter : InteractStation
     {
         if (playerInsideTriggerArea)
         {
+            if (OnInteraction != null)
+                OnInteraction(teleportName);
+
             GetInput();
             PopUpAppears();
         }
@@ -54,13 +60,15 @@ public class Teleporter : InteractStation
     // Interactive pop up disappears
     private void PopUpAppears()
     {
-        interactText.SetActive(true);
+        popUp.SetActive(true);
+        popUp.GetComponent<PopUp>().ShowInteraction();
     }
 
     // Interactive pop up disappears
     private void PopUpDisappears()
     {
-        interactText.SetActive(false);
+        popUp.GetComponent<PopUp>().HideAll();
+        popUp.SetActive(false);
         mssgText.text = messagesToShow[0];
     }
 
@@ -69,6 +77,7 @@ public class Teleporter : InteractStation
         if (!activated && playerInventory.InventoryContainsItem(darkEssence))
         {
             playerInventory.SubstractItemFromInventory(darkEssence);
+            popUp.GetComponent<PopUp>().ShowMessage();
             mssgText.text = messagesToShow[2];
 
             PlayerInputs.instance.canMove = false;
@@ -76,6 +85,7 @@ public class Teleporter : InteractStation
         }
         else if (!activated && !playerInventory.InventoryContainsItem(darkEssence))
         {
+            popUp.GetComponent<PopUp>().ShowMessage();
             mssgText.text = messagesToShow[1];
         }
         else
@@ -99,6 +109,7 @@ public class Teleporter : InteractStation
     {
         activated = true;
         PlayerInputs.instance.canMove = true;
+        popUp.GetComponent<PopUp>().HideMessage();
         mssgText.text = messagesToShow[0];
 
         if (OnActivation != null)

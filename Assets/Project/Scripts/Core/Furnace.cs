@@ -16,13 +16,12 @@ public class Furnace : InteractStation
     public GameObject player;
 
     //TextMesh gameobjects
-    public GameObject interactText;
+    public GameObject popUpGameObject;
     public GameObject warning;
     public GameObject endGameMessage;
     public ParticleSystem addCoalParticleSystem;
 
     //Text references
-    public TextMeshProUGUI numElementAddedText;
     public TextMeshProUGUI currentFuelText;
     public TextMeshProUGUI eventText;
 
@@ -52,30 +51,31 @@ public class Furnace : InteractStation
     //Scalation variables
     private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
 
-    private TextMeshProUGUI elementInputText;
     private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
     private int fuelAmountPerCoalUnit = 15;
     private int fuelAmountPerIronUnit = 25;
     private float currentTextTime = 0f;
 
-    private string[] eventTextToDisplay = { "", "Needs Coal", "Needs Iron", "Sabilizing..." };
-    private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Sabilizing..." };
+    private PopUp popUp;
+    private string[] eventTextToDisplay = { "", "Needs Coal", "Needs Iron", "Stabilizing..." };
+    private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Stabilizing..." };
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
     // Methods
     private void Start()
     {
         furnaceEvents = FurnaceEvents.CALM;
+        popUp = popUpGameObject.GetComponent<PopUp>();
         addCoalParticleSystem.Stop();
-        numElementAddedText.text = "";
-        elementInputText = interactText.GetComponent<TextMeshProUGUI>();
-        
-        interactText.SetActive(false);
+        popUp.ChangeMessageText("");
+
+        popUp.HideAll();
+        popUpGameObject.SetActive(false);
         warning.SetActive(false);
         endGameMessage.SetActive(false);
     }
-    
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))
@@ -147,16 +147,18 @@ public class Furnace : InteractStation
     //Interactive pop up appears
     private void PopUpAppears(int eventState)
     {
-        interactText.SetActive(true);
+        popUpGameObject.SetActive(true);
+        popUp.ShowInteraction();
 
         // Different text depending on event
-        elementInputText.text = elementInputTextsToDisplay[eventState];
+        popUp.ChangeInteractionText(elementInputTextsToDisplay[eventState]);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
-        interactText.SetActive(false);
+        popUpGameObject.GetComponent<PopUp>().HideAll();
+        popUpGameObject.SetActive(false);
     }
 
     //Ads coal and show pop up
@@ -182,7 +184,7 @@ public class Furnace : InteractStation
         }
 
         numElementAdded += 1;
-        numElementAddedText.text = "Added " + numElementAdded.ToString() + numElementAddedTextsToDisplay[eventState];
+        popUp.ChangeMessageText("Added " + numElementAdded.ToString() + numElementAddedTextsToDisplay[eventState]);
         addCoalParticleSystem.Play();
 
         if (!couroutineStartedAddCoal)
@@ -193,12 +195,11 @@ public class Furnace : InteractStation
 
     private void NoFuelToAdd(int eventState)
     {
-        numElementAddedText.text = "No" + numElementAddedTextsToDisplay[eventState] + " to add";
+        popUp.ChangeMessageText("No" + numElementAddedTextsToDisplay[eventState] + " to add");
         if (!couroutineStartedAddCoal)
         {
             StartCoroutine(UsingYieldAddCoal(1));
         }
-
     }
 
     //Function that consumes fuel
@@ -327,7 +328,7 @@ public class Furnace : InteractStation
     {
         if(lightLevel < MAX_CORE_LEVEL)
         {
-            numElementAddedText.text = "Luxinite Added";
+            popUp.ChangeMessageText("Luxinite Added");
             coreLight.transform.localScale += scaleChange;
             ++lightLevel;
 
@@ -375,7 +376,7 @@ public class Furnace : InteractStation
 
         yield return new WaitForSeconds(seconds);
 
-        numElementAddedText.text = "";
+        popUp.ChangeMessageText("");
         addCoalParticleSystem.Stop();
 
         couroutineStartedAddCoal = false;
