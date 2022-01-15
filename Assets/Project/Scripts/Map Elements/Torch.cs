@@ -11,6 +11,7 @@ public class Torch : InteractStation
     public TextMeshProUGUI interactText;
     public CircleCollider2D lightRadius;
     public GameObject linkedRune;
+    public GameObject desactivatedTorch;
 
     public float torchIntensity = 1f;
     public float turnedOffIntensity = 0f;
@@ -167,5 +168,14 @@ public class Torch : InteractStation
         {
             return false;
         }
+    }
+
+    private void DesactivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(false);
+    }
+    private void ActivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(true);
     }
 }
