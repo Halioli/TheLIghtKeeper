@@ -20,6 +20,7 @@ public class UpgradesStation : InteractStation
         upgradesSystem.Init(playerInventory);
         upgradeMenuCanvas = upgradesCanvasGameObject.GetComponent<UpgradeMenuCanvas>();
         InitUpgradesMenu();
+        CloseStorageInventory();
         backgroundText.SetActive(false);
     }
 
