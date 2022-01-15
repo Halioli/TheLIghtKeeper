@@ -11,6 +11,7 @@ public class CraftingStation : InteractStation
 
     // Public Attributes
     public GameObject interactText;
+    public GameObject backgroundText;
     public GameObject craftingCanvasGameObject;
     public GameObject playerHUDGameObject;
 
@@ -70,12 +71,14 @@ public class CraftingStation : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
+        backgroundText.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        backgroundText.SetActive(false);
     }
 
     private void PlayCraftingParticles()

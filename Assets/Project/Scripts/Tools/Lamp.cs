@@ -70,8 +70,6 @@ public class Lamp : MonoBehaviour
         coneLight.SetAngle(lightAngle);
     }
 
-
-
     private void OnEnable()
     {
         LanternSourceUpgrade.OnLanternSourceUpgrade += UpgradeLampSource;
@@ -90,15 +88,17 @@ public class Lamp : MonoBehaviour
         {
             turnedOn = false;
             playerAnimator.SetBool("light", false);
+
             DeactivateConeLight();
+
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
             flickCooldown = START_FLICK_COOLDOWN;
             circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
 
-            if (turnOffLanternEvent != null){
+            if (turnOffLanternEvent != null)
+            {
                 turnOffLanternEvent();
             }
-            
         }
         else
         {
@@ -117,8 +117,6 @@ public class Lamp : MonoBehaviour
 
     public void ConsumeLampTime()
     {
-        Debug.Log(lampTime);
-
         lampTime -= Time.deltaTime;
     }
 
@@ -126,7 +124,6 @@ public class Lamp : MonoBehaviour
     {
         lampTime = maxLampTime;
     }
-
     public void RefillLampTime(float time)
     {
         if (lampTime + time > maxLampTime)
@@ -144,7 +141,7 @@ public class Lamp : MonoBehaviour
     {
         if (turnedOn)  //Player in darkness
         {
-            if (lampTime == 0 || lampTime == maxLampTime) //Player don't has lamp fuel
+            if (lampTime == 0 || lampTime == maxLampTime) //Player doesn't has lamp fuel
             {
                 return false;
             }
@@ -192,6 +189,7 @@ public class Lamp : MonoBehaviour
         coneLight.SetIntensity(LIGHT_INTENSITY_ON);
         coneLight.Expand();
     }
+
     public void ActivateCircleLight()
     {
         active = true;
@@ -199,7 +197,6 @@ public class Lamp : MonoBehaviour
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
         circleLight.Expand();
     }
-
 
     public void DeactivateLampLight()
     {
@@ -211,6 +208,7 @@ public class Lamp : MonoBehaviour
 
         if (coneIsActive)
             DeactivateConeLight();
+
         if (active)
             DeactivateCircleLight();
     }
@@ -228,13 +226,13 @@ public class Lamp : MonoBehaviour
 
         circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
     }
+
     public void DeactivateCircleLight()
     {
         active = false;
 
         circleLight.Shrink();
     }
-
 
     public float GetLampTimeRemaining()
     {
@@ -259,7 +257,6 @@ public class Lamp : MonoBehaviour
 
         coneLight.SetDistance(lightDistance);   
         coneLight.SetAngle(lightAngle);
-
     }
 
     private void UpgradeLampTime()
@@ -273,8 +270,6 @@ public class Lamp : MonoBehaviour
         lampTime = maxLampTime;
         ++timeLevel;
     }
-
-
 
     IEnumerator LightFlicking()
     {
@@ -298,7 +293,6 @@ public class Lamp : MonoBehaviour
 
             flickerCount = rg.Next(4, 9);
             
-
             for (int i = 0; i < flickerCount; ++i)
             {
                 flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
@@ -319,10 +313,6 @@ public class Lamp : MonoBehaviour
 
         }
 
-
-        DeactivateConeLight();
-
+        //DeactivateConeLight();
     }
-
-
 }

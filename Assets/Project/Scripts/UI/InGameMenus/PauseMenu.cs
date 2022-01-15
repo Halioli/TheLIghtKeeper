@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
     public CanvasGroup loadingGroup;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
+    public InGameToolTips inGameTooltips;
 
     void Update()
     {
@@ -25,6 +26,15 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             }
         }
+
+        if (gameIsPaused)
+        {
+            PauseGame();
+        }
+        else
+        {
+            Resume();
+        }
     }
 
     private void Resume()
@@ -34,15 +44,38 @@ public class PauseMenu : MonoBehaviour
         if (optionsMenu.activeInHierarchy)
             optionsMenu.SetActive(false);
 
-        Time.timeScale = 1f;
+        ResumeGame();
         gameIsPaused = false;
     }
 
     private void Pause()
     {
         pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
+
+        PauseGame();
         gameIsPaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    static public void PauseMineAndAttack()
+    {
+        PlayerInputs.instance.canMine = false;
+        PlayerInputs.instance.canAttack = false;
+    }
+
+    static public void ResumeMineAndAttack()
+    {
+        PlayerInputs.instance.canMine = true;
+        PlayerInputs.instance.canAttack = true;
     }
 
     public void ClickedResumeButton()
@@ -66,6 +99,11 @@ public class PauseMenu : MonoBehaviour
     public void ClickedExitButton()
     {
         PlayerInputs.instance.QuitGame();
+    }
+
+    public void SetTooltips(bool toolTipsState)
+    {
+        inGameTooltips.SetTooltipsState(toolTipsState);
     }
 
     IEnumerator AsyncLoading(int sceneIndex)
