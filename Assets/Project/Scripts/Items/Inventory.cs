@@ -17,9 +17,9 @@ public class Inventory : MonoBehaviour
     public bool gotChanged = false;
 
     // Private Attributes
-    [SerializeField] private int numberOfInventorySlots;
-    private int numberOfOccuppiedInventorySlots;
-    private bool inventoryIsEmpty;
+    [SerializeField] protected int numberOfInventorySlots;
+    protected int numberOfOccuppiedInventorySlots;
+    protected bool inventoryIsEmpty;
 
     [SerializeField] private int maxNumberOfSlots;
 
@@ -315,6 +315,8 @@ public class Inventory : MonoBehaviour
         {
             otherInventory.AddItemToInventory(inventory[itemCellIndex].itemInStack);
             SubstractItemFromInventorySlot(itemCellIndex);
+
+            otherInventory.gotChanged = true;
 
             if (OnItemMove != null) OnItemMove();
         }

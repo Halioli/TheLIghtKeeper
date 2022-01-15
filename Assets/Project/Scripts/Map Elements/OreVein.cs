@@ -13,12 +13,12 @@ public class OreVein : InteractStation
     public TextMeshProUGUI mssgText;
 
     // Private Attributes
-    private string[] messagesToShow = { "", "No auto-miner found" };
+    private string[] messagesToShow = { "", "No Auto-Miner found" };
     private bool activated = false;
 
     private void Start()
     {
-        
+        autoMinerGameObject.SetActive(activated);
     }
 
     void Update()
@@ -49,25 +49,22 @@ public class OreVein : InteractStation
 
     public override void StationFunction()
     {
-        if (!activated && playerInventory.InventoryContainsItem(autoMiner))
+        if (activated) return;
+        activated = true;
+
+        if (playerInventory.InventoryContainsItem(autoMiner))
         {
+            activated = true;
+
             playerInventory.SubstractItemFromInventory(autoMiner);
-            mssgText.text = messagesToShow[2];
-        }
-        else if (!activated && !playerInventory.InventoryContainsItem(autoMiner))
-        {
+            mssgText.text = messagesToShow[0];
             autoMinerGameObject.SetActive(true);
 
-            //if (!canvasTeleportSelection.activeInHierarchy)
-            //{
-            //    canvasTeleportSelection.SetActive(true);
-            //    PauseMenu.gameIsPaused = true;
-            //}
-            //else
-            //{
-            //    canvasTeleportSelection.SetActive(false);
-            //    PauseMenu.gameIsPaused = false;
-            //}
+            autoMinerGameObject.GetComponent<AutoMiner>().GetsPlacedDown(materialVein);
+        }
+        else
+        {
+            mssgText.text = messagesToShow[1];
         }
     }
 }
