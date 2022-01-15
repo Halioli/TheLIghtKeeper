@@ -88,12 +88,15 @@ public class Lamp : MonoBehaviour
         {
             turnedOn = false;
             playerAnimator.SetBool("light", false);
+
             DeactivateConeLight();
+
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
             flickCooldown = START_FLICK_COOLDOWN;
             circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
 
-            if (turnOffLanternEvent != null){
+            if (turnOffLanternEvent != null)
+            {
                 turnOffLanternEvent();
             }
         }
@@ -138,7 +141,7 @@ public class Lamp : MonoBehaviour
     {
         if (turnedOn)  //Player in darkness
         {
-            if (lampTime == 0 || lampTime == maxLampTime) //Player don't has lamp fuel
+            if (lampTime == 0 || lampTime == maxLampTime) //Player doesn't has lamp fuel
             {
                 return false;
             }
@@ -205,6 +208,7 @@ public class Lamp : MonoBehaviour
 
         if (coneIsActive)
             DeactivateConeLight();
+
         if (active)
             DeactivateCircleLight();
     }
@@ -222,6 +226,7 @@ public class Lamp : MonoBehaviour
 
         circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
     }
+
     public void DeactivateCircleLight()
     {
         active = false;
@@ -252,7 +257,6 @@ public class Lamp : MonoBehaviour
 
         coneLight.SetDistance(lightDistance);   
         coneLight.SetAngle(lightAngle);
-
     }
 
     private void UpgradeLampTime()
@@ -308,6 +312,7 @@ public class Lamp : MonoBehaviour
             }
 
         }
-        DeactivateConeLight();
+
+        //DeactivateConeLight();
     }
 }
