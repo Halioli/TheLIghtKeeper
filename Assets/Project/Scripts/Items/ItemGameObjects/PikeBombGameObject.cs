@@ -16,7 +16,7 @@ public class PikeBombGameObject : ItemGameObject
     public override void DoFunctionality()
     {
         canBePickedUp = false;
-        StartCoroutine("Functionality");
+        StartCoroutine("Functionality");
         animator = GetComponent<Animator>();
     }
 
@@ -58,6 +58,10 @@ public class PikeBombGameObject : ItemGameObject
         }
     }
 
+    private void DestroyBomb()
+    {
+        Destroy(gameObject);
+    }
     IEnumerator Functionality()
     {
         Vector2 dir;
@@ -71,11 +75,9 @@ public class PikeBombGameObject : ItemGameObject
         yield return new WaitForSeconds(0.4f);
         rigidbody2D.bodyType = RigidbodyType2D.Static;
 
-        ExplosionSound();
+        ExplosionSound();
         animator.SetBool("explosion", true);
         collidedElements = ReturnAllOverlapedColliders(transform.position);
         DamageAllCollided();
-        
-        Destroy(gameObject);
     }
 }
