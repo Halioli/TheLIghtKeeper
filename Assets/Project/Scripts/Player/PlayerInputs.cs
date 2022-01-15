@@ -14,6 +14,9 @@ public class PlayerInputs : MonoBehaviour
     public bool canMove = true;
     public float playerReach = 3f;
 
+    public bool canMine = true;
+    public bool canAttack = true;
+
     public GameObject selectSpotGameObject;
 
     private void Awake()
@@ -31,14 +34,14 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public bool PlayerClickedMineButton()
     {
-        if (PauseMenu.gameIsPaused) { return false; }
+        if (PauseMenu.gameIsPaused || !instance.canMine) { return false; }
 
         return Input.GetKeyDown(KeyCode.Mouse0);
     }
 
     public bool PlayerClickedAttackButton()
     {
-        if (PauseMenu.gameIsPaused) { return false; }
+        if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
 
         return Input.GetKeyDown(KeyCode.Mouse1);
     }
