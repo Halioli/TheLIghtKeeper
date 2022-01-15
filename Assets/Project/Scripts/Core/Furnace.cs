@@ -17,6 +17,7 @@ public class Furnace : InteractStation
 
     //TextMesh gameobjects
     public GameObject interactText;
+    public GameObject backgroundText;
     public GameObject warning;
     public GameObject endGameMessage;
     public ParticleSystem addCoalParticleSystem;
@@ -55,12 +56,12 @@ public class Furnace : InteractStation
     private TextMeshProUGUI elementInputText;
     private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
-    private int fuelAmountPerCoalUnit = 10;
+    private int fuelAmountPerCoalUnit = 15;
     private int fuelAmountPerIronUnit = 25;
     private float currentTextTime = 0f;
 
-    private string[] eventTextToDisplay = { "", "Needs Coal", "Needs Iron", "Sabilizing..." };
-    private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Sabilizing..." };
+    private string[] eventTextToDisplay = { "", "Needs Coal", "Needs Iron", "Stabilizing..." };
+    private string[] elementInputTextsToDisplay = { "Furnace is stable", "Press E to add 1 Coal", "Press E to add 1 Iron", "Stabilizing..." };
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
     // Methods
@@ -74,8 +75,10 @@ public class Furnace : InteractStation
         interactText.SetActive(false);
         warning.SetActive(false);
         endGameMessage.SetActive(false);
+        backgroundText.SetActive(false);
+
     }
-    
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))
@@ -148,6 +151,7 @@ public class Furnace : InteractStation
     private void PopUpAppears(int eventState)
     {
         interactText.SetActive(true);
+        backgroundText.SetActive(true);
 
         // Different text depending on event
         elementInputText.text = elementInputTextsToDisplay[eventState];
@@ -157,6 +161,8 @@ public class Furnace : InteractStation
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        backgroundText.SetActive(false);
+
     }
 
     //Ads coal and show pop up
@@ -239,7 +245,7 @@ public class Furnace : InteractStation
             currentTextTime += Time.deltaTime;
             if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(0);
             }
         }
     }
@@ -361,6 +367,11 @@ public class Furnace : InteractStation
     public int GetCurrentFuel()
     {
         return currentFuel;
+    }
+
+    public int GetLightLevel()
+    {
+        return lightLevel;
     }
 
     //Waits x seconds to pop up disappear

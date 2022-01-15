@@ -157,5 +157,6 @@ public class ItemGameObject : MonoBehaviour
             lerp.ToMin();
 
         transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
+        //GetComponent<SpriteRenderer>().transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
     }
 }
