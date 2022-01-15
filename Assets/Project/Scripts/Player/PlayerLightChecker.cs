@@ -20,7 +20,7 @@ public class PlayerLightChecker : MonoBehaviour
 
     private void Update()
     {
-        if (numberOfLights == 0 && !lamp.LampTimeExhausted())
+        if (numberOfLights == 0)// && !lamp.LampTimeExhausted())
         {
             lamp.UpdateLamp();
         }
@@ -88,6 +88,7 @@ public class PlayerLightChecker : MonoBehaviour
                 else
                 {
                     SetPlayerInLightToFalse();
+                    lamp.ActivateCircleLight();
                 }
             }
         }
