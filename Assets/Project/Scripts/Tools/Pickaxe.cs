@@ -23,17 +23,17 @@ public class Pickaxe : MonoBehaviour
         damageValue = 1;
         criticalDamageValue = damageValue + 1;
         hardness = Hardness.NORMAL;
-        extraDrop = 0;
+        extraDrop = 1;
     }
 
     private void OnEnable()
     {
-        SwordUpgrade.OnSwordUpgrade += Upgrade;
+        PickaxeUpgrade.OnPickaxeUpgrade += Upgrade;
     }
 
     private void OnDisable()
     {
-        SwordUpgrade.OnSwordUpgrade -= Upgrade;
+        PickaxeUpgrade.OnPickaxeUpgrade -= Upgrade;
     }
 
 

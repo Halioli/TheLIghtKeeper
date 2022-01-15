@@ -10,6 +10,7 @@ public class StorageStation : InteractStation
 
     private bool inventoryIsOpen = false;
 
+    public PopUp popUp;
 
     void Start()
     {
@@ -20,11 +21,12 @@ public class StorageStation : InteractStation
     {
         if (playerInsideTriggerArea)
         {
-            GetInput();            //Waits the input from InteractStation 
-
+            GetInput();            //Waits the input from InteractStation
+            PopUpAppears();
         }
         else
         {
+            PopUpDisappears();
             if (inventoryIsOpen)
             {
                 CloseStorageInventory();
@@ -32,22 +34,43 @@ public class StorageStation : InteractStation
         }
     }
 
+    private void PopUpAppears()
+    {
+        popUp.ShowInteraction();
+    }
+
+    //Interactive pop up disappears
+    private void PopUpDisappears()
+    {
+        popUp.HideAll();
+    }
+
+    private void OnEnable()
+    {
+        Inventory.OnItemMove += storageInventoryMenu.UpdateInventory;
+    }
+
+    private void OnDisable()
+    {
+        Inventory.OnItemMove -= storageInventoryMenu.UpdateInventory; 
+    }
+
     override public void StationFunction()
     {
         if (inventoryIsOpen)
         {
-            DoOnInteractClose();
             CloseStorageInventory();
         }
         else
         {
-            DoOnInteractOpen();
             OpenStorageInventory();
         }
     }
 
     private void OpenStorageInventory()
     {
+        DoOnInteractOpen();
+
         inventoryIsOpen = true;
         storageCanvasGameObject.SetActive(true);
         storageInventoryMenu.UpdateInventory();
@@ -60,6 +83,8 @@ public class StorageStation : InteractStation
 
     private void CloseStorageInventory()
     {
+        DoOnInteractClose();
+
         inventoryIsOpen = false;
         storageCanvasGameObject.SetActive(false);
 

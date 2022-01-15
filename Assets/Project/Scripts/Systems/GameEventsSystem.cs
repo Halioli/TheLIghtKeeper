@@ -15,15 +15,18 @@ public class GameEventsSystem : MonoBehaviour
 
     void Update()
     {
-        if (!randomEventEnumeratorActive && !eventInAction)
+        if (furnace.GetLightLevel() >= 2)
         {
-            StartCoroutine(CreateRandomEvent());
-        }
-        else if (eventInAction)
-        {
-            if (furnace.GetCurrentEventID() == 0)
+            if (!randomEventEnumeratorActive && !eventInAction)
             {
-                eventInAction = false;
+                StartCoroutine(CreateRandomEvent());
+            }
+            else if (eventInAction)
+            {
+                if (furnace.GetCurrentEventID() == 0)
+                {
+                    eventInAction = false;
+                }
             }
         }
     }

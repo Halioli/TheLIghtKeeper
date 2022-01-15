@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CustomLight : MonoBehaviour
 {
-    [SerializeField] protected GameObject lightGameObject;
-    protected bool active = false;
+    protected enum LightState { EXPANDING, SHIRINKING, NONE };
 
+
+    [SerializeField] protected GameObject lightGameObject;
+    protected LightState lightState = LightState.NONE;
+    protected bool active = false;
 
     public virtual void Expand() { }
     public virtual void Shrink() { }

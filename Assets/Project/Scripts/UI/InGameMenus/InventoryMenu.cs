@@ -12,7 +12,7 @@ public class InventoryMenu : MonoBehaviour
     private List<ItemCell> itemCellsList = new List<ItemCell>();
 
 
-    private void Start()
+    private void Awake()
     {
         InitInventoryCellsList();
     }
@@ -26,7 +26,6 @@ public class InventoryMenu : MonoBehaviour
             UpdateInventory();
         }
     }
-
 
 
     public void InitInventoryCellsList()
@@ -46,13 +45,13 @@ public class InventoryMenu : MonoBehaviour
 
         newItemCell.InitItemCell(this, itemCellsList.Count - 1);
 
-        SpriteRenderer sr = inventory.inventory[itemCellsList.Count - 1].itemInStack.prefab.GetComponent<SpriteRenderer>();
-        //referenceItemCell.SetItemImage(sr.sprite);
-        newItemCell.SetItemImage(sr.sprite);
+        //SpriteRenderer sr = inventory.inventory[itemCellsList.Count - 1].itemInStack.prefab.GetComponent<SpriteRenderer>();
+        ////referenceItemCell.SetItemImage(sr.sprite);
+        //newItemCell.SetItemImage(sr.sprite);
 
-        int amount = inventory.inventory[itemCellsList.Count - 1].amountInStack;
-        //referenceItemCell.SetItemAmount(amount);
-        newItemCell.SetItemAmount(amount);
+        //int amount = inventory.inventory[itemCellsList.Count - 1].amountInStack;
+        ////referenceItemCell.SetItemAmount(amount);
+        //newItemCell.SetItemAmount(amount);
     }
 
 
@@ -80,5 +79,6 @@ public class InventoryMenu : MonoBehaviour
     public void MoveItemToOtherInventory(int itemCellIndex)
     {
         inventory.MoveItemToOtherInventory(itemCellIndex);
+        inventory.gotChanged = true;
     }
 }

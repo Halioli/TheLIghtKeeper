@@ -6,13 +6,15 @@ public class CraftingStation : InteractStation
 {
     //Private Atributes
     private float particleTime;
+    private bool isOpen = false;
+    [SerializeField] CraftingMenu craftingMenu;
 
     // Public Attributes
     public GameObject interactText;
+    public GameObject backgroundText;
     public GameObject craftingCanvasGameObject;
     public GameObject playerHUDGameObject;
 
-    public InventoryMenu inventoryMenu;
     public ParticleSystem[] craftingParticles;
 
     private void Start()
@@ -37,8 +39,7 @@ public class CraftingStation : InteractStation
             PopUpDisappears();
             if (craftingCanvasGameObject.activeInHierarchy)
             {
-                playerHUDGameObject.SetActive(true);
-                craftingCanvasGameObject.SetActive(false);
+                CloseCraftingInventory();
             }
         }
     }
@@ -56,18 +57,13 @@ public class CraftingStation : InteractStation
     //From InteractStation script
     public override void StationFunction()
     {
-        if (!craftingCanvasGameObject.activeInHierarchy)
+        if (isOpen)
         {
-            playerHUDGameObject.SetActive(false);
-            craftingCanvasGameObject.SetActive(true);
-            inventoryMenu.UpdateInventory();
-            PauseMenu.gameIsPaused = true;
+            CloseCraftingInventory();
         }
         else
         {
-            playerHUDGameObject.SetActive(true);
-            craftingCanvasGameObject.SetActive(false);
-            PauseMenu.gameIsPaused = false;
+            OpenCraftingInventory();
         }
     }
 
@@ -75,12 +71,14 @@ public class CraftingStation : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
+        backgroundText.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        backgroundText.SetActive(false);
     }
 
     private void PlayCraftingParticles()
@@ -102,4 +100,31 @@ public class CraftingStation : InteractStation
             particle.Stop();
         }
     }
+
+
+    private void OpenCraftingInventory()
+    {
+        DoOnInteractOpen();
+
+        isOpen = true;
+
+        playerHUDGameObject.SetActive(false);
+        craftingCanvasGameObject.SetActive(true);
+        craftingMenu.ShowRecepies();
+
+        PauseMenu.gameIsPaused = true;
+    }
+
+    private void CloseCraftingInventory()
+    {
+        DoOnInteractClose();
+
+        isOpen = false;
+
+        playerHUDGameObject.SetActive(true);
+        craftingCanvasGameObject.SetActive(false);
+
+        PauseMenu.gameIsPaused = false;
+    }
+
 }

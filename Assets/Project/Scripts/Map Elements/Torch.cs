@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
 using UnityEngine.Events;
+using UnityEngine.UI;
+
 public class Torch : InteractStation
 {
     public ParticleSystem smokeTorchParticles;
     public Light2D torchLight;
-    public TextMeshProUGUI interactText;
+    public CanvasGroup popUpCanvasGroup;
     public CircleCollider2D lightRadius;
+    public GameObject linkedRune;
+    public GameObject desactivatedTorch;
 
     public float torchIntensity = 1f;
     public float turnedOffIntensity = 0f;
@@ -32,26 +36,26 @@ public class Torch : InteractStation
             torchLight.intensity = turnedOffIntensity;
         }
 
-        interactText.alpha = 0f;
+        popUpCanvasGroup.alpha = 0f;
 
         if(hasToBurn == false)
         {
             DoPuzzle();
         }
         PuzzleChecker();
-
+        linkedRune.SetActive(false);
     }
 
     private void Update()
     {
         if (playerInsideTriggerArea)
         {
-            interactText.alpha = 1f;
+            popUpCanvasGroup.alpha = 1f;
             GetInput();
         }
         else
         {
-            interactText.alpha = 0f;
+            popUpCanvasGroup.alpha = 0f;
         }
     }
     public override void StationFunction()
@@ -67,7 +71,9 @@ public class Torch : InteractStation
         DoPuzzle();
         if (PuzzleChecker())
         {
-            Debug.Log("Puzzle Completed");
+            //Debug.Log("Puzzle Completed");
+            puzzleSystem.reward.SetActive(true);
+
         }
 
     }
@@ -79,6 +85,10 @@ public class Torch : InteractStation
         turnedOn = false;
         lightRadius.radius = 0.1f;
         animTorch.SetBool("isBurning", false);
+        if (hasToBurn)
+        {
+            linkedRune.SetActive(false);
+        }
     }
 
     void SetTorchLightOn()
@@ -89,6 +99,10 @@ public class Torch : InteractStation
         turnedOn = true;
         lightRadius.radius = 2.8f;
         animTorch.SetBool("isBurning", true);
+        if (hasToBurn)
+        {
+            linkedRune.SetActive(true);
+        }
     }
 
     IEnumerator LightsOn()
@@ -146,8 +160,8 @@ public class Torch : InteractStation
 
     private bool PuzzleChecker()
     {
-        Debug.Log("TORCHES ON: " + puzzleSystem.torchesOn);
-        Debug.Log("TORCHES OFF:" + puzzleSystem.torchesOff);
+        //Debug.Log("TORCHES ON: " + puzzleSystem.torchesOn);
+        //Debug.Log("TORCHES OFF:" + puzzleSystem.torchesOff);
         if (puzzleSystem.torchesOn == puzzleSystem.maxTorchesOn && puzzleSystem.torchesOff == puzzleSystem.maxTorchesOff)
         {
             return true;
@@ -156,5 +170,14 @@ public class Torch : InteractStation
         {
             return false;
         }
+    }
+
+    private void DesactivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(false);
+    }
+    private void ActivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(true);
     }
 }

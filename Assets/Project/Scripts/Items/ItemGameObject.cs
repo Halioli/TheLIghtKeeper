@@ -7,8 +7,8 @@ public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
     private Interpolator lerp;
-    private float lerpDistance = 0.6f;
-    private float halfLerpDistance = 0.3f;
+    private float lerpDistance = 0.3f;
+    private float halfLerpDistance = 0.15f;
     private float startYLerp;
 
     protected Rigidbody2D rigidbody2D;
@@ -157,5 +157,6 @@ public class ItemGameObject : MonoBehaviour
             lerp.ToMin();
 
         transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
+        //GetComponent<SpriteRenderer>().transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
     }
 }

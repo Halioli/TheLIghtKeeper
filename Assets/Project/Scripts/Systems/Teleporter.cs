@@ -7,12 +7,12 @@ public class Teleporter : InteractStation
 {
     // Private Attributes
     private Vector2 spawnPosition;
-    private Animator animatior;
+    private Animator animator;
     private string[] messagesToShow = { "", "No dark essence found", "Dark essence consumed" };
 
     // Public Attributes
     //Station
-    public GameObject interactText;
+    public GameObject popUp;
     public GameObject canvasTeleportSelection;
     public GameObject hudGameObject;
     public TextMeshProUGUI mssgText;
@@ -23,23 +23,31 @@ public class Teleporter : InteractStation
     public Vector3 teleportTransformPosition;
     public bool activated = false;
     public GameObject[] teleporterLights;
+    public GameObject teleportSprite;
 
     //Events / Actions
     public delegate void TeleportActivation(string teleportName);
     public static event TeleportActivation OnActivation;
+
+    public delegate void TeleportInteraction(string teleportName);
+    public static event TeleportInteraction OnInteraction;
 
     private void Start()
     {
         teleportTransformPosition = GetComponent<Transform>().position;
         teleportTransformPosition.y -= 1.3f;
         spawnPosition = transform.position;
-        animatior = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+        teleportSprite.SetActive(true);
     }
 
     private void Update()
     {
         if (playerInsideTriggerArea)
         {
+            if (OnInteraction != null)
+                OnInteraction(teleportName);
+
             GetInput();
             PopUpAppears();
         }
@@ -52,13 +60,15 @@ public class Teleporter : InteractStation
     // Interactive pop up disappears
     private void PopUpAppears()
     {
-        interactText.SetActive(true);
+        popUp.SetActive(true);
+        popUp.GetComponent<PopUp>().ShowInteraction();
     }
 
     // Interactive pop up disappears
     private void PopUpDisappears()
     {
-        interactText.SetActive(false);
+        popUp.GetComponent<PopUp>().HideAll();
+        popUp.SetActive(false);
         mssgText.text = messagesToShow[0];
     }
 
@@ -67,13 +77,15 @@ public class Teleporter : InteractStation
         if (!activated && playerInventory.InventoryContainsItem(darkEssence))
         {
             playerInventory.SubstractItemFromInventory(darkEssence);
+            popUp.GetComponent<PopUp>().ShowMessage();
             mssgText.text = messagesToShow[2];
 
             PlayerInputs.instance.canMove = false;
-            animatior.SetBool("isActivated", true);
+            animator.SetBool("isActivated", true);
         }
         else if (!activated && !playerInventory.InventoryContainsItem(darkEssence))
         {
+            popUp.GetComponent<PopUp>().ShowMessage();
             mssgText.text = messagesToShow[1];
         }
         else
@@ -97,9 +109,16 @@ public class Teleporter : InteractStation
     {
         activated = true;
         PlayerInputs.instance.canMove = true;
+        popUp.GetComponent<PopUp>().HideMessage();
         mssgText.text = messagesToShow[0];
 
         if (OnActivation != null)
             OnActivation(teleportName);
     }
+
+    private void DesactivateSprite()
+    {
+        teleportSprite.SetActive(false);
+    }
+
 }

@@ -9,10 +9,10 @@ public class Lamp : MonoBehaviour
     private const float LIGHT_INTENSITY_ON = 1f;
     private const float LIGHT_INTENSITY_OFF = 0.3f;
 
-    private const int MAX_SOURCE_LEVELS = 4;
-    private int sourceLevel = 1;
-    private float[] LIGHT_ANGLE_LVL = { 55f, 75f, 95f, 115f };
-    private float[] LIGHT_DISTANCE_LVL = { 10f, 15f, 20f, 25f };
+    private const int MAX_SOURCE_LEVELS = 6;
+    private int sourceLevel = 0;
+    private float[] LIGHT_ANGLE_LVL = { 40f, 50f, 60f, 70f, 80f, 90f };
+    private float[] LIGHT_DISTANCE_LVL = { 10f, 12.5f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
 
@@ -57,8 +57,8 @@ public class Lamp : MonoBehaviour
         flickerTime = 0.08f;
         flickerIntensity = 1f;
 
-        lightAngle = LIGHT_ANGLE_LVL[0];
-        lightDistance = LIGHT_DISTANCE_LVL[0];
+        lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
+        lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
     }
 
     private void Start()
@@ -70,13 +70,7 @@ public class Lamp : MonoBehaviour
         coneLight.SetAngle(lightAngle);
     }
 
-    private void Update()
-    {
-        if (turnedOn)
-        {
-            UpdateLamp();
-        }
-    }
+
 
     private void OnEnable()
     {
@@ -245,20 +239,25 @@ public class Lamp : MonoBehaviour
         return lampTime;
     }
 
+    public float GetMaxLampTime()
+    {
+        return maxLampTime;
+    }
+
     private void UpgradeLampSource()
     {
         if (sourceLevel >= MAX_SOURCE_LEVELS)
         {
             return;
         }
+        ++sourceLevel;
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
-        coneLight.SetDistance(lightDistance);
-        coneLight.SetAngle(lightDistance);
+        coneLight.SetDistance(lightDistance);   
+        coneLight.SetAngle(lightAngle);
 
-        ++sourceLevel;
     }
 
     private void UpgradeLampTime()
@@ -270,13 +269,18 @@ public class Lamp : MonoBehaviour
 
         maxLampTime += LAMP_TIME_LVL[timeLevel];
         lampTime = maxLampTime;
-        ++lampTime;
+        ++timeLevel;
     }
 
 
 
     IEnumerator LightFlicking()
     {
+        if (lampTime > SECONDS_HIGH_FREQUENCY_FLICK)
+        {
+            flickCooldown = START_FLICK_COOLDOWN;
+        }
+
         float lightingTime;
         int flickerCount;
         float flickingIntensity;
