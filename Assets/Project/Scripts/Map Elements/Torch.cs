@@ -72,7 +72,7 @@ public class Torch : InteractStation
         if (PuzzleChecker())
         {
             //Debug.Log("Puzzle Completed");
-            puzzleSystem.reward.SetActive(true);
+            puzzleSystem.animator.SetBool("isCompleted", true);
 
         }
 
