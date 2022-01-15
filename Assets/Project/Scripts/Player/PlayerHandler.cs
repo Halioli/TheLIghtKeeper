@@ -7,6 +7,7 @@ public class PlayerHandler : PlayerBase
     // Private Attributes
     private HealthSystem playerHealthSystem;
     private Rigidbody2D playerRigidbody2D;
+    private bool inCoroutine = false;
 
     // Public Attributes
     public Animator animator;
@@ -29,7 +30,9 @@ public class PlayerHandler : PlayerBase
             {
                 playerStates.SetCurrentPlayerState(PlayerState.DEAD);
                 gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
-                StartCoroutine("DeathAnimation");
+
+                if (!inCoroutine)
+                    StartCoroutine(DeathAnimation());
             }
             else
             {
@@ -69,10 +72,16 @@ public class PlayerHandler : PlayerBase
 
     IEnumerator DeathAnimation()
     {
+        inCoroutine = true;
+
+        PlayerInputs.instance.canMove = false;
         animator.SetBool("isDead", true);
         while (!animationEnds) { yield return null; }
 
         animator.SetBool("isDead", false);
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
+
+        PlayerInputs.instance.canMove = true;
+        inCoroutine = false;
     }
 }
