@@ -70,7 +70,7 @@ public class PlayerHandler : PlayerBase
     IEnumerator DeathAnimation()
     {
         animator.SetBool("isDead", true);
-        while (!animationEnds) { yield return null; }
+        yield return new WaitForSeconds(1f);
 
         animator.SetBool("isDead", false);
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
