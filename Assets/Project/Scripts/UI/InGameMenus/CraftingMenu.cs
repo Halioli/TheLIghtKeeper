@@ -63,6 +63,7 @@ public class CraftingMenu : MonoBehaviour
                 craftingListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
 
             gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
+            gameObjectButton.GetComponent<CraftableItemButton>().SetDescription(recepie.resultingItemUnit.description);
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
             gameObjectButton.GetComponentsInChildren<Image>()[1].sprite = recepie.resultingItemUnit.GetItemSprite();
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[1].text = recepie.resultingAmountUnit.ToString();

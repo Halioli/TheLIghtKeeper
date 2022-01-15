@@ -102,6 +102,7 @@ public class CraftingStation : InteractStation
     private void OpenCraftingInventory()
     {
         DoOnInteractOpen();
+        DoOnInteractDescriptionOpen();
 
         isOpen = true;
 
