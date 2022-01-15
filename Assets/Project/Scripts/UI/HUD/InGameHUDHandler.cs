@@ -10,6 +10,7 @@ public class InGameHUDHandler : MonoBehaviour
     private const float CLAW_FADE_TIME = 0.2f;
     private const float SHAKE_AMOUNT = 0.1f;
     private const float CLAW_SHAKE_STRENGHT = 40f;
+    private const float SHAKE_STRENGHT = 0.5f;
 
     private int playerHealthValue;
     private int lampTimeValue;
@@ -20,6 +21,8 @@ public class InGameHUDHandler : MonoBehaviour
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
     private CanvasGroup clawStrikeGroup;
+    private CanvasGroup exclamationGroup;
+    private CanvasGroup crossGroup;
 
     // Public Attributes
     public HUDBar healthBar;
@@ -28,6 +31,8 @@ public class InGameHUDHandler : MonoBehaviour
     public GameObject healthBarGameObject;
     public GameObject lampBarGameObject;
     public GameObject clawStrikeGameObject;
+    public GameObject exclamationGameObject;
+    public GameObject crossGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -41,16 +46,23 @@ public class InGameHUDHandler : MonoBehaviour
         healthBar.SetMaxValue(playerHealthValue);
         playerIsDamaged = false;
         healthIsTrembeling = false;
-
+        
         // Initialize lamp variables
         lampGroup = GetComponentsInChildren<CanvasGroup>()[1];
-        lampTimeValue = (int)lamp.GetLampTimeRemaining();
+        UpdateMaxLampValue();
+        lampTimeValue = (int)lamp.GetMaxLampTime();
         lampBar.SetMaxValue(lampTimeValue);
         lampIsOn = false;
         lampIsTrembeling = false;
 
         // Initialize claw variables
         clawStrikeGroup = clawStrikeGameObject.GetComponent<CanvasGroup>();
+
+        // Initialize exclamation variables
+        exclamationGroup = exclamationGameObject.GetComponent<CanvasGroup>();
+
+        // Initialize cross variables
+        crossGroup = crossGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -58,6 +70,7 @@ public class InGameHUDHandler : MonoBehaviour
         playerHealthValue = playerHealthSystem.GetHealth();
         ChangeValueInHUD(healthBar, playerHealthValue, playerHealthValue.ToString());
 
+        UpdateMaxLampValue();
         lampTimeValue = (int)lamp.GetLampTimeRemaining();
         ChangeValueInHUD(lampBar, lampTimeValue, null);
 
@@ -84,6 +97,11 @@ public class InGameHUDHandler : MonoBehaviour
                 StartCoroutine(ShakeLampGameObject());
             }
         }
+    }
+
+    private void UpdateMaxLampValue()
+    {
+        lampBar.SetMaxValue((int)lamp.GetMaxLampTime());
     }
 
     private void ManageShowingHealth()
@@ -228,5 +246,47 @@ public class InGameHUDHandler : MonoBehaviour
             yield return null;
         }
         clawStrikeGroup.alpha = fadeInStartVector.x;
+    }
+
+    private void OnEnable()
+    {
+        PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
+        PlayerMiner.playerFailMineEvent += CrossAppears;
+    }
+
+    private void OnDisable()
+    {
+        PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
+        PlayerMiner.playerFailMineEvent -= CrossAppears;
+    }
+
+    private void ExclamationAppears()
+    {
+        StartCoroutine(StartExclamationAppears());
+    }
+
+    IEnumerator StartExclamationAppears()
+    {
+        exclamationGroup.alpha = 1f;
+
+        exclamationGameObject.transform.DOPunchPosition(new Vector2(0f, SHAKE_STRENGHT), FADE_TIME);
+        yield return new WaitForSeconds(FADE_TIME);
+
+        exclamationGroup.alpha = 0f;
+    }
+
+    private void CrossAppears()
+    {
+        StartCoroutine(StartCrossAppears());
+    }
+
+    IEnumerator StartCrossAppears()
+    {
+        crossGroup.alpha = 1f;
+
+        crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), FADE_TIME);
+        yield return new WaitForSeconds(FADE_TIME);
+
+        crossGroup.alpha = 0f;
     }
 }
