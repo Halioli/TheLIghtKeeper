@@ -23,6 +23,7 @@ public class Teleporter : InteractStation
     public Vector3 teleportTransformPosition;
     public bool activated = false;
     public GameObject[] teleporterLights;
+    public GameObject teleportSprite;
 
     //Events / Actions
     public delegate void TeleportActivation(string teleportName);
@@ -34,6 +35,7 @@ public class Teleporter : InteractStation
         teleportTransformPosition.y -= 1.3f;
         spawnPosition = transform.position;
         animatior = GetComponent<Animator>();
+        teleportSprite.SetActive(true);
     }
 
     private void Update()
@@ -102,4 +104,10 @@ public class Teleporter : InteractStation
         if (OnActivation != null)
             OnActivation(teleportName);
     }
+
+    private void DesactivateSprite()
+    {
+        teleportSprite.SetActive(false);
+    }
+
 }
