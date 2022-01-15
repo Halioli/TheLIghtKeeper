@@ -20,11 +20,11 @@ public class TorchPuzzleSystem : MonoBehaviour
     void Start()
     {
         numberOfTorches = linkedTorches.Length;
-        Debug.Log(numberOfTorches);
+        //Debug.Log(numberOfTorches);
         TorchesChecker();
         reward.SetActive(false);
-        Debug.Log("MAX ON: " + maxTorchesOn);
-        Debug.Log("MAX OFF: " + maxTorchesOff);
+        //Debug.Log("MAX ON: " + maxTorchesOn);
+        //Debug.Log("MAX OFF: " + maxTorchesOff);
     }
     private void TorchesChecker()
     {

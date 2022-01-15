@@ -71,7 +71,7 @@ public class Torch : InteractStation
         DoPuzzle();
         if (PuzzleChecker())
         {
-            Debug.Log("Puzzle Completed");
+            //Debug.Log("Puzzle Completed");
             puzzleSystem.reward.SetActive(true);
 
         }
@@ -160,8 +160,8 @@ public class Torch : InteractStation
 
     private bool PuzzleChecker()
     {
-        Debug.Log("TORCHES ON: " + puzzleSystem.torchesOn);
-        Debug.Log("TORCHES OFF:" + puzzleSystem.torchesOff);
+        //Debug.Log("TORCHES ON: " + puzzleSystem.torchesOn);
+        //Debug.Log("TORCHES OFF:" + puzzleSystem.torchesOff);
         if (puzzleSystem.torchesOn == puzzleSystem.maxTorchesOn && puzzleSystem.torchesOff == puzzleSystem.maxTorchesOff)
         {
             return true;
