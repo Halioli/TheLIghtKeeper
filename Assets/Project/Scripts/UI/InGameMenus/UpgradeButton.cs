@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-public class UpgradeButton : MonoBehaviour
+public class UpgradeButton : HoverButton
 {
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] Image[] upgradeStatus;
@@ -14,6 +14,7 @@ public class UpgradeButton : MonoBehaviour
 
     private int currentUpgradeStatus = 0;
     public bool canBeClicked = true;
+
 
     public void GetsClicked()
     {
@@ -35,7 +36,7 @@ public class UpgradeButton : MonoBehaviour
 
     public void UpdateButtonElements(string descriptionText, Sprite[] requiredMaterialImages, string[] requiredMaterialAmountTexts)
     {
-        //if (!canBeClicked) return;
+        if (!canBeClicked) return;
 
         upgradeStatus[currentUpgradeStatus].color = Color.cyan;
         ++currentUpgradeStatus;

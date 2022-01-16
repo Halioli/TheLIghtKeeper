@@ -29,6 +29,7 @@ public class TeleportMenu : MonoBehaviour
     private void OnEnable()
     {
         Teleporter.OnActivation += UpdateTeleportSelectionMenu;
+        Teleporter.OnInteraction += UpdateTeleportSelectionMenu;
 
         TeleportButton.OnSelection += DeactivateSelf;
     }
@@ -36,6 +37,7 @@ public class TeleportMenu : MonoBehaviour
     private void OnDisable()
     {
         Teleporter.OnActivation -= UpdateTeleportSelectionMenu;
+        Teleporter.OnInteraction -= UpdateTeleportSelectionMenu;
 
         TeleportButton.OnSelection -= DeactivateSelf;
     }
