@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemCell : MonoBehaviour
+public class ItemCell : HoverButton
 {
     private InventoryMenu inventoryMenu;
     private int index;
@@ -39,4 +39,14 @@ public class ItemCell : MonoBehaviour
         //itemImage = empty;
         itemAmount.text = " ";
     }
+
+    public override void DoDescriptionTextAction()
+    {
+        if (inventoryMenu.inventory.inventory[index].StackIsEmpty())
+        {
+            return;
+        }
+        base.DoDescriptionTextAction();
+    }
+
 }
