@@ -116,7 +116,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void SpawnSelectSpotAtTransform(Transform transform)
     {
-        Instantiate(selectSpotGameObject, transform);
+        GameObject selectedSpot = Instantiate(selectSpotGameObject, transform);
+        selectedSpot.GetComponent<SelectSpot>().DoSelectLoop();
     }
 
     public void FlipSprite(Vector2 direction)

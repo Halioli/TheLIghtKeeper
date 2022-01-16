@@ -232,7 +232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def6dfbc6bb1e144996da31c569eeda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBePickedUp: 1
+  permanentNotPickedUp: 0
+  canBePickedUp: 0
   currentDespawnTimeInSeconds: 10
   item: {fileID: 11400000, guid: ab803e7f322436842be80135b79da431, type: 2}
   audioSource: {fileID: 7715414083893372495}
