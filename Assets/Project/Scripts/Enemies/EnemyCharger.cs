@@ -1,67 +1,112 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.Audio;
 
 
-
-public class EnemyCharger : Enemy
+public class EnemyCharger : HostileEnemy
 {
     // Private Attributes
+    private Animator animator;
+    bool died = false;
+
     private Vector2 directionOnChargeStart;
+    private Vector2 angleDirection;
+    private Vector2 fleeDirection;
 
     private float currentSpeed;
     private float currentAttackRecoverTime;
     private float currentChargeTime;
     private bool hasRecovered;
     private bool collidedWithPlayer;
+    private AudioSource enemyAudioSource;
 
     // Public Attributes
     public const float ATTACK_RECOVER_TIME = 2f;
-    public const float CHARGE_SPEED = 12f;
+    public float CHARGE_SPEED;
     public const float CHARGE_TIME = 0.5f;
-    public const float MAX_SPEED = 7f;
+    public float MAX_SPEED;
+    public float FLEE_SPEED = 60f;
     public const float ACCELERATION = 0.25f;
 
-    public float attackForce = 8f;
     public float distanceToCharge = 4f;
+    public AudioMixerSnapshot[] snapshots;
+
+    // Sinusoidal movement
+    public float amplitude = 0.1f;
+    private float period;
+    private float theta;
+    public float sinWaveDistance;
+
+    public AudioSource movementAudioSource;
+    public AudioSource screamAudioSource;
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
+
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        collider = GetComponent<CapsuleCollider2D>();
 
         currentAttackRecoverTime = ATTACK_RECOVER_TIME;
         currentChargeTime = CHARGE_TIME;
         currentSpeed = 1f;
         hasRecovered = false;
         collidedWithPlayer = false;
-        enemyState = EnemyState.AGGRO;
+        enemyState = EnemyState.SPAWNING;
         attackState = AttackState.MOVING_TOWARDS_PLAYER;
 
         currentBanishTime = BANISH_TIME;
+
+        period = Random.Range(0.10f, 0.15f);
+
+        Spawn();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (startedBanishing)
+        if (enemyState == EnemyState.SPAWNING)
         {
             return;
         }
 
-        if (healthSystem.IsDead())
+        if (startedBanishing || PauseMenu.gameIsPaused)
         {
-            Die();
+            if (movementAudioSource.isPlaying)
+                movementAudioSource.Stop();
+            return;
         }
 
+        if (healthSystem.IsDead() && !died)
+        {
+            animator.SetTrigger("isDead");
+            died = true;
+        }
 
-        if (enemyState == EnemyState.AGGRO)
+        if (enemyState == EnemyState.SCARED || enemyState == EnemyState.WANDERING || died)
+        {
+            return;
+        }
+        else if (enemyState == EnemyState.AGGRO)
         {
             if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
             {
+                if (!movementAudioSource.isPlaying)
+                {
+                    movementAudioSource.pitch = Random.Range(0.8f, 1.3f);
+                    movementAudioSource.Play();
+                }
+                else if (PauseMenu.gameIsPaused)
+                {
+                    movementAudioSource.Stop();
+                }
+
                 if (currentSpeed < MAX_SPEED)
                 {
                     currentSpeed += ACCELERATION;
@@ -77,61 +122,82 @@ public class EnemyCharger : Enemy
                     UpdatePlayerPosition();
                     directionOnChargeStart = (playerPosition - rigidbody.position).normalized;
                     attackState = AttackState.CHARGING; // Change state
+
+                    transform.DOPunchRotation(new Vector3(0, 0, 20), CHARGE_TIME);
                 }
             }
             else if (attackState == AttackState.CHARGING)
             {
-                spriteRenderer.color = new Color(1f, 0f, 0f, 1f);
-                if (collidedWithPlayer)
+                if (!screamAudioSource.isPlaying)
                 {
-                    collidedWithPlayer = false;
-                    currentChargeTime = CHARGE_TIME; // Reset value
-                    spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-                    attackState = AttackState.RECOVERING; // Change state
+                    screamAudioSource.pitch = Random.Range(0.8f, 1.3f);
+                    screamAudioSource.Play();
                 }
             }
             else if (attackState == AttackState.RECOVERING)
             {
-                spriteRenderer.color = new Color(0.36f, 0.36f, 0.36f, 1f);
-                currentSpeed = 0f;
-                Recovering();
+                movementAudioSource.Stop();
             }
         }
+
+
+        if (collider.IsTouchingLayers(LayerMask.NameToLayer("Light")))
+        {
+            FleeAndBanish();
+        }
+
     }
 
 
 
     private void FixedUpdate()
     {
-        if (startedBanishing)
+        if (getsPushed)
         {
+            Pushed();
+            return;
+        }
+
+        if (enemyState == EnemyState.SPAWNING || enemyState == EnemyState.WANDERING || died)
+        {
+            return;
+        }
+        else if (enemyState == EnemyState.SCARED)
+        {
+            FleeAway();
             return;
         }
 
         if (attackState == AttackState.MOVING_TOWARDS_PLAYER)
         {
             MoveTowardsPlayer();
+            fleeDirection = directionTowardsPlayerPosition;
         }
         else if (attackState == AttackState.CHARGING)
         {
-            if (collidedWithPlayer)
-            {
-                PushPlayerAndSelf();
-            }
-            else
-            {
-                Charge();
-            }
+            Charge();
+            fleeDirection = directionOnChargeStart;
+            StartCoroutine(StartRecovering());
         }
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.collider.gameObject.CompareTag("Player"))
+        if (collider.gameObject.CompareTag("Player") && !died)
         {
-            DamagePlayer();
-            collidedWithPlayer = true;
+            DealDamageToPlayer();
+            PushPlayer();
+        }
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("Light"))
+        {
+            // Play banish audio sound
+            audioSource.clip = banishAudioClip;
+            audioSource.volume = Random.Range(0.1f, 0.2f);
+            audioSource.pitch = Random.Range(0.7f, 1.5f);
+            audioSource.Play();
+            FleeAndBanish();
         }
     }
 
@@ -140,42 +206,70 @@ public class EnemyCharger : Enemy
         UpdatePlayerPosition();
         UpdateDirectionTowardsPlayerPosition();
 
-        rigidbody.MovePosition((Vector2)transform.position + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
+        // Sinusoidal movement
+        theta = Time.timeSinceLevelLoad / period;
+        sinWaveDistance = amplitude * Mathf.Sin(theta);
+
+        angleDirection = Vector2.Perpendicular(directionTowardsPlayerPosition);
+        angleDirection *= sinWaveDistance;
+
+        rigidbody.MovePosition((Vector2)transform.position + angleDirection + directionTowardsPlayerPosition * (currentSpeed * Time.deltaTime));
+    }
+
+    private void FleeAway()
+    {
+        UpdatePlayerPosition();
+        UpdateDirectionTowardsPlayerPosition();
+
+        // Sinusoidal movement
+        theta = Time.timeSinceLevelLoad / period;
+        sinWaveDistance = amplitude * Mathf.Sin(theta);
+
+        angleDirection = Vector2.Perpendicular(directionOnChargeStart);
+        angleDirection *= sinWaveDistance;
+
+        rigidbody.MovePosition((Vector2)transform.position - angleDirection - fleeDirection * (FLEE_SPEED * Time.deltaTime));
     }
 
     private void Charge()
     {
-        rigidbody.MovePosition((Vector2)transform.position + directionOnChargeStart * (CHARGE_SPEED * Time.deltaTime));
-
-        currentChargeTime -= Time.deltaTime;
-        if (currentChargeTime <= 0)
-        {
-            currentChargeTime = CHARGE_TIME; // Reset value
-            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-            attackState = AttackState.RECOVERING; // Change state
-        }
+        rigidbody.AddForce(directionOnChargeStart.normalized * CHARGE_SPEED, ForceMode2D.Impulse);
+        attackState = AttackState.RECOVERING; // Change state
     }
 
-    private void PushPlayerAndSelf()
+
+    private void PushPlayer()
     {
-        Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
-        playerRigidbody.AddForce(directionOnChargeStart * attackForce, ForceMode2D.Impulse);
-        rigidbody.AddForce(-directionOnChargeStart * attackForce, ForceMode2D.Impulse);
+        player.GetComponent<PlayerMovement>().GetsPushed(directionOnChargeStart, attackSystem.pushValue);
     }
 
-    private void Recovering()
+    IEnumerator StartRecovering()
     {
-        currentAttackRecoverTime -= Time.deltaTime;
-        rigidbody.bodyType = RigidbodyType2D.Static;
-
-        if (currentAttackRecoverTime <= 0)
-        {
-            hasRecovered = true;
-
-            rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            currentAttackRecoverTime = ATTACK_RECOVER_TIME; // Reset value
-            spriteRenderer.color = new Color(1f, 1f, 1f, 1f); // Reset color
-            attackState = AttackState.MOVING_TOWARDS_PLAYER; // Change state
-        }
+        transform.DOPunchScale(new Vector3(-0.1f, -0.1f, 0), ATTACK_RECOVER_TIME, 0);
+        yield return new WaitForSeconds(ATTACK_RECOVER_TIME);
+        attackState = AttackState.MOVING_TOWARDS_PLAYER;
     }
+
+
+
+    protected override void FleeAndBanish()
+    {
+        enemyState = EnemyState.SCARED;
+        attackState = AttackState.MOVING_TOWARDS_PLAYER;
+        Banish();
+    }
+
+
+    private void StartDying()
+    {
+        //Play death audio sound
+        transform.DOShakePosition(2, 0.5f);
+
+        audioSource.Stop();
+        audioSource.clip = deathAudioClip;
+        audioSource.volume = Random.Range(0.1f, 0.2f);
+        audioSource.pitch = Random.Range(0.7f, 1.5f);
+        audioSource.Play();
+    }
+
 }

@@ -2,61 +2,102 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : PlayerInputs
+public class PlayerMovement : PlayerBase
 {
     // Private attributes
     private Vector2 moveDirection;
     private Rigidbody2D rigidbody2D;
-    public PlayerMiner playerMiner;
+    private bool beingPushed = false;
+    private Vector2 pushDirection = new Vector2();
+    private float pushForce = 0f;
+    private bool walking = false;
 
     // Public attributes
     public float moveSpeed;
     public ParticleSystem walkingParticleSystem;
+    public Animator animator;
+
+    // Events
+    public delegate void PlayerWalkingSound();
+    public static event PlayerWalkingSound playPlayerWalkingSoundEvent;
+    public static event PlayerWalkingSound pausePlayerWalkingSoundEvent;
 
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        facingRight = false;
-        walkingParticleSystem.Stop();
-        playerMiner = GetComponent<PlayerMiner>();
+        walkingParticleSystem.Play();
     }
 
     private void Update()
     {
-        if (!playerMiner.IsMining())
-        {
-            moveDirection = PlayerPressedMovementButtons();
-            rigidbody2D.velocity = moveDirection.normalized * moveSpeed;
-            FlipSprite();
+        //if (playerStates.PlayerStateIsFree())
+        //{
+        //    moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
+        //    if (moveDirection == Vector2.zero && playerStates.PlayerActionIsWalking() && walking)
+        //    {
+        //        StopWalking();
+        //    }
+        //    else if (moveDirection != Vector2.zero && !walking)
+        //    {
+        //        StartWalking();
+        //    }
+        //}
 
-            CheckPartlicleSystemActive();
-        }
-        else
+        moveDirection = PlayerInputs.instance.PlayerPressedMovementButtons();
+        if (moveDirection == Vector2.zero && walking)
         {
-            rigidbody2D.velocity = Vector2.zero;
+            StopWalking();
+        }
+        else if (moveDirection != Vector2.zero && !walking)
+        {
+            StartWalking();
+        }
+
+        if (((moveDirection.x < 0 && PlayerInputs.instance.facingLeft) || 
+            (moveDirection.x > 0 && !PlayerInputs.instance.facingLeft)) && 
+            PlayerInputs.instance.canFlip)
+        {
+            PlayerInputs.instance.FlipSprite(moveDirection);
         }
     }
 
-    private void FlipSprite()
+    private void FixedUpdate()
     {
-        if((moveDirection.x > 0 && facingRight) || moveDirection.x < 0 && !facingRight){
-            facingRight = !facingRight;
-            transform.Rotate(new Vector3(0, 180, 0));
+        if (beingPushed)
+        {
+            rigidbody2D.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+            beingPushed = false;
+        }
+        if (playerStates.PlayerActionIsWalking())
+        {
+            rigidbody2D.AddForce(moveDirection.normalized * moveSpeed);
+            if (rigidbody2D.velocity.magnitude > 3f)
+                rigidbody2D.velocity = rigidbody2D.velocity.normalized * Mathf.Lerp(rigidbody2D.velocity.magnitude, 3f, Time.fixedDeltaTime * 30f);
         }
     }
 
-    private void CheckPartlicleSystemActive()
+    public void GetsPushed(Vector2 newPushDirection, float newPushForce)
     {
-        if (rigidbody2D.velocity.x != 0f || rigidbody2D.velocity.y != 0f)
-        {
-            if (!walkingParticleSystem.isPlaying)
-            {
-                walkingParticleSystem.Play();
-            }
-        }
-        else
-        {
-            walkingParticleSystem.Stop();
-        }
+        beingPushed = true;
+        pushDirection = newPushDirection;
+        pushForce = newPushForce;
+    }
+
+    private void StartWalking()
+    {
+        walking = true;
+        playerStates.SetCurrentPlayerAction(PlayerAction.WALKING);
+        PlayerInputs.instance.FlipSprite(moveDirection);
+        animator.SetBool("isWalking", true);
+        playPlayerWalkingSoundEvent();
+    }
+
+    private void StopWalking()
+    {
+        walking = false;
+        playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
+        //Update speed for walk animation
+        animator.SetBool("isWalking", false);
+        pausePlayerWalkingSoundEvent();
     }
 }

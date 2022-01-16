@@ -2,12 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractStation : PlayerInputs
+
+public class InteractStation : MonoBehaviour
 {
     public BoxCollider2D triggerArea;
 
     protected bool playerInsideTriggerArea;
     protected Inventory playerInventory;
+
+    // Action
+    public delegate void InteractStationAction();
+    public static event InteractStationAction OnInteractOpen;
+    public static event InteractStationAction OnInteractClose;
+
+    public delegate void InteractStationDescriptionAction(string description);
+    public static event InteractStationAction OnDescriptionOpen;
+    public static event InteractStationDescriptionAction OnDescriptionSet;
+
 
     private void Awake()
     {
@@ -19,7 +30,9 @@ public class InteractStation : PlayerInputs
         if (collision.CompareTag("Player"))
         {
             playerInsideTriggerArea = true;
+            
         }
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -32,7 +45,7 @@ public class InteractStation : PlayerInputs
 
     public void GetInput()
     {
-        if (PlayerPressedInteractButton())
+        if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
             StationFunction();
         }
@@ -47,4 +60,29 @@ public class InteractStation : PlayerInputs
     {
         //Code from child
     }
+
+    protected void DoOnInteractOpen()
+    {
+        if (OnInteractOpen != null)
+        {
+            OnInteractOpen();
+        }
+    }
+
+    protected void DoOnInteractClose()
+    {
+        if (OnInteractClose != null)
+        {
+            OnInteractClose();
+        }
+    }
+
+    protected void DoOnInteractDescriptionOpen()
+    {
+        if (OnDescriptionOpen != null)
+        {
+            OnDescriptionOpen();
+        }
+    }
+
 }

@@ -6,7 +6,7 @@ public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
     private bool playerInLight;
-    private int numberOfLights;
+    public int numberOfLights;
 
     // Public Attributes
     public Lamp lamp;
@@ -20,7 +20,7 @@ public class PlayerLightChecker : MonoBehaviour
 
     private void Update()
     {
-        if (numberOfLights == 0 && !lamp.LampTimeExhausted())
+        if (numberOfLights == 0)// && !lamp.LampTimeExhausted())
         {
             lamp.UpdateLamp();
         }
@@ -41,11 +41,9 @@ public class PlayerLightChecker : MonoBehaviour
         {
             numberOfLights += 1;
 
-            if (!lamp.LampTimeExhausted())
-            {
-                // Lamp turns off
+            // Lamp turns off
+            if (lamp.active)
                 lamp.DeactivateLampLight();
-            }
 
             if (lightingCollider.gameObject.CompareTag("CoreLight"))
             {
@@ -57,21 +55,41 @@ public class PlayerLightChecker : MonoBehaviour
 
     }
 
+    private void OnTriggerStay2D(Collider2D lightingCollider)
+    {
+        if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
+        {
+            // Lamp turns off
+            
+            if (lightingCollider.gameObject.CompareTag("CoreLight"))
+            {
+                lamp.FullyRefillLampTime();
+            }
+
+            SetPlayerInLightToTrue();
+        }
+
+    }
+
+
     // Method that checks if the player exits an area with light
     private void OnTriggerExit2D(Collider2D lightingCollider)
     {
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
             numberOfLights -= 1;
-
-            if (!lamp.LampTimeExhausted())
+            if (numberOfLights == 0)
             {
-                // Lamp turns on
-                lamp.ActivateLampLight();
-            }
-            else
-            {
-                SetPlayerInLightToFalse();
+                if (!lamp.LampTimeExhausted())
+                {
+                    // Lamp turns on
+                    lamp.ActivateLampLight();
+                }
+                else
+                {
+                    SetPlayerInLightToFalse();
+                    lamp.ActivateCircleLight();
+                }
             }
         }
 
