@@ -16,14 +16,6 @@ public class LightBug : Enemy
     private float timeCounter;
     private Vector3 centerPosition;
 
-    private float initialIntensity = 0.3f;
-    private float maxIntensity = 1f;
-    private float time;
-    private bool cycleFinished;
-
-    private Light2D[] pointLightBug;
-    private bool isTurnedOn = false;
-
     public LightBugMovement lightBugMovement;
 
     //Linear Movement Parameters
@@ -47,7 +39,6 @@ public class LightBug : Enemy
         horizontalLerp = new Interpolator(timeToReachEachPoint, Interpolator.Type.SMOOTH);
         verticalLerp = new Interpolator(0.5f, Interpolator.Type.SMOOTH);
 
-        pointLightBug = GetComponentsInChildren<Light2D>();
         healthSystem = GetComponent<BeingHealthSystem>();
         attackSystem = GetComponent<AttackSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
@@ -155,6 +146,12 @@ public class LightBug : Enemy
 
         base.Die();
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(player.GetComponent<PlayerLightChecker>().numberOfLights);
+
     }
 }
 
