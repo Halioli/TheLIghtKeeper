@@ -17,26 +17,27 @@ public class AmbientAudio : MonoBehaviour
     [SerializeField] AudioClip[] musicsOutside;
 
     private const float musicVolume = 0.1f;
+    private bool finishedTransition = false;
+    private bool interior = false;
 
     void Start()
     {
-        StartCoroutine(AmbientSounds());
+        //StartCoroutine(AmbientSounds());
         StartCoroutine(Music());
-
-        musicAudioSource.Play();
     }
+
 
 
     private void OnEnable()
     {
-        // += TransitionToInterior;
-        // += TransitionToExterior;
+        ShipEntry.OnEntry += TransitionToInterior;
+        ShipExit.OnExit += TransitionToExterior;
     }
 
     private void OnDisable()
     {
-        // -= TransitionToInterior;
-        // -= TransitionToExterior;
+        ShipEntry.OnEntry -= TransitionToInterior;
+        ShipExit.OnExit -= TransitionToExterior;
     }
 
 
@@ -61,34 +62,57 @@ public class AmbientAudio : MonoBehaviour
 
     IEnumerator Music()
     {
+        musicAudioSource.clip = musicsOutside[Random.Range(0, musicsOutside.Length)];
+        musicAudioSource.Play();
+
         while (musicCanPlay)
         {
-            musicAudioSource.clip = musicsOutside[Random.Range(0, musicsOutside.Length)];
-            musicAudioSource.Play();
             yield return new WaitUntil(() => !musicAudioSource.isPlaying);
 
-            TransitionToExterior();
+            //TransitionToExterior();
+            //yield return new WaitUntil(() => finishedTransition);
+
+            if (interior)
+            {
+                musicAudioSource.clip = musicInside;
+                musicAudioSource.Play();
+            }
+            else
+            {
+                musicAudioSource.clip = musicsOutside[Random.Range(0, musicsOutside.Length)];
+                musicAudioSource.Play();
+            }
+
+
         }
     }
 
 
     private void TransitionToInterior()
     {
-        MusicTransition(musicInside);
+        //MusicTransition(musicInside, true);
+
+        interior = true;
+        musicAudioSource.Stop();
     }
 
     private void TransitionToExterior()
     {
-        MusicTransition(musicsOutside[Random.Range(0, musicsOutside.Length)]);
+        //MusicTransition(musicsOutside[Random.Range(0, musicsOutside.Length)], false);
+
+        interior = false;
+        musicAudioSource.Stop();
     }
 
 
-    IEnumerator MusicTransition(AudioClip nextAudioClip)
+    IEnumerator MusicTransition(AudioClip nextAudioClip, bool looping)
     {
+        finishedTransition = false;
+
         Interpolator fadeLerp = new Interpolator(1f, Interpolator.Type.SIN);
         fadeLerp.ToMin();
 
-        while (!fadeLerp.isMinPrecise)
+        while (!fadeLerp.IsMin)
         {
             fadeLerp.Update(Time.deltaTime);
 
@@ -101,12 +125,16 @@ public class AmbientAudio : MonoBehaviour
 
         fadeLerp = new Interpolator(1f, Interpolator.Type.SIN);
         fadeLerp.ToMax();
-        while (!fadeLerp.isMaxPrecise)
+        while (!fadeLerp.IsMax)
         {
             fadeLerp.Update(Time.deltaTime);
             musicAudioSource.volume = fadeLerp.Value * musicVolume;
             yield return null;
         }
+
+        finishedTransition = true;
+        musicAudioSource.loop = looping;
+
     }
 
 
