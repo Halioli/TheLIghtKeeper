@@ -6,10 +6,11 @@ public class UIAudio : MonoBehaviour
 {
     [SerializeField] AudioSource inventoryAudioSource;
     [SerializeField] AudioClip inventorySlotClickAudioClip;
-    [SerializeField] AudioClip openCloseInventoryClickAudioClip;
+    [SerializeField] AudioClip openInventoryClickAudioClip;
+    [SerializeField] AudioClip closeInventoryClickAudioClip;
 
     [SerializeField] AudioSource upgardeAndCraftAudioSource;
-    [SerializeField] AudioClip buttonHoverAucioClip;
+    [SerializeField] AudioSource buttonHoverAudioSource;
     [SerializeField] AudioClip upgradeAudioClip;
     [SerializeField] AudioClip craftAudioClip;
     [SerializeField] AudioClip failCraftAudioClip;
@@ -56,20 +57,22 @@ public class UIAudio : MonoBehaviour
 
     private void PlayInteractStationOpenSound()
     {
-        inventoryAudioSource.clip = openCloseInventoryClickAudioClip;
+        inventoryAudioSource.clip = openInventoryClickAudioClip;
         inventoryAudioSource.pitch = 1f;
         inventoryAudioSource.Play();
     }
 
     private void PlayInteractStationCloseSound()
     {
-        inventoryAudioSource.clip = openCloseInventoryClickAudioClip;
-        inventoryAudioSource.pitch = 1.5f;
+        inventoryAudioSource.clip = closeInventoryClickAudioClip;
+        inventoryAudioSource.pitch = 0.7f;
         inventoryAudioSource.Play();
     }
 
     private void PlayUpgardeSound()
     {
+        if (upgardeAndCraftAudioSource.isPlaying) return;
+
         upgardeAndCraftAudioSource.volume = 0.5f;
         upgardeAndCraftAudioSource.clip = upgradeAudioClip;
         upgardeAndCraftAudioSource.pitch = 1f;
@@ -78,6 +81,8 @@ public class UIAudio : MonoBehaviour
 
     private void PlayCraftingSound()
     {
+        if (upgardeAndCraftAudioSource.isPlaying) return;
+
         upgardeAndCraftAudioSource.volume = 1f;
         upgardeAndCraftAudioSource.clip = craftAudioClip;
         upgardeAndCraftAudioSource.pitch = 0.7f;
@@ -86,7 +91,9 @@ public class UIAudio : MonoBehaviour
 
     private void PlayFailCraftingSound()
     {
-        upgardeAndCraftAudioSource.volume = 0.75f;
+        if (upgardeAndCraftAudioSource.isPlaying) return;
+
+        upgardeAndCraftAudioSource.volume = 0.3f;
         upgardeAndCraftAudioSource.clip = failCraftAudioClip;
         upgardeAndCraftAudioSource.pitch = 1f;
         upgardeAndCraftAudioSource.Play();
@@ -94,10 +101,9 @@ public class UIAudio : MonoBehaviour
 
     private void PlayButtonHoverSound()
     {
-        upgardeAndCraftAudioSource.volume = 0.1f;
-        upgardeAndCraftAudioSource.clip = buttonHoverAucioClip;
-        upgardeAndCraftAudioSource.pitch = Random.Range(0.95f, 1.05f);
-        upgardeAndCraftAudioSource.Play();
+        buttonHoverAudioSource.volume = 0.1f;
+        buttonHoverAudioSource.pitch = Random.Range(0.95f, 1.05f);
+        buttonHoverAudioSource.Play();
     }
     
 }
