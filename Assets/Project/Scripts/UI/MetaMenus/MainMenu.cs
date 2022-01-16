@@ -8,13 +8,16 @@ public class MainMenu : MonoBehaviour
     public GameObject[] mainMenuEnemies;
     public Image loadingBarImage;
     public CanvasGroup loadingGroup;
+    public GameObject introductionMenuGameObject;
     public GameObject optionsMenuGameObject;
     public GameObject creditsMenuGameObject;
 
     public void PlayButtonClick(int sceneIndex)
     {
-        loadingGroup.alpha = 1f;
-        StartCoroutine(AsyncLoading(sceneIndex));
+        StopRespawns();
+        introductionMenuGameObject.SetActive(true);
+        //loadingGroup.alpha = 1f;
+        //StartCoroutine(AsyncLoading(sceneIndex));
     }
 
     public void OptionsButtonClick()
