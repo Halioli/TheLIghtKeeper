@@ -6,7 +6,7 @@ public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
     private bool playerInLight;
-    private int numberOfLights;
+    public int numberOfLights;
 
     // Public Attributes
     public Lamp lamp;
