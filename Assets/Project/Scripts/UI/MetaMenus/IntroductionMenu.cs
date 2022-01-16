@@ -8,10 +8,17 @@ public class IntroductionMenu : MonoBehaviour
 {
     public Image loadingBarImage;
     public CanvasGroup loadingGroup;
+    public CanvasGroup introductionGroup;
+    public CanvasGroup informationGroup;
+    public CanvasGroup controllsGroup;
     public GameObject previousMenuGameObject;
-    
+
+    private const int MAX_PANELS = 2;
+    private const int MIN_PANELS = 0;
+
     private MainMenu mainMenu;
     private bool inMainMenu;
+    private int currentPanelShowing = MIN_PANELS;
 
     private void Start()
     {
@@ -23,6 +30,33 @@ public class IntroductionMenu : MonoBehaviour
         else
         {
             inMainMenu = false;
+        }
+    }
+
+    private void ManageShownPanel()
+    {
+        switch (currentPanelShowing)
+        {
+            case 0:
+                introductionGroup.alpha = 1f;
+                informationGroup.alpha = 0f;
+                controllsGroup.alpha = 0f;
+                break;
+
+            case 1:
+                introductionGroup.alpha = 0f;
+                informationGroup.alpha = 1f;
+                controllsGroup.alpha = 0f;
+                break;
+
+            case 2:
+                introductionGroup.alpha = 0f;
+                informationGroup.alpha = 0f;
+                controllsGroup.alpha = 1f;
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -47,6 +81,28 @@ public class IntroductionMenu : MonoBehaviour
             mainMenu.ResetRespawns();
 
         gameObject.SetActive(false);
+    }
+
+    public void NextButtonClicked()
+    {
+        currentPanelShowing++;
+        if (currentPanelShowing > MAX_PANELS)
+        {
+            currentPanelShowing = MIN_PANELS;
+        }
+
+        ManageShownPanel();
+    }
+
+    public void PreviousButtonClicked()
+    {
+        currentPanelShowing--;
+        if (currentPanelShowing < MIN_PANELS)
+        {
+            currentPanelShowing = MAX_PANELS;
+        }
+
+        ManageShownPanel();
     }
 
     IEnumerator AsyncLoading(int sceneIndex)
