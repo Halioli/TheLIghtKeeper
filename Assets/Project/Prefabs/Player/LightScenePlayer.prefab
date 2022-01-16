@@ -10461,6 +10461,8 @@ MonoBehaviour:
   canFlip: 1
   canMove: 1
   playerReach: 3
+  canMine: 1
+  canAttack: 1
   selectSpotGameObject: {fileID: 1788428900551174798, guid: 5f0b1009fae22be4f8600478edf3faa4, type: 3}
 --- !u!114 &4225761790095227379
 MonoBehaviour:
@@ -10506,6 +10508,7 @@ MonoBehaviour:
   defaultLayerMask:
     serializedVersion: 2
     m_Bits: 1
+  animator: {fileID: 0}
 --- !u!114 &8148411520325426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10560,7 +10563,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryCanvas: {fileID: 0}
   inventoryMenuGameObject: {fileID: 0}
-  inventoryMenu: {fileID: 0}
 --- !u!114 &4989443145165977615
 MonoBehaviour:
   m_ObjectHideFlags: 0

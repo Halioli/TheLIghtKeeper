@@ -15,6 +15,7 @@ public class PikeBombGameObject : ItemGameObject
 
     public override void DoFunctionality()
     {
+        permanentNotPickedUp = true;
         canBePickedUp = false;
         StartCoroutine("Functionality");
         animator = GetComponent<Animator>();
@@ -62,6 +63,7 @@ public class PikeBombGameObject : ItemGameObject
     {
         Destroy(gameObject);
     }
+
     IEnumerator Functionality()
     {
         Vector2 dir;

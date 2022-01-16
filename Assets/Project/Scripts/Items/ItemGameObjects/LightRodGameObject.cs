@@ -10,6 +10,7 @@ public class LightRodGameObject : ItemGameObject
 
     public override void DoFunctionality()
     {
+        permanentNotPickedUp = true;
         canBePickedUp = false;
         StartCoroutine("Functionality");
     }

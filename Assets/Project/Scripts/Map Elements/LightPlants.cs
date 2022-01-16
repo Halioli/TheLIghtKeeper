@@ -10,6 +10,10 @@ public class LightPlants : MonoBehaviour
     public Light2D lightPlant;
     public ParticleSystem lightPlantParticles;
 
+    public AudioSource audioSource;
+    public AudioClip OnAudioClip;
+    public AudioClip OffAudioClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +26,7 @@ public class LightPlants : MonoBehaviour
         {
             plantAnimator.SetBool("playerInRange", true);
             StartCoroutine(PlayLightPlantParticles());
+            OnSound();
         }
     }
 
@@ -30,7 +35,22 @@ public class LightPlants : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             plantAnimator.SetBool("playerInRange", false);
+            OffSound();
         }
+    }
+
+    private void OnSound()
+    {
+        audioSource.clip = OnAudioClip;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
+    }
+
+    private void OffSound()
+    {
+        audioSource.clip = OffAudioClip;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
     }
 
     IEnumerator PlayLightPlantParticles()
