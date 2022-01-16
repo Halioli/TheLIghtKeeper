@@ -10,6 +10,7 @@ public class HealingStation : MonoBehaviour
     private HealthSystem playerHealthSystem;
     public TextMeshProUGUI maxHealthMessage;
     public GameObject backgroundText;
+    public Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +51,7 @@ public class HealingStation : MonoBehaviour
         {
             ShowPlayerHealedMessage();
             playerHealthSystem.RestoreHealthToMaxHealth();
+            animator.SetBool("isHealed", true);
         }
         else
         {

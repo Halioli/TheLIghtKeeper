@@ -11,7 +11,7 @@ public class FogSystem : MonoBehaviour
     private float timer;
     private bool hasFaded = false;
 
-    private Vector3 respawnPosition;
+    public Vector3 respawnPosition;
 
     public GameObject skullEnemy;
     [SerializeField] private HUDHandler hudHandler;
@@ -22,7 +22,6 @@ public class FogSystem : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log(player.tag);
         timer = 1f;
-        respawnPosition = new Vector3(25f, -11f, 0);
         skullEnemy.SetActive(false);
     }
 
