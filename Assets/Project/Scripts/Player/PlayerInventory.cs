@@ -17,6 +17,9 @@ public class PlayerInventory : MonoBehaviour
     public delegate void PlayPlayerSound();
     public static event PlayPlayerSound playerPicksUpItemEvent;
 
+    public delegate void InventoryAction();
+    public static event InventoryAction OnInventoryOpen;
+    public static event InventoryAction OnInventoryClose;
 
 
     private void Start()
@@ -81,12 +84,18 @@ public class PlayerInventory : MonoBehaviour
         inventoryIsOpen = true;
         inventoryCanvas.gameObject.SetActive(true);
         //inventoryMenu.UpdateInventory();
+        
+        if (OnInventoryOpen != null)
+            OnInventoryOpen();
     }
 
     public void CloseInventory()
     {
         inventoryIsOpen = false;
         inventoryCanvas.gameObject.SetActive(false);
+
+        if (OnInventoryClose != null)
+            OnInventoryClose();
     }
 
     private ItemGameObject GetItemGameObjectFromCollider(Collider2D collider)

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemCell : MonoBehaviour
+public class ItemCell : HoverButton
 {
     private InventoryMenu inventoryMenu;
     private int index;
