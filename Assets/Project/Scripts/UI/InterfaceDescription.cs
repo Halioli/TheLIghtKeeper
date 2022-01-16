@@ -17,10 +17,8 @@ public class InterfaceDescription : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInventory.OnInventoryOpen += OpenDescription;
         PlayerInventory.OnInventoryClose += CloseDescription;
 
-        InteractStation.OnDescriptionOpen += OpenDescription;
         InteractStation.OnInteractClose += CloseDescription;
 
         HoverButton.OnDescriptionOpen += OpenDescription;
@@ -31,10 +29,8 @@ public class InterfaceDescription : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerInventory.OnInventoryOpen -= OpenDescription;
         PlayerInventory.OnInventoryClose -= CloseDescription;
 
-        InteractStation.OnDescriptionOpen -= OpenDescription;
         InteractStation.OnInteractClose -= CloseDescription;
 
         HoverButton.OnDescriptionOpen -= OpenDescription;

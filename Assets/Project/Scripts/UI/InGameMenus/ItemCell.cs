@@ -39,4 +39,14 @@ public class ItemCell : HoverButton
         //itemImage = empty;
         itemAmount.text = " ";
     }
+
+    public override void DoDescriptionTextAction()
+    {
+        if (inventoryMenu.inventory.inventory[index].StackIsEmpty())
+        {
+            return;
+        }
+        base.DoDescriptionTextAction();
+    }
+
 }
