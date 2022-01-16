@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6524155991628749535}
   - component: {fileID: 884613000234432602}
   - component: {fileID: 4423875086134436771}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bomb
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f98f80b49bf4b241824da4fb403b9aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBePickedUp: 0
+  canBePickedUp: 1
   currentDespawnTimeInSeconds: 10
   item: {fileID: 11400000, guid: fe1423d4f51c65e409f790eedd9d1249, type: 2}
   audioSource: {fileID: 884613000234432602}

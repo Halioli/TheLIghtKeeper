@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -1572094187727018519}
   - component: {fileID: 8539784664639347599}
   - component: {fileID: 3848699864291273460}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LightRod
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79208907e30f12d46a8c953be9675b57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBePickedUp: 0
+  canBePickedUp: 1
   currentDespawnTimeInSeconds: 30
   item: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
   audioSource: {fileID: 3848699864291273460}

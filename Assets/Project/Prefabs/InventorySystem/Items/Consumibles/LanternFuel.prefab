@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8361091883273979233}
   - component: {fileID: -5396623301214339090}
   - component: {fileID: -1995576922117437241}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LanternFuel
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9992560efd50cfa4386985ab67f8abc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBePickedUp: 0
+  canBePickedUp: 1
   currentDespawnTimeInSeconds: 10
   item: {fileID: 11400000, guid: 2ccacd3f7dfe38d4ab0de9866c789dea, type: 2}
   audioSource: {fileID: -1995576922117437241}
