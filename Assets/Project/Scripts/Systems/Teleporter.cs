@@ -22,8 +22,8 @@ public class Teleporter : InteractStation
     public string teleportName;
     public Vector3 teleportTransformPosition;
     public bool activated = false;
-    public GameObject[] teleporterLights;
     public GameObject teleportSprite;
+    public GameObject teleportLight;
 
     //Events / Actions
     public delegate void TeleportActivation(string teleportName);
@@ -39,6 +39,7 @@ public class Teleporter : InteractStation
         spawnPosition = transform.position;
         animator = GetComponent<Animator>();
         teleportSprite.SetActive(true);
+        teleportLight.SetActive(false);
     }
 
     private void Update()
@@ -82,6 +83,7 @@ public class Teleporter : InteractStation
 
             PlayerInputs.instance.canMove = false;
             animator.SetBool("isActivated", true);
+            teleportLight.SetActive(true);
         }
         else if (!activated && !playerInventory.InventoryContainsItem(darkEssence))
         {

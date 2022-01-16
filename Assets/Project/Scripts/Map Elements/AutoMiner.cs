@@ -19,7 +19,6 @@ public class AutoMiner : InteractStation
 
     //Audios
     public AudioClip autoMinerPlaceSound;
-    public AudioClip autoMinerWorkingSound;
     public AudioClip autoMinerExtractedSound;
     public AudioSource autoMinerEffectsAudioSource;
     public AudioSource autoMinerWorkingAudioSource;
@@ -110,11 +109,9 @@ public class AutoMiner : InteractStation
 
     public void GetsPlacedDown(Item itemToMine)
     {
-        PlacedSound();
+        PlayPlacedSound();
         PlacedAnimation();
         SetItemToMine(itemToMine);
-
-        WorkingSound();
     }
 
     public void SetItemToMine(Item itemToMine)
@@ -135,6 +132,8 @@ public class AutoMiner : InteractStation
             OnMineStart();
         }
         autoMinerStopped = false;
+        PlayWorkingSound();
+
 
         while (inventory.ItemCanBeAdded(itemToMine))
         {
@@ -142,17 +141,19 @@ public class AutoMiner : InteractStation
 
             if (inventory.ItemCanBeAdded(itemToMine)) // protect in case player adds item
             {
-                ExtractedSound();
+                PlayExtractedSound();
                 MineItem();
                 MineAnimation();
             }
         }
+
 
         if (OnMineStop != null) 
         {
             OnMineStop();
         }
         autoMinerStopped = true;
+        StopWorkingSound();
     }
 
     private void MineItem()
@@ -180,24 +181,27 @@ public class AutoMiner : InteractStation
         }
     }
 
-    private void PlacedSound()
+    private void PlayPlacedSound()
     {
         autoMinerEffectsAudioSource.clip = autoMinerPlaceSound;
         autoMinerEffectsAudioSource.pitch = Random.Range(0.8f, 1.3f);
         autoMinerEffectsAudioSource.Play();
     }
 
-    private void ExtractedSound()
+    private void PlayExtractedSound()
     {
         autoMinerEffectsAudioSource.clip = autoMinerExtractedSound;
         autoMinerEffectsAudioSource.pitch = Random.Range(0.8f, 1.3f);
         autoMinerEffectsAudioSource.Play();
     }
 
-    private void WorkingSound()
+    private void PlayWorkingSound()
     {
-        autoMinerWorkingAudioSource.clip = autoMinerExtractedSound;
         autoMinerWorkingAudioSource.Play();
-        autoMinerWorkingAudioSource.loop = true;
+    }
+
+    private void StopWorkingSound()
+    {
+        autoMinerWorkingAudioSource.Stop();
     }
 }

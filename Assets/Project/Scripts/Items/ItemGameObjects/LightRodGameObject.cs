@@ -5,6 +5,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class LightRodGameObject : ItemGameObject
 {
+    private bool startedFading = false;
     public AudioClip lightRodUseSound;
     public GameObject light;
 
@@ -43,11 +44,26 @@ public class LightRodGameObject : ItemGameObject
 
             if (lightTime <= 1f)
             {
+                if (!startedFading)
+                {
+                    startedFading = true;
+                    FadeSound();
+                }
                 spawnedLight.GetComponent<Light2D>().intensity -= Time.deltaTime;
+
             }
         }
 
         Destroy(spawnedLight);
         Destroy(gameObject);
     }
+
+    private void FadeSound()
+    {
+        startedFading = true;
+        audioSource.clip = lightRodUseSound;
+        audioSource.pitch = Random.Range(0.4f, 0.5f);
+        audioSource.Play();
+    }
+
 }
