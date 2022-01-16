@@ -8,6 +8,11 @@ public class ShipExit : MonoBehaviour
     public Vector2 shipExteriorPosition;
     public HUDHandler hudHandler;
 
+
+    public delegate void ShipExitAction();
+    public static event ShipExitAction OnExit;
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -21,6 +26,8 @@ public class ShipExit : MonoBehaviour
 
     IEnumerator TeleportToShipExterior(GameObject gameObjectTeleported)
     {
+        if (OnExit != null) OnExit();
+
         hudHandler.DoFadeToBlack();
         PlayerInputs.instance.canMove = false;
 
