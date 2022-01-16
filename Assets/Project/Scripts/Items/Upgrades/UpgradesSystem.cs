@@ -10,6 +10,12 @@ public class UpgradesSystem : MonoBehaviour
     [SerializeField] public List<UpgradeBranch> upgradeBranches;
 
 
+    // Events
+    public delegate void UpgardeAction();
+    public static event UpgardeAction OnUpgrade;
+    public static event UpgardeAction OnUpgradeFail;
+
+
     private void Start()
     {
         playerInventoryItems = new Dictionary<Item, int>();
@@ -35,10 +41,17 @@ public class UpgradesSystem : MonoBehaviour
             RemoveUpgradeRequiredItems(upgradeBranches[index].GetCurrentUpgrade());
 
             upgradeBranches[index].Upgrade();
+
+            if (OnUpgrade != null) OnUpgrade();
         }
+        else
+        {
+            if (OnUpgradeFail != null) OnUpgradeFail();
+        }
+        UpdatePlayerInventoryData();
     }
 
-    private void UpdatePlayerInventoryData()
+    public void UpdatePlayerInventoryData()
     {
         playerInventoryItems.Clear();
 
@@ -74,6 +87,11 @@ public class UpgradesSystem : MonoBehaviour
         {
             playerInventory.SubstractNItemsFromInventory(requiredItem.Key, requiredItem.Value);
         }
+    }
+
+    public void DoOnUpgardeFail()
+    {
+        if (OnUpgradeFail != null) OnUpgradeFail();
     }
 
 }
