@@ -23,6 +23,7 @@ public class CraftingSystem : MonoBehaviour
 
     public delegate void CraftAction();
     public static event CraftAction OnCrafting;
+    public static event CraftAction OnCraftingFail;
 
     void Start()
     {
@@ -42,19 +43,6 @@ public class CraftingSystem : MonoBehaviour
         //{
         //    particle.Stop();
         //}
-    }
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            RecepieWasSelected(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            RecepieWasSelected(1);
-        }
     }
 
 
@@ -159,28 +147,17 @@ public class CraftingSystem : MonoBehaviour
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex]))
         {
-            OnCrafting();
+            if (OnCrafting != null) OnCrafting();
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
         }
         else
         {
-            Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepieName);
+            if (OnCraftingFail != null) OnCraftingFail();
         }
+
+        UpdatePlayerInventoryData();
     }
 
-   /* IEnumerator CraftingParticleSystem()
-    {
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
 
-        yield return new WaitForSeconds(3.4f);
-
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
-    }*/
 }

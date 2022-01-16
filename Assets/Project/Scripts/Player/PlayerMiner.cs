@@ -197,7 +197,7 @@ public class PlayerMiner : PlayerBase
 
     private void Mine()
     {
-        if (!miningAnOre)
+        if (!miningAnOre || oreToMine == null)
             return;
 
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
