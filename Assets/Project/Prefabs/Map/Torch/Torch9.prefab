@@ -5577,6 +5577,7 @@ MonoBehaviour:
   turnedOn: 0
   animTorch: {fileID: 8848515777996194070}
   puzzleSystem: {fileID: 0}
+  torchAudioSource: {fileID: 8848515777996194071}
 --- !u!95 &8848515777996194070
 Animator:
   serializedVersion: 3
@@ -5605,8 +5606,8 @@ AudioSource:
   m_GameObject: {fileID: 8848515777996194064}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7c2bdc98f767e8b4a921562ffd38bac7, type: 3}
+  OutputAudioMixerGroup: {fileID: -2884465075996880991, guid: f0b27f32a62261e4b8982321d5d09362, type: 2}
+  m_audioClip: {fileID: 8300000, guid: ee803a8b840d61d45a9868822175d708, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -5652,7 +5653,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.6
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
