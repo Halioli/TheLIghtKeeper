@@ -9,6 +9,11 @@ public class ShipEntry : MonoBehaviour
     public HUDHandler hudHandler;
     public Animator animator;
 
+
+    public delegate void ShipEntryAction();
+    public static event ShipEntryAction OnEntry;
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -22,6 +27,8 @@ public class ShipEntry : MonoBehaviour
 
     IEnumerator TeleportToShipInterior(GameObject gameObjectTeleported)
     {
+        if (OnEntry != null) OnEntry();
+
         hudHandler.DoFadeToBlack();
         PlayerInputs.instance.canMove = false;
 

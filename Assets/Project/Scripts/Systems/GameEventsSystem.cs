@@ -15,7 +15,7 @@ public class GameEventsSystem : MonoBehaviour
 
     void Update()
     {
-        if (furnace.GetLightLevel() >= 2)
+        if (furnace.GetLightLevel() >= 1)
         {
             if (!randomEventEnumeratorActive && !eventInAction)
             {
