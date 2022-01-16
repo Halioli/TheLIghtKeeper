@@ -44,6 +44,7 @@ public class ItemCell : HoverButton
     {
         if (inventoryMenu.inventory.inventory[index].StackIsEmpty())
         {
+            base.DoOnHover();
             return;
         }
         base.DoDescriptionTextAction();
