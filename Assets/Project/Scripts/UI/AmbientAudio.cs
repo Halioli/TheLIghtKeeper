@@ -15,10 +15,13 @@ public class AmbientAudio : MonoBehaviour
     [SerializeField] AudioSource musicAudioSource;
     [SerializeField] AudioClip musicInside;
     [SerializeField] AudioClip[] musicsOutside;
+    [SerializeField] AudioClip teleportMusic;
 
     private const float musicVolume = 0.1f;
     private bool finishedTransition = false;
     private bool interior = false;
+    private const float teleportMusicVolume = 0.5f;
+
 
     void Start()
     {
@@ -32,12 +35,18 @@ public class AmbientAudio : MonoBehaviour
     {
         ShipEntry.OnEntry += TransitionToInterior;
         ShipExit.OnExit += TransitionToExterior;
+
+        Teleporter.OnMenuEnter += TransitionToTeleportMenu;
+        Teleporter.OnMenuExit += TransitionToExterior;
     }
 
     private void OnDisable()
     {
         ShipEntry.OnEntry -= TransitionToInterior;
         ShipExit.OnExit -= TransitionToExterior;
+
+        Teleporter.OnMenuEnter -= TransitionToTeleportMenu;
+        Teleporter.OnMenuExit -= TransitionToExterior;
     }
 
 
@@ -92,6 +101,8 @@ public class AmbientAudio : MonoBehaviour
     {
         //MusicTransition(musicInside, true);
 
+        musicAudioSource.loop = false;
+        musicAudioSource.volume = musicVolume;
         interior = true;
         musicAudioSource.Stop();
     }
@@ -99,7 +110,9 @@ public class AmbientAudio : MonoBehaviour
     private void TransitionToExterior()
     {
         //MusicTransition(musicsOutside[Random.Range(0, musicsOutside.Length)], false);
-
+        
+        musicAudioSource.loop = false;
+        musicAudioSource.volume = musicVolume;
         interior = false;
         musicAudioSource.Stop();
     }
@@ -137,5 +150,16 @@ public class AmbientAudio : MonoBehaviour
 
     }
 
+
+    private void TransitionToTeleportMenu()
+    {
+        interior = true;
+        musicAudioSource.Stop();
+
+        musicAudioSource.clip = teleportMusic;
+        musicAudioSource.volume = teleportMusicVolume;
+        musicAudioSource.loop = true;
+        musicAudioSource.Play();
+    }
 
 }
