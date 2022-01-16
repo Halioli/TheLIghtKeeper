@@ -33,7 +33,10 @@ public class Torch : InteractStation
         smokeTorchParticles.Stop();
         if (!turnedOn)
         {
+            torchLight.pointLightOuterRadius = 0;
+            torchLight.pointLightInnerRadius = 0;
             torchLight.intensity = turnedOffIntensity;
+            lightRadius.radius = 0.1f;
         }
 
         popUpCanvasGroup.alpha = 0f;
@@ -81,9 +84,8 @@ public class Torch : InteractStation
     {
         smokeTorchParticles.Stop();
         torchLight.intensity = 1f;
-        StartCoroutine(LightsOff());
+        //StartCoroutine(LightsOff());
         turnedOn = false;
-        lightRadius.radius = 0.1f;
         animTorch.SetBool("isBurning", false);
         if (hasToBurn)
         {
@@ -95,9 +97,8 @@ public class Torch : InteractStation
     {
         smokeTorchParticles.Play();
         torchLight.intensity = 1f;
-        StartCoroutine(LightsOn());
+        //StartCoroutine(LightsOn());
         turnedOn = true;
-        lightRadius.radius = 2.8f;
         animTorch.SetBool("isBurning", true);
         if (hasToBurn)
         {
@@ -116,6 +117,8 @@ public class Torch : InteractStation
             //DO STUFF HERE
             torchLight.pointLightOuterRadius = lightLerp.Value * outerRadiusOn;
             torchLight.pointLightInnerRadius = lightLerp.Value * innerRadiusOn;
+            lightRadius.radius = 2.8f;
+
             //WAIT A FRAME
             yield return null;
         }
@@ -132,6 +135,7 @@ public class Torch : InteractStation
             //DO STUFF HERE
             torchLight.pointLightOuterRadius = lightLerp.Inverse * outerRadiusOn;
             torchLight.pointLightInnerRadius = lightLerp.Inverse * innerRadiusOn;
+            lightRadius.radius = 0.1f;
             //WAIT A FRAME
             yield return null;
         }
