@@ -62,6 +62,7 @@ public class PikeBombGameObject : ItemGameObject
     {
         Destroy(gameObject);
     }
+
     IEnumerator Functionality()
     {
         Vector2 dir;
