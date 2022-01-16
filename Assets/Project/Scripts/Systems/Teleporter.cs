@@ -25,12 +25,20 @@ public class Teleporter : InteractStation
     public GameObject teleportSprite;
     public GameObject teleportLight;
 
+    [SerializeField] AudioSource teleportAudioSource;
+
     //Events / Actions
     public delegate void TeleportActivation(string teleportName);
     public static event TeleportActivation OnActivation;
 
     public delegate void TeleportInteraction(string teleportName);
     public static event TeleportInteraction OnInteraction;
+
+
+    public delegate void TeleportMenuAction();
+    public static event TeleportMenuAction OnMenuEnter;
+    public static event TeleportMenuAction OnMenuExit;
+
 
     private void Start()
     {
@@ -77,6 +85,8 @@ public class Teleporter : InteractStation
     {
         if (!activated && playerInventory.InventoryContainsItem(darkEssence))
         {
+            teleportAudioSource.Play();
+
             playerInventory.SubstractItemFromInventory(darkEssence);
             popUp.GetComponent<PopUp>().ShowMessage();
             mssgText.text = messagesToShow[2];
@@ -97,12 +107,16 @@ public class Teleporter : InteractStation
                 hudGameObject.SetActive(false);
                 canvasTeleportSelection.SetActive(true);
                 PauseMenu.gameIsPaused = true;
+
+                if (OnMenuEnter != null) OnMenuEnter();
             }
             else
             {
                 hudGameObject.SetActive(true);
                 canvasTeleportSelection.SetActive(false);
                 PauseMenu.gameIsPaused = false;
+
+                if (OnMenuExit != null) OnMenuExit();
             }
         }
     }
@@ -113,7 +127,6 @@ public class Teleporter : InteractStation
         PlayerInputs.instance.canMove = true;
         popUp.GetComponent<PopUp>().HideMessage();
         mssgText.text = messagesToShow[0];
-
         if (OnActivation != null)
             OnActivation(teleportName);
     }
