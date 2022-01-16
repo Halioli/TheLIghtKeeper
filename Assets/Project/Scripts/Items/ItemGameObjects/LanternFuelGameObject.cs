@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class LanternFuelGameObject : ItemGameObject
 {
-
     private Lamp playerLamp;
     private float lampTimeToRefill = 5f;
 
-    private void Start()
+    public delegate void LanternFuelSound();
+    public static event LanternFuelSound onLanternFuelRefill;
+
+
+
+    private void FunctionalitySound()
     {
-        playerLamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
+        if (onLanternFuelRefill != null)
+            onLanternFuelRefill();
     }
+
     public override void DoFunctionality()
     {
+        canBePickedUp = false;
+        playerLamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
+
         if (playerLamp.CanRefill())
         {
+            FunctionalitySound();
             playerLamp.RefillLampTime(lampTimeToRefill);
         }
+
+        Destroy(gameObject);
     }
-
-
 }

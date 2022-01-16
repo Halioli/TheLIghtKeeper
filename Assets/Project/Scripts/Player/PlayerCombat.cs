@@ -4,82 +4,63 @@ using UnityEngine;
 using DG.Tweening;
 
 public class PlayerCombat : PlayerBase
-{  
+{
     // Private Attributes
-    private const float ATTACK_TIME_DURATION = 0.5f;
-    private float attackingTime = ATTACK_TIME_DURATION;
+    private const float ATTACK_TIME_DURATION = 0.22f;
+    private float ATTACK_COOLDOWN = 0.7f;
 
-    protected AttackSystem attackSystem; 
-    protected HealthSystem healthSystem;
-
-    private bool attacking = false;
-    private bool attackingAnEnemy = false;
+    private bool canAttack = true;
 
     private const float INVULNERABILITY_TIME = 0.5f;
     private float currentInvulnerabilityTime = INVULNERABILITY_TIME;
     private bool isInvulnerable = false;
 
+    private PlayerAreas playerAreas;
+    private InGameHUDHandler inGameHUD;
 
-    private Collider2D colliderDetectedByMouse = null;
-    private Enemy enemyToAttack;
+    protected AttackSystem attackSystem;
+    protected HealthSystem healthSystem;
+
+    // Public Attributes
+    public GameObject attackArea;
+    public HUDHandler hudHandler;
+    public bool targetWasHitAlready = false;
 
     //Particles
     public ParticleSystem playerBlood;
     public Animator animator;
-    public GameObject swordLight;
 
-    // Audio
-    public AudioSource audioSource;
-    public AudioClip hurtedAudioClip;
-    public AudioClip attackAudioClip;
+    // Events
+    public delegate void PlayerAttackSound();
+    public static event PlayerAttackSound playerAttackEvent;
+    public static event PlayerAttackSound playerMissesAttackEvent;
+    public static event PlayerAttackSound playerReceivesDamageEvent;
+
 
 
     private void Start()
     {
+        playerAreas = GetComponent<PlayerAreas>();
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        inGameHUD = GetComponentInChildren<InGameHUDHandler>();
         playerBlood.Stop();
     }
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && !attacking)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
         {
-            PlayerInputs.instance.SetNewMousePosition();
-            if (PlayerIsInReachToAttack(PlayerInputs.instance.mouseWorldPosition) && MouseClickedOnAnEnemy(PlayerInputs.instance.mouseWorldPosition))
-            {
-                SetEnemyToAttack();
-            }
             StartAttacking();
         }
     }
 
-    private bool PlayerIsInReachToAttack(Vector2 mousePosition)
-    {
-        float distancePlayerMouseClick = Vector2.Distance(mousePosition, transform.position);
-        return distancePlayerMouseClick <= PlayerInputs.instance.playerReach;
-    }
-
-    private bool MouseClickedOnAnEnemy(Vector2 mousePosition)
-    {
-        colliderDetectedByMouse = Physics2D.OverlapCircle(mousePosition, 0.05f);
-        return colliderDetectedByMouse != null && colliderDetectedByMouse.gameObject.CompareTag("Enemy");
-    }
-
-    private void SetEnemyToAttack()
-    {
-        attackingAnEnemy = true;
-        enemyToAttack = colliderDetectedByMouse.gameObject.GetComponent<Enemy>();
-
-        PlayerInputs.instance.SpawnSelectSpotAtTransform(enemyToAttack.transform);
-    }
-
     private void StartAttacking()
     {
-        attacking = true;
         FlipPlayerSpriteFacingWhereToAttack();
         playerStates.SetCurrentPlayerAction(PlayerAction.ATTACKING);
-        StartCoroutine("Attacking");
+        StartCoroutine(Attacking());
+        StartCoroutine(AttackCooldown());
     }
 
 
@@ -87,42 +68,27 @@ public class PlayerCombat : PlayerBase
     {
         PlayerInputs.instance.canFlip = false;
         animator.SetBool("isAttacking", true);
-        swordLight.SetActive(true);
 
-        if (attackingAnEnemy)
-        {
-            DealDamageToEnemy();
-        }
+        playerAttackEvent();
 
-        while (attackingTime > 0.0f)
-        {
-            attackingTime -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
+        playerAreas.DoSpawnAttackArea();
+        yield return new WaitForSeconds(ATTACK_TIME_DURATION);
 
         PlayerInputs.instance.canFlip = true;
         animator.SetBool("isAttacking", false);
-        swordLight.SetActive(false);
         ResetAttack();
     }
 
     private void ResetAttack()
     {
-        attackingTime = ATTACK_TIME_DURATION;
-        attacking = false;
-        attackingAnEnemy = false;
-
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
     }
 
-    public void DealDamageToEnemy()
+    public void DealDamageToEnemy(Enemy enemy)
     {
-        enemyToAttack.GetComponent<Enemy>().ReceiveDamage(attackSystem.attackValue);
-
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = attackAudioClip;
-        audioSource.Play();
+        enemy.ReceiveDamage(attackSystem.attackValue);
+        enemy.GetsPushed((enemy.transform.position - transform.position).normalized, attackSystem.pushValue);
     }
 
     public void ReceiveDamage(int damageValue)
@@ -133,7 +99,9 @@ public class PlayerCombat : PlayerBase
         }
         else
         {
-            StartCoroutine("Invulnerability");
+            StartCoroutine(Invulnerability());
+            inGameHUD.DoRecieveDamageFadeAndShake();
+            hudHandler.ShowRecieveDamageFades();
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -141,9 +109,8 @@ public class PlayerCombat : PlayerBase
         transform.DOPunchScale(new Vector3(-0.4f, 0.2f, 0), 0.5f);
         transform.DOPunchRotation(new Vector3(0, 0, 10), 0.2f);
 
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.clip = hurtedAudioClip;
-        audioSource.Play();
+        playerReceivesDamageEvent();
+
         StartCoroutine(PlayerBloodParticleSystem());
     }
 
@@ -173,8 +140,6 @@ public class PlayerCombat : PlayerBase
 
     private void FlipPlayerSpriteFacingWhereToAttack()
     {
-        //if (playerStates.PlayerActionIsWalking())
-        //    return;
         Vector2 mousePosition = PlayerInputs.instance.GetMousePositionInWorld();
         
         if ((transform.position.x < mousePosition.x && !PlayerInputs.instance.facingLeft) ||
@@ -191,4 +156,22 @@ public class PlayerCombat : PlayerBase
         yield return new WaitForSeconds(0.3f);
         playerBlood.Stop();
     }
+
+    IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(ATTACK_COOLDOWN);
+        canAttack = true;
+    }
+
+
+    public void TargetWasHit()
+    {
+        //if (!targetWasHitAlready)
+        //{
+        //    targetWasHitAlready = true;
+        //    playerAttackEvent();
+        //}
+    }
+
 }

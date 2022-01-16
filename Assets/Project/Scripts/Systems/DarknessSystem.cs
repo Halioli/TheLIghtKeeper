@@ -13,6 +13,8 @@ public class DarknessSystem : MonoBehaviour
     private int numberOfAliveEnemies = 0;
     public bool enemyCapIsFull = false;
 
+    public delegate void PlayerEntersLightAction();
+    public static event PlayerEntersLightAction OnPlayerEntersLight;
 
     void Start()
     {
@@ -40,7 +42,10 @@ public class DarknessSystem : MonoBehaviour
         {
             playerInLight = true;
             DisableEnemySpawners();
-            MakeAllEnemiesBanish();
+            if(OnPlayerEntersLight != null)
+            {
+                OnPlayerEntersLight();
+            }
         }
         else if (playerInLight && !playerLightChecker.IsPlayerInLight())
         {
@@ -53,17 +58,14 @@ public class DarknessSystem : MonoBehaviour
     void OnEnable()
     {
         EnemySpawner.spawnEnemyEvent += AddingEnemy;
-        Enemy.enemyDisappearsEvent += RemovingEnemy;
+        HostileEnemy.enemyDisappearsEvent += RemovingEnemy;
     }
 
     void OnDisable()
     {
         EnemySpawner.spawnEnemyEvent -= AddingEnemy;
-        Enemy.enemyDisappearsEvent -= RemovingEnemy;
+        HostileEnemy.enemyDisappearsEvent -= RemovingEnemy;
     }
-
-
-
 
     private void EnableEnemySpawners()
     {
@@ -80,17 +82,6 @@ public class DarknessSystem : MonoBehaviour
             enemySpawners[i].SetActive(false);
         }
     }
-
-    private void MakeAllEnemiesBanish()
-    {
-        List<GameObject> spawnedEnemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
-        for (int i = 0; i < spawnedEnemies.Count; i++)
-        {
-            spawnedEnemies[i].GetComponent<Enemy>().FleeAndBanish();
-        }
-    }
-
-
     private void AddingEnemy()
     {
         numberOfAliveEnemies++;

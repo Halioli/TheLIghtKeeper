@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.Experimental.Rendering.Universal;
 
-public enum OreState { WHOLE, BROKEN};
+public enum OreState { WHOLE, BROKEN };
+public enum Hardness { NORMAL, HARD };
 
 public class Ore : MonoBehaviour
 {
@@ -15,6 +15,7 @@ public class Ore : MonoBehaviour
     protected Sprite currentSprite;
 
     // Public Attributes
+    [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
@@ -33,15 +34,12 @@ public class Ore : MonoBehaviour
         }
     }
 
-
-
     public bool CanBeMined() { return breakState == OreState.WHOLE; }
 
     public bool Broke() { return healthSystem.IsDead(); }
 
-    public virtual void GetsMined(int damageAmount)
+    public virtual void GetsMined(int damageAmount, int numberOfDrops)
     {
-        
         transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
@@ -53,7 +51,11 @@ public class Ore : MonoBehaviour
             breakState = OreState.BROKEN;
 
             // Drop mineralItemToDrop
-            DropMineralItem();
+            numberOfDrops = Random.Range(1, numberOfDrops);
+            for (int i = 0; i < numberOfDrops; ++i)
+            {
+                DropMineralItem();
+            }
 
             // Start disappear coroutine
             StartCoroutine("Disappear");
@@ -80,10 +82,7 @@ public class Ore : MonoBehaviour
     protected void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
-        droppedMineralItem.transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f,0.5f),transform.position.y + Random.Range(-0.5f, 0.5f),0),0.1f,1,0.3f);
-        //droppedMineralItem.transform.DOPunchPosition(new Vector3(Random.Range(-0.3f,0.3f), Random.Range(0.4f, 0.6f), 0), 0.3f);
-        //droppedMineralItem.DropsDown();
-        droppedMineralItem.StartDespawning();
+        droppedMineralItem.DropsRandom();
     }
 
     protected Vector2 GetDropSpawnPosition()
@@ -105,7 +104,7 @@ public class Ore : MonoBehaviour
 
         Color semiTransparentColor = spriteRenderer.material.color;
         semiTransparentColor.a = 0.5f;
-        
+
         spriteRenderer.material.color = semiTransparentColor;
         yield return new WaitForSeconds(0.2f);
         spriteRenderer.material.color = transparentColor;

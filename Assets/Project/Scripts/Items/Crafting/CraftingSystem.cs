@@ -23,6 +23,7 @@ public class CraftingSystem : MonoBehaviour
 
     public delegate void CraftAction();
     public static event CraftAction OnCrafting;
+    public static event CraftAction OnCraftingFail;
 
     void Start()
     {
@@ -34,6 +35,10 @@ public class CraftingSystem : MonoBehaviour
 
         droppedItemPosition = new Vector2(transform.position.x, transform.position.y - 1f);
 
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        playerInventoryItems = new Dictionary<Item, int>();
+
+
         //foreach (ParticleSystem particle in craftingParticles)
         //{
         //    particle.Stop();
@@ -41,22 +46,17 @@ public class CraftingSystem : MonoBehaviour
     }
 
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LevelUp();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            RecepieWasSelected(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            RecepieWasSelected(1);
-        }
+        CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
+        CoreUpgrade.OnCoreUpgrade += LevelUp;
     }
 
+    private void OnDisable()
+    {
+        CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
+        CoreUpgrade.OnCoreUpgrade -= LevelUp;
+    }
 
     private void InitAllRecepies()
     {
@@ -86,9 +86,7 @@ public class CraftingSystem : MonoBehaviour
 
     private void UpdatePlayerInventoryData()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-
-        playerInventoryItems = new Dictionary<Item, int>();
+        playerInventoryItems.Clear();
         numberOfEmptySlotsInPlayerInventory = 0;
 
         foreach (ItemStack playerInventoryItemStack in playerInventory.inventory)
@@ -137,50 +135,29 @@ public class CraftingSystem : MonoBehaviour
             {
                 // instantiate item in map instead
                 GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
-                item.GetComponent<ItemGameObject>().DropsDown();
-                item.GetComponent<ItemGameObject>().StartDespawning();
+                item.GetComponent<ItemGameObject>().DropsRandom();
             }
         }
         
     }
 
-    private void OnEnable()
-    {
-        CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
-    }
-
-    private void OnDisable()
-    {
-        CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
-    }
 
     public void RecepieWasSelected(int selectedRecepieIndex)
     {
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex]))
         {
-            OnCrafting();
+            if (OnCrafting != null) OnCrafting();
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
         }
         else
         {
-            Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepieName);
+            if (OnCraftingFail != null) OnCraftingFail();
         }
+
+        UpdatePlayerInventoryData();
     }
 
-   /* IEnumerator CraftingParticleSystem()
-    {
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
 
-        yield return new WaitForSeconds(3.4f);
-
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
-    }*/
 }

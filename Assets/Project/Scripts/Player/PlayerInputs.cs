@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInputs : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class PlayerInputs : MonoBehaviour
     public bool canFlip = true;
     public bool canMove = true;
     public float playerReach = 3f;
+
+    public bool canMine = true;
+    public bool canAttack = true;
 
     public GameObject selectSpotGameObject;
 
@@ -31,11 +35,15 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public bool PlayerClickedMineButton()
     {
+        if (PauseMenu.gameIsPaused || !instance.canMine) { return false; }
+
         return Input.GetKeyDown(KeyCode.Mouse0);
     }
 
     public bool PlayerClickedAttackButton()
     {
+        if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
+
         return Input.GetKeyDown(KeyCode.Mouse1);
     }
 
@@ -58,32 +66,40 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedUseButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.Q);
     }
 
     public bool PlayerPressedInventoryButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.Tab);
     }
 
     public bool PlayerPressedQuickAccessButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyDown(KeyCode.LeftShift);
     }
 
     public bool PlayerReleasedQuickAccessButton()
     {
+        if (PauseMenu.gameIsPaused) { return false; }
+
         return Input.GetKeyUp(KeyCode.LeftShift);
     }
 
-    public bool PlayerPressedExitButton()
+    public bool PlayerPressedPauseButton()
     {
         return Input.GetKeyDown(KeyCode.Escape);
     }
 
     public Vector2 PlayerPressedMovementButtons()
     {
-        if (canMove)
+        if (canMove && !PauseMenu.gameIsPaused)
         {
             return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
@@ -100,7 +116,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void SpawnSelectSpotAtTransform(Transform transform)
     {
-        Instantiate(selectSpotGameObject, transform);
+        GameObject selectedSpot = Instantiate(selectSpotGameObject, transform);
+        selectedSpot.GetComponent<SelectSpot>().DoSelectLoop();
     }
 
     public void FlipSprite(Vector2 direction)
@@ -120,4 +137,6 @@ public class PlayerInputs : MonoBehaviour
         Debug.Log("Closing application...");
         Application.Quit();
     }
+
+
 }
