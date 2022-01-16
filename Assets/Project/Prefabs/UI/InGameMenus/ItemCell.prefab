@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 3255088913149878105}
   - component: {fileID: 1278644234283593802}
   - component: {fileID: 4738176345804067161}
+  - component: {fileID: 8817342127283857879}
   m_Layer: 5
   m_Name: ItemCell
   m_TagString: Untagged
@@ -225,6 +226,51 @@ MonoBehaviour:
   itemImage: {fileID: 3255088912848569071}
   itemAmount: {fileID: 2700463285267811432}
   button: {fileID: 1278644234283593802}
+--- !u!114 &8817342127283857879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3255088913149878107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4738176345804067161}
+          m_TargetAssemblyTypeName: HoverButton, Assembly-CSharp
+          m_MethodName: DoDescriptionTextAction
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4738176345804067161}
+          m_TargetAssemblyTypeName: HoverButton, Assembly-CSharp
+          m_MethodName: DoBlankDescriptionTextAction
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &8858290969262591134
 GameObject:
   m_ObjectHideFlags: 0

@@ -72,6 +72,11 @@ public class InventoryMenu : MonoBehaviour
 
             int amount = inventory.inventory[i].amountInStack;
             itemCellsList[i].SetItemAmount(amount);
+
+            if (!inventory.inventory[i].StackIsEmpty())
+            {
+                itemCellsList[i].GetComponent<HoverButton>().SetDescription(inventory.inventory[i].itemInStack.description);
+            }
         }
     }
 
