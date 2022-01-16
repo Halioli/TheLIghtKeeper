@@ -30,7 +30,7 @@ public class HoverButton : MonoBehaviour
         this.description = description;
     }
 
-    public void DoDescriptionTextAction()
+    public virtual void DoDescriptionTextAction()
     {
         if (OnDescriptionSet != null)
             OnDescriptionSet(description);
