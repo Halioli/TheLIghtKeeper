@@ -7,13 +7,15 @@ public class LanternFuelGameObject : ItemGameObject
     private Lamp playerLamp;
     private float lampTimeToRefill = 5f;
 
-    public AudioClip lampFuelUseSound;
+    public delegate void LanternFuelSound();
+    public static event LanternFuelSound onLanternFuelRefill;
+
+
 
     private void FunctionalitySound()
     {
-        audioSource.clip = lampFuelUseSound;
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.Play();
+        if (onLanternFuelRefill != null)
+            onLanternFuelRefill();
     }
 
     public override void DoFunctionality()

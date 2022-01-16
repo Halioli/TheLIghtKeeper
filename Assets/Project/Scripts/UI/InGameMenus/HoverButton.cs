@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class HoverButton : MonoBehaviour
 {
+    public delegate void ButtonHover();
+    public static event ButtonHover OnHover;
+
     public delegate void TriggerButtonDescriptionAction();
     public static event TriggerButtonDescriptionAction OnDescriptionOpen;
     public static event TriggerButtonDescriptionAction OnDescriptionClose;
@@ -32,6 +35,8 @@ public class HoverButton : MonoBehaviour
 
     public virtual void DoDescriptionTextAction()
     {
+        DoOnHover();
+
         if (OnDescriptionSet != null)
             OnDescriptionSet(description);
         if (OnDescriptionOpen != null)
@@ -45,5 +50,12 @@ public class HoverButton : MonoBehaviour
         if (OnDescriptionClose != null)
             OnDescriptionClose();
     }
+
+
+    public void DoOnHover()
+    {
+        if (OnHover != null) OnHover();
+    }
+
 
 }
