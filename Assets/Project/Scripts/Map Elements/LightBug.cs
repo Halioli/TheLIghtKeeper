@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-
 public enum LightBugMovement { LINEAR, CIRCLE };
 
 public class LightBug : Enemy
@@ -14,6 +13,13 @@ public class LightBug : Enemy
     Interpolator horizontalLerp;
     Interpolator verticalLerp;
 
+    private float timeCounter;
+    private Vector3 centerPosition;
+
+    private float initialIntensity = 0.3f;
+    private float maxIntensity = 1f;
+    private float time;
+    private bool cycleFinished;
 
     private Light2D[] pointLightBug;
     private bool isTurnedOn = false;
@@ -32,13 +38,9 @@ public class LightBug : Enemy
     public float width;
     public float height;
 
-    private float timeCounter;
-    private Vector3 centerPosition;
-
-    private float initialIntensity = 0.3f;
-    private float maxIntensity = 1f;
-    private float time;
-    private bool cycleFinished;
+    //Audio
+    public AudioClip lightBugFlying;
+    public AudioClip lightBugDeath;
 
     void Start()
     {
@@ -54,6 +56,7 @@ public class LightBug : Enemy
         centerPosition = transform.position;
         FlipSprite();
 
+        FlyingSound();
     }
 
     void Update()
@@ -92,8 +95,7 @@ public class LightBug : Enemy
 
     protected override void Die()
     {
-        base.Die();
-        Destroy(gameObject);
+        StartCoroutine(Death());
     }
 
     private void UpdateInterpolators()
@@ -124,10 +126,35 @@ public class LightBug : Enemy
         }
     }
 
+    private void DeathSound()
+    {
+        audioSource.loop = false;
+        audioSource.clip = lightBugDeath;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
+    }
+
+    private void FlyingSound()
+    {
+        audioSource.clip = lightBugFlying;
+        audioSource.loop = true;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
+    }
+
     public void FlipSprite()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
     }
 
+    IEnumerator Death()
+    {
+        DeathSound();
+
+        yield return new WaitForSeconds(0.5f);
+
+        base.Die();
+        Destroy(gameObject);
+    }
 }
 
