@@ -15,6 +15,7 @@ public class PikeBombGameObject : ItemGameObject
 
     public override void DoFunctionality()
     {
+        permanentNotPickedUp = true;
         canBePickedUp = false;
         StartCoroutine("Functionality");
         animator = GetComponent<Animator>();
