@@ -13,7 +13,7 @@ public class UpgradeBranch : ScriptableObject
     public static event UpgradeBranchAction OnBranchComplete;
 
     // Private Attributes
-    private int numberOfUpgrades;
+    public int numberOfUpgrades { get; private set; }
     private int currentUpgrade;
     private int branchIndex;
     private bool branchCompleted;

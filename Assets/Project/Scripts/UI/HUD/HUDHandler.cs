@@ -49,10 +49,6 @@ public class HUDHandler : MonoBehaviour
         ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
     }
 
-
-
-
-
     private string CheckTextForZeros(string text)
     {
         string zero = "0";

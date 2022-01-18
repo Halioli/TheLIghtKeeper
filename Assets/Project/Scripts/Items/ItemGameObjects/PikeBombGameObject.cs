@@ -8,15 +8,33 @@ public class PikeBombGameObject : ItemGameObject
     private const float OVERLAP_CIRCLE_RADIUS = 1.5f;
     private const int DAMAGE = 5;
     private Collider2D[] collidedElements;
+    private bool wasThrown = false;
+    private Vector2 dir;
 
     public AudioClip pikeBombUseSound;
     public AudioClip pikeBombExplosionSound;
     public Animator animator;
 
+
+
+    private void FixedUpdate()
+    {
+        if (!wasThrown)
+        {
+            ThrowBomb();
+            wasThrown = true;
+        }
+    }
+
+
     public override void DoFunctionality()
     {
+        permanentNotPickedUp = true;
         canBePickedUp = false;
-        StartCoroutine("Functionality");
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        gameObject.layer = LayerMask.NameToLayer("Default");
+
+        StartCoroutine(Functionality());
         animator = GetComponent<Animator>();
     }
 
@@ -58,24 +76,29 @@ public class PikeBombGameObject : ItemGameObject
         }
     }
 
+    private void DestroyBomb()
+    {
+        Destroy(gameObject);
+    }
+
     IEnumerator Functionality()
     {
-        Vector2 dir;
         dir = PlayerInputs.instance.GetMousePositionInWorld() - (Vector2)transform.position;
         dir = dir.normalized;
 
         FunctionalitySound();
-        
-        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-        rigidbody2D.AddForce(dir * FORCE, ForceMode2D.Impulse);
+
         yield return new WaitForSeconds(0.4f);
         rigidbody2D.bodyType = RigidbodyType2D.Static;
 
-        ExplosionSound();
+        ExplosionSound();
         animator.SetBool("explosion", true);
         collidedElements = ReturnAllOverlapedColliders(transform.position);
         DamageAllCollided();
-        
-        Destroy(gameObject);
+    }
+
+    private void ThrowBomb()
+    {
+        rigidbody2D.AddForce(dir * FORCE, ForceMode2D.Impulse);
     }
 }
