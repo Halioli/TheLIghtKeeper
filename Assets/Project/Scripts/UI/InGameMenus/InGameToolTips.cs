@@ -10,7 +10,11 @@ public class InGameToolTips : MonoBehaviour
     public TextMeshProUGUI toolTipText;
     public CanvasGroup toolTipsCanvasGroup;
 
-    // Update is called once per frame
+    private void Start()
+    {
+        toolTipsActive = false;
+    }
+
     void Update()
     {
         transform.position = PlayerInputs.instance.GetMousePositionInWorld();

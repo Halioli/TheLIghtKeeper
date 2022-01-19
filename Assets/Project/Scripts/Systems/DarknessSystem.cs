@@ -9,7 +9,7 @@ public class DarknessSystem : MonoBehaviour
     private bool playerInLight;
     private List<GameObject> enemySpawners = new List<GameObject>();
 
-    private int ENEMY_CAP = 8;
+    private int ENEMY_CAP = 4;
     private int numberOfAliveEnemies = 0;
     public bool enemyCapIsFull = false;
 

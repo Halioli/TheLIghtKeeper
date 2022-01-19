@@ -207,19 +207,24 @@ public class PlayerAudio : MonoBehaviour
     private void PlayTurnOnLanternSound()
     {
         lanternOnOffAudioSource.clip = turnOnLanternSound;
+        lanternOnOffAudioSource.pitch = 1f;
+        lanternOnOffAudioSource.volume = 1f;
         lanternOnOffAudioSource.Play();
     }
 
     private void PlayTurnOffLanternSound()
     {
         lanternOnOffAudioSource.clip = turnOffLanternSound;
+        lanternOnOffAudioSource.pitch = 1f;
+        lanternOnOffAudioSource.volume = 1f;
         lanternOnOffAudioSource.Play();
     }
 
     private void PlayRefillLanternSound()
     {
         lanternOnOffAudioSource.clip = refillLanternSound;
-        lanternOnOffAudioSource.pitch = Random.Range(0.8f, 1.3f);
+        lanternOnOffAudioSource.pitch = Random.Range(0.8f, 1.2f);
+        lanternOnOffAudioSource.volume = 0.25f;
         lanternOnOffAudioSource.Play();
     }
 
