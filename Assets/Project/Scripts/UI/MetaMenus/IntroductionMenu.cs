@@ -34,6 +34,8 @@ public class IntroductionMenu : MonoBehaviour
         {
             inMainMenu = false;
         }
+
+        ManageShownPanel();
     }
 
     private void ManageShownPanel()
@@ -90,6 +92,7 @@ public class IntroductionMenu : MonoBehaviour
                 tutorial01Group.alpha = 0f;
                 tutorial02Group.alpha = 0f;
                 tutorial03Group.alpha = 0f;
+                tutorial04Group.alpha = 0f;
                 controllsGroup.alpha = 1f;
                 break;
 
