@@ -218,7 +218,7 @@ public class Furnace : InteractStation
 
     private bool CheckIfMaxCoreLevel()
     {
-        return lightLevel >= 2;//MAX_CORE_LEVEL;
+        return lightLevel >= 3;//MAX_CORE_LEVEL;
     }
 
     private void CheckForEndGame()
