@@ -8,6 +8,7 @@ public class UpgradesSystem : MonoBehaviour
     private Dictionary<Item, int> playerInventoryItems;
     Inventory playerInventory;
     [SerializeField] public List<UpgradeBranch> upgradeBranches;
+    [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
 
 
     // Events
@@ -49,6 +50,8 @@ public class UpgradesSystem : MonoBehaviour
             if (OnUpgradeFail != null) OnUpgradeFail();
         }
         UpdatePlayerInventoryData();
+        upgradeMenuCanvas.UpdateUpgradeButton(index);
+
     }
 
     public void UpdatePlayerInventoryData()

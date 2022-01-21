@@ -60,7 +60,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
         UpdateUpgradeButton(index);
     }
 
-    private void UpdateUpgradeButton(int index)
+    public void UpdateUpgradeButton(int index)
     {
         if (upgradesSystem.upgradeBranches[index].IsCompleted())
         {
