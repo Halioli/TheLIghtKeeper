@@ -26,6 +26,7 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] AudioClip turnOffLanternSound;
     [SerializeField] AudioClip turnOnLanternDroneSound;
     [SerializeField] AudioClip turnOffLanternDroneSound;
+    [SerializeField] AudioClip refillLanternSound;
 
 
 
@@ -60,6 +61,7 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternDroneSoundEvent += PlayTurnOffLanternDroneSound;
         Lamp.turnOnLanternEvent += PlayTurnOnLanternSound;
         Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
+        LanternFuelGameObject.onLanternFuelRefill += PlayRefillLanternSound;
     }
 
 
@@ -94,6 +96,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternDroneSoundEvent -= PlayTurnOffLanternDroneSound;
         Lamp.turnOnLanternEvent -= PlayTurnOnLanternSound;
         Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
+        LanternFuelGameObject.onLanternFuelRefill -= PlayRefillLanternSound;
+
     }
 
 
@@ -203,15 +207,25 @@ public class PlayerAudio : MonoBehaviour
     private void PlayTurnOnLanternSound()
     {
         lanternOnOffAudioSource.clip = turnOnLanternSound;
+        lanternOnOffAudioSource.pitch = 1f;
+        lanternOnOffAudioSource.volume = 1f;
         lanternOnOffAudioSource.Play();
     }
 
     private void PlayTurnOffLanternSound()
     {
         lanternOnOffAudioSource.clip = turnOffLanternSound;
+        lanternOnOffAudioSource.pitch = 1f;
+        lanternOnOffAudioSource.volume = 1f;
         lanternOnOffAudioSource.Play();
     }
 
-
+    private void PlayRefillLanternSound()
+    {
+        lanternOnOffAudioSource.clip = refillLanternSound;
+        lanternOnOffAudioSource.pitch = Random.Range(0.8f, 1.2f);
+        lanternOnOffAudioSource.volume = 0.25f;
+        lanternOnOffAudioSource.Play();
+    }
 
 }

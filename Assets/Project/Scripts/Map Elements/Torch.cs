@@ -27,6 +27,8 @@ public class Torch : InteractStation
 
     public TorchPuzzleSystem puzzleSystem;
 
+    [SerializeField] AudioSource torchAudioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,8 @@ public class Torch : InteractStation
         }
         PuzzleChecker();
         linkedRune.SetActive(false);
+
+        desactivatedTorch.SetActive(true);
     }
 
     private void Update()
@@ -66,10 +70,12 @@ public class Torch : InteractStation
         if (!turnedOn)
         {
             SetTorchLightOn();
+            torchAudioSource.Play();
         }
         else
         {
             SetTorchLightOff();
+            torchAudioSource.Stop();
         }
         DoPuzzle();
         if (PuzzleChecker())

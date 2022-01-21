@@ -46,11 +46,11 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.gravityScale = 0f;
     }
 
-    private void Update()
-    {
-        if (canBePickedUp)
-            ItemFloating();
-    }
+    //private void Update()
+    //{
+    //    if (canBePickedUp)
+    //        ItemFloating();
+    //}
 
     public void DropsDown()
     {

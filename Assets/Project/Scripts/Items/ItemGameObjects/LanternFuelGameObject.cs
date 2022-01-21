@@ -1,24 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class LanternFuelGameObject : ItemGameObject
 {
     private Lamp playerLamp;
     private float lampTimeToRefill = 5f;
 
-    public AudioClip lampFuelUseSound;
+    private float punchTime = 0.25f;
+
+    public delegate void LanternFuelSound();
+    public static event LanternFuelSound onLanternFuelRefill;
+
+
 
     private void FunctionalitySound()
     {
-        audioSource.clip = lampFuelUseSound;
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.Play();
+        if (onLanternFuelRefill != null)
+            onLanternFuelRefill();
     }
 
     public override void DoFunctionality()
     {
+        permanentNotPickedUp = true;
         canBePickedUp = false;
+
         playerLamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
 
         if (playerLamp.CanRefill())
@@ -26,7 +34,13 @@ public class LanternFuelGameObject : ItemGameObject
             FunctionalitySound();
             playerLamp.RefillLampTime(lampTimeToRefill);
         }
+        StartCoroutine(Shake());
+    }
 
+    IEnumerator Shake()
+    {
+        transform.DOPunchScale(new Vector3(0.2f, 0.2f), punchTime);
+        yield return new WaitForSeconds(punchTime);
         Destroy(gameObject);
     }
 }

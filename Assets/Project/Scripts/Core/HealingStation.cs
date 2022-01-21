@@ -10,6 +10,10 @@ public class HealingStation : MonoBehaviour
     private HealthSystem playerHealthSystem;
     public TextMeshProUGUI maxHealthMessage;
     public GameObject backgroundText;
+    public Animator animator;
+
+    [SerializeField] AudioSource healAudioSource;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +31,8 @@ public class HealingStation : MonoBehaviour
         {
             playerInside = true;
             RestorePlayerHealth();
-            Debug.Log(playerInside);
+
+            healAudioSource.Play();
         }
 
     }
@@ -37,7 +42,6 @@ public class HealingStation : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInside = false;
-            Debug.Log(playerInside);
             RestorePlayerHealth();
             maxHealthMessage.alpha = 0;
             backgroundText.SetActive(false);
@@ -50,6 +54,7 @@ public class HealingStation : MonoBehaviour
         {
             ShowPlayerHealedMessage();
             playerHealthSystem.RestoreHealthToMaxHealth();
+            animator.SetBool("isHealed", true);
         }
         else
         {

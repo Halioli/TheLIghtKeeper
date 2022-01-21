@@ -35,10 +35,12 @@ public class GameEventsSystem : MonoBehaviour
     {
         randomEventEnumeratorActive = true;
         int randomEventID;
+        float numbSecondsToWait;
 
         while (!eventInAction)
         {
-            yield return new WaitForSeconds(10);
+            numbSecondsToWait = Random.Range(60, 230);
+            yield return new WaitForSeconds(numbSecondsToWait);
 
             randomEventID = Random.Range(0, MAX_FURNACE_EVENTS);
 

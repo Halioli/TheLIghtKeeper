@@ -192,7 +192,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -1.25}
   serializedVersion: 2
   m_Radius: 1
 --- !u!61 &2376902545559873442
@@ -246,6 +246,7 @@ MonoBehaviour:
   turnedOn: 0
   animTorch: {fileID: 2376902545559873440}
   puzzleSystem: {fileID: 0}
+  torchAudioSource: {fileID: 2376902545559873441}
 --- !u!95 &2376902545559873440
 Animator:
   serializedVersion: 3
@@ -274,8 +275,8 @@ AudioSource:
   m_GameObject: {fileID: 2376902545559873446}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7c2bdc98f767e8b4a921562ffd38bac7, type: 3}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: edf38c4d3da8b064b905ee6829fe5310, type: 2}
+  m_audioClip: {fileID: 8300000, guid: ee803a8b840d61d45a9868822175d708, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -321,7 +322,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.6
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -521,7 +522,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2376902546385425915}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2376902545559873439}
