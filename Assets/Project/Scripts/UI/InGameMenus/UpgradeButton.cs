@@ -38,7 +38,7 @@ public class UpgradeButton : HoverButton
     {
         if (!canBeClicked) return;
 
-        //CheckSquare();
+        CheckSquare();
 
         SetDescriptionText(descriptionText);
 
