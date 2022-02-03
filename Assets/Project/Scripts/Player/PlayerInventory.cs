@@ -5,11 +5,12 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
-    private bool inventoryIsOpen = false;
     private Collider2D itemCollectionCollider;
+    private float mouseScrollDirection = 0f;
 
     // Public Attributes
-    public Inventory inventory { get; private set; }
+    public HotbarInventory hotbarInventory { get; private set; }
+
     public Canvas inventoryCanvas;
     [SerializeField] GameObject inventoryMenuGameObject;
 
@@ -24,25 +25,13 @@ public class PlayerInventory : MonoBehaviour
 
     private void Start()
     {
-        inventory = GetComponentInChildren<Inventory>();
+        hotbarInventory = GetComponentInChildren<HotbarInventory>();
         itemCollectionCollider = GetComponent<CapsuleCollider2D>();
-
-        inventoryMenuGameObject.SetActive(inventoryIsOpen);
     }
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerPressedInventoryButton())
-        {
-            if (inventoryIsOpen)
-            {
-                CloseInventory();
-            }
-            else
-            {
-                OpenInventory();
-            }
-        }
+        DoInputsHotbarInventory();
     }
 
 
@@ -67,21 +56,39 @@ public class PlayerInventory : MonoBehaviour
     private void OnEnable()
     {
         InventoryUpgrade.OnInventoryUpgrade += UpgradeInventory;
-        InteractStation.OnInteractOpen += OpenInventory;
-        InteractStation.OnInteractClose += CloseInventory;
+        //InteractStation.OnInteractOpen += OpenInventory;
+        //InteractStation.OnInteractClose += CloseInventory;
     }
 
     private void OnDisable()
     {
         InventoryUpgrade.OnInventoryUpgrade -= UpgradeInventory;
-        InteractStation.OnInteractOpen -= OpenInventory;
-        InteractStation.OnInteractClose -= CloseInventory;
+        //InteractStation.OnInteractOpen -= OpenInventory;
+        //InteractStation.OnInteractClose -= CloseInventory;
+    }
+
+    private void DoInputsHotbarInventory()
+    {
+        mouseScrollDirection = PlayerInputs.instance.PlayerMouseScroll().y;
+        if (mouseScrollDirection < 0f)
+        {
+            hotbarInventory.CycleRightSelectedItemIndex();  
+        }
+        else if (mouseScrollDirection > 0f)
+        {
+            hotbarInventory.CycleLeftSelectedItemIndex();
+        }
+
+        if (PlayerInputs.instance.PlayerPressedUseButton())
+        {
+            hotbarInventory.UseSelectedConsumibleItem();
+        }
     }
 
 
     public void OpenInventory()
     {
-        inventoryIsOpen = true;
+        //inventoryIsOpen = true;
         inventoryCanvas.gameObject.SetActive(true);
         //inventoryMenu.UpdateInventory();
         
@@ -91,7 +98,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void CloseInventory()
     {
-        inventoryIsOpen = false;
+        //inventoryIsOpen = false;
         inventoryCanvas.gameObject.SetActive(false);
 
         if (OnInventoryClose != null)
@@ -114,6 +121,6 @@ public class PlayerInventory : MonoBehaviour
 
     private void UpgradeInventory()
     {
-        inventory.UpgradeInventory();
+        hotbarInventory.UpgradeInventory();
     }
 }

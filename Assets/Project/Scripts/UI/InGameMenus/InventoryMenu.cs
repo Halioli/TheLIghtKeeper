@@ -10,11 +10,13 @@ public class InventoryMenu : MonoBehaviour
 
     // Private
     private List<ItemCell> itemCellsList = new List<ItemCell>();
+    private int lastSelectedInventorySlot = 0;
 
 
     private void Awake()
     {
         InitInventoryCellsList();
+        SetSelectedInventorySlotIndex(0);
     }
 
 
@@ -81,9 +83,24 @@ public class InventoryMenu : MonoBehaviour
     }
 
 
-    public void MoveItemToOtherInventory(int itemCellIndex)
+    public void SetSelectedInventorySlotIndex(int itemCellIndex)
     {
-        inventory.MoveItemToOtherInventory(itemCellIndex);
+        ResetSelectedInventorySlot(itemCellIndex);
+        inventory.SetSelectedInventorySlotIndex(itemCellIndex);
+    }
+
+
+    public void MoveItemToOtherInventory()
+    {
+        inventory.MoveItemToOtherInventory();
         inventory.gotChanged = true;
+    }
+
+
+    private void ResetSelectedInventorySlot(int newLastSelectedInventorySlot)
+    {
+        itemCellsList[lastSelectedInventorySlot].DoOnDiselect();
+        lastSelectedInventorySlot = newLastSelectedInventorySlot;
+        itemCellsList[newLastSelectedInventorySlot].DoOnSelect();
     }
 }
