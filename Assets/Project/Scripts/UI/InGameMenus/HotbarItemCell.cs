@@ -7,12 +7,6 @@ public class HotbarItemCell : ItemCell
     [SerializeField] GameObject CellSelectedImageGameObject;
 
 
-    //public override void ClickedButton()
-    //{
-    //    inventoryMenu.SetSelectedInventorySlotIndex(index);
-    //    inventoryMenu.MoveItemToOtherInventory();
-    //}
-
     public override void DoOnSelect() 
     {
         CellSelectedImageGameObject.SetActive(true);

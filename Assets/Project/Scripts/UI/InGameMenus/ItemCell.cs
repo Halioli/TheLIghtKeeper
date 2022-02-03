@@ -31,7 +31,6 @@ public class ItemCell : HoverButton
 
     public void SetToEmpty()
     {
-        //itemImage = empty;
         itemAmount.text = " ";
     }
 

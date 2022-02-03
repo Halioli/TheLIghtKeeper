@@ -19,8 +19,8 @@ public class UIAudio : MonoBehaviour
     private void OnEnable()
     {
         Inventory.OnItemMove += PlayItemMoveSound;
-        PlayerInventory.OnInventoryOpen += PlayInteractStationOpenSound;
-        PlayerInventory.OnInventoryClose += PlayInteractStationCloseSound;
+        InteractStation.OnInteractOpen += PlayInteractStationOpenSound;
+        InteractStation.OnInteractClose += PlayInteractStationCloseSound;
 
         HoverButton.OnHover += PlayButtonHoverSound;
 
@@ -35,8 +35,8 @@ public class UIAudio : MonoBehaviour
     private void OnDisable()
     {
         Inventory.OnItemMove -= PlayItemMoveSound;
-        PlayerInventory.OnInventoryOpen -= PlayInteractStationOpenSound;
-        PlayerInventory.OnInventoryClose -= PlayInteractStationCloseSound;
+        InteractStation.OnInteractOpen -= PlayInteractStationOpenSound;
+        InteractStation.OnInteractClose -= PlayInteractStationCloseSound;
 
         HoverButton.OnHover += PlayButtonHoverSound;
 

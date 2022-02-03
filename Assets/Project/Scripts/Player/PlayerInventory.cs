@@ -56,15 +56,11 @@ public class PlayerInventory : MonoBehaviour
     private void OnEnable()
     {
         InventoryUpgrade.OnInventoryUpgrade += UpgradeInventory;
-        //InteractStation.OnInteractOpen += OpenInventory;
-        //InteractStation.OnInteractClose += CloseInventory;
     }
 
     private void OnDisable()
     {
         InventoryUpgrade.OnInventoryUpgrade -= UpgradeInventory;
-        //InteractStation.OnInteractOpen -= OpenInventory;
-        //InteractStation.OnInteractClose -= CloseInventory;
     }
 
     private void DoInputsHotbarInventory()
@@ -83,26 +79,6 @@ public class PlayerInventory : MonoBehaviour
         {
             hotbarInventory.UseSelectedConsumibleItem();
         }
-    }
-
-
-    public void OpenInventory()
-    {
-        //inventoryIsOpen = true;
-        inventoryCanvas.gameObject.SetActive(true);
-        //inventoryMenu.UpdateInventory();
-        
-        if (OnInventoryOpen != null)
-            OnInventoryOpen();
-    }
-
-    public void CloseInventory()
-    {
-        //inventoryIsOpen = false;
-        inventoryCanvas.gameObject.SetActive(false);
-
-        if (OnInventoryClose != null)
-            OnInventoryClose();
     }
 
     private ItemGameObject GetItemGameObjectFromCollider(Collider2D collider)

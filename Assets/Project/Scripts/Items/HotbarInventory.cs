@@ -5,7 +5,11 @@ using UnityEngine;
 public class HotbarInventory : Inventory
 {
     [SerializeField] InventoryMenu inventoryMenu;
+    [SerializeField] RectTransform hotbarRectTransform;
 
+    private int currentUpgrade = -1; // -1 = not upgraded
+    private int[] extraSlotsOnUpgrade = { 1, 1, 2 };
+    private float[] hotbarWidthOnUpgrade = { 674f, 798f, 1042f };
 
     public void CycleLeftSelectedItemIndex()
     {
@@ -37,5 +41,24 @@ public class HotbarInventory : Inventory
     private void SetInventroyMenuSelectedSlotIndex()
     {
         inventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
+    }
+
+
+    // Modifier Methods
+    public void UpgradeInventory()
+    {
+        if (numberOfInventorySlots < maxNumberOfSlots)
+        {
+            numberOfInventorySlots += extraSlotsOnUpgrade[++currentUpgrade];
+            for (int i = 0; i < extraSlotsOnUpgrade[currentUpgrade]; ++i)
+            {
+                inventory.Add(Instantiate(emptyStack, transform));
+            }
+
+            //hotbarRectTransform.rec
+            //hotbarRectTransform.rect.width = hotbarWidthOnUpgrade[currentUpgrade];
+            hotbarRectTransform.sizeDelta = new Vector2(hotbarWidthOnUpgrade[currentUpgrade], hotbarRectTransform.sizeDelta.y);
+            gotChanged = true;
+        }
     }
 }

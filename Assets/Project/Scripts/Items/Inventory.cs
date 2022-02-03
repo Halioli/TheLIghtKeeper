@@ -21,7 +21,7 @@ public class Inventory : MonoBehaviour
     protected int numberOfOccuppiedInventorySlots;
     protected bool inventoryIsEmpty;
 
-    [SerializeField] private int maxNumberOfSlots;
+    [SerializeField] protected int maxNumberOfSlots;
 
 
     private Inventory otherInventory = null;
@@ -104,16 +104,6 @@ public class Inventory : MonoBehaviour
                (NextInventorySlotWithAvailableSpaceToAddItem(itemToCompare) != -1);
     }
 
-    // Modifier Methods
-    public void UpgradeInventory()
-    {
-        if (numberOfInventorySlots < maxNumberOfSlots)
-        {
-            numberOfInventorySlots++;
-            inventory.Add(Instantiate(emptyStack, transform));
-            gotChanged = true;
-        }
-    }
 
     // Bool Methods
     public bool InventoryIsEmpty()
