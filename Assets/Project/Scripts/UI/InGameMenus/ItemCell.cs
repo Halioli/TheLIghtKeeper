@@ -52,5 +52,6 @@ public class ItemCell : HoverButton
     }
 
     public virtual void DoOnSelect() { }
+    public virtual void DoOnSelect(bool isConsumible) { }
     public virtual void DoOnDiselect() { }
 }

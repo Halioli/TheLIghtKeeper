@@ -147,16 +147,14 @@ public class CraftingSystem : MonoBehaviour
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex]))
         {
-            if (OnCrafting != null) OnCrafting();
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
+            if (OnCrafting != null) OnCrafting();
         }
         else
         {
             if (OnCraftingFail != null) OnCraftingFail();
         }
-
-        UpdatePlayerInventoryData();
     }
 
 

@@ -30,6 +30,7 @@ public class Inventory : MonoBehaviour
     // Action
     public delegate void InventoryAction();
     public static event InventoryAction OnItemMove;
+    public static event InventoryAction OnItemMoveFail;
 
 
     // Initializer Methods
@@ -278,7 +279,11 @@ public class Inventory : MonoBehaviour
     public void MoveItemToOtherInventory()
     {
         if (otherInventory == null) return;
-        if (inventory[indexOfSelectedInventorySlot].itemInStack == itemNull) return;
+        if (inventory[indexOfSelectedInventorySlot].itemInStack == itemNull)
+        {
+            if (OnItemMoveFail != null) OnItemMoveFail();
+            return;
+        }
 
 
         bool canSwap = otherInventory.ItemCanBeAdded(inventory[indexOfSelectedInventorySlot].itemInStack);
@@ -292,6 +297,11 @@ public class Inventory : MonoBehaviour
 
             if (OnItemMove != null) OnItemMove();
         }
+        else
+        {
+            if (OnItemMoveFail != null) OnItemMoveFail();
+        }
+
     }
 
     public void SetOtherInventory(Inventory otherInventory)

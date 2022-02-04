@@ -11,8 +11,6 @@ public class PlayerInventory : MonoBehaviour
     // Public Attributes
     public HotbarInventory hotbarInventory { get; private set; }
 
-    public Canvas inventoryCanvas;
-    [SerializeField] GameObject inventoryMenuGameObject;
 
     // Events
     public delegate void PlayPlayerSound();

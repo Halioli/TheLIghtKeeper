@@ -8,15 +8,18 @@ public class InventoryMenu : MonoBehaviour
     public Inventory inventory;
     public ItemCell referenceItemCell;
 
-    // Private
-    private List<ItemCell> itemCellsList = new List<ItemCell>();
-    private int lastSelectedInventorySlot = 0;
+    // Protected
+    protected List<ItemCell> itemCellsList;
+    protected int lastSelectedInventorySlot;
 
 
-    private void Awake()
+    private void Start()
     {
+        itemCellsList = new List<ItemCell>();
+        lastSelectedInventorySlot = 0;
+
         InitInventoryCellsList();
-        SetSelectedInventorySlotIndex(0);
+        SetSelectedInventorySlotIndex(lastSelectedInventorySlot);
     }
 
 
@@ -82,22 +85,19 @@ public class InventoryMenu : MonoBehaviour
         }
     }
 
-
-    public void SetSelectedInventorySlotIndex(int itemCellIndex)
-    {
-        ResetSelectedInventorySlot(itemCellIndex);
-        inventory.SetSelectedInventorySlotIndex(itemCellIndex);
-    }
-
-
     public void MoveItemToOtherInventory()
     {
         inventory.MoveItemToOtherInventory();
         inventory.gotChanged = true;
     }
 
+    public virtual void SetSelectedInventorySlotIndex(int itemCellIndex)
+    {
+        ResetSelectedInventorySlot(itemCellIndex);
+        inventory.SetSelectedInventorySlotIndex(itemCellIndex);
+    }
 
-    private void ResetSelectedInventorySlot(int newLastSelectedInventorySlot)
+    protected virtual void ResetSelectedInventorySlot(int newLastSelectedInventorySlot)
     {
         itemCellsList[lastSelectedInventorySlot].DoOnDiselect();
         lastSelectedInventorySlot = newLastSelectedInventorySlot;

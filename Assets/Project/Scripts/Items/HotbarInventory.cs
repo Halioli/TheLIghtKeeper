@@ -4,12 +4,26 @@ using UnityEngine;
 
 public class HotbarInventory : Inventory
 {
-    [SerializeField] InventoryMenu inventoryMenu;
+    [SerializeField] InventoryMenu hotbarInventoryMenu;
     [SerializeField] RectTransform hotbarRectTransform;
 
     private int currentUpgrade = -1; // -1 = not upgraded
     private int[] extraSlotsOnUpgrade = { 1, 1, 2 };
     private float[] hotbarWidthOnUpgrade = { 674f, 798f, 1042f };
+
+
+    private void OnEnable()
+    {
+        OnItemMove += SetInventroyMenuSelectedSlotIndex;
+        CraftingSystem.OnCrafting += SetInventroyMenuSelectedSlotIndex;
+    }
+
+    private void OnDisable()
+    {
+        OnItemMove -= SetInventroyMenuSelectedSlotIndex;
+        CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
+    }
+
 
     public void CycleLeftSelectedItemIndex()
     {
@@ -34,13 +48,14 @@ public class HotbarInventory : Inventory
             consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
 
             SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+            SetInventroyMenuSelectedSlotIndex();
         }
     }
 
 
     private void SetInventroyMenuSelectedSlotIndex()
     {
-        inventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
+        hotbarInventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
     }
 
 
@@ -55,10 +70,10 @@ public class HotbarInventory : Inventory
                 inventory.Add(Instantiate(emptyStack, transform));
             }
 
-            //hotbarRectTransform.rec
-            //hotbarRectTransform.rect.width = hotbarWidthOnUpgrade[currentUpgrade];
             hotbarRectTransform.sizeDelta = new Vector2(hotbarWidthOnUpgrade[currentUpgrade], hotbarRectTransform.sizeDelta.y);
             gotChanged = true;
         }
     }
+
+
 }

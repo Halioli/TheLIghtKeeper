@@ -71,7 +71,7 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Q);
     }
 
-    public bool PlayerPressedInventoryButton()
+    public bool PlayerPressedInventorySelectSlotButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
 
