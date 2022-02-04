@@ -22,9 +22,9 @@ public class ItemPickUp : MonoBehaviour
         {
             ItemGameObject itemGameObject = collider.GetComponent<ItemGameObject>();
             
-            if (!itemGameObject.permanentNotPickedUp && playerInventory.inventory.ItemCanBeAdded(itemGameObject.item))
+            if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
             {
-                itemGameObject.canBePickedUp = playerInventory.inventory.AddItemToInventory(itemGameObject.item);
+                itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
             }
             else
             {

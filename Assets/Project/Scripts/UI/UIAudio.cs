@@ -16,11 +16,15 @@ public class UIAudio : MonoBehaviour
     [SerializeField] AudioClip failCraftAudioClip;
 
 
+    bool canPlaybuttonHoverSound = true;
+    float buttonHoverSoundCooldown = 0.1f;
+
     private void OnEnable()
     {
         Inventory.OnItemMove += PlayItemMoveSound;
-        PlayerInventory.OnInventoryOpen += PlayInteractStationOpenSound;
-        PlayerInventory.OnInventoryClose += PlayInteractStationCloseSound;
+        Inventory.OnItemMoveFail += PlayItemMoveFailSound;
+        InteractStation.OnInteractOpen += PlayInteractStationOpenSound;
+        InteractStation.OnInteractClose += PlayInteractStationCloseSound;
 
         HoverButton.OnHover += PlayButtonHoverSound;
 
@@ -35,10 +39,11 @@ public class UIAudio : MonoBehaviour
     private void OnDisable()
     {
         Inventory.OnItemMove -= PlayItemMoveSound;
-        PlayerInventory.OnInventoryOpen -= PlayInteractStationOpenSound;
-        PlayerInventory.OnInventoryClose -= PlayInteractStationCloseSound;
+        Inventory.OnItemMoveFail -= PlayItemMoveFailSound;
+        InteractStation.OnInteractOpen -= PlayInteractStationOpenSound;
+        InteractStation.OnInteractClose -= PlayInteractStationCloseSound;
 
-        HoverButton.OnHover += PlayButtonHoverSound;
+        HoverButton.OnHover -= PlayButtonHoverSound;
 
         UpgradesSystem.OnUpgrade -= PlayUpgardeSound;
         UpgradesSystem.OnUpgradeFail -= PlayFailCraftingSound;
@@ -50,8 +55,15 @@ public class UIAudio : MonoBehaviour
 
     private void PlayItemMoveSound()
     {
-        inventoryAudioSource.clip = inventorySlotClickAudioClip;
-        inventoryAudioSource.pitch = Random.Range(0.8f, 1.2f);
+        inventoryAudioSource.clip = openInventoryClickAudioClip;
+        inventoryAudioSource.pitch = Random.Range(1.3f, 1.4f);
+        inventoryAudioSource.Play();
+    }
+
+    private void PlayItemMoveFailSound()
+    {
+        inventoryAudioSource.clip = closeInventoryClickAudioClip;
+        inventoryAudioSource.pitch = Random.Range(0.3f, 0.4f);
         inventoryAudioSource.Play();
     }
 
@@ -101,9 +113,20 @@ public class UIAudio : MonoBehaviour
 
     private void PlayButtonHoverSound()
     {
+        if (!canPlaybuttonHoverSound) return;
+
+        StartCoroutine(ButtonHoverSoundCooldown());
+
         buttonHoverAudioSource.volume = 0.1f;
-        buttonHoverAudioSource.pitch = Random.Range(0.95f, 1.05f);
+        buttonHoverAudioSource.pitch = Random.Range(1.3f, 1.4f);
         buttonHoverAudioSource.Play();
+    }
+
+    IEnumerator ButtonHoverSoundCooldown()
+    {
+        canPlaybuttonHoverSound = false;
+        yield return new WaitForSecondsRealtime(buttonHoverSoundCooldown);
+        canPlaybuttonHoverSound = true;
     }
     
 }
