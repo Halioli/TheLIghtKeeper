@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CustomLight : MonoBehaviour
 {
-    protected enum LightState { EXPANDING, SHIRINKING, NONE };
+    protected enum LightState { NONE, SHRINKING, PARTIAL_SHRINKING, EXPANDING, EXTRA_EXPANDING };
 
 
     [SerializeField] protected GameObject lightGameObject;

@@ -120,6 +120,11 @@ public class Lamp : MonoBehaviour
         lampTime -= Time.deltaTime;
     }
 
+    public void ConsumeLampTime(float timeToSubstract)
+    {
+        lampTime -= timeToSubstract;
+    }
+
     public void FullyRefillLampTime()
     {
         lampTime = maxLampTime;
@@ -242,6 +247,33 @@ public class Lamp : MonoBehaviour
     public float GetMaxLampTime()
     {
         return maxLampTime;
+    }
+
+    public void IncrementLightAngleAndDistance(float lightAngleIncrement, float lightDistanceIncrement, float lightIntensity)
+    {
+        coneLight.SetDistance(lightDistance + lightDistanceIncrement);
+        coneLight.ExtraExpand(lightAngle + lightAngleIncrement);
+
+        coneLight.SetIntensity(lightIntensity);
+        circleLight.SetIntensity(lightIntensity);
+    }
+
+    public void ResetLightAngleAndDistance(float lightAngleIncrement, float lightDistanceIncrement)
+    {
+        coneLight.SetDistance(lightDistance);
+        coneLight.PartialShrink(lightAngle + lightAngleIncrement);
+    
+        if (turnedOn)
+        {
+            coneLight.SetIntensity(LIGHT_INTENSITY_ON);
+            circleLight.SetIntensity(LIGHT_INTENSITY_ON);
+        }
+        else
+        {
+            coneLight.SetIntensity(LIGHT_INTENSITY_OFF);
+            circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
+        }
+        
     }
 
     private void UpgradeLampSource()

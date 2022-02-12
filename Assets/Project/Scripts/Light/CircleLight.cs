@@ -38,7 +38,7 @@ public class CircleLight : CustomLight
         {
             circleLight.pointLightOuterRadius = i;
             circleLight.pointLightInnerRadius = i > radiusDifference ? i - radiusDifference : 0f;
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         lightState = LightState.NONE;
@@ -46,7 +46,7 @@ public class CircleLight : CustomLight
 
     public override void Shrink()
     {
-        if (lightState == LightState.SHIRINKING) return;
+        if (lightState == LightState.SHRINKING) return;
 
         active = false;
         StartCoroutine(ShrinkCircleLight());
@@ -54,12 +54,12 @@ public class CircleLight : CustomLight
 
     IEnumerator ShrinkCircleLight()
     {
-        lightState = LightState.SHIRINKING;
+        lightState = LightState.SHRINKING;
         for (float i = outerRadius; i > 0f; i -= Time.deltaTime * outerRadius * 8)
         {
             circleLight.pointLightOuterRadius = i;
             circleLight.pointLightInnerRadius = i > radiusDifference ? i - radiusDifference : 0f;
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
 
