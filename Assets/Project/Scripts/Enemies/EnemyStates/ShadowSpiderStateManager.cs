@@ -4,29 +4,31 @@ using UnityEngine;
 
 public class ShadowSpiderStateManager : MonoBehaviour
 {
-    GameObject playerGameObject;
+    Transform playerTransform;
 
     Dictionary<EnemyStates, EnemyState> states;
-    EnemyStates currentState;
+    public EnemyStates currentState { get; private set; }
 
 
-    public void Init()
+    public void Init(Transform playerTransform)
     {
+        this.playerTransform = playerTransform;
+
         states = new Dictionary<EnemyStates, EnemyState>();
 
         states.Add(EnemyStates.SPAWNING, GetComponent<EnemySpawningState>());
 
         states.Add(EnemyStates.WANDERING, GetComponent<EnemyWanderingState>());
-        states[EnemyStates.WANDERING].SetPlayerGameObject(playerGameObject);
+        states[EnemyStates.WANDERING].SetPlayerTransform(playerTransform);
 
         states.Add(EnemyStates.AGGRO, GetComponent<EnemyAggroState>());
-        states[EnemyStates.AGGRO].SetPlayerGameObject(playerGameObject);
+        states[EnemyStates.AGGRO].SetPlayerTransform(playerTransform);
 
         states.Add(EnemyStates.CHARGING, GetComponent<EnemyChargingState>());
-        states[EnemyStates.CHARGING].SetPlayerGameObject(playerGameObject);
+        states[EnemyStates.CHARGING].SetPlayerTransform(playerTransform);
 
         states.Add(EnemyStates.SCARED, GetComponent<EnemyScaredState>());
-        states[EnemyStates.SCARED].SetPlayerGameObject(playerGameObject);
+        states[EnemyStates.SCARED].SetPlayerTransform(playerTransform);
 
         states.Add(EnemyStates.DEATH, GetComponent<EnemyDeathState>());
 
@@ -34,9 +36,6 @@ public class ShadowSpiderStateManager : MonoBehaviour
 
         currentState = EnemyStates.SPAWNING;
         states[currentState].StateStart();
-
-        string msg = "number of states: " + states.Count;
-        Debug.Log(msg);
     }
 
 
@@ -61,9 +60,9 @@ public class ShadowSpiderStateManager : MonoBehaviour
 
 
 
-    public void ForceDeathState()
+    public void ForceState(EnemyStates newState)
     {
-        currentState = EnemyStates.DEATH;
+        currentState = newState;
         states[currentState].StateStart();
     }
 

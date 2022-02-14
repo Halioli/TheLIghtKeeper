@@ -19,7 +19,7 @@ public class EnemyState : MonoBehaviour
 {
 
     public EnemyStates nextState { get; protected set; }
-    protected GameObject playerGameObject;
+    protected Transform playerTransform;
 
 
     public void StateStart()
@@ -46,12 +46,9 @@ public class EnemyState : MonoBehaviour
     }
 
 
-    public void SetPlayerGameObject(GameObject playerGameObject)
+    public void SetPlayerTransform(Transform playerTransform)
     {
-        //this.playerGameObject = playerGameObject;
-        Debug.Log("SetPlayerGameObject");
-
-        this.playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        this.playerTransform = playerTransform;
     }
 
 }

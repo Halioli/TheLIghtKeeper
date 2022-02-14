@@ -20,21 +20,33 @@ public class SinMovement : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        nearRadius = 0.1f;
+        nearRadius = 0.25f;
     }
 
 
     public void MoveTowardsTargetPosition(Vector2 targetPosition, float moveSpeed)
     {
+        MoveTowardsTargetDirection((targetPosition - rigidbody.position).normalized, moveSpeed);
+    }
+
+    public void MoveTowardsTargetDirection(Vector2 targetDirection, float moveSpeed)
+    {
         // Sinusoidal movement
         theta = Time.timeSinceLevelLoad / period;
         sinWaveDistance = amplitude * Mathf.Sin(theta);
-        
-        directionTowardsTargetPosition = (targetPosition - rigidbody.position).normalized;
+
+        directionTowardsTargetPosition = targetDirection;
         angleDirection = Vector2.Perpendicular(directionTowardsTargetPosition);
         angleDirection *= sinWaveDistance;
 
         rigidbody.MovePosition((Vector2)transform.position + angleDirection + directionTowardsTargetPosition * (moveSpeed * Time.deltaTime));
+    }
+
+    public void MoveTowardsTargetDirectionStraight(Vector2 targetDirection, float moveSpeed)
+    {
+        directionTowardsTargetPosition = targetDirection;
+
+        rigidbody.MovePosition((Vector2)transform.position + directionTowardsTargetPosition * (moveSpeed * Time.deltaTime));
     }
 
     public bool IsNearTargetPosition(Vector2 targetPosition)

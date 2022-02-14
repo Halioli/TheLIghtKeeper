@@ -9,9 +9,10 @@ public class EnemyChargingState : EnemyState
     bool hasStartedCharging;
     bool isChargeDone;
     bool isExhaustDone;
-    float moveSpeed;
-    float chargeTime;
-    float chargeExhaustTime;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float chargeTime;
+    [SerializeField] float chargeExhaustTime;
+    Vector2 chargeTargetDirection;
 
     bool isTouchingLight;
 
@@ -19,9 +20,9 @@ public class EnemyChargingState : EnemyState
     {
         sinMovement = GetComponent<SinMovement>();
 
-        moveSpeed = 10.0f;
-        chargeTime = 0.5f;
-        chargeExhaustTime = 1.0f;
+        //moveSpeed = 30.0f;
+        //chargeTime = 0.5f;
+        //chargeExhaustTime = 1.0f;
     }
 
 
@@ -56,7 +57,7 @@ public class EnemyChargingState : EnemyState
 
     public override void StateFixedUpdate()
     {
-        if (!isChargeDone) sinMovement.MoveTowardsTargetPosition(playerGameObject.transform.position, moveSpeed);
+        if (!isChargeDone) sinMovement.MoveTowardsTargetDirectionStraight(chargeTargetDirection, moveSpeed);
     }
 
     public override void StateOnTriggerEnter(Collider2D otherCollider)
@@ -70,7 +71,10 @@ public class EnemyChargingState : EnemyState
 
     IEnumerator ChargeTimer()
     {
+        chargeTargetDirection = (playerTransform.position - transform.position).normalized;
+
         hasStartedCharging = true;
+        isChargeDone = false;
         yield return new WaitForSeconds(chargeTime);
         isChargeDone = true;
         yield return new WaitForSeconds(chargeExhaustTime);

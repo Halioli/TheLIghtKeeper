@@ -5,10 +5,11 @@ using UnityEngine;
 public class EnemyScaredState : EnemyState
 {
     SinMovement sinMovement;
-    float moveSpeed;
-
     SpriteRenderer spriteRenderer;
-    float fleeTime;
+    Color fadeColor;
+
+    [SerializeField] float moveSpeed;    
+    [SerializeField] float fleeTime;
 
     bool isFleeing;
     bool isFleeingFinished;
@@ -17,10 +18,10 @@ public class EnemyScaredState : EnemyState
     private void Awake()
     {
         sinMovement = GetComponent<SinMovement>();
-        moveSpeed = 40.0f;
-
         spriteRenderer = GetComponent<SpriteRenderer>();
-        fleeTime = 3.0f;
+
+        //moveSpeed = 20.0f;
+        //fleeTime = 3.0f;
     }
 
 
@@ -48,14 +49,14 @@ public class EnemyScaredState : EnemyState
 
     public override void StateFixedUpdate()
     {
-        sinMovement.MoveTowardsTargetPosition(-playerGameObject.transform.position, moveSpeed);
+        sinMovement.MoveTowardsTargetPosition(-playerTransform.position, moveSpeed);
     }
 
 
     IEnumerator FadeOutAnimation()
     {
         isFleeing = true;
-        Color fadeColor = spriteRenderer.material.color;
+        fadeColor = spriteRenderer.material.color;
 
         Interpolator fadeLerp = new Interpolator(fleeTime, Interpolator.Type.SMOOTH);
         fadeLerp.ToMin();
@@ -71,5 +72,20 @@ public class EnemyScaredState : EnemyState
         isFleeing = false;
         isFleeingFinished = true;
     }
+
+
+    public void ResetFadeAnimation()
+    {
+        if (!isFleeing) return;
+
+        StopCoroutine(FadeOutAnimation());
+
+        fadeColor = spriteRenderer.material.color;
+        fadeColor.a = 1.0f;
+        spriteRenderer.material.color = fadeColor;
+
+        StateDoStart();
+    }
+
 
 }

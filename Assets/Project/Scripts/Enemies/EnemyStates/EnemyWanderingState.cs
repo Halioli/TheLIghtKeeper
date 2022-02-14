@@ -7,24 +7,25 @@ public class EnemyWanderingState : EnemyState
     SinMovement sinMovement;
 
     bool isMoving;
-    float wanderingWaitTime;
-    float wanderingRadius;    
-    float moveSpeed;
+    [SerializeField] float minimumWanderDistance;
+    [SerializeField] float wanderingWaitTime;
+    [SerializeField] float wanderingRadius;
+    [SerializeField] float moveSpeed;
 
     Vector2 wanderingCentrePosition;
     Vector2 targetPosition;
 
-    float distanceCloseToPlayerToAggro;
+    [SerializeField] float distanceToAggro;
 
 
     private void Awake()
     {
         sinMovement = GetComponent<SinMovement>();
 
-        wanderingRadius = 7.0f;
-        wanderingWaitTime = 3.0f;
-        moveSpeed = 5.0f;
-        distanceCloseToPlayerToAggro = 10.0f;
+        //wanderingRadius = 7.0f;
+        //wanderingWaitTime = 3.0f;
+        //moveSpeed = 5.0f;
+        //distanceCloseToPlayerToAggro = 10.0f;
     }
 
 
@@ -70,7 +71,9 @@ public class EnemyWanderingState : EnemyState
     }
     private void SetWanderingTargetPosition()
     {
-        targetPosition = wanderingCentrePosition + Random.insideUnitCircle * wanderingRadius;
+        do {
+            targetPosition = wanderingCentrePosition + Random.insideUnitCircle * wanderingRadius;
+        } while (Vector2.Distance(targetPosition, transform.position) < minimumWanderDistance);
     }
 
 
@@ -87,7 +90,7 @@ public class EnemyWanderingState : EnemyState
 
     private bool IsCloseToPlayerPosition()
     {
-        return Vector2.Distance(playerGameObject.transform.position, transform.position) <= distanceCloseToPlayerToAggro;
+        return Vector2.Distance(playerTransform.position, transform.position) <= distanceToAggro;
     }
 
 

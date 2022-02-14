@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShadowSpider : MonoBehaviour
+public class ShadowSpider : EnemyMonster
 {
-    [SerializeField] GameObject playerGameObject;
-
-    AttackSystem attackSystem;
-    HealthSystem healthSystem;
     ShadowSpiderStateManager shadowSpiderStateManager;
 
     bool isDyingAlready;
@@ -17,10 +13,15 @@ public class ShadowSpider : MonoBehaviour
     {
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rigidbody = GetComponent<Rigidbody2D>();
         shadowSpiderStateManager = GetComponent<ShadowSpiderStateManager>();
 
         isDyingAlready = false;
+    }
 
+    private void Start()
+    {
         InitShadowSpiderStateManager();
     }
 
@@ -30,9 +31,22 @@ public class ShadowSpider : MonoBehaviour
         if (healthSystem.IsDead() && !isDyingAlready)
         {
             isDyingAlready = true;
-            shadowSpiderStateManager.ForceDeathState();
+            shadowSpiderStateManager.ForceState(EnemyStates.DEATH);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ReceiveDamage(5);
         }
     }
+
+
+    private void FixedUpdate()
+    {
+        if (isGettingPushed) PushSelf();
+    }
+
 
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
@@ -52,7 +66,7 @@ public class ShadowSpider : MonoBehaviour
 
     private void InitShadowSpiderStateManager()
     {
-        shadowSpiderStateManager.Init();
+        shadowSpiderStateManager.Init(playerGameObject.transform);
     }
 
 
@@ -62,10 +76,6 @@ public class ShadowSpider : MonoBehaviour
         PushPlayer();
     }
 
-    protected void DealDamageToPlayer()
-    {
-        playerGameObject.GetComponent<PlayerCombat>().ReceiveDamage(attackSystem.attackValue);
-    }
 
     private void PushPlayer()
     {
@@ -73,5 +83,13 @@ public class ShadowSpider : MonoBehaviour
         playerGameObject.GetComponent<PlayerMovement>().GetsPushed(pushDiretion.normalized, attackSystem.pushValue);
     }
 
+
+    public override void ReceiveDamage(int damageValue)
+    {
+        base.ReceiveDamage(damageValue);
+
+        if (shadowSpiderStateManager.currentState == EnemyStates.SCARED)
+            GetComponent<EnemyScaredState>().ResetFadeAnimation();
+    }
 
 }
