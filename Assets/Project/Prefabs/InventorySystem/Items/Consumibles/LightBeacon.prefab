@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3770973812455991634}
   - component: {fileID: 7715414083893372495}
   - component: {fileID: 4631413394849306724}
-  m_Layer: 0
+  - component: {fileID: 8996701677274160272}
+  m_Layer: 9
   m_Name: LightBeacon
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -219,6 +220,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.2
+--- !u!114 &8996701677274160272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7197804529273497268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def6dfbc6bb1e144996da31c569eeda8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  permanentNotPickedUp: 0
+  canBePickedUp: 0
+  currentDespawnTimeInSeconds: 10
+  item: {fileID: 11400000, guid: ab803e7f322436842be80135b79da431, type: 2}
+  audioSource: {fileID: 7715414083893372495}
+  itemIsDropped: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
 --- !u!1 &7878808064052639858
 GameObject:
   m_ObjectHideFlags: 0

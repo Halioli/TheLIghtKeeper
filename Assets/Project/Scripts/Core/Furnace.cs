@@ -53,8 +53,8 @@ public class Furnace : InteractStation
 
     private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
-    private int fuelAmountPerCoalUnit = 15;
-    private int fuelAmountPerIronUnit = 25;
+    private int fuelAmountPerCoalUnit = 20;
+    private int fuelAmountPerIronUnit = 30;
     private float currentTextTime = 0f;
 
     private PopUp popUp;
@@ -218,7 +218,7 @@ public class Furnace : InteractStation
 
     private bool CheckIfMaxCoreLevel()
     {
-        return lightLevel >= MAX_CORE_LEVEL;
+        return lightLevel >= 3;//MAX_CORE_LEVEL;
     }
 
     private void CheckForEndGame()

@@ -99,7 +99,6 @@ public class Lamp : MonoBehaviour
             {
                 turnOffLanternEvent();
             }
-            
         }
         else
         {
@@ -125,7 +124,6 @@ public class Lamp : MonoBehaviour
     {
         lampTime = maxLampTime;
     }
-
     public void RefillLampTime(float time)
     {
         if (lampTime + time > maxLampTime)
@@ -295,7 +293,6 @@ public class Lamp : MonoBehaviour
 
             flickerCount = rg.Next(4, 9);
             
-
             for (int i = 0; i < flickerCount; ++i)
             {
                 flickingIntensity = 1f - ((float)rg.NextDouble() * flickerIntensity);
@@ -318,6 +315,4 @@ public class Lamp : MonoBehaviour
 
         //DeactivateConeLight();
     }
-
-
 }

@@ -12,6 +12,7 @@ public class ItemGameObject : MonoBehaviour
     private float startYLerp;
 
     protected Rigidbody2D rigidbody2D;
+    public bool permanentNotPickedUp = false;
     public bool canBePickedUp;
 
     private const float DROP_DOWN_FORCE_Y = 1.5f;
@@ -45,11 +46,11 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.gravityScale = 0f;
     }
 
-    private void Update()
-    {
-        if (canBePickedUp)
-            ItemFloating();
-    }
+    //private void Update()
+    //{
+    //    if (canBePickedUp)
+    //        ItemFloating();
+    //}
 
     public void DropsDown()
     {

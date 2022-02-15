@@ -12,7 +12,6 @@ public class UpgradesStation : InteractStation
 
     private bool isOpen = false;
     private UpgradeMenuCanvas upgradeMenuCanvas;
-    //private InventoryMenu inventoryMenu;
 
     void Start()
     {
@@ -20,6 +19,7 @@ public class UpgradesStation : InteractStation
         upgradesSystem.Init(playerInventory);
         upgradeMenuCanvas = upgradesCanvasGameObject.GetComponent<UpgradeMenuCanvas>();
         InitUpgradesMenu();
+        CloseStorageInventory();
         backgroundText.SetActive(false);
     }
 
@@ -79,10 +79,10 @@ public class UpgradesStation : InteractStation
 
         hudGameObject.SetActive(false);
         upgradesCanvasGameObject.SetActive(true);
-        //inventoryMenu.UpdateInventory();
         PauseMenu.PauseMineAndAttack();
 
         DoOnInteractOpen();
+        DoOnInteractDescriptionOpen();
     }
 
     private void CloseStorageInventory()

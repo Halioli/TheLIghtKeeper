@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInputs : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Q);
     }
 
-    public bool PlayerPressedInventoryButton()
+    public bool PlayerPressedInventorySelectSlotButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
 
@@ -115,7 +116,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void SpawnSelectSpotAtTransform(Transform transform)
     {
-        Instantiate(selectSpotGameObject, transform);
+        GameObject selectedSpot = Instantiate(selectSpotGameObject, transform);
+        selectedSpot.GetComponent<SelectSpot>().DoSelectLoop();
     }
 
     public void FlipSprite(Vector2 direction)
@@ -135,4 +137,6 @@ public class PlayerInputs : MonoBehaviour
         Debug.Log("Closing application...");
         Application.Quit();
     }
+
+
 }

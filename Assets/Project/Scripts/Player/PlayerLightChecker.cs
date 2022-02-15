@@ -6,7 +6,7 @@ public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
     private bool playerInLight;
-    private int numberOfLights;
+    public int numberOfLights;
 
     // Public Attributes
     public Lamp lamp;
@@ -54,6 +54,23 @@ public class PlayerLightChecker : MonoBehaviour
         }
 
     }
+
+    private void OnTriggerStay2D(Collider2D lightingCollider)
+    {
+        if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
+        {
+            // Lamp turns off
+            
+            if (lightingCollider.gameObject.CompareTag("CoreLight"))
+            {
+                lamp.FullyRefillLampTime();
+            }
+
+            SetPlayerInLightToTrue();
+        }
+
+    }
+
 
     // Method that checks if the player exits an area with light
     private void OnTriggerExit2D(Collider2D lightingCollider)
