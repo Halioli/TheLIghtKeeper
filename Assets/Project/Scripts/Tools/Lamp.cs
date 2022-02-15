@@ -124,6 +124,7 @@ public class Lamp : MonoBehaviour
     {
         lampTime = maxLampTime;
     }
+
     public void RefillLampTime(float time)
     {
         if (lampTime + time > maxLampTime)
@@ -135,6 +136,18 @@ public class Lamp : MonoBehaviour
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
+    }
+
+    public void ConsumeSpecificLampTime(float time)
+    {
+        if (lampTime - time < 0)
+        {
+            lampTime = 0;
+        }
+        else
+        {
+            lampTime -= time;
+        }
     }
 
     public bool CanRefill()
