@@ -49,6 +49,7 @@ public class PlayerMiner : PlayerBase
     {
         animator = GetComponent<Animator>();
     }
+
     void Update()
     {
         MineTargetCheck();
