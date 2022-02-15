@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyChargingState : EnemyState
 {
+    EnemyAudio enemyAudio;
     SinMovement sinMovement;
 
     bool hasStartedCharging;
@@ -18,6 +19,7 @@ public class EnemyChargingState : EnemyState
 
     private void Awake()
     {
+        enemyAudio = GetComponent<EnemyAudio>();
         sinMovement = GetComponent<SinMovement>();
 
         //moveSpeed = 30.0f;
@@ -72,13 +74,19 @@ public class EnemyChargingState : EnemyState
     IEnumerator ChargeTimer()
     {
         chargeTargetDirection = (playerTransform.position - transform.position).normalized;
+        enemyAudio.PlayAttackAudio();
+        enemyAudio.PlayDashAudio();
 
         hasStartedCharging = true;
         isChargeDone = false;
         yield return new WaitForSeconds(chargeTime);
+
         isChargeDone = true;
+        enemyAudio.StopFootstepsAudio();
         yield return new WaitForSeconds(chargeExhaustTime);
+
         isExhaustDone = true;
+        enemyAudio.PlayFootstepsAudio();
     }
 
 }

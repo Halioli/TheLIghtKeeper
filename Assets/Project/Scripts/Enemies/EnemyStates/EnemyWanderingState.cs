@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyWanderingState : EnemyState
 {
+    EnemyAudio enemyAudio;
     SinMovement sinMovement;
 
     bool isMoving;
@@ -20,6 +21,7 @@ public class EnemyWanderingState : EnemyState
 
     private void Awake()
     {
+        enemyAudio = GetComponent<EnemyAudio>();
         sinMovement = GetComponent<SinMovement>();
 
         //wanderingRadius = 7.0f;
@@ -34,7 +36,8 @@ public class EnemyWanderingState : EnemyState
         isMoving = true;
 
         SetWanderingCentrePosition();
-        SetWanderingTargetPosition();
+        //SetWanderingTargetPosition();
+        StartCoroutine(WaitForNewWanderingTargetPosition());
     }
 
     public override bool StateUpdate()
@@ -80,10 +83,12 @@ public class EnemyWanderingState : EnemyState
     IEnumerator WaitForNewWanderingTargetPosition()
     {
         isMoving = false;
+        enemyAudio.StopFootstepsAudio();
 
         yield return new WaitForSeconds(wanderingWaitTime);
 
         isMoving = true;
+        enemyAudio.PlayFootstepsAudio();
         SetWanderingTargetPosition();
     }
 

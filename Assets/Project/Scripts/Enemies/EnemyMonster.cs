@@ -11,6 +11,7 @@ public class EnemyMonster : MonoBehaviour
     protected HealthSystem healthSystem;
     protected SpriteRenderer spriteRenderer;
     protected Rigidbody2D rigidbody;
+    protected EnemyAudio enemyAudio;
 
     protected bool isGettingPushed = false;
     protected Vector2 pushedDirection;
@@ -19,10 +20,6 @@ public class EnemyMonster : MonoBehaviour
     [SerializeField] protected GameObject playerGameObject;
 
     public ItemGameObject dropOnDeathItem;
-
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip banishAudioClip;
-    [SerializeField] AudioClip receiveDamageAudioClip;
 
 
     // Methods
@@ -34,9 +31,7 @@ public class EnemyMonster : MonoBehaviour
 
         transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), 0.15f);
 
-        audioSource.clip = receiveDamageAudioClip;
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
-        audioSource.Play();
+        enemyAudio.PlayReceiveDamageAudio();
 
         StartCoroutine(HurtedFlashEffect());
     }
@@ -47,10 +42,12 @@ public class EnemyMonster : MonoBehaviour
     }
 
 
-
-    protected virtual void Die()
+    protected virtual void OnDeathStart()
     {
-        // Play death animation
+    }
+
+    protected virtual void OnDeathEnd()
+    {
         DropItem();
     }
 

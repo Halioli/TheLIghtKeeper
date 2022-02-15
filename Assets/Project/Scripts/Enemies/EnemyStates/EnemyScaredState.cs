@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyScaredState : EnemyState
 {
+    EnemyAudio enemyAudio;
     SinMovement sinMovement;
     SpriteRenderer spriteRenderer;
     Color fadeColor;
@@ -13,10 +14,13 @@ public class EnemyScaredState : EnemyState
 
     bool isFleeing;
     bool isFleeingFinished;
+    Vector2 fleeTargetDirection;
+
 
 
     private void Awake()
     {
+        enemyAudio = GetComponent<EnemyAudio>();
         sinMovement = GetComponent<SinMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -27,8 +31,8 @@ public class EnemyScaredState : EnemyState
 
     protected override void StateDoStart()
     {
-        isFleeing = false;
-        isFleeingFinished = false;
+        enemyAudio.PlayBanishAudio();
+        ResetFleeing();
     }
 
     public override bool StateUpdate()
@@ -39,7 +43,7 @@ public class EnemyScaredState : EnemyState
         }
         else if (!isFleeingFinished)
         {
-            nextState = EnemyStates.DEATH;
+            nextState = EnemyStates.DESTROY;
             return true;
         }
 
@@ -49,7 +53,16 @@ public class EnemyScaredState : EnemyState
 
     public override void StateFixedUpdate()
     {
-        sinMovement.MoveTowardsTargetPosition(-playerTransform.position, moveSpeed);
+        sinMovement.MoveTowardsTargetDirection(fleeTargetDirection, moveSpeed);
+    }
+
+
+    private void ResetFleeing()
+    {
+        isFleeing = false;
+        isFleeingFinished = false;
+
+        fleeTargetDirection = (transform.position - playerTransform.position).normalized;
     }
 
 
@@ -84,7 +97,7 @@ public class EnemyScaredState : EnemyState
         fadeColor.a = 1.0f;
         spriteRenderer.material.color = fadeColor;
 
-        StateDoStart();
+        ResetFleeing();
     }
 
 

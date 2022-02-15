@@ -16,6 +16,7 @@ public class ShadowSpider : EnemyMonster
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
         shadowSpiderStateManager = GetComponent<ShadowSpiderStateManager>();
+        enemyAudio = GetComponent<EnemyAudio>();
 
         isDyingAlready = false;
     }
@@ -30,14 +31,17 @@ public class ShadowSpider : EnemyMonster
     {
         if (healthSystem.IsDead() && !isDyingAlready)
         {
-            isDyingAlready = true;
-            shadowSpiderStateManager.ForceState(EnemyStates.DEATH);
+            OnDeathStart();
         }
 
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ReceiveDamage(5);
+        }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            shadowSpiderStateManager.ForceState(EnemyStates.SCARED);
         }
     }
 
@@ -58,6 +62,12 @@ public class ShadowSpider : EnemyMonster
     }
 
 
+
+    protected override void OnDeathStart()
+    {
+        isDyingAlready = true;
+        shadowSpiderStateManager.ForceState(EnemyStates.DEATH);
+    }
 
     public void SetPlayerGameObject(GameObject playerGameObject)
     {

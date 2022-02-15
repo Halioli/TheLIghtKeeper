@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyDeathState : EnemyState
 {
+    EnemyAudio enemyAudio;
     Animator animator;
     
     bool isDying;
@@ -12,12 +13,14 @@ public class EnemyDeathState : EnemyState
 
     private void Awake()
     {
+        enemyAudio = GetComponent<EnemyAudio>();
         animator = GetComponent<Animator>();
     }
 
 
     protected override void StateDoStart()
     {
+        enemyAudio.PlayDeathAudio();
         isDying = false;
         isDoneDying = false;
     }
@@ -40,8 +43,7 @@ public class EnemyDeathState : EnemyState
 
     private void StartDeathAnimation()
     {
-        animator.SetTrigger("isDead");
-
+        animator.SetTrigger("triggerDeath");
         isDying = true;
     }
 
