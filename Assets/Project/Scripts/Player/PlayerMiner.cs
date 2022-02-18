@@ -129,13 +129,13 @@ public class PlayerMiner : PlayerBase
         {
             if (canCriticalMine)
             {
-                criticalMiningState = CriticalMiningState.SUCCEESSFUL;
+                //criticalMiningState = CriticalMiningState.SUCCEESSFUL;
                 playerSucceessfulMineEvent();
                 animator.SetBool("isPerfect", true);
             }
             else
             {
-                criticalMiningState = CriticalMiningState.FAILED;
+                //criticalMiningState = CriticalMiningState.FAILED;
                 playerFailMineEvent();
             }
         }
