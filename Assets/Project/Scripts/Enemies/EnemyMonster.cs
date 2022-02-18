@@ -22,7 +22,22 @@ public class EnemyMonster : MonoBehaviour
     public ItemGameObject dropOnDeathItem;
 
 
-    // Methods
+    private void OnEnable()
+    {
+        DarknessSystem.OnPlayerNotInLight += OnPlayerNotInLight;
+    }
+
+    private void OnDisable()
+    {
+        DarknessSystem.OnPlayerNotInLight -= OnPlayerNotInLight;
+    }
+
+
+    protected virtual void OnPlayerNotInLight()
+    {
+    }
+
+
     public virtual void ReceiveDamage(int damageValue)
     {
         if (healthSystem.IsDead()) return;
@@ -34,6 +49,11 @@ public class EnemyMonster : MonoBehaviour
         enemyAudio.PlayReceiveDamageAudio();
 
         StartCoroutine(HurtedFlashEffect());
+    }
+
+    public virtual void SetPlayer(GameObject playerGameObject)
+    {
+        this.playerGameObject = playerGameObject;
     }
 
     protected virtual void DealDamageToPlayer()
@@ -88,5 +108,8 @@ public class EnemyMonster : MonoBehaviour
         }
         spriteRenderer.color = normal;
     }
+
+
+
 
 }

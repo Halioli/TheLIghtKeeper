@@ -43,7 +43,6 @@ public class ShadowSpiderStateManager : MonoBehaviour
     {
         if (!states[currentState].StateUpdate()) return;
 
-
         currentState = states[currentState].nextState;
         states[currentState].StateStart();
     }

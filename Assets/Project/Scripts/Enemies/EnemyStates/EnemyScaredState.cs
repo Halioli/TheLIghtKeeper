@@ -37,16 +37,15 @@ public class EnemyScaredState : EnemyState
 
     public override bool StateUpdate()
     {
-        if (!isFleeing)
-        {
-            StartCoroutine(FadeOutAnimation());
-        }
-        else if (!isFleeingFinished)
+        if (isFleeingFinished)
         {
             nextState = EnemyStates.DESTROY;
             return true;
         }
-
+        else if (!isFleeing)
+        {
+            StartCoroutine(FadeOutAnimation());
+        }
 
         return false;
     }
@@ -72,12 +71,12 @@ public class EnemyScaredState : EnemyState
         fadeColor = spriteRenderer.material.color;
 
         Interpolator fadeLerp = new Interpolator(fleeTime, Interpolator.Type.SMOOTH);
-        fadeLerp.ToMin();
+        fadeLerp.ToMax();
 
-        while (!fadeLerp.isMinPrecise)
+        while (!fadeLerp.isMaxPrecise)
         {
             fadeLerp.Update(Time.deltaTime);
-            fadeColor.a = fadeLerp.Value;
+            fadeColor.a = fadeLerp.Inverse;
             spriteRenderer.material.color = fadeColor;
             yield return null;
         }

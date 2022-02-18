@@ -61,7 +61,8 @@ public class EnemySpawner : Spawner
 
     private void InstantiateEnemy()
     {
-        Instantiate(GetRandomEnemyFromList(), (Vector2)transform.position + Random.insideUnitCircle * spawnRadius, Quaternion.identity);
+        GameObject newEnemy = Instantiate(GetRandomEnemyFromList(), (Vector2)transform.position + Random.insideUnitCircle * spawnRadius, Quaternion.identity);
+        newEnemy.GetComponent<EnemyMonster>().SetPlayer(playerGameObject);
     }
 
     private GameObject GetRandomEnemyFromList()

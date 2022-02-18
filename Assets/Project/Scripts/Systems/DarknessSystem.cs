@@ -15,6 +15,7 @@ public class DarknessSystem : MonoBehaviour
 
     public delegate void PlayerEntersLightAction();
     public static event PlayerEntersLightAction OnPlayerEntersLight;
+    public static event PlayerEntersLightAction OnPlayerNotInLight;
 
     void Start()
     {
@@ -41,7 +42,7 @@ public class DarknessSystem : MonoBehaviour
         if (!playerInLight && playerLightChecker.IsPlayerInLight())
         {
             playerInLight = true;
-            DisableEnemySpawners();
+            //DisableEnemySpawners();
             if(OnPlayerEntersLight != null)
             {
                 OnPlayerEntersLight();
@@ -50,7 +51,8 @@ public class DarknessSystem : MonoBehaviour
         else if (playerInLight && !playerLightChecker.IsPlayerInLight())
         {
             playerInLight = false;
-            EnableEnemySpawners();
+            //EnableEnemySpawners();
+            if (OnPlayerNotInLight != null) OnPlayerNotInLight();
         }
     }
 
@@ -58,13 +60,15 @@ public class DarknessSystem : MonoBehaviour
     void OnEnable()
     {
         EnemySpawner.spawnEnemyEvent += AddingEnemy;
-        HostileEnemy.enemyDisappearsEvent += RemovingEnemy;
+        //HostileEnemy.enemyDisappearsEvent += RemovingEnemy;
+        EnemyDestroyState.OnEnemyDestroy += RemovingEnemy;
     }
 
     void OnDisable()
     {
         EnemySpawner.spawnEnemyEvent -= AddingEnemy;
-        HostileEnemy.enemyDisappearsEvent -= RemovingEnemy;
+        //HostileEnemy.enemyDisappearsEvent -= RemovingEnemy;
+        EnemyDestroyState.OnEnemyDestroy -= RemovingEnemy;
     }
 
     private void EnableEnemySpawners()

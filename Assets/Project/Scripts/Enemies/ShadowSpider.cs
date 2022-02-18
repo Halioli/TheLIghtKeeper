@@ -55,13 +55,21 @@ public class ShadowSpider : EnemyMonster
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
-        if (otherCollider.gameObject.CompareTag("Player"))
+        if (otherCollider.CompareTag("Player"))
         {
             AttackPlayer();
+        }
+        else if (otherCollider.CompareTag("Light") || otherCollider.CompareTag("LampLight"))
+        {
+            ReceiveDamage(10);
         }
     }
 
 
+    protected override void OnPlayerNotInLight()
+    {
+        shadowSpiderStateManager.ForceState(EnemyStates.WANDERING);
+    }
 
     protected override void OnDeathStart()
     {
