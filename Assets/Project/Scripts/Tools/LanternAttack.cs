@@ -6,8 +6,8 @@ public class LanternAttack : MonoBehaviour
 {
     [SerializeField] Lamp lantern;
     private bool canAttack;
-    private float attackDuration;
-    private float cooldownDuration;
+    [SerializeField] private float attackDuration;
+    [SerializeField] private float cooldownDuration;
     private float lightAngleIncrement;
     private float lanternLightIntensity;
     private float lightDistanceIncrement;
@@ -25,22 +25,36 @@ public class LanternAttack : MonoBehaviour
     {
         canAttack = true;
 
-        attackDuration = 1.0f;
-        cooldownDuration = 0.5f;
-
         lightAngleIncrement = 40.0f;
         lightDistanceIncrement = 3.5f;
-        lanternLightIntensity = 2.0f;
+        lanternLightIntensity = 5.0f;
 
         lanternTimeConsumeValue = 5.0f;
     }
 
     private void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && lantern.turnedOn && canAttack)
+        if (PlayerInputs.instance.PlayerClickedAttackButton() && IsAttackReady())
         {
             StartLanternAttack();
         }
+    }
+
+
+    private void OnEnable()
+    {
+        Lamp.turnOffLanternEvent += ForceQuitAttack;
+    }
+
+    private void OnDisable()
+    {
+        Lamp.turnOffLanternEvent -= ForceQuitAttack;
+    }
+
+
+    private bool IsAttackReady()
+    {
+        return lantern.turnedOn && (lantern.lampTime > lanternTimeConsumeValue) && canAttack;
     }
 
 
@@ -59,6 +73,16 @@ public class LanternAttack : MonoBehaviour
         lantern.ResetLightAngleAndDistance(lightAngleIncrement, lightDistanceIncrement);
         yield return new WaitForSeconds(cooldownDuration);
 
+        canAttack = true;
+    }
+
+
+    private void ForceQuitAttack()
+    {
+        if (canAttack) return;
+
+        StopCoroutine(ExpandLanternLight());
+        lantern.ResetLightAngleAndDistance(lightAngleIncrement, lightDistanceIncrement);
         canAttack = true;
     }
 

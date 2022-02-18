@@ -11,9 +11,13 @@ public class CustomLight : MonoBehaviour
     [SerializeField] protected GameObject lightGameObject;
     protected LightState lightState = LightState.NONE;
     protected bool active = false;
+    [SerializeField] protected float expandTime;
+    [SerializeField] protected float shrinkTime;
+    protected float lerpTransitionValue;
+    protected float intensity;
 
-    public virtual void Expand() { }
-    public virtual void Shrink() { }
+    public virtual void Expand(float endIntensity) { }
+    public virtual void Shrink(float endIntensity) { }
     public virtual void SetIntensity(float intensity) { }
     public virtual void SetDistance(float distance) { }
 }
