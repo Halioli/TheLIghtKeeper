@@ -45,7 +45,7 @@ public class PlayerInputs : MonoBehaviour
     {
         if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Mouse1);
+        return Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button5);
     }
 
     public void SetNewMousePosition()
