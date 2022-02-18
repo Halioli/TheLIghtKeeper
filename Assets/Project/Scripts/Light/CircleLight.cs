@@ -6,12 +6,12 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class CircleLight : CustomLight
 {
-    private CircleCollider2D collider;
-    private Light2D circleLight;
+    protected CircleCollider2D collider;
+    protected Light2D circleLight;
 
-    [SerializeField] private float outerRadius = 2f;
-    [SerializeField] private float innerRadius = 1.5f;
-    private float radiusDifference;
+    [SerializeField] protected float outerRadius = 2f;
+    [SerializeField] protected float innerRadius = 1.5f;
+    protected float radiusDifference;
 
 
     private void Awake()
@@ -100,6 +100,11 @@ public class CircleLight : CustomLight
         circleLight.intensity = intensity;
     }
 
+    public void IntensityFadeInTransition(float endIntensity)
+    {
+        StartCoroutine(IntensityFadeIn(extraExpandTime, endIntensity));
+    }
+
     IEnumerator IntensityFadeIn(float interpolationTime, float endIntensity)
     {
         Interpolator intensityLerp = new Interpolator(interpolationTime);
@@ -120,6 +125,10 @@ public class CircleLight : CustomLight
         intensity = endIntensity;
     }
 
+    public void IntensityFadeOutTransition(float endIntensity)
+    {
+        StartCoroutine(IntensityFadeOut(partialShrinkTime, endIntensity));
+    }
     IEnumerator IntensityFadeOut(float interpolationTime, float endIntensity)
     {
         Interpolator intensityLerp = new Interpolator(interpolationTime);
@@ -150,7 +159,7 @@ public class CircleLight : CustomLight
     }
 
 
-    private void SetColliderRadiusMatchLightOuterRadius()
+    protected void SetColliderRadiusMatchLightOuterRadius()
     {
         collider.radius = circleLight.pointLightOuterRadius;
     }

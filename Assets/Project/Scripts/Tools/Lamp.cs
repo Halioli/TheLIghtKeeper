@@ -95,10 +95,7 @@ public class Lamp : MonoBehaviour
             flickCooldown = START_FLICK_COOLDOWN;
             //circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
 
-            if (turnOffLanternEvent != null)
-            {
-                turnOffLanternEvent();
-            }
+            if (turnOffLanternEvent != null) turnOffLanternEvent();
         }
         else
         {
@@ -254,8 +251,7 @@ public class Lamp : MonoBehaviour
         coneLight.SetDistance(lightDistance + lightDistanceIncrement);
         coneLight.ExtraExpand(lightAngle, lightAngle+lightAngleIncrement, lightIntensity);
 
-        //coneLight.SetIntensity(lightIntensity);
-        circleLight.SetIntensity(lightIntensity+1);
+        circleLight.IntensityFadeInTransition(lightIntensity);
     }
 
     public void ResetLightAngleAndDistance(float lightAngleIncrement, float lightDistanceIncrement)
@@ -264,8 +260,8 @@ public class Lamp : MonoBehaviour
 
         coneLight.SetDistance(lightDistance);
         coneLight.PartialShrink(lightAngle + lightAngleIncrement, lightAngleIncrement, lightIntensity);
-        
-        circleLight.SetIntensity(lightIntensity);
+
+        circleLight.IntensityFadeOutTransition(lightIntensity);
     }
 
     private void UpgradeLampSource()
