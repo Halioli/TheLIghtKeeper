@@ -27,6 +27,9 @@ public class ShadowSpiderStateManager : MonoBehaviour
         states.Add(EnemyStates.CHARGING, GetComponent<EnemyChargingState>());
         states[EnemyStates.CHARGING].SetPlayerTransform(playerTransform);
 
+        states.Add(EnemyStates.LIGHT_ENTER, GetComponent<EnemyLightEnterState>());
+        states[EnemyStates.LIGHT_ENTER].SetPlayerTransform(playerTransform);
+
         states.Add(EnemyStates.SCARED, GetComponent<EnemyScaredState>());
         states[EnemyStates.SCARED].SetPlayerTransform(playerTransform);
 
@@ -57,6 +60,10 @@ public class ShadowSpiderStateManager : MonoBehaviour
         states[currentState].StateOnTriggerEnter(otherCollider);
     }
 
+    private void OnTriggerExit2D(Collider2D otherCollider)
+    {
+        states[currentState].StateOnTriggerExit(otherCollider);
+    }
 
 
     public void ForceState(EnemyStates newState)

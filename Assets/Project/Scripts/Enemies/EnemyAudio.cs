@@ -7,7 +7,8 @@ public class EnemyAudio : MonoBehaviour
     [SerializeField] AudioSource audioSourceFootsteps;
     [SerializeField] AudioSource audioSourceEnvironment;
     [SerializeField] AudioSource audioSourceCries;
-    [SerializeField] AudioClip banishAudioClip;
+    [SerializeField] AudioSource audioSourceCries2;
+    [SerializeField] AudioClip scaredAudioClip;
     [SerializeField] AudioClip receiveDamageAudioClip;
     [SerializeField] AudioClip deathAudioClip;
     [SerializeField] AudioClip attackAudioClip;
@@ -29,11 +30,11 @@ public class EnemyAudio : MonoBehaviour
     }
 
 
-    public void PlayBanishAudio()
+    public void PlayScaredAudio()
     {
-        audioSourceCries.clip = banishAudioClip;
-        audioSourceCries.pitch = Random.Range(0.8f, 1.3f);
-        audioSourceCries.Play();
+        audioSourceCries2.clip = scaredAudioClip;
+        audioSourceCries2.pitch = Random.Range(0.8f, 1.3f);
+        audioSourceCries2.Play();
     }
 
     public void PlayReceiveDamageAudio()

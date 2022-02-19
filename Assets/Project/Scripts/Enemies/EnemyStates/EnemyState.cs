@@ -10,6 +10,7 @@ public enum EnemyStates
     WANDERING,
     AGGRO,
     CHARGING,
+    LIGHT_ENTER,
     SCARED,
     DEATH,
     DESTROY
@@ -42,6 +43,10 @@ public class EnemyState : MonoBehaviour
     }
 
     public virtual void StateOnTriggerEnter(Collider2D otherCollider)
+    {
+    }
+
+    public virtual void StateOnTriggerExit(Collider2D otherCollider)
     {
     }
 

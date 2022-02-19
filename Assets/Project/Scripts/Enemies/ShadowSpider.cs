@@ -23,6 +23,7 @@ public class ShadowSpider : EnemyMonster
 
     private void Start()
     {
+        InitColors();
         InitShadowSpiderStateManager();
     }
 
@@ -32,16 +33,6 @@ public class ShadowSpider : EnemyMonster
         if (healthSystem.IsDead() && !isDyingAlready)
         {
             OnDeathStart();
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ReceiveDamage(5);
-        }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
-            shadowSpiderStateManager.ForceState(EnemyStates.SCARED);
         }
     }
 
@@ -59,10 +50,10 @@ public class ShadowSpider : EnemyMonster
         {
             AttackPlayer();
         }
-        else if (otherCollider.CompareTag("Light") || otherCollider.CompareTag("LampLight"))
-        {
-            ReceiveDamage(10);
-        }
+        //else if (otherCollider.CompareTag("Light") || otherCollider.CompareTag("LampLight"))
+        //{
+        //    ReceiveDamage(10);
+        //}
     }
 
 

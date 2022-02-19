@@ -38,19 +38,19 @@ public class EnemyChargingState : EnemyState
 
     public override bool StateUpdate()
     {
-        if (!hasStartedCharging)
+        if (isTouchingLight)
+        {
+            if (!isExhaustDone) StopCoroutine(ChargeTimer());
+            nextState = EnemyStates.LIGHT_ENTER;
+            return true;
+        }
+        else if (!hasStartedCharging)
         {
             StartCoroutine(ChargeTimer());
         }
         else if (isExhaustDone)
         {
             nextState = EnemyStates.AGGRO;
-            return true;
-        }
-        else if (isTouchingLight)
-        {
-            if (!isExhaustDone) StopCoroutine(ChargeTimer());
-            nextState = EnemyStates.SCARED;
             return true;
         }
 

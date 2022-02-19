@@ -33,7 +33,12 @@ public class EnemyAggroState : EnemyState
 
     public override bool StateUpdate()
     {
-        if (!isReadyToCharge && !isChargeCooldownStarted && IsCloseToPlayerPosition())
+        if (isTouchingLight)
+        {
+            nextState = EnemyStates.LIGHT_ENTER;
+            return true;
+        }
+        else if (!isReadyToCharge && !isChargeCooldownStarted && IsCloseToPlayerPosition())
         {
             StartCoroutine(ChargeStartCooldown());
         }
@@ -46,11 +51,6 @@ public class EnemyAggroState : EnemyState
         else if (isReadyToCharge)
         {
             nextState = EnemyStates.CHARGING;
-            return true;
-        }
-        else if (isTouchingLight)
-        {
-            nextState = EnemyStates.SCARED;
             return true;
         }
 

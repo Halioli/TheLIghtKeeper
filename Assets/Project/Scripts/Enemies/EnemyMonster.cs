@@ -17,9 +17,17 @@ public class EnemyMonster : MonoBehaviour
     protected Vector2 pushedDirection;
     protected float pushedForce;
 
+    protected float damagedTime = 0.2f;
+    private Color normal;
+    private Color transparent;
+
+
     [SerializeField] protected GameObject playerGameObject;
 
     public ItemGameObject dropOnDeathItem;
+
+
+
 
 
     private void OnEnable()
@@ -30,6 +38,13 @@ public class EnemyMonster : MonoBehaviour
     private void OnDisable()
     {
         DarknessSystem.OnPlayerNotInLight -= OnPlayerNotInLight;
+    }
+
+    protected void InitColors()
+    {
+        normal = spriteRenderer.color;
+        transparent = spriteRenderer.color;
+        transparent.a = 0.25f;
     }
 
 
@@ -43,9 +58,6 @@ public class EnemyMonster : MonoBehaviour
         if (healthSystem.IsDead()) return;
 
         healthSystem.ReceiveDamage(damageValue);
-
-        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), 0.15f);
-
         enemyAudio.PlayReceiveDamageAudio();
 
         StartCoroutine(HurtedFlashEffect());
@@ -93,19 +105,16 @@ public class EnemyMonster : MonoBehaviour
 
     IEnumerator HurtedFlashEffect()
     {
-        int count = 3;
-        Color normal = spriteRenderer.color;
-        Color transparent = spriteRenderer.color;
-        transparent.a = 0.1f;
+        transform.DOComplete();
 
+        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
 
-        while (--count > 0)
-        {
-            spriteRenderer.color = transparent;
-            yield return new WaitForSeconds(0.2f);
-            spriteRenderer.color = normal;
-            yield return new WaitForSeconds(0.2f);
-        }
+        spriteRenderer.color = transparent;
+        yield return new WaitForSeconds(damagedTime / 2);
+
+        spriteRenderer.color = normal;
+        yield return new WaitForSeconds(damagedTime / 2);
+        
         spriteRenderer.color = normal;
     }
 

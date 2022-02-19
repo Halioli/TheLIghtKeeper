@@ -23,11 +23,6 @@ public class EnemyWanderingState : EnemyState
     {
         enemyAudio = GetComponent<EnemyAudio>();
         sinMovement = GetComponent<SinMovement>();
-
-        //wanderingRadius = 7.0f;
-        //wanderingWaitTime = 3.0f;
-        //moveSpeed = 5.0f;
-        //distanceCloseToPlayerToAggro = 10.0f;
     }
 
 
@@ -36,7 +31,6 @@ public class EnemyWanderingState : EnemyState
         isMoving = true;
 
         SetWanderingCentrePosition();
-        //SetWanderingTargetPosition();
         StartCoroutine(WaitForNewWanderingTargetPosition());
     }
 
@@ -51,6 +45,7 @@ public class EnemyWanderingState : EnemyState
         {
             if (!isMoving) StopCoroutine(WaitForNewWanderingTargetPosition());
 
+            enemyAudio.PlayFootstepsAudio();
             nextState = EnemyStates.AGGRO;
             return true;
         }

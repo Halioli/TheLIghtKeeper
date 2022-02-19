@@ -1,26 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class EnemyScaredState : EnemyState
 {
-    EnemyAudio enemyAudio;
     SinMovement sinMovement;
     SpriteRenderer spriteRenderer;
     Color fadeColor;
 
     [SerializeField] float moveSpeed;    
     [SerializeField] float fleeTime;
+    [SerializeField] float distanceToStartBanishing;
 
-    bool isFleeing;
-    bool isFleeingFinished;
+    bool isBanishing;
+    bool isBanishingFinished;
     Vector2 fleeTargetDirection;
 
 
 
     private void Awake()
     {
-        enemyAudio = GetComponent<EnemyAudio>();
         sinMovement = GetComponent<SinMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -31,18 +32,17 @@ public class EnemyScaredState : EnemyState
 
     protected override void StateDoStart()
     {
-        enemyAudio.PlayBanishAudio();
         ResetFleeing();
     }
 
     public override bool StateUpdate()
     {
-        if (isFleeingFinished)
+        if (isBanishingFinished)
         {
             nextState = EnemyStates.DESTROY;
             return true;
         }
-        else if (!isFleeing)
+        else if (!isBanishing && IsFarEnoughToStartBanishing())
         {
             StartCoroutine(FadeOutAnimation());
         }
@@ -58,16 +58,21 @@ public class EnemyScaredState : EnemyState
 
     private void ResetFleeing()
     {
-        isFleeing = false;
-        isFleeingFinished = false;
+        isBanishing = false;
+        isBanishingFinished = false;
 
         fleeTargetDirection = (transform.position - playerTransform.position).normalized;
     }
 
 
+    private bool IsFarEnoughToStartBanishing()
+    {
+        return distanceToStartBanishing < Vector2.Distance(transform.position, playerTransform.position);
+    }
+
     IEnumerator FadeOutAnimation()
     {
-        isFleeing = true;
+        isBanishing = true;
         fadeColor = spriteRenderer.material.color;
 
         Interpolator fadeLerp = new Interpolator(fleeTime, Interpolator.Type.SMOOTH);
@@ -76,19 +81,19 @@ public class EnemyScaredState : EnemyState
         while (!fadeLerp.isMaxPrecise)
         {
             fadeLerp.Update(Time.deltaTime);
-            fadeColor.a = fadeLerp.Inverse;
+            fadeColor.a = fadeLerp.Value;
             spriteRenderer.material.color = fadeColor;
             yield return null;
         }
 
-        isFleeing = false;
-        isFleeingFinished = true;
+        isBanishing = false;
+        isBanishingFinished = true;
     }
 
 
     public void ResetFadeAnimation()
     {
-        if (!isFleeing) return;
+        if (!isBanishing) return;
 
         StopCoroutine(FadeOutAnimation());
 

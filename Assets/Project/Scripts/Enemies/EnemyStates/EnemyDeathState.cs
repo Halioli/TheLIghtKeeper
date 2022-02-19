@@ -21,6 +21,7 @@ public class EnemyDeathState : EnemyState
     protected override void StateDoStart()
     {
         enemyAudio.PlayDeathAudio();
+        enemyAudio.StopFootstepsAudio();
         isDying = false;
         isDoneDying = false;
     }

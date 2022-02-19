@@ -4,37 +4,57 @@ using UnityEngine;
 
 public class LightDamageTaker : MonoBehaviour
 {
-    [SerializeField] EnemyMonster enemyMonster;
+    EnemyMonster enemyMonster;
+    private bool isInsideLight;
+    private int lightsCounter;
+    private float waitTimeBeforeTakingDamage;
+    private float damageTakeCooldown;
 
 
     private void Awake()
     {
         enemyMonster = GetComponent<EnemyMonster>();
+        isInsideLight = false;
+        lightsCounter = 0;
+        waitTimeBeforeTakingDamage = 0.25f;
+        damageTakeCooldown = 2f;
     }
 
 
-
-    private void OnTriggerStay2D(Collider2D otherCollider)
+    private void OnTriggerEnter2D(Collider2D otherCollider)
     {
         if (otherCollider.CompareTag("Light") || otherCollider.CompareTag("LampLight"))
         {
-            StartTakeDamageWhileInsideLight(); /////////////////////////////////////
+            ++lightsCounter;
+            if (isInsideLight) return;
+
+            isInsideLight = true;
+            StartTakeDamageWhileInsideLight();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D otherCollider)
+    {
+        if (otherCollider.CompareTag("Light") || otherCollider.CompareTag("LampLight"))
+        {
+            if (--lightsCounter == 0) isInsideLight = false;
         }
     }
 
     private void StartTakeDamageWhileInsideLight() {
-        StartCoroutine(TakeDamageWhileInsideLight(0));
+        StartCoroutine(TakeDamageWhileInsideLight(5));
     }
 
 
     IEnumerator TakeDamageWhileInsideLight(int damageToTake)
     {
+        yield return new WaitForSeconds(waitTimeBeforeTakingDamage);
 
-        while (false)
+        while (isInsideLight)
         {
-            enemyMonster.ReceiveDamage(10);
+            enemyMonster.ReceiveDamage(damageToTake);
+            yield return new WaitForSeconds(damageTakeCooldown);
         }
-        yield return null;
     }
 
 
