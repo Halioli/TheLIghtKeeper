@@ -9,6 +9,7 @@ public class EnemyScaredState : EnemyState
     SinMovement sinMovement;
     SpriteRenderer spriteRenderer;
     Color fadeColor;
+    Animator animator;
 
     [SerializeField] float moveSpeed;    
     [SerializeField] float fleeTime;
@@ -24,6 +25,7 @@ public class EnemyScaredState : EnemyState
     {
         sinMovement = GetComponent<SinMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
         //moveSpeed = 20.0f;
         //fleeTime = 3.0f;
@@ -33,6 +35,8 @@ public class EnemyScaredState : EnemyState
     protected override void StateDoStart()
     {
         ResetFleeing();
+        animator.ResetTrigger("triggerMove");
+        animator.SetTrigger("triggerIdle");
     }
 
     public override bool StateUpdate()
@@ -82,7 +86,7 @@ public class EnemyScaredState : EnemyState
         {
             fadeLerp.Update(Time.deltaTime);
             fadeColor.a = fadeLerp.Value;
-            spriteRenderer.material.color = fadeColor;
+            //spriteRenderer.material.color = fadeColor;
             yield return null;
         }
 
@@ -99,7 +103,7 @@ public class EnemyScaredState : EnemyState
 
         fadeColor = spriteRenderer.material.color;
         fadeColor.a = 1.0f;
-        spriteRenderer.material.color = fadeColor;
+        //spriteRenderer.material.color = fadeColor;
 
         ResetFleeing();
     }

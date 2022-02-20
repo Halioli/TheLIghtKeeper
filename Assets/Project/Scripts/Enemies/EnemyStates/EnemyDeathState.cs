@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyDeathState : EnemyState
 {
     EnemyAudio enemyAudio;
     Animator animator;
+    Collider2D collider;
     
     bool isDying;
     bool isDoneDying;
@@ -15,6 +17,7 @@ public class EnemyDeathState : EnemyState
     {
         enemyAudio = GetComponent<EnemyAudio>();
         animator = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
     }
 
 
@@ -30,6 +33,7 @@ public class EnemyDeathState : EnemyState
     {
         if (!isDying)
         {
+            collider.enabled = false;
             StartDeathAnimation();
         }
         else if (isDoneDying)
@@ -44,6 +48,10 @@ public class EnemyDeathState : EnemyState
 
     private void StartDeathAnimation()
     {
+        transform.DOComplete();
+        transform.DOPunchScale(new Vector3(0.5f, 0.5f), 1f, 10, 0.3f);
+        transform.DOShakePosition(1f, 1.5f);
+
         animator.SetTrigger("triggerDeath");
         isDying = true;
     }

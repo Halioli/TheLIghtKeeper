@@ -5,7 +5,6 @@ using UnityEngine;
 public class ShadowSpider : EnemyMonster
 {
     ShadowSpiderStateManager shadowSpiderStateManager;
-
     bool isDyingAlready;
 
 
@@ -17,7 +16,6 @@ public class ShadowSpider : EnemyMonster
         rigidbody = GetComponent<Rigidbody2D>();
         shadowSpiderStateManager = GetComponent<ShadowSpiderStateManager>();
         enemyAudio = GetComponent<EnemyAudio>();
-
         isDyingAlready = false;
     }
 

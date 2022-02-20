@@ -6,6 +6,7 @@ public class EnemyWanderingState : EnemyState
 {
     EnemyAudio enemyAudio;
     SinMovement sinMovement;
+    Animator animator;
 
     bool isMoving;
     [SerializeField] float minimumWanderDistance;
@@ -18,17 +19,21 @@ public class EnemyWanderingState : EnemyState
 
     [SerializeField] float distanceToAggro;
 
+    bool isTouchingLight;
+
 
     private void Awake()
     {
         enemyAudio = GetComponent<EnemyAudio>();
         sinMovement = GetComponent<SinMovement>();
+        animator = GetComponent<Animator>();
     }
 
 
     protected override void StateDoStart()
     {
         isMoving = true;
+        isTouchingLight = false;
 
         SetWanderingCentrePosition();
         StartCoroutine(WaitForNewWanderingTargetPosition());
@@ -36,12 +41,17 @@ public class EnemyWanderingState : EnemyState
 
     public override bool StateUpdate()
     {
-        if (isMoving && sinMovement.IsNearTargetPosition(targetPosition))
+        if (isTouchingLight)
+        {
+            if (!isMoving) StopCoroutine(WaitForNewWanderingTargetPosition());
+            nextState = EnemyStates.LIGHT_ENTER;
+            return true;
+        }
+        else if (isMoving && sinMovement.IsNearTargetPosition(targetPosition))
         {
             StartCoroutine(WaitForNewWanderingTargetPosition());
         }
-
-        if (IsCloseToPlayerPosition())
+        else if (IsCloseToPlayerPosition())
         {
             if (!isMoving) StopCoroutine(WaitForNewWanderingTargetPosition());
 
@@ -61,6 +71,13 @@ public class EnemyWanderingState : EnemyState
         sinMovement.MoveTowardsTargetPosition(targetPosition, moveSpeed);
     }
 
+    public override void StateOnTriggerEnter(Collider2D otherCollider)
+    {
+        if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Light"))
+        {
+            isTouchingLight = true;
+        }
+    }
 
 
     private void SetWanderingCentrePosition()
@@ -79,11 +96,15 @@ public class EnemyWanderingState : EnemyState
     {
         isMoving = false;
         enemyAudio.StopFootstepsAudio();
+        animator.ResetTrigger("triggerMove");
+        animator.SetTrigger("triggerIdle");
 
         yield return new WaitForSeconds(wanderingWaitTime);
 
         isMoving = true;
         enemyAudio.PlayFootstepsAudio();
+        animator.ResetTrigger("triggerIdle");
+        animator.SetTrigger("triggerMove");
         SetWanderingTargetPosition();
     }
 

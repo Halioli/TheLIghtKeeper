@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyLightEnterState : EnemyState
 {
     EnemyAudio enemyAudio;
     SinMovement sinMovement;
 
-    [SerializeField] float moveSpeedTragetingPlayer;
+    [SerializeField] float moveSpeedTargetingPlayer;
     [SerializeField] float timeTargetingPlayer;
     bool isTargetingPlayer;
     [SerializeField] float moveSpeedScapingPlayer;
@@ -27,7 +28,7 @@ public class EnemyLightEnterState : EnemyState
     {
         isTargetingPlayer = true;
         isWaitFinished = false;
-        moveSpeed = moveSpeedTragetingPlayer;
+        moveSpeed = moveSpeedTargetingPlayer;
         StartCoroutine(WaitBeforeScared());
     }
 
@@ -63,6 +64,8 @@ public class EnemyLightEnterState : EnemyState
     IEnumerator WaitBeforeScared()
     {
         enemyAudio.PlayScaredAudio();
+        transform.DOComplete();
+        transform.DOPunchScale(new Vector3(0.5f, 0.5f, 0f), timeBeforeScared);
         yield return new WaitForSeconds(timeTargetingPlayer);
 
         isTargetingPlayer = false;

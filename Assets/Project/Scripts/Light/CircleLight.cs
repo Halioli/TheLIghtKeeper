@@ -52,7 +52,7 @@ public class CircleLight : CustomLight
             lerpTransitionValue = expandLerp.Value * outerRadius;
             circleLight.pointLightOuterRadius = lerpTransitionValue;
             circleLight.pointLightInnerRadius = lerpTransitionValue > radiusDifference ? lerpTransitionValue - radiusDifference : 0f;
-
+            
             yield return null;
         }
 

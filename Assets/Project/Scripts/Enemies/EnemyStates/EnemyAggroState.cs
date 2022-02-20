@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyAggroState : EnemyState
 {
     SinMovement sinMovement;
+    Animator animator;
 
     [SerializeField] float moveSpeed;
 
@@ -19,6 +20,7 @@ public class EnemyAggroState : EnemyState
     private void Awake()
     {
         sinMovement = GetComponent<SinMovement>();
+        animator = GetComponent<Animator>();
         //moveSpeed = 12.0f;
         //distanceCloseToPlayerToCharge = 6.0f;
     }
@@ -29,12 +31,16 @@ public class EnemyAggroState : EnemyState
         isChargeCooldownStarted = false;
         isReadyToCharge = false;
         isTouchingLight = false;
+
+        animator.ResetTrigger("triggerIdle");
+        animator.SetTrigger("triggerMove");
     }
 
     public override bool StateUpdate()
     {
         if (isTouchingLight)
         {
+            StopCoroutine(ChargeStartCooldown());
             nextState = EnemyStates.LIGHT_ENTER;
             return true;
         }

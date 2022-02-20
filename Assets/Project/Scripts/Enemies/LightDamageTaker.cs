@@ -6,18 +6,28 @@ public class LightDamageTaker : MonoBehaviour
 {
     EnemyMonster enemyMonster;
     private bool isInsideLight;
+    private bool isAlreadyTakingDamage;
+
     private int lightsCounter;
     private float waitTimeBeforeTakingDamage;
     private float damageTakeCooldown;
+
+    int damageToTake;
+    int lightDamage = 3;
+    int intenseLightDamage = 7;
+
 
 
     private void Awake()
     {
         enemyMonster = GetComponent<EnemyMonster>();
         isInsideLight = false;
+        isAlreadyTakingDamage = false;
         lightsCounter = 0;
         waitTimeBeforeTakingDamage = 0.25f;
-        damageTakeCooldown = 2f;
+        damageTakeCooldown = 0.3f;
+
+        damageToTake = lightDamage;
     }
 
 
@@ -41,13 +51,31 @@ public class LightDamageTaker : MonoBehaviour
         }
     }
 
-    private void StartTakeDamageWhileInsideLight() {
-        StartCoroutine(TakeDamageWhileInsideLight(5));
+
+    private void OnEnable()
+    {
+        LanternAttack.OnLanternAttackStart += () => damageToTake = intenseLightDamage;
+        LanternAttack.OnLanternAttackEnd += () => damageToTake = lightDamage;
+    }
+
+    private void OnDisable()
+    {
+        LanternAttack.OnLanternAttackStart -= () => damageToTake = intenseLightDamage;
+        LanternAttack.OnLanternAttackEnd -= () => damageToTake = lightDamage;
     }
 
 
-    IEnumerator TakeDamageWhileInsideLight(int damageToTake)
+    private void StartTakeDamageWhileInsideLight() {
+        if (!isAlreadyTakingDamage)
+        {
+            StartCoroutine(TakeDamageWhileInsideLight());
+        }
+    }
+
+
+    IEnumerator TakeDamageWhileInsideLight()
     {
+        isAlreadyTakingDamage = true;
         yield return new WaitForSeconds(waitTimeBeforeTakingDamage);
 
         while (isInsideLight)
@@ -55,6 +83,7 @@ public class LightDamageTaker : MonoBehaviour
             enemyMonster.ReceiveDamage(damageToTake);
             yield return new WaitForSeconds(damageTakeCooldown);
         }
+        isAlreadyTakingDamage = false;
     }
 
 

@@ -109,7 +109,7 @@ public class EnemyMonster : MonoBehaviour
 
         transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
 
-        spriteRenderer.color = transparent;
+        //spriteRenderer.color = transparent;
         yield return new WaitForSeconds(damagedTime / 2);
 
         spriteRenderer.color = normal;

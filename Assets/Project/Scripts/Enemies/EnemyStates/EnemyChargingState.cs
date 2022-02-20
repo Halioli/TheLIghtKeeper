@@ -6,6 +6,7 @@ public class EnemyChargingState : EnemyState
 {
     EnemyAudio enemyAudio;
     SinMovement sinMovement;
+    Animator animator;
 
     bool hasStartedCharging;
     bool isChargeDone;
@@ -21,6 +22,7 @@ public class EnemyChargingState : EnemyState
     {
         enemyAudio = GetComponent<EnemyAudio>();
         sinMovement = GetComponent<SinMovement>();
+        animator = GetComponent<Animator>();
 
         //moveSpeed = 30.0f;
         //chargeTime = 0.5f;
@@ -79,10 +81,14 @@ public class EnemyChargingState : EnemyState
 
         hasStartedCharging = true;
         isChargeDone = false;
+        animator.ResetTrigger("triggerMove");
+        animator.SetTrigger("triggerIdle");
         yield return new WaitForSeconds(chargeTime);
 
         isChargeDone = true;
-        enemyAudio.StopFootstepsAudio();
+        enemyAudio.StopFootstepsAudio();   
+        animator.ResetTrigger("triggerIdle");
+        animator.SetTrigger("triggerMove");
         yield return new WaitForSeconds(chargeExhaustTime);
 
         isExhaustDone = true;
