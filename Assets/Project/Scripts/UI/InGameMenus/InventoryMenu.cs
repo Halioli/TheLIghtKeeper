@@ -8,13 +8,18 @@ public class InventoryMenu : MonoBehaviour
     public Inventory inventory;
     public ItemCell referenceItemCell;
 
-    // Private
-    private List<ItemCell> itemCellsList = new List<ItemCell>();
+    // Protected
+    protected List<ItemCell> itemCellsList;
+    protected int lastSelectedInventorySlot;
 
 
-    private void Awake()
+    private void Start()
     {
+        itemCellsList = new List<ItemCell>();
+        lastSelectedInventorySlot = 0;
+
         InitInventoryCellsList();
+        SetSelectedInventorySlotIndex(lastSelectedInventorySlot);
     }
 
 
@@ -80,10 +85,22 @@ public class InventoryMenu : MonoBehaviour
         }
     }
 
-
-    public void MoveItemToOtherInventory(int itemCellIndex)
+    public void MoveItemToOtherInventory()
     {
-        inventory.MoveItemToOtherInventory(itemCellIndex);
+        inventory.MoveItemToOtherInventory();
         inventory.gotChanged = true;
+    }
+
+    public virtual void SetSelectedInventorySlotIndex(int itemCellIndex)
+    {
+        ResetSelectedInventorySlot(itemCellIndex);
+        inventory.SetSelectedInventorySlotIndex(itemCellIndex);
+    }
+
+    protected virtual void ResetSelectedInventorySlot(int newLastSelectedInventorySlot)
+    {
+        itemCellsList[lastSelectedInventorySlot].DoOnDiselect();
+        lastSelectedInventorySlot = newLastSelectedInventorySlot;
+        itemCellsList[newLastSelectedInventorySlot].DoOnSelect();
     }
 }

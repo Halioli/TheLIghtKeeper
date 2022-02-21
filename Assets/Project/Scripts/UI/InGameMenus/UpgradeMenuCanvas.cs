@@ -46,14 +46,21 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
     public void UpgradeBranchIsSelected(int index)
     {
-        if (!upgradeButtons[index].canBeClicked) return;
+        if (!upgradeButtons[index].canBeClicked)
+        {
+            upgradesSystem.DoOnUpgardeFail();
+            return;
+        }
 
         upgradesSystem.UpgradeBranchIsSelected(index);
+        //upgradeButtons[index].CheckSquare();
+
+        upgradesSystem.UpdatePlayerInventoryData();
+        SetButtonsCanBeClicked();
         UpdateUpgradeButton(index);
-        SetButtonCanBeClicked(index);
     }
 
-    private void UpdateUpgradeButton(int index)
+    public void UpdateUpgradeButton(int index)
     {
         if (upgradesSystem.upgradeBranches[index].IsCompleted())
         {

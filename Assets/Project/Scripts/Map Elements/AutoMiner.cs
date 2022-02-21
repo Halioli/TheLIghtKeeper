@@ -17,6 +17,11 @@ public class AutoMiner : InteractStation
     Vector2 animationScale;
     private bool autoMinerStopped = true;
 
+    //Audios
+    public AudioClip autoMinerPlaceSound;
+    public AudioClip autoMinerExtractedSound;
+    public AudioSource autoMinerEffectsAudioSource;
+    public AudioSource autoMinerWorkingAudioSource;
 
     // Actions
     public delegate void AutoMinerAction();
@@ -62,8 +67,6 @@ public class AutoMiner : InteractStation
     //    Inventory.OnItemMove -= autoMinerInventoryMenu.UpdateInventory;
     //}
 
-
-
     override public void StationFunction()
     {
         if (inventoryIsOpen)
@@ -104,10 +107,9 @@ public class AutoMiner : InteractStation
         PauseMenu.ResumeMineAndAttack();
     }
 
-
-
     public void GetsPlacedDown(Item itemToMine)
     {
+        PlayPlacedSound();
         PlacedAnimation();
         SetItemToMine(itemToMine);
     }
@@ -117,7 +119,6 @@ public class AutoMiner : InteractStation
         this.itemToMine = itemToMine;
     }
 
-
     private void StartAutoMine()
     {
         StopCoroutine(AutoMine());
@@ -126,10 +127,13 @@ public class AutoMiner : InteractStation
 
     IEnumerator AutoMine()
     {
-        if (OnMineStart != null) {
+        if (OnMineStart != null) 
+        {
             OnMineStart();
         }
         autoMinerStopped = false;
+        PlayWorkingSound();
+
 
         while (inventory.ItemCanBeAdded(itemToMine))
         {
@@ -137,23 +141,25 @@ public class AutoMiner : InteractStation
 
             if (inventory.ItemCanBeAdded(itemToMine)) // protect in case player adds item
             {
+                PlayExtractedSound();
                 MineItem();
                 MineAnimation();
             }
         }
 
-        if (OnMineStop != null) {
+
+        if (OnMineStop != null) 
+        {
             OnMineStop();
         }
         autoMinerStopped = true;
+        StopWorkingSound();
     }
-
 
     private void MineItem()
     {
         inventory.AddItemToInventory(itemToMine);
     }
-
 
     private void PlacedAnimation()
     {
@@ -175,4 +181,27 @@ public class AutoMiner : InteractStation
         }
     }
 
+    private void PlayPlacedSound()
+    {
+        autoMinerEffectsAudioSource.clip = autoMinerPlaceSound;
+        autoMinerEffectsAudioSource.pitch = Random.Range(0.8f, 1.3f);
+        autoMinerEffectsAudioSource.Play();
+    }
+
+    private void PlayExtractedSound()
+    {
+        autoMinerEffectsAudioSource.clip = autoMinerExtractedSound;
+        autoMinerEffectsAudioSource.pitch = Random.Range(0.8f, 1.3f);
+        autoMinerEffectsAudioSource.Play();
+    }
+
+    private void PlayWorkingSound()
+    {
+        autoMinerWorkingAudioSource.Play();
+    }
+
+    private void StopWorkingSound()
+    {
+        autoMinerWorkingAudioSource.Stop();
+    }
 }

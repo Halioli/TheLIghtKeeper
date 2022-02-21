@@ -111,7 +111,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5284852591263328306}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -136,13 +136,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f98f80b49bf4b241824da4fb403b9aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  permanentNotPickedUp: 0
   canBePickedUp: 1
   currentDespawnTimeInSeconds: 10
   item: {fileID: 11400000, guid: fe1423d4f51c65e409f790eedd9d1249, type: 2}
   audioSource: {fileID: 884613000234432602}
   itemIsDropped: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
   pikeBombUseSound: {fileID: 8300000, guid: 2d5f1ac81cf348f46b344e312208fca9, type: 3}
-  pikeBombExplosionSound: {fileID: 0}
+  pikeBombExplosionSound: {fileID: 8300000, guid: de842519aecbdee41bcca1bb02bfe08b, type: 3}
   animator: {fileID: 4423875086134436771}
 --- !u!82 &884613000234432602
 AudioSource:
@@ -153,7 +154,7 @@ AudioSource:
   m_GameObject: {fileID: 5284852591263328306}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2637118081639126757, guid: 645b2cd01f4bfe6428a60f0650af80ba, type: 2}
   m_audioClip: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -200,7 +201,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

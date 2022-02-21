@@ -38,14 +38,18 @@ public class UpgradeButton : HoverButton
     {
         if (!canBeClicked) return;
 
-        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
-        ++currentUpgradeStatus;
+        CheckSquare();
 
         SetDescriptionText(descriptionText);
 
         UpdateRequiredMaterials(requiredMaterialImages.Length);
         SetRequiredMaterialImages(requiredMaterialImages);
         SetRequiredMaterialAmountTexts(requiredMaterialAmountTexts);
+    }
+
+    public void CheckSquare(){
+        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
+        ++currentUpgradeStatus;
     }
 
     private void SetDescriptionText(string descriptionText)

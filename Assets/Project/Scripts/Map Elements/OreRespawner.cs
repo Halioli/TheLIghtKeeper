@@ -26,11 +26,13 @@ public class OreRespawner : Spawner
         Spawn();
     }
 
-    protected override void Spawn()
+    protected override bool Spawn()
     {
         Instantiate(oreToRespawn, respawnPosition, respawnRotation);
         canSpawn = false;
         StartCoroutine(WaitForRespawn());
+
+        return true;
     }
 
     private void CheckIfCanSpawn()

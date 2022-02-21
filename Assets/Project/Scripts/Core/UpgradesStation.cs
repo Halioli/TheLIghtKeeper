@@ -12,7 +12,6 @@ public class UpgradesStation : InteractStation
 
     private bool isOpen = false;
     private UpgradeMenuCanvas upgradeMenuCanvas;
-    //private InventoryMenu inventoryMenu;
 
     void Start()
     {
@@ -80,7 +79,6 @@ public class UpgradesStation : InteractStation
 
         hudGameObject.SetActive(false);
         upgradesCanvasGameObject.SetActive(true);
-        //inventoryMenu.UpdateInventory();
         PauseMenu.PauseMineAndAttack();
 
         DoOnInteractOpen();

@@ -12,7 +12,7 @@ public class PlayerMiner : PlayerBase
 
     private Ore oreToMine;
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
-    private const float MINING_TIME = 1.0f;
+    private const float MINING_TIME = 0.3f;
     private float miningTime = 0;
 
     private bool canCriticalMine = false;
@@ -32,7 +32,7 @@ public class PlayerMiner : PlayerBase
     [SerializeField] Pickaxe pickaxe;
 
     // Public Attributes
-    public GameObject interactArea;
+    //public GameObject interactArea;
     public LayerMask defaultLayerMask;
     public static Collider2D OverlapCircle;
     public Animator animator;
@@ -49,6 +49,7 @@ public class PlayerMiner : PlayerBase
     {
         animator = GetComponent<Animator>();
     }
+
     void Update()
     {
         MineTargetCheck();
@@ -124,7 +125,7 @@ public class PlayerMiner : PlayerBase
 
     private void CheckCriticalMining()
     {
-        if (PlayerInputs.instance.PlayerClickedMineButton())
+        /*if (PlayerInputs.instance.PlayerClickedMineButton())
         {
             if (canCriticalMine)
             {
@@ -137,7 +138,7 @@ public class PlayerMiner : PlayerBase
                 criticalMiningState = CriticalMiningState.FAILED;
                 playerFailMineEvent();
             }
-        }
+        }*/
     }
 
     private void StartMining()
@@ -197,7 +198,7 @@ public class PlayerMiner : PlayerBase
 
     private void Mine()
     {
-        if (!miningAnOre)
+        if (!miningAnOre || oreToMine == null)
             return;
 
         if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)

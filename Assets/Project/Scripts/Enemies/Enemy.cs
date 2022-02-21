@@ -92,7 +92,7 @@ abstract public class Enemy : MonoBehaviour
         directionTowardsPlayerPosition = (playerPosition - rigidbody.position).normalized;
     }
 
-    public void ReceiveDamage(int damageValue)
+    public virtual void ReceiveDamage(int damageValue)
     {
         healthSystem.ReceiveDamage(damageValue);
 
@@ -105,7 +105,7 @@ abstract public class Enemy : MonoBehaviour
         StartCoroutine(HurtedFlashEffect());
     }
 
-    protected void DealDamageToPlayer()
+    protected virtual void DealDamageToPlayer()
     {
         player.GetComponent<PlayerCombat>().ReceiveDamage(attackSystem.attackValue);
     }
