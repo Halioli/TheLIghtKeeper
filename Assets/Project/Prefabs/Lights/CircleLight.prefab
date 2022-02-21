@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3231333304631915568}
   - component: {fileID: 3231333304631915569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CircleLight
-  m_TagString: Untagged
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightGameObject: {fileID: 3231333305701039181}
+  expandTime: 0.2
+  shrinkTime: 0.5
   outerRadius: 2
   innerRadius: 1.5
 --- !u!1 &3231333305701039181
@@ -57,9 +59,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3231333305701039183}
   - component: {fileID: 3231333305701039180}
-  m_Layer: 0
-  m_Name: Point Light 2D
-  m_TagString: Untagged
+  - component: {fileID: 6739227510076720449}
+  m_Layer: 6
+  m_Name: LightGameObject
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +75,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3231333305701039181}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -6.88, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3231333304631915568}
@@ -119,3 +122,19 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!58 &6739227510076720449
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3231333305701039181}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
