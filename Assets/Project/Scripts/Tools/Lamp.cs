@@ -83,6 +83,8 @@ public class Lamp : MonoBehaviour
 
     private void OnEnable()
     {
+        DarknessSystem.OnPlayerEntersLight += DeactivateLampLight;
+
         LanternSourceUpgrade.OnLanternSourceUpgrade += UpgradeLampSource;
         LanternTimeUpgrade.OnLanternTimeUpgrade += UpgradeLampTime;
 
@@ -92,6 +94,8 @@ public class Lamp : MonoBehaviour
 
     private void OnDisable()
     {
+        DarknessSystem.OnPlayerEntersLight -= DeactivateLampLight;
+
         LanternSourceUpgrade.OnLanternSourceUpgrade -= UpgradeLampSource;
         LanternTimeUpgrade.OnLanternTimeUpgrade -= UpgradeLampTime;
 

@@ -47,10 +47,15 @@ public class EnemySpawner : Spawner
 
 
     // Methods to override
-    protected override void Spawn()
+    protected override bool Spawn()
     {
+        UpdatePlayerPosition();
+        if (Vector2.Distance(playerPosition, transform.position) < spawnRadius) return false;
+
         InstantiateEnemy();
         spawnEnemyEvent();
+
+        return true;
     }
 
     // Methods

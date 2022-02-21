@@ -68,6 +68,8 @@ public class ShadowSpiderStateManager : MonoBehaviour
 
     public void ForceState(EnemyStates newState)
     {
+        if (currentState == EnemyStates.DEATH || currentState == EnemyStates.DESTROY) return;
+
         currentState = newState;
         states[currentState].StateStart();
     }

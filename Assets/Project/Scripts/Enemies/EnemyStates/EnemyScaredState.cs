@@ -56,7 +56,7 @@ public class EnemyScaredState : EnemyState
 
     public override void StateFixedUpdate()
     {
-        sinMovement.MoveTowardsTargetDirection(fleeTargetDirection, moveSpeed);
+        sinMovement.MoveTowardsTargetDirection(fleeTargetDirection, moveSpeed, 1.35f);
     }
 
 
@@ -107,6 +107,7 @@ public class EnemyScaredState : EnemyState
 
         ResetFleeing();
     }
+
 
 
 }

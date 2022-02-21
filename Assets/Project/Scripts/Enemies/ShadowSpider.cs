@@ -57,8 +57,16 @@ public class ShadowSpider : EnemyMonster
 
     protected override void OnPlayerNotInLight()
     {
+        StartCoroutine(DoOnPlayerNotInLight());
+    }
+
+    IEnumerator DoOnPlayerNotInLight()
+    {
+        yield return new WaitForSeconds(1f);
         shadowSpiderStateManager.ForceState(EnemyStates.WANDERING);
     }
+
+
 
     protected override void OnDeathStart()
     {

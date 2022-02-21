@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerGameObject: {fileID: 0}
+  dropRatePercent: 10
   dropOnDeathItem: {fileID: 6144850676992826713, guid: e2c57d1dc2d45ed4cac975acf415c722, type: 3}
 --- !u!114 &2096602507651081439
 MonoBehaviour:
@@ -304,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d09ab4e10d846e147bfce05fb3216c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
+  moveSpeed: 6.5
   fleeTime: 3
   distanceToStartBanishing: 20
 --- !u!114 &2096602507651081413

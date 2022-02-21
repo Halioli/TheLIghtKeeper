@@ -24,6 +24,7 @@ public class EnemyMonster : MonoBehaviour
 
     [SerializeField] protected GameObject playerGameObject;
 
+    [SerializeField] protected int dropRatePercent = 100;
     public ItemGameObject dropOnDeathItem;
 
 
@@ -81,10 +82,13 @@ public class EnemyMonster : MonoBehaviour
     protected virtual void OnDeathEnd()
     {
         DropItem();
+        Destroy(gameObject);
     }
 
     protected void DropItem()
     {
+        if (Random.Range(0, 100) > dropRatePercent) return;
+
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
         item.DropsRandom();
     }
