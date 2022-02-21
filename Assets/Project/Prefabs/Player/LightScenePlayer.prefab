@@ -15486,6 +15486,7 @@ GameObject:
   - component: {fileID: 6846546545995862270}
   - component: {fileID: 6892806331421600992}
   - component: {fileID: 7987370480852967012}
+  - component: {fileID: 5836228802995058568}
   m_Layer: 0
   m_Name: Lamp
   m_TagString: Untagged
@@ -15578,6 +15579,19 @@ MonoBehaviour:
   coneLight: {fileID: 1752998520983067473}
   flickerIntensity: 1
   flickerTime: 0.08
+--- !u!114 &5836228802995058568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659375401710574807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d9773cbe1f1c3c478276630693255d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lantern: {fileID: 7987370480852967012}
 --- !u!1 &9026607882835807031
 GameObject:
   m_ObjectHideFlags: 0

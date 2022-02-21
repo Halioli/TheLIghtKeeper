@@ -31,6 +31,12 @@ public class CinemachineShake : MonoBehaviour
         shakeTimerTotal = time;
     }
 
+    public void ForceStopShakeCamera()
+    {
+        shakeTimer = Time.deltaTime;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
