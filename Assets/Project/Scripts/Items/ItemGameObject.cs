@@ -92,7 +92,7 @@ public class ItemGameObject : MonoBehaviour
 
     IEnumerator Despawning(float despawnTime)
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         Color transparentColor = spriteRenderer.color;
         transparentColor.a = 0.0f;
 
