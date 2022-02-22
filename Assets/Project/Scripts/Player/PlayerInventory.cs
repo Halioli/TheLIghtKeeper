@@ -5,43 +5,31 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
-    private bool inventoryIsOpen = false;
     private Collider2D itemCollectionCollider;
+    private float mouseScrollDirection = 0f;
 
     // Public Attributes
-    public Inventory inventory { get; private set; }
-    public Canvas inventoryCanvas;
-    [SerializeField] GameObject inventoryMenuGameObject;
-    public InventoryMenu inventoryMenu;
+    public HotbarInventory hotbarInventory { get; private set; }
+
 
     // Events
     public delegate void PlayPlayerSound();
     public static event PlayPlayerSound playerPicksUpItemEvent;
 
+    public delegate void InventoryAction();
+    public static event InventoryAction OnInventoryOpen;
+    public static event InventoryAction OnInventoryClose;
 
 
     private void Start()
     {
-        inventory = GetComponentInChildren<Inventory>();
+        hotbarInventory = GetComponentInChildren<HotbarInventory>();
         itemCollectionCollider = GetComponent<CapsuleCollider2D>();
-
-        inventoryMenu.InitInventoryCellsList();
-        inventoryMenuGameObject.SetActive(inventoryIsOpen);
     }
 
     void Update()
     {
-        if (PlayerInputs.instance.PlayerPressedInventoryButton())
-        {
-            if (inventoryIsOpen)
-            {
-                CloseInventory();
-            }
-            else
-            {
-                OpenInventory();
-            }
-        }
+        DoInputsHotbarInventory();
     }
 
 
@@ -73,18 +61,22 @@ public class PlayerInventory : MonoBehaviour
         InventoryUpgrade.OnInventoryUpgrade -= UpgradeInventory;
     }
 
-
-    private void OpenInventory()
+    private void DoInputsHotbarInventory()
     {
-        inventoryIsOpen = true;
-        inventoryCanvas.gameObject.SetActive(true);
-        //inventoryMenu.UpdateInventory();
-    }
+        mouseScrollDirection = PlayerInputs.instance.PlayerMouseScroll().y;
+        if (mouseScrollDirection < 0f)
+        {
+            hotbarInventory.CycleRightSelectedItemIndex();  
+        }
+        else if (mouseScrollDirection > 0f)
+        {
+            hotbarInventory.CycleLeftSelectedItemIndex();
+        }
 
-    private void CloseInventory()
-    {
-        inventoryIsOpen = false;
-        inventoryCanvas.gameObject.SetActive(false);
+        if (PlayerInputs.instance.PlayerPressedUseButton())
+        {
+            hotbarInventory.UseSelectedConsumibleItem();
+        }
     }
 
     private ItemGameObject GetItemGameObjectFromCollider(Collider2D collider)
@@ -103,7 +95,6 @@ public class PlayerInventory : MonoBehaviour
 
     private void UpgradeInventory()
     {
-        inventory.UpgradeInventory();
-        Debug.Log("aqui");
+        hotbarInventory.UpgradeInventory();
     }
 }

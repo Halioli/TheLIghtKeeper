@@ -23,6 +23,7 @@ public class CraftingSystem : MonoBehaviour
 
     public delegate void CraftAction();
     public static event CraftAction OnCrafting;
+    public static event CraftAction OnCraftingFail;
 
     void Start()
     {
@@ -45,22 +46,17 @@ public class CraftingSystem : MonoBehaviour
     }
 
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LevelUp();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            RecepieWasSelected(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            RecepieWasSelected(1);
-        }
+        CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
+        CoreUpgrade.OnCoreUpgrade += LevelUp;
     }
 
+    private void OnDisable()
+    {
+        CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
+        CoreUpgrade.OnCoreUpgrade -= LevelUp;
+    }
 
     private void InitAllRecepies()
     {
@@ -145,43 +141,21 @@ public class CraftingSystem : MonoBehaviour
         
     }
 
-    private void OnEnable()
-    {
-        CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
-    }
-
-    private void OnDisable()
-    {
-        CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
-    }
 
     public void RecepieWasSelected(int selectedRecepieIndex)
     {
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex]))
         {
-            OnCrafting();
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
+            if (OnCrafting != null) OnCrafting();
         }
         else
         {
-            Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepieName);
+            if (OnCraftingFail != null) OnCraftingFail();
         }
     }
 
-   /* IEnumerator CraftingParticleSystem()
-    {
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
 
-        yield return new WaitForSeconds(3.4f);
-
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
-    }*/
 }

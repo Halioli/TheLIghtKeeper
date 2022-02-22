@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using TMPro;
 using UnityEngine.Events;
+using UnityEngine.UI;
+
 public class Torch : InteractStation
 {
     public ParticleSystem smokeTorchParticles;
     public Light2D torchLight;
-    public TextMeshProUGUI interactText;
+    public CanvasGroup popUpCanvasGroup;
     public CircleCollider2D lightRadius;
+    public GameObject linkedRune;
+    public GameObject desactivatedTorch;
 
     public float torchIntensity = 1f;
     public float turnedOffIntensity = 0f;
@@ -23,35 +27,42 @@ public class Torch : InteractStation
 
     public TorchPuzzleSystem puzzleSystem;
 
+    [SerializeField] AudioSource torchAudioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         smokeTorchParticles.Stop();
         if (!turnedOn)
         {
+            torchLight.pointLightOuterRadius = 0;
+            torchLight.pointLightInnerRadius = 0;
             torchLight.intensity = turnedOffIntensity;
+            lightRadius.radius = 0.1f;
         }
 
-        interactText.alpha = 0f;
+        popUpCanvasGroup.alpha = 0f;
 
         if(hasToBurn == false)
         {
             DoPuzzle();
         }
         PuzzleChecker();
+        linkedRune.SetActive(false);
 
+        desactivatedTorch.SetActive(true);
     }
 
     private void Update()
     {
         if (playerInsideTriggerArea)
         {
-            interactText.alpha = 1f;
+            popUpCanvasGroup.alpha = 1f;
             GetInput();
         }
         else
         {
-            interactText.alpha = 0f;
+            popUpCanvasGroup.alpha = 0f;
         }
     }
     public override void StationFunction()
@@ -59,15 +70,19 @@ public class Torch : InteractStation
         if (!turnedOn)
         {
             SetTorchLightOn();
+            torchAudioSource.Play();
         }
         else
         {
             SetTorchLightOff();
+            torchAudioSource.Stop();
         }
         DoPuzzle();
         if (PuzzleChecker())
         {
-            Debug.Log("Puzzle Completed");
+            //Debug.Log("Puzzle Completed");
+            puzzleSystem.animator.SetBool("isCompleted", true);
+
         }
 
     }
@@ -75,20 +90,26 @@ public class Torch : InteractStation
     {
         smokeTorchParticles.Stop();
         torchLight.intensity = 1f;
-        StartCoroutine(LightsOff());
+        //StartCoroutine(LightsOff());
         turnedOn = false;
-        lightRadius.radius = 0.1f;
         animTorch.SetBool("isBurning", false);
+        if (hasToBurn)
+        {
+            linkedRune.SetActive(false);
+        }
     }
 
     void SetTorchLightOn()
     {
         smokeTorchParticles.Play();
         torchLight.intensity = 1f;
-        StartCoroutine(LightsOn());
+        //StartCoroutine(LightsOn());
         turnedOn = true;
-        lightRadius.radius = 2.8f;
         animTorch.SetBool("isBurning", true);
+        if (hasToBurn)
+        {
+            linkedRune.SetActive(true);
+        }
     }
 
     IEnumerator LightsOn()
@@ -102,6 +123,8 @@ public class Torch : InteractStation
             //DO STUFF HERE
             torchLight.pointLightOuterRadius = lightLerp.Value * outerRadiusOn;
             torchLight.pointLightInnerRadius = lightLerp.Value * innerRadiusOn;
+            lightRadius.radius = 2.8f;
+
             //WAIT A FRAME
             yield return null;
         }
@@ -118,6 +141,7 @@ public class Torch : InteractStation
             //DO STUFF HERE
             torchLight.pointLightOuterRadius = lightLerp.Inverse * outerRadiusOn;
             torchLight.pointLightInnerRadius = lightLerp.Inverse * innerRadiusOn;
+            lightRadius.radius = 0.1f;
             //WAIT A FRAME
             yield return null;
         }
@@ -146,8 +170,8 @@ public class Torch : InteractStation
 
     private bool PuzzleChecker()
     {
-        Debug.Log("TORCHES ON: " + puzzleSystem.torchesOn);
-        Debug.Log("TORCHES OFF:" + puzzleSystem.torchesOff);
+        //Debug.Log("TORCHES ON: " + puzzleSystem.torchesOn);
+        //Debug.Log("TORCHES OFF:" + puzzleSystem.torchesOff);
         if (puzzleSystem.torchesOn == puzzleSystem.maxTorchesOn && puzzleSystem.torchesOff == puzzleSystem.maxTorchesOff)
         {
             return true;
@@ -156,5 +180,14 @@ public class Torch : InteractStation
         {
             return false;
         }
+    }
+
+    private void DesactivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(false);
+    }
+    private void ActivateTorchSprite()
+    {
+        desactivatedTorch.SetActive(true);
     }
 }

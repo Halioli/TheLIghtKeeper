@@ -38,7 +38,7 @@ public class Ore : MonoBehaviour
 
     public bool Broke() { return healthSystem.IsDead(); }
 
-    public virtual void GetsMined(int damageAmount)
+    public virtual void GetsMined(int damageAmount, int numberOfDrops)
     {
         transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
         // Damage the Ore
@@ -51,7 +51,11 @@ public class Ore : MonoBehaviour
             breakState = OreState.BROKEN;
 
             // Drop mineralItemToDrop
-            DropMineralItem();
+            numberOfDrops = Random.Range(1, numberOfDrops);
+            for (int i = 0; i < numberOfDrops; ++i)
+            {
+                DropMineralItem();
+            }
 
             // Start disappear coroutine
             StartCoroutine("Disappear");

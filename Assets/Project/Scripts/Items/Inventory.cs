@@ -17,14 +17,20 @@ public class Inventory : MonoBehaviour
     public bool gotChanged = false;
 
     // Private Attributes
-    [SerializeField] private int numberOfInventorySlots;
-    private int numberOfOccuppiedInventorySlots;
-    private bool inventoryIsEmpty;
+    [SerializeField] protected int numberOfInventorySlots;
+    protected int numberOfOccuppiedInventorySlots;
+    protected bool inventoryIsEmpty;
 
-    [SerializeField] private int maxNumberOfSlots;
+    [SerializeField] protected int maxNumberOfSlots;
 
 
-    private Inventory otherInventory = null; 
+    private Inventory otherInventory = null;
+
+
+    // Action
+    public delegate void InventoryAction();
+    public static event InventoryAction OnItemMove;
+    public static event InventoryAction OnItemMoveFail;
 
 
     // Initializer Methods
@@ -39,7 +45,6 @@ public class Inventory : MonoBehaviour
     }
 
 
-
     public void InitInventory()
     {
         for (int i = 0; i < numberOfInventorySlots; i++)
@@ -48,7 +53,6 @@ public class Inventory : MonoBehaviour
         }
         gotChanged = true;
     }
-
 
     // Getter Methods
     public int GetInventorySize() { return numberOfInventorySlots; }
@@ -81,7 +85,6 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
-
     public int NextEmptyInventorySlot()
     {
         int i = 0;
@@ -100,18 +103,6 @@ public class Inventory : MonoBehaviour
     {
         return (NextEmptyInventorySlot() != -1) ||
                (NextInventorySlotWithAvailableSpaceToAddItem(itemToCompare) != -1);
-    }
-
-
-    // Modifier Methods
-    public void UpgradeInventory()
-    {
-        if (numberOfInventorySlots < maxNumberOfSlots)
-        {
-            numberOfInventorySlots++;
-            inventory.Add(Instantiate(emptyStack, transform));
-            gotChanged = true;
-        }
     }
 
 
@@ -149,7 +140,6 @@ public class Inventory : MonoBehaviour
         }
         return hasEnough;
     }
-
 
     public bool AddItemToInventory(Item itemToAdd)
     {
@@ -227,7 +217,6 @@ public class Inventory : MonoBehaviour
         return couldRemoveItem;
     }
 
-
     public bool SubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
     {
         for (int i = 0; i < numberOfItemsToSubstract; ++i)
@@ -259,8 +248,6 @@ public class Inventory : MonoBehaviour
         gotChanged = true;
     }
 
-
-
     // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
     {
@@ -283,45 +270,38 @@ public class Inventory : MonoBehaviour
         return itemsToDisplay;
     }
 
-
-    public void CycleLeftSelectedItemIndex()
+    public void SetSelectedInventorySlotIndex(int index)
     {
-        --indexOfSelectedInventorySlot;
-        indexOfSelectedInventorySlot = indexOfSelectedInventorySlot < 0 ? indexOfSelectedInventorySlot = numberOfInventorySlots-1 : indexOfSelectedInventorySlot;
-
-    }
-
-    public void CycleRightSelectedItemIndex()
-    {
-        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
+        indexOfSelectedInventorySlot = index;
     }
 
 
-    public void UseSelectedConsumibleItem()
-    {
-        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
-        {
-            GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
-            consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
-
-            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
-        }
-    }
-
-
-    public void MoveItemToOtherInventory(int itemCellIndex)
+    public void MoveItemToOtherInventory()
     {
         if (otherInventory == null) return;
-        if (inventory[itemCellIndex].itemInStack == itemNull) return;
+        if (inventory[indexOfSelectedInventorySlot].itemInStack == itemNull)
+        {
+            if (OnItemMoveFail != null) OnItemMoveFail();
+            return;
+        }
 
 
-        bool canSwap = otherInventory.ItemCanBeAdded(inventory[itemCellIndex].itemInStack);
+        bool canSwap = otherInventory.ItemCanBeAdded(inventory[indexOfSelectedInventorySlot].itemInStack);
 
         if (canSwap)
         {
-            otherInventory.AddItemToInventory(inventory[itemCellIndex].itemInStack);
-            SubstractItemFromInventory(inventory[itemCellIndex].itemInStack);
+            otherInventory.AddItemToInventory(inventory[indexOfSelectedInventorySlot].itemInStack);
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+
+            otherInventory.gotChanged = true;
+
+            if (OnItemMove != null) OnItemMove();
         }
+        else
+        {
+            if (OnItemMoveFail != null) OnItemMoveFail();
+        }
+
     }
 
     public void SetOtherInventory(Inventory otherInventory)

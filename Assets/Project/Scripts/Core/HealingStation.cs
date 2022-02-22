@@ -9,14 +9,20 @@ public class HealingStation : MonoBehaviour
     private GameObject player;
     private HealthSystem playerHealthSystem;
     public TextMeshProUGUI maxHealthMessage;
+    public GameObject backgroundText;
+    public Animator animator;
+
+    [SerializeField] AudioSource healAudioSource;
+
 
     // Start is called before the first frame update
     void Start()
     {
         playerInside = false;
-        player = GameObject.Find("LightScenePlayer");
+        player = GameObject.FindGameObjectWithTag("Player");
         playerHealthSystem = player.GetComponent<HealthSystem>();
         maxHealthMessage.alpha = 0;
+        backgroundText.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,7 +31,8 @@ public class HealingStation : MonoBehaviour
         {
             playerInside = true;
             RestorePlayerHealth();
-            Debug.Log(playerInside);
+
+            healAudioSource.Play();
         }
 
     }
@@ -35,9 +42,9 @@ public class HealingStation : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInside = false;
-            Debug.Log(playerInside);
             RestorePlayerHealth();
             maxHealthMessage.alpha = 0;
+            backgroundText.SetActive(false);
         }
     }
 
@@ -47,6 +54,7 @@ public class HealingStation : MonoBehaviour
         {
             ShowPlayerHealedMessage();
             playerHealthSystem.RestoreHealthToMaxHealth();
+            animator.SetBool("isHealed", true);
         }
         else
         {
@@ -57,11 +65,13 @@ public class HealingStation : MonoBehaviour
     private void ShowMaxHealthMessage()
     {
         maxHealthMessage.text = "Player at Max Health";
+        backgroundText.SetActive(true);
         maxHealthMessage.alpha = 100;
     }
     private void ShowPlayerHealedMessage()
     {
         maxHealthMessage.text = "Player Healed";
+        backgroundText.SetActive(true);
         maxHealthMessage.alpha = 100;
     }
 }
