@@ -7,6 +7,7 @@ public class HealthSystem : MonoBehaviour
     // Protected Attributes
     protected int health;
     protected bool canBeDamaged;
+    protected bool canBeHealed;
 
     // Public Attributes
     public int maxHealth;
@@ -15,6 +16,7 @@ public class HealthSystem : MonoBehaviour
     {
         health = maxHealth;
         canBeDamaged = true;
+        canBeHealed = true;
     }
 
     public void RestoreHealthToMaxHealth() { health = maxHealth; }
@@ -31,9 +33,20 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
+    virtual public void ReceiveHealth(int healthValueToAdd)
+    {
+        if (canBeHealed)
+        {
+            if ((health + healthValueToAdd) <= maxHealth)
+            {
+                health += healthValueToAdd;
+            }
+            else
+            {
+                RestoreHealthToMaxHealth();
+            }
+        }
+    }
+
     virtual public bool IsDead() { return health <= 0; }
-
- 
-
-
 }

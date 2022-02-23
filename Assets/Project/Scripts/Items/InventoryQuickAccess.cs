@@ -9,7 +9,7 @@ public class InventoryQuickAccess : MonoBehaviour
     // Private Attributes
     private const float FADE_TIME = 0.5f;
 
-    private Inventory playerInventory;
+    private HotbarInventory playerInventory;
     private PlayerInputs playerInputs;
     private int mouseScrollDirection;
     
@@ -27,7 +27,7 @@ public class InventoryQuickAccess : MonoBehaviour
 
     void Start()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<HotbarInventory>();
         playerInputs = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInputs>();
         mouseScrollDirection = 0;
 
