@@ -37,7 +37,8 @@ public class PlayerInputs : MonoBehaviour
     {
         if (PauseMenu.gameIsPaused || !instance.canMine) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Mouse0);
+        return Input.GetButton("Fire1");
+        //return Input.GetKeyDown(KeyCode.Mouse0);
     }
 
 
