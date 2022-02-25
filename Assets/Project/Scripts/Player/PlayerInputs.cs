@@ -44,14 +44,14 @@ public class PlayerInputs : MonoBehaviour
     {
         if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button5);
+        return Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button4);
     }
 
     public bool IsAttackButtonUp()
     {
         if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
 
-        return Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button5);
+        return Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button4);
     }
 
     public void SetNewMousePosition()
@@ -68,40 +68,19 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedInteractButton()
     {
-        return Input.GetKeyDown(KeyCode.E);
+        return Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button1);
     }
 
     public bool PlayerPressedUseButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Q);
-    }
-
-    public bool PlayerPressedInventorySelectSlotButton()
-    {
-        if (PauseMenu.gameIsPaused) { return false; }
-
-        return Input.GetKeyDown(KeyCode.Tab);
-    }
-
-    public bool PlayerPressedQuickAccessButton()
-    {
-        if (PauseMenu.gameIsPaused) { return false; }
-
-        return Input.GetKeyDown(KeyCode.LeftShift);
-    }
-
-    public bool PlayerReleasedQuickAccessButton()
-    {
-        if (PauseMenu.gameIsPaused) { return false; }
-
-        return Input.GetKeyUp(KeyCode.LeftShift);
+        return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button0);
     }
 
     public bool PlayerPressedPauseButton()
     {
-        return Input.GetKeyDown(KeyCode.Escape);
+        return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()
