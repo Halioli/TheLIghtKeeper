@@ -54,6 +54,7 @@ public class DarknessSystem : MonoBehaviour
             playerInLight = true;
             //DisableEnemySpawners();
             if (OnPlayerEntersLight != null) OnPlayerEntersLight();
+            Debug.Log("LIIIIIGHT");
             //if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
         }
         else if (IsPlayerExitingLight())
@@ -61,7 +62,7 @@ public class DarknessSystem : MonoBehaviour
             playerInLight = false;
             //EnableEnemySpawners();
             if (OnPlayerNotInLight != null) OnPlayerNotInLight();
-
+            Debug.Log("NOOOOOOOOOOOO LIIIIIGHT");
             //if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
         }
     }

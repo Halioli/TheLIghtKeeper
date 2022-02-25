@@ -21,6 +21,8 @@ public class EnemyWanderingState : EnemyState
 
     bool isTouchingLight;
 
+    bool isPlayerInLight;
+
 
     private void Awake()
     {
@@ -28,6 +30,19 @@ public class EnemyWanderingState : EnemyState
         sinMovement = GetComponent<SinMovement>();
         animator = GetComponent<Animator>();
     }
+
+    private void OnEnable()
+    {
+        DarknessSystem.OnPlayerEntersLight += () => isPlayerInLight = true;
+        DarknessSystem.OnPlayerNotInLight += () => isPlayerInLight = false;
+    }
+
+    private void OnDisable()
+    {
+        DarknessSystem.OnPlayerEntersLight -= () => isPlayerInLight = true;
+        DarknessSystem.OnPlayerNotInLight -= () => isPlayerInLight = false;
+    }
+
 
 
     protected override void StateDoStart()
@@ -51,15 +66,19 @@ public class EnemyWanderingState : EnemyState
         {
             StartCoroutine(WaitForNewWanderingTargetPosition());
         }
-        else if (IsCloseToPlayerPosition())
-        {
+        else if (IsCloseToPlayerPosition()) {
+            
             if (!isMoving) StopCoroutine(WaitForNewWanderingTargetPosition());
-
             enemyAudio.PlayFootstepsAudio();
+
+            if (isPlayerInLight) 
+            {
+                nextState = EnemyStates.SCARED;
+                return true;
+            }
             nextState = EnemyStates.AGGRO;
             return true;
         }
-
 
         return false;
     }
