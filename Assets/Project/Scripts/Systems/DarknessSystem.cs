@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class DarknessSystem : MonoBehaviour
 {
+    public static DarknessSystem instance;
+
+
     // Private Attributes
     private PlayerLightChecker playerLightChecker;
-    private bool playerInLight;
+    public bool playerInLight { get; private set; }
     private List<GameObject> enemySpawners = new List<GameObject>();
 
     private int ENEMY_CAP = 4;
@@ -21,6 +24,21 @@ public class DarknessSystem : MonoBehaviour
     public delegate void PlayerEntersLightAction();
     public static event PlayerEntersLightAction OnPlayerEntersLight;
     public static event PlayerEntersLightAction OnPlayerNotInLight;
+
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(instance);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
 
     void Start()
     {
@@ -54,7 +72,6 @@ public class DarknessSystem : MonoBehaviour
             playerInLight = true;
             //DisableEnemySpawners();
             if (OnPlayerEntersLight != null) OnPlayerEntersLight();
-            Debug.Log("LIIIIIGHT");
             //if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
         }
         else if (IsPlayerExitingLight())
@@ -62,7 +79,6 @@ public class DarknessSystem : MonoBehaviour
             playerInLight = false;
             //EnableEnemySpawners();
             if (OnPlayerNotInLight != null) OnPlayerNotInLight();
-            Debug.Log("NOOOOOOOOOOOO LIIIIIGHT");
             //if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
         }
     }

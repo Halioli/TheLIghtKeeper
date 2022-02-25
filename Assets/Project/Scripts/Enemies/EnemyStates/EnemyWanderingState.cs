@@ -50,6 +50,8 @@ public class EnemyWanderingState : EnemyState
         isMoving = true;
         isTouchingLight = false;
 
+        isPlayerInLight = DarknessSystem.instance.playerInLight;
+
         SetWanderingCentrePosition();
         StartCoroutine(WaitForNewWanderingTargetPosition());
     }
