@@ -21,6 +21,17 @@ public class SteerSinMovement : SinMovement
 
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        isInCollisionTrajectory = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        isInCollisionTrajectory = false;
+    }
+
+
 
     public override void MoveTowardsTargetDirection(Vector2 targetDirection, float moveSpeed, float sinPercent = 1f)
     {
@@ -50,15 +61,13 @@ public class SteerSinMovement : SinMovement
     }
 
 
-    private void OnTriggerStay2D(Collider2D other)
+    private Vector2 GetRotatedPoint(Vector2 point, float angle)
     {
-        isInCollisionTrajectory = true;
+        Vector2 rotatedPoint = new Vector2((point.x * Mathf.Cos(angle)) - (point.y * Mathf.Sin(angle)),
+                                            (point.y * Mathf.Cos(angle)) - (point.x * Mathf.Sin(angle)));
+        return rotatedPoint;
     }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        isInCollisionTrajectory = false;
-    }
 
 
 
