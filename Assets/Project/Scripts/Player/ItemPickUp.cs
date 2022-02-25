@@ -6,6 +6,15 @@ public class ItemPickUp : MonoBehaviour
 {
     private PlayerInventory playerInventory;
     private CircleCollider2D itemPickUpCheckCollider;
+    ItemGameObject itemGameObject;
+
+    bool isOnItemPickUpFailInvoked = false;
+    float onItemPickUpFailDuration = 3f;
+
+    public delegate void ItemPickUpAction(float isOnItemPickUpFailDuration);
+    public static event ItemPickUpAction OnItemPickUpFail;
+
+
 
     private void Start()
     {
@@ -20,7 +29,7 @@ public class ItemPickUp : MonoBehaviour
 
         if (collider.gameObject.CompareTag("Item"))
         {
-            ItemGameObject itemGameObject = collider.GetComponent<ItemGameObject>();
+            itemGameObject = collider.GetComponent<ItemGameObject>();
             
             if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
             {
@@ -30,6 +39,8 @@ public class ItemPickUp : MonoBehaviour
             {
                 itemGameObject.SetSelfStatic();
                 itemGameObject.canBePickedUp = false;
+
+                if (!isOnItemPickUpFailInvoked) StartCoroutine(DoOnItemPickUpFail());
             }
         }
     }
@@ -40,6 +51,17 @@ public class ItemPickUp : MonoBehaviour
         {
             collider.GetComponent<ItemGameObject>().SetSelfDynamic();
         }
+    }
+
+
+    IEnumerator DoOnItemPickUpFail()
+    {
+        isOnItemPickUpFailInvoked = true;
+        if (OnItemPickUpFail != null) OnItemPickUpFail(onItemPickUpFailDuration);
+        
+        yield return new WaitForSeconds(onItemPickUpFailDuration);
+
+        isOnItemPickUpFailInvoked = false;
     }
 
 }

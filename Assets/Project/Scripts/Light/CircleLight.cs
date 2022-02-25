@@ -35,6 +35,7 @@ public class CircleLight : CustomLight
         active = true;
         StartCoroutine(ExpandCircleLight());
         StartCoroutine(IntensityFadeIn(expandTime, endIntensity));
+        StartCoroutine(ExpandCorrection(endIntensity));
     }
 
     IEnumerator ExpandCircleLight()
@@ -52,12 +53,23 @@ public class CircleLight : CustomLight
             lerpTransitionValue = expandLerp.Value * outerRadius;
             circleLight.pointLightOuterRadius = lerpTransitionValue;
             circleLight.pointLightInnerRadius = lerpTransitionValue > radiusDifference ? lerpTransitionValue - radiusDifference : 0f;
-
+            
             yield return null;
         }
 
         lightState = LightState.NONE;
     }
+
+    IEnumerator ExpandCorrection(float endIntensity)
+    {
+        yield return new WaitForSeconds(expandTime + 0.1f);
+        
+        if (lightState == LightState.NONE && circleLight.pointLightOuterRadius != outerRadius)
+        {
+            Expand(endIntensity);
+        }
+    }
+
 
     public override void Shrink(float endIntensity)
     {

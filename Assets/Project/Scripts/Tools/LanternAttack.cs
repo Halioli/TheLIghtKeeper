@@ -9,9 +9,8 @@ public class LanternAttack : MonoBehaviour
     [SerializeField] private float attackDuration;
     [SerializeField] private float cooldownDuration;
     private float lightAngleIncrement;
-    private float lanternLightIntensity;
     private float lightDistanceIncrement;
-    private float lanternTimeConsumeValue;
+    //private float lanternTimeConsumeValue;
 
 
     // Events
@@ -25,19 +24,26 @@ public class LanternAttack : MonoBehaviour
     {
         canAttack = true;
 
-        lightAngleIncrement = 40.0f;
+        lightAngleIncrement = 5.0f;
         lightDistanceIncrement = 3.5f;
-        lanternLightIntensity = 5.0f;
 
-        lanternTimeConsumeValue = 5.0f;
+        //lanternTimeConsumeValue = 5.0f;
     }
 
     private void Update()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && IsAttackReady())
+        //if (PlayerInputs.instance.PlayerClickedAttackButton() && IsAttackReady())
+        //{
+        //    StartLanternAttack();
+        //}
+
+        if (PlayerInputs.instance.IsAttackButtonDown() && IsAttackReady())
         {
+            if (OnLanternAttackStart != null) OnLanternAttackStart();
             StartLanternAttack();
         }
+
+
     }
 
 
@@ -54,7 +60,8 @@ public class LanternAttack : MonoBehaviour
 
     private bool IsAttackReady()
     {
-        return lantern.turnedOn && (lantern.lampTime > lanternTimeConsumeValue) && canAttack;
+        //return lantern.turnedOn && (lantern.lampTime > lanternTimeConsumeValue) && canAttack;
+        return lantern.turnedOn && (lantern.lampTime > 0.1f) && canAttack;
     }
 
 
@@ -66,11 +73,16 @@ public class LanternAttack : MonoBehaviour
     IEnumerator ExpandLanternLight()
     {
         canAttack = false;
-        lantern.IncrementLightAngleAndDistance(lightAngleIncrement, lightDistanceIncrement, lanternLightIntensity);
-        lantern.ConsumeLampTime(lanternTimeConsumeValue);
-        yield return new WaitForSeconds(attackDuration);
+        lantern.IncrementLightAngleAndDistance(lightAngleIncrement, lightDistanceIncrement);
+        CinemachineShake.Instance.ShakeCamera(3f, 60f);
+        
+        //lantern.ConsumeLampTime(lanternTimeConsumeValue);
+        //yield return new WaitForSeconds(attackDuration);
+        yield return new WaitUntil(() => PlayerInputs.instance.IsAttackButtonUp());
 
+        if (OnLanternAttackEnd != null) OnLanternAttackEnd();
         lantern.ResetLightAngleAndDistance(lightAngleIncrement, lightDistanceIncrement);
+        CinemachineShake.Instance.ForceStopShakeCamera();
         yield return new WaitForSeconds(cooldownDuration);
 
         canAttack = true;

@@ -8,6 +8,7 @@ public class Lamp : MonoBehaviour
     // Private Attributes
     private const float LIGHT_INTENSITY_ON = 1f;
     private const float LIGHT_INTENSITY_OFF = 0.3f;
+    private const float LIGHT_INTENSITY_HIGH = 2f;
 
     private const int MAX_SOURCE_LEVELS = 6;
     private int sourceLevel = 0;
@@ -43,6 +44,14 @@ public class Lamp : MonoBehaviour
 
     System.Random rg;
 
+
+    private bool isLightIntense;
+    private float timeMultiplier;
+    private readonly float normalLightTimeMultiplier = 1f;
+    private float intenseLightTimeMultiplier = 3f;
+
+
+
     public delegate void PlayLanternSound();
     public static event PlayLanternSound turnOnLanternEvent;
     public static event PlayLanternSound turnOffLanternEvent;
@@ -59,6 +68,8 @@ public class Lamp : MonoBehaviour
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
+
+        timeMultiplier = normalLightTimeMultiplier;
     }
 
     private void Start()
@@ -72,14 +83,24 @@ public class Lamp : MonoBehaviour
 
     private void OnEnable()
     {
+        DarknessSystem.OnPlayerEntersLight += DeactivateLampLight;
+
         LanternSourceUpgrade.OnLanternSourceUpgrade += UpgradeLampSource;
         LanternTimeUpgrade.OnLanternTimeUpgrade += UpgradeLampTime;
+
+        LanternAttack.OnLanternAttackStart += SetTimeMultiplierToIntenseLight;
+        LanternAttack.OnLanternAttackEnd += SetTimeMultiplierToNormalLight;
     }
 
     private void OnDisable()
     {
+        DarknessSystem.OnPlayerEntersLight -= DeactivateLampLight;
+
         LanternSourceUpgrade.OnLanternSourceUpgrade -= UpgradeLampSource;
         LanternTimeUpgrade.OnLanternTimeUpgrade -= UpgradeLampTime;
+
+        LanternAttack.OnLanternAttackStart -= SetTimeMultiplierToIntenseLight;
+        LanternAttack.OnLanternAttackEnd -= SetTimeMultiplierToNormalLight;
     }
 
     public void UpdateLamp()
@@ -93,7 +114,7 @@ public class Lamp : MonoBehaviour
 
             GetComponentInParent<PlayerLightChecker>().SetPlayerInLightToFalse();
             flickCooldown = START_FLICK_COOLDOWN;
-            //circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
+            circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
 
             if (turnOffLanternEvent != null) turnOffLanternEvent();
         }
@@ -114,7 +135,7 @@ public class Lamp : MonoBehaviour
 
     public void ConsumeLampTime()
     {
-        lampTime -= Time.deltaTime;
+        lampTime -= Time.deltaTime * timeMultiplier;
     }
 
     public void ConsumeLampTime(float timeToSubstract)
@@ -126,6 +147,7 @@ public class Lamp : MonoBehaviour
     {
         lampTime = maxLampTime;
     }
+
     public void RefillLampTime(float time)
     {
         if (lampTime + time > maxLampTime)
@@ -137,6 +159,18 @@ public class Lamp : MonoBehaviour
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
+    }
+
+    public void ConsumeSpecificLampTime(float time)
+    {
+        if (lampTime - time < 0)
+        {
+            lampTime = 0;
+        }
+        else
+        {
+            lampTime -= time;
+        }
     }
 
     public bool CanRefill()
@@ -181,6 +215,7 @@ public class Lamp : MonoBehaviour
         StartCoroutine(LightFlicking());
     }
 
+
     public void ActivateConeLight()
     {
         if (!coneIsActive && turnOnLanternDroneSoundEvent != null)
@@ -191,6 +226,7 @@ public class Lamp : MonoBehaviour
         coneLight.SetIntensity(LIGHT_INTENSITY_ON);
         coneLight.Expand(LIGHT_INTENSITY_ON);
     }
+
 
     public void ActivateCircleLight()
     {
@@ -214,6 +250,8 @@ public class Lamp : MonoBehaviour
         if (active)
             DeactivateCircleLight();
     }
+
+
 
     public void DeactivateConeLight()
     {
@@ -246,7 +284,7 @@ public class Lamp : MonoBehaviour
         return maxLampTime;
     }
 
-    public void IncrementLightAngleAndDistance(float lightAngleIncrement, float lightDistanceIncrement, float lightIntensity)
+    public void IncrementLightAngleAndDistance(float lightAngleIncrement, float lightDistanceIncrement, float lightIntensity = LIGHT_INTENSITY_HIGH)
     {
         coneLight.SetDistance(lightDistance + lightDistanceIncrement);
         coneLight.ExtraExpand(lightAngle, lightAngle+lightAngleIncrement, lightIntensity);
@@ -259,7 +297,7 @@ public class Lamp : MonoBehaviour
         float lightIntensity = turnedOn ? LIGHT_INTENSITY_ON : LIGHT_INTENSITY_OFF;
 
         coneLight.SetDistance(lightDistance);
-        coneLight.PartialShrink(lightAngle + lightAngleIncrement, lightAngleIncrement, lightIntensity);
+        coneLight.PartialShrink(lightAngle + lightAngleIncrement, lightAngle, lightIntensity);
 
         circleLight.IntensityFadeOutTransition(lightIntensity);
     }
@@ -305,8 +343,17 @@ public class Lamp : MonoBehaviour
 
         while (turnedOn)
         {
-            circleLight.SetIntensity(LIGHT_INTENSITY_ON);
-            coneLight.SetIntensity(LIGHT_INTENSITY_ON);
+            if (isLightIntense)
+            {
+                circleLight.SetIntensity(LIGHT_INTENSITY_HIGH);
+                coneLight.SetIntensity(LIGHT_INTENSITY_HIGH);
+            }
+            else
+            {
+                circleLight.SetIntensity(LIGHT_INTENSITY_ON);
+                coneLight.SetIntensity(LIGHT_INTENSITY_ON);
+            }
+            
 
             lightingTime = flickCooldown + ((float)rg.NextDouble() - 0.5f);
             yield return new WaitForSeconds(lightingTime);
@@ -335,4 +382,19 @@ public class Lamp : MonoBehaviour
 
         //DeactivateConeLight();
     }
+
+
+    private void SetTimeMultiplierToNormalLight()
+    {
+        timeMultiplier = normalLightTimeMultiplier;
+        isLightIntense = false;
+    }
+
+    private void SetTimeMultiplierToIntenseLight()
+    {
+        timeMultiplier = intenseLightTimeMultiplier;
+        isLightIntense = true;
+    }
+
+
 }

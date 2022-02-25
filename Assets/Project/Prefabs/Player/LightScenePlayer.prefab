@@ -10275,6 +10275,7 @@ GameObject:
   - component: {fileID: 8397354122656166637}
   - component: {fileID: 1558386269828309269}
   - component: {fileID: 9058898689219941533}
+  - component: {fileID: 5608326945662042793}
   - component: {fileID: 5742222722491315820}
   - component: {fileID: 8201130277271903534}
   - component: {fileID: 4841017774039100854}
@@ -10465,7 +10466,7 @@ MonoBehaviour:
   defaultLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  animator: {fileID: 0}
+  animator: {fileID: 5742222722491315820}
 --- !u!114 &8148411520325426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10590,6 +10591,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactArea: {fileID: 1194788267757497830}
   attackArea: {fileID: 7233089400078776426}
+--- !u!114 &5608326945662042793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987370481941902186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddcc0d799ce5e7e4a9aad75c1cbc8ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coalMineral: {fileID: 3125845114834575730, guid: 41b01b1473e6747489fd36c552981ca8, type: 3}
+  ironMineral: {fileID: 5798179137086951883, guid: f60b77ac4e39adf419985fb62c42a11e, type: 3}
+  darkEssenceMineral: {fileID: 4956097848011580223, guid: e2c57d1dc2d45ed4cac975acf415c722, type: 3}
+  luxuniteMineral: {fileID: 7714621029357433215, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
 --- !u!95 &5742222722491315820
 Animator:
   serializedVersion: 3
