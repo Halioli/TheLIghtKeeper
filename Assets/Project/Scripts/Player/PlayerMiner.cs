@@ -32,7 +32,7 @@ public class PlayerMiner : PlayerBase
     [SerializeField] Pickaxe pickaxe;
 
     // Public Attributes
-    public GameObject interactArea;
+    //public GameObject interactArea;
     public LayerMask defaultLayerMask;
     public static Collider2D OverlapCircle;
     public Animator animator;

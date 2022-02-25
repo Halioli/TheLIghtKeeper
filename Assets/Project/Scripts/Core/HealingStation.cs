@@ -19,7 +19,7 @@ public class HealingStation : MonoBehaviour
     void Start()
     {
         playerInside = false;
-        player = GameObject.Find("LightScenePlayer");
+        player = GameObject.FindGameObjectWithTag("Player");
         playerHealthSystem = player.GetComponent<HealthSystem>();
         maxHealthMessage.alpha = 0;
         backgroundText.SetActive(false);

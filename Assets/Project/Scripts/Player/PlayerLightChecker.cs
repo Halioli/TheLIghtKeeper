@@ -88,7 +88,7 @@ public class PlayerLightChecker : MonoBehaviour
                 else
                 {
                     SetPlayerInLightToFalse();
-                    lamp.ActivateCircleLight();
+                    //lamp.ActivateCircleLight();
                 }
             }
         }

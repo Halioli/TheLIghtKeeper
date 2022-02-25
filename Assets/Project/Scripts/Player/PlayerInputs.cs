@@ -41,12 +41,22 @@ public class PlayerInputs : MonoBehaviour
         //return Input.GetKeyDown(KeyCode.Mouse0);
     }
 
-    public bool PlayerClickedAttackButton()
+
+    public bool IsAttackButtonDown()
     {
         if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
 
         return Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button5);
     }
+
+    public bool IsAttackButtonUp()
+    {
+        if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
+
+        return Input.GetKeyUp(KeyCode.Mouse1);
+    }
+
+
 
     public void SetNewMousePosition()
     {
