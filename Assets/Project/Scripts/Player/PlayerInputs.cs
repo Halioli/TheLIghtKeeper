@@ -38,9 +38,7 @@ public class PlayerInputs : MonoBehaviour
         if (PauseMenu.gameIsPaused || !instance.canMine) { return false; }
 
         return Input.GetButton("Fire1");
-        //return Input.GetKeyDown(KeyCode.Mouse0);
     }
-
 
     public bool IsAttackButtonDown()
     {
@@ -53,10 +51,8 @@ public class PlayerInputs : MonoBehaviour
     {
         if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
 
-        return Input.GetKeyUp(KeyCode.Mouse1);
+        return Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button5);
     }
-
-
 
     public void SetNewMousePosition()
     {
