@@ -150,6 +150,9 @@ public class PlayerMiner : PlayerBase
         playerStates.SetCurrentPlayerAction(PlayerAction.MINING);
         criticalMiningState = CriticalMiningState.NONE;
         StartCoroutine("Mining");
+
+        Debug.Log("StartMining");
+
     }
 
     private void MineOre(int damageToDeal)
@@ -209,6 +212,7 @@ public class PlayerMiner : PlayerBase
         {
             MineOre(pickaxe.damageValue);
         }
+
     }
 
     private void UpdateOverlapCirlcePositionAndMouseDirection()
