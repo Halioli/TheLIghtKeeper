@@ -54,6 +54,13 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button4);
     }
 
+    public bool PlayerClickedCloseLamp()
+    {
+        if (PauseMenu.gameIsPaused) { return false; }
+
+        return Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Joystick1Button3);
+    }
+
     public void SetNewMousePosition()
     {
         mousePosition = Input.mousePosition;
