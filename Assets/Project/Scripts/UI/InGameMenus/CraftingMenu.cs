@@ -10,43 +10,47 @@ public class CraftingMenu : MonoBehaviour
     private Inventory playerInventory;
     private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
-    private bool craftingRecepiesShown;
+    private RectTransform craftingListRectTransform;
+    private bool updatedCraftingMenu;
 
     // Public Attribute
-    public InventoryMenu inventoryMenu;
     public GameObject craftingList;
     public GameObject buttonPrefab;
     public GameObject requiredMaterialPrefab;
-    public Sprite smallCraftingRecepieFrame;
 
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
-        craftingRecepiesShown = false;
+        craftingListRectTransform = craftingList.GetComponent<RectTransform>();
+        updatedCraftingMenu = false;
     }
 
     private void Update()
     {
-        if (!craftingRecepiesShown)
+        if (!updatedCraftingMenu)
         {
             UpdateCraftingMenu();
-            craftingRecepiesShown = true;
+            updatedCraftingMenu = true;
         }
-        
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             SetFirstElemtTextToRed();
         }
 
-        //craftingSystem.UpdatePlayerInventoryData();
-        inventoryMenu.UpdateInventory();
     }
 
     private void UpdateCraftingMenu()
     {
+        foreach (GameObject recepieButton in recepieButtonsGameObjects)
+        {
+            Destroy(recepieButton);
+        }
         recepieButtonsGameObjects.Clear();
+
+
         int buttonNumb = 0;
         foreach (Recepie recepie in craftingSystem.availableRecepies)
         {
@@ -54,8 +58,12 @@ public class CraftingMenu : MonoBehaviour
 
             recepieButtonsGameObjects.Add(gameObjectButton);
 
-            gameObjectButton.GetComponent<Image>().sprite = smallCraftingRecepieFrame;
+            RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
+            craftingListRectTransform.sizeDelta = new Vector2(craftingListRectTransform.sizeDelta.x,
+                craftingListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
+
             gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumb;
+            gameObjectButton.GetComponent<CraftableItemButton>().SetDescription(recepie.resultingItemUnit.description);
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
             gameObjectButton.GetComponentsInChildren<Image>()[1].sprite = recepie.resultingItemUnit.GetItemSprite();
             gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[1].text = recepie.resultingAmountUnit.ToString();
@@ -76,5 +84,10 @@ public class CraftingMenu : MonoBehaviour
     private void SetFirstElemtTextToRed()
     {
         recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
+    }
+
+    public void ShowRecepies()
+    {
+        updatedCraftingMenu = false;
     }
 }

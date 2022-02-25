@@ -9,7 +9,7 @@ public class InventoryQuickAccess : MonoBehaviour
     // Private Attributes
     private const float FADE_TIME = 0.5f;
 
-    private Inventory playerInventory;
+    private HotbarInventory playerInventory;
     private PlayerInputs playerInputs;
     private int mouseScrollDirection;
     
@@ -27,7 +27,7 @@ public class InventoryQuickAccess : MonoBehaviour
 
     void Start()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<HotbarInventory>();
         playerInputs = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInputs>();
         mouseScrollDirection = 0;
 
@@ -44,8 +44,8 @@ public class InventoryQuickAccess : MonoBehaviour
         // Check Inputs & Act Accordingly
         if (PlayerInputs.instance.PlayerPressedQuickAccessButton())
         {
-            StartCoroutine(CanvasFadeIn(quickAccessGroup));
             StopCoroutine(CanvasFadeOut(quickAccessGroup));
+            StartCoroutine(CanvasFadeIn(quickAccessGroup));
         }
         else if (PlayerInputs.instance.PlayerReleasedQuickAccessButton())
         {
@@ -66,7 +66,6 @@ public class InventoryQuickAccess : MonoBehaviour
 
         if (!printedAlready)
         {
-            Debug.Log(playerInventory.indexOfSelectedInventorySlot);
             printedAlready = true;
         }
 

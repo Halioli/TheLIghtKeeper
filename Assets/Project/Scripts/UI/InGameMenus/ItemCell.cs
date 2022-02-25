@@ -4,11 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemCell : MonoBehaviour
+public class ItemCell : HoverButton
 {
+    protected InventoryMenu inventoryMenu;
+    protected int index;
+
     public Image itemImage;
     public TextMeshProUGUI itemAmount;
     public Button button;
+
+    public void InitItemCell(InventoryMenu inventoryMenu, int index)
+    {
+        this.inventoryMenu = inventoryMenu;
+        this.index = index;
+    }
 
     public void SetItemImage(Sprite sprite)
     {
@@ -20,14 +29,29 @@ public class ItemCell : MonoBehaviour
         itemAmount.text = amount.ToString();
     }
 
-    public void ClickedButton()
-    {
-
-    }
-
     public void SetToEmpty()
     {
-        //itemImage = empty;
         itemAmount.text = " ";
     }
+
+    public override void DoDescriptionTextAction()
+    {
+        if (inventoryMenu.inventory.inventory[index].StackIsEmpty())
+        {
+            base.DoOnHover();
+            return;
+        }
+        base.DoDescriptionTextAction();
+    }
+
+
+    public void ClickedButton()
+    {
+        inventoryMenu.SetSelectedInventorySlotIndex(index);
+        inventoryMenu.MoveItemToOtherInventory();
+    }
+
+    public virtual void DoOnSelect() { }
+    public virtual void DoOnSelect(bool isConsumible) { }
+    public virtual void DoOnDiselect() { }
 }
