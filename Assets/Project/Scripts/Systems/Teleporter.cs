@@ -136,4 +136,13 @@ public class Teleporter : InteractStation
         teleportSprite.SetActive(false);
     }
 
+    public void SaveTeleport()
+    {
+        SaveSystem.SaveTeleporters(this);
+    }
+
+    public void LoadTeleport()
+    {
+        SaveSystem.LoadTeleporters();
+    }
 }
