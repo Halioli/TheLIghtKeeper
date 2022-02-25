@@ -51,21 +51,18 @@ public class DarknessSystem : MonoBehaviour
 
         if (IsPlayerEnteringLight())
         {
-            //playerInLight = true;
-            ////DisableEnemySpawners();
-            //if(OnPlayerEntersLight != null)
-            //{
-            //    OnPlayerEntersLight();
-            //}
-            if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
+            playerInLight = true;
+            //DisableEnemySpawners();
+            if (OnPlayerEntersLight != null) OnPlayerEntersLight();
+            //if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
         }
         else if (IsPlayerExitingLight())
         {
-            //playerInLight = false;
-            ////EnableEnemySpawners();
-            //if (OnPlayerNotInLight != null) OnPlayerNotInLight();
+            playerInLight = false;
+            //EnableEnemySpawners();
+            if (OnPlayerNotInLight != null) OnPlayerNotInLight();
 
-            if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
+            //if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
         }
     }
 
