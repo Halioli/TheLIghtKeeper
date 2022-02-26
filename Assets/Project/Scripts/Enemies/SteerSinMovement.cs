@@ -3,15 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SteerSinMovement : SinMovement
-{
-    //[SerializeField] PolygonCollider2D polygonColliderObject;
-    //Vector2 colliderPointA; // top right point
-    //Vector2 colliderPointB; // top left point
-
-    //bool isInCollisionTrajectory;
-    //float angle;
-    //Vector2 colliderPosition;
-    
+{  
     Vector3 leftTargetDirection;
     Vector3 rightTargetDirection;
     LayerMask layerMask;
@@ -21,143 +13,108 @@ public class SteerSinMovement : SinMovement
     float distanceLeftHit;
     float distanceRightHit;
     float distanceDifference;
+    float raycastDistance = 4.5f;
 
+    Vector2 targetDirection;
+
+    bool isCorrectingDirection = false;
+    bool isWaitingToEndCorrection = false;
+    float angleScaler;
 
     private void Awake()
     {
         Init();
-        //colliderPointA = polygonColliderObject.GetComponent< PolygonCollider2D>().points[0];
-        //colliderPointB = polygonColliderObject.GetComponent<PolygonCollider2D>().points[1];
-        //colliderPointA = polygonColliderObject.points[0];
-        //colliderPointB = polygonColliderObject.points[1];
-        layerMask = LayerMask.NameToLayer("Default");
+        layerMask = LayerMask.GetMask("Default");
         steerDirection = new Quaternion();
     }
-
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    colliderPosition = other.transform.position;
-    //}
-    
-    //private void OnTriggerStay2D(Collider2D other)
-    //{
-    //    isInCollisionTrajectory = true;
-    //}
-
-    //private void OnTriggerExit2D(Collider2D other)
-    //{
-    //    isInCollisionTrajectory = false;
-    //}
 
 
 
     public override void MoveTowardsTargetDirection(Vector2 targetDirection, float moveSpeed, float sinPercent = 1f)
     {
-        //targetDirection = CorrectTargetDirection(targetDirection);
-        targetDirection = RaycastSteerCorrection(targetDirection);
+        if (isCorrectingDirection)
+        {
+            this.targetDirection = RaycastSteerCorrection(this.targetDirection);
+        }
+        else
+        {
+            this.targetDirection = RaycastSteerCorrection(targetDirection);
+        }
+        Debug.DrawRay(transform.position, this.targetDirection * raycastDistance, Color.yellow);
 
-        UpdateAngleDirection(targetDirection, sinPercent);
+        UpdateAngleDirection(this.targetDirection, sinPercent);
 
-        rigidbody.MovePosition((Vector2)transform.position + angleDirection + targetDirection * (moveSpeed * Time.deltaTime));
+        if (isCorrectingDirection)
+        {
+            rigidbody.MovePosition((Vector2)transform.position + this.targetDirection * (moveSpeed * Time.deltaTime));
+        }
+        else
+        {
+            rigidbody.MovePosition((Vector2)transform.position + angleDirection + targetDirection * (moveSpeed * Time.deltaTime));
+        }
     }
-
-
-    //private Vector2 CorrectTargetDirection(Vector2 targetDirection)
-    //{
-        
-
-    //    angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-
-    //    Quaternion rotation = Quaternion.Euler(0, 0, angle-90);
-    //    polygonColliderObject.transform.localRotation = Quaternion.Slerp(polygonColliderObject.transform.localRotation, rotation, 50 * Time.fixedDeltaTime);
-
-
-    //    return targetDirection;
-    //}
-
-
-    //private Vector2 GetRotatedPoint(Vector2 point)
-    //{
-    //    Vector2 rotatedPoint = new Vector2((point.x * Mathf.Cos(angle)) - (point.y * Mathf.Sin(angle)),
-    //                                        (point.y * Mathf.Cos(angle)) - (point.x * Mathf.Sin(angle)));
-    //    return rotatedPoint;
-    //}
-
-    //private bool IsAFurtherThanB()
-    //{
-    //    return Vector2.Distance(GetRotatedPoint(colliderPointA), colliderPosition) > Vector2.Distance(GetRotatedPoint(colliderPointB), colliderPosition);
-    //}
-
 
 
     private Vector2 RaycastSteerCorrection(Vector3 targetDirection)
     {
-        leftTargetDirection = Quaternion.Euler(0, 0, 10f) * targetDirection * 3f;
-        rightTargetDirection = Quaternion.Euler(0, 0, -10f) * targetDirection * 3f;
+        leftTargetDirection = Quaternion.Euler(0, 0, 10f) * targetDirection * raycastDistance;
+        rightTargetDirection = Quaternion.Euler(0, 0, -10f) * targetDirection * raycastDistance;
 
+        leftHit = Physics2D.Raycast(transform.position, leftTargetDirection, raycastDistance, layerMask);
+        rightHit = Physics2D.Raycast(transform.position, rightTargetDirection, raycastDistance, layerMask);
 
-        leftHit = Physics2D.Raycast(transform.position, leftTargetDirection, layerMask);
-        rightHit = Physics2D.Raycast(transform.position, rightTargetDirection, layerMask);
-
+        Debug.DrawRay(transform.position, targetDirection * raycastDistance, Color.white);
         Debug.DrawRay(transform.position, leftTargetDirection, Color.green);
         Debug.DrawRay(transform.position, rightTargetDirection, Color.red);
 
         if (leftHit.collider == null && rightHit.collider == null)
         {
-            Debug.Log(">>>>> NO HIT");
+            if (!isWaitingToEndCorrection) StartCoroutine(CorrectingDirectionToFalse());
             return targetDirection;
         }
 
+        isCorrectingDirection = true;
 
         if (leftHit.collider != null && rightHit.collider == null)
         {
-            steerDirection = RotateLeftQuaternion();
-            Debug.Log(">>>>> LEFT HIT");
+            angleScaler = 1;
         }
         else if (leftHit.collider == null && rightHit.collider != null)
         {
-            steerDirection = RotateRightQuaternion();
-            Debug.Log(">>>>> LEFT RIGHT");
+            angleScaler = -1;
         }
         else
         {
             distanceLeftHit = Vector2.Distance(leftHit.point, transform.position);
             distanceRightHit = Vector2.Distance(rightHit.point, transform.position);
             distanceDifference = distanceLeftHit - distanceRightHit;
+            angleScaler = distanceDifference / raycastDistance;
 
-            if (distanceDifference > 0.1f)
+            if (distanceDifference < 0.1f && distanceDifference > -0.1f)
             {
-                steerDirection = RotateLeftQuaternion();
+                angleScaler = 1;
             }
-            else if (distanceDifference < -0.1f)
+            else if (distanceDifference == 0)
             {
-                steerDirection = RotateRightQuaternion();
-            }
-            else
-            {
-                steerDirection = SuddenRotateQuaternion();
+                angleScaler = 0;
             }
 
         }
-        return targetDirection;
+
+        steerDirection = Quaternion.Euler(0, 0, 65 * angleScaler);
+
         return steerDirection * targetDirection;
     }
 
 
-
-    private Quaternion RotateLeftQuaternion()
+    IEnumerator CorrectingDirectionToFalse()
     {
-        return Quaternion.Euler(0, 0, 10);
-    }
+        isWaitingToEndCorrection = true;
 
-    private Quaternion RotateRightQuaternion()
-    {
-        return Quaternion.Euler(0, 0, -10);
-    }
+        yield return new WaitForSeconds(0.3f);
 
-    private Quaternion SuddenRotateQuaternion()
-    {
-        return Quaternion.Euler(0, 0, 90);
+        if (leftHit.collider == null && rightHit.collider == null) isCorrectingDirection = false;
+        isWaitingToEndCorrection = false;
     }
 
 }
