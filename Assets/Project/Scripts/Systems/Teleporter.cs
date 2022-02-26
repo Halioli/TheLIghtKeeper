@@ -41,7 +41,7 @@ public class Teleporter : InteractStation
 
     void Awake()
     {
-        //SaveSystem.teleporters.Add(this);   
+        SaveSystem.teleporters.Add(this);   
     }
     private void Start()
     {
