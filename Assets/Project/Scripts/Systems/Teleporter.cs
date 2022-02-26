@@ -41,10 +41,7 @@ public class Teleporter : InteractStation
 
     void Awake()
     {
-        SaveSystem.teleporters.Add(this);   
-    }
-    private void Start()
-    {
+        SaveSystem.teleporters.Add(this);
         teleportTransformPosition = GetComponent<Transform>().position;
         teleportTransformPosition.y -= 1.3f;
         spawnPosition = transform.position;

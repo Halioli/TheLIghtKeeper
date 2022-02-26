@@ -12,7 +12,8 @@ public class HealthSystem : MonoBehaviour
     // Public Attributes
     public int maxHealth;
 
-    void Start()
+
+    void Awake()
     {
         health = maxHealth;
         canBeDamaged = true;
