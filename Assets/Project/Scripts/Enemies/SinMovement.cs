@@ -5,19 +5,23 @@ using UnityEngine;
 public class SinMovement : MonoBehaviour
 {
     // Sinusoidal movement
-    [SerializeField] float amplitude = 0.1f;
-    [SerializeField] float period = 0.1f;
+    [SerializeField] protected float amplitude = 0.1f;
+    [SerializeField] protected float period = 0.1f;
     float theta;
     float sinWaveDistance;
 
-    Vector2 directionTowardsTargetPosition;
-    Vector2 angleDirection;
-    Rigidbody2D rigidbody;
+    protected Vector2 angleDirection;
+    protected Rigidbody2D rigidbody;
 
     float nearRadius;
 
 
     private void Awake()
+    {
+        Init();
+    }
+
+    protected void Init()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         nearRadius = 0.25f;
@@ -29,25 +33,29 @@ public class SinMovement : MonoBehaviour
         MoveTowardsTargetDirection((targetPosition - rigidbody.position).normalized, moveSpeed, sinPercent);
     }
 
-    public void MoveTowardsTargetDirection(Vector2 targetDirection, float moveSpeed, float sinPercent = 1f)
+    public virtual void MoveTowardsTargetDirection(Vector2 targetDirection, float moveSpeed, float sinPercent = 1f)
+    {
+        UpdateAngleDirection(targetDirection, sinPercent);
+
+        rigidbody.MovePosition((Vector2)transform.position + angleDirection + targetDirection * (moveSpeed * Time.deltaTime));
+    }
+
+    protected void UpdateAngleDirection(Vector2 targetDirection, float sinPercent)
     {
         // Sinusoidal movement
         theta = Time.timeSinceLevelLoad / period;
         sinWaveDistance = amplitude * Mathf.Sin(theta);
 
-        directionTowardsTargetPosition = targetDirection;
-        angleDirection = Vector2.Perpendicular(directionTowardsTargetPosition);
+        angleDirection = Vector2.Perpendicular(targetDirection);
         angleDirection *= sinWaveDistance;
         angleDirection *= sinPercent;
-
-        rigidbody.MovePosition((Vector2)transform.position + angleDirection + directionTowardsTargetPosition * (moveSpeed * Time.deltaTime));
     }
+
+
 
     public void MoveTowardsTargetDirectionStraight(Vector2 targetDirection, float moveSpeed)
     {
-        directionTowardsTargetPosition = targetDirection;
-
-        rigidbody.MovePosition((Vector2)transform.position + directionTowardsTargetPosition * (moveSpeed * Time.deltaTime));
+        rigidbody.MovePosition((Vector2)transform.position + targetDirection * (moveSpeed * Time.deltaTime));
     }
 
 

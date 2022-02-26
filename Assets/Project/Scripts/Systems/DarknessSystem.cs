@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class DarknessSystem : MonoBehaviour
 {
+    public static DarknessSystem instance;
+
+
     // Private Attributes
     private PlayerLightChecker playerLightChecker;
-    private bool playerInLight;
+    public bool playerInLight { get; private set; }
     private List<GameObject> enemySpawners = new List<GameObject>();
 
     private int ENEMY_CAP = 4;
@@ -21,6 +24,21 @@ public class DarknessSystem : MonoBehaviour
     public delegate void PlayerEntersLightAction();
     public static event PlayerEntersLightAction OnPlayerEntersLight;
     public static event PlayerEntersLightAction OnPlayerNotInLight;
+
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(instance);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
 
     void Start()
     {
@@ -51,21 +69,17 @@ public class DarknessSystem : MonoBehaviour
 
         if (IsPlayerEnteringLight())
         {
-            //playerInLight = true;
-            ////DisableEnemySpawners();
-            //if(OnPlayerEntersLight != null)
-            //{
-            //    OnPlayerEntersLight();
-            //}
-            if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
+            playerInLight = true;
+            //DisableEnemySpawners();
+            if (OnPlayerEntersLight != null) OnPlayerEntersLight();
+            //if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
         }
         else if (IsPlayerExitingLight())
         {
-            //playerInLight = false;
-            ////EnableEnemySpawners();
-            //if (OnPlayerNotInLight != null) OnPlayerNotInLight();
-
-            if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
+            playerInLight = false;
+            //EnableEnemySpawners();
+            if (OnPlayerNotInLight != null) OnPlayerNotInLight();
+            //if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
         }
     }
 

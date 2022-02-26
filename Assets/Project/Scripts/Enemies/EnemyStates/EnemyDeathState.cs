@@ -50,7 +50,7 @@ public class EnemyDeathState : EnemyState
     {
         transform.DOComplete();
         transform.DOPunchScale(new Vector3(0.5f, 0.5f), 1f, 10, 0.3f);
-        transform.DOShakePosition(1f, 1.5f);
+        transform.DOShakePosition(1f, 1.5f, 50);
 
         animator.SetTrigger("triggerDeath");
         isDying = true;
