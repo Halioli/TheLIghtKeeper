@@ -39,7 +39,10 @@ public class Teleporter : InteractStation
     public static event TeleportMenuAction OnMenuEnter;
     public static event TeleportMenuAction OnMenuExit;
 
-
+    void Awake()
+    {
+        //SaveSystem.teleporters.Add(this);   
+    }
     private void Start()
     {
         teleportTransformPosition = GetComponent<Transform>().position;
@@ -94,6 +97,7 @@ public class Teleporter : InteractStation
             PlayerInputs.instance.canMove = false;
             animator.SetBool("isActivated", true);
             teleportLight.SetActive(true);
+            //SaveSystem.SaveTeleporters();
         }
         else if (!activated && !playerInventory.InventoryContainsItem(darkEssence))
         {
@@ -134,15 +138,5 @@ public class Teleporter : InteractStation
     private void DesactivateSprite()
     {
         teleportSprite.SetActive(false);
-    }
-
-    public void SaveTeleport()
-    {
-        SaveSystem.SaveTeleporters(this);
-    }
-
-    public void LoadTeleport()
-    {
-        SaveSystem.LoadTeleporters();
     }
 }
