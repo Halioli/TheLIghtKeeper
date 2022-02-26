@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     // Protected Attributes
-    protected int health;
+    public int health;
     protected bool canBeDamaged;
     protected bool canBeHealed;
 

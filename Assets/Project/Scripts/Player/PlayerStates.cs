@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum PlayerState { BUSSY, FREE, DEAD };
 public enum PlayerAction { IDLE, WALKING, MINING, ATTACKING, INTERACTING };
-
 
 public class PlayerStates : MonoBehaviour
 {

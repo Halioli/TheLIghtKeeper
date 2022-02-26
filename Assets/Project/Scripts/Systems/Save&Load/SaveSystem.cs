@@ -6,22 +6,28 @@ using UnityEngine.SceneManagement;
 public class SaveSystem : MonoBehaviour
 {
     public static List<Teleporter> teleporters = new List<Teleporter>();
+
     public static GameObject player;
     public static PlayerMovement playerM;
+    public static HealthSystem playerHealthSystem;
+
     const string TP_COUNT_SUB = "/tp.count";
 
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerM = player.GetComponent<PlayerMovement>();
+        playerHealthSystem = player.GetComponent<HealthSystem>();
         LoadTeleporters();
         LoadPlayer();
+        LoadPlayerHealth();
     }
 
     private void OnApplicationQuit()
     {
         SaveTeleporters();
         SavePlayer(playerM);
+        SavePlayerHealth(playerHealthSystem);
     }
     public static void SavePlayer(PlayerMovement player)
     {
@@ -52,7 +58,42 @@ public class SaveSystem : MonoBehaviour
             position.z = playerData.playerPos[2];
             player.transform.position = position;
             strm.Close();
+            Debug.Log("Player Loaded");
             return playerData;
+        }
+        else
+        {
+            Debug.LogError("Save file not exists " + path);
+            return null;
+        }
+    }
+
+    public static void SavePlayerHealth(HealthSystem playerHealthSystem)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "playerHealth.dat";
+        FileStream stream = new FileStream(path, FileMode.Create);
+        PlayerHealthData data = new PlayerHealthData(playerHealthSystem);
+        formatter.Serialize(stream, data);
+        stream.Close();
+        Debug.Log("Saved health " + data.health);
+    }
+
+    public static PlayerHealthData LoadPlayerHealth()
+    {
+        string path = Application.persistentDataPath + "playerHealth.dat";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            
+            FileStream strm = new FileStream(path, FileMode.Open);
+
+            PlayerHealthData playerDataHealth = formatter.Deserialize(strm) as PlayerHealthData;
+            playerHealthSystem.health = playerDataHealth.health;
+            strm.Close();
+
+            Debug.Log("Health Loaded " + playerHealthSystem.health);
+            return playerDataHealth;
 
         }
         else
@@ -91,7 +132,7 @@ public class SaveSystem : MonoBehaviour
         Debug.Log("Saved");
     }
 
-    void LoadTeleporters()
+    public static void LoadTeleporters()
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string countPath = Application.persistentDataPath + TP_COUNT_SUB;
@@ -104,6 +145,7 @@ public class SaveSystem : MonoBehaviour
 
             teleporterCount = (int)formatter.Deserialize(countStrm);
             countStrm.Close();
+            Debug.Log(teleporterCount);
         }
         else
         {
@@ -112,8 +154,10 @@ public class SaveSystem : MonoBehaviour
 
         for (int i = 0; i < teleporters.Count; i++)
         {
-            if(File.Exists(path + i))
+
+            if (File.Exists(path + i))
             {
+
                 FileStream stream = new FileStream(path + i, FileMode.Create);
                 TeleportData data = formatter.Deserialize(stream) as TeleportData;
                 stream.Close();
