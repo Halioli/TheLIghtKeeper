@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2096602507651081437}
   - component: {fileID: 2096602507651081436}
-  - component: {fileID: 2096602507651081424}
+  - component: {fileID: 8304695894462173447}
   - component: {fileID: 2096602507651081426}
   - component: {fileID: 2096602507651081439}
   - component: {fileID: 2096602507651081438}
@@ -104,9 +104,9 @@ GameObject:
   - component: {fileID: 2096602507651081425}
   - component: {fileID: -7677263159845045531}
   - component: {fileID: 2096602507651081408}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShadowSpider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,7 +177,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2096602507651081424
+--- !u!114 &8304695894462173447
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -186,10 +186,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2096602507651081411}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6fc1efbc90715b4c8e73873d812c2ee, type: 3}
+  m_Script: {fileID: 11500000, guid: ceed31963d3427a478908e29d5b9d5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0.2
+  amplitude: 0.1
   period: 0.1
 --- !u!114 &2096602507651081426
 MonoBehaviour:
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minimumWanderDistance: 1.2
-  wanderingWaitTime: 2
-  wanderingRadius: 5
+  wanderingWaitTime: 1
+  wanderingRadius: 10
   moveSpeed: 8
   distanceToAggro: 10
 --- !u!114 &2096602507651081432
