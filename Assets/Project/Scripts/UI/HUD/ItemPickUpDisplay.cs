@@ -14,11 +14,14 @@ public class ItemPickUpDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI displayText;
     [SerializeField] Image displayImage;
 
-    float moveDuration = 5f;
+    bool isFadeOutStarted = false;
+    float totalDuration = 7f;
     float fadeDuration = 2f;
 
+    Item itemToDisplay;
+    float lastItemAmount = 0;
 
-    public delegate void ItemPickUpDisplayAction();
+    public delegate void ItemPickUpDisplayAction(int itemID);
     public static event ItemPickUpDisplayAction OnItemPickDisplayEnd;
 
 
@@ -31,22 +34,39 @@ public class ItemPickUpDisplay : MonoBehaviour
 
     public void SetDisplay(int itemID, int itemAmount)
     {
-        Item itemToDisplay = ItemLibrary.instance.GetItem(itemID);
+        itemToDisplay = ItemLibrary.instance.GetItem(itemID);
 
         displayImage.sprite = itemToDisplay.sprite;
 
-        displayText.text = "+" + itemAmount + " " + itemToDisplay.name;
+        UpdateDisplayText(itemAmount);
     }
 
-    public void DoDisplayAnimation(float endPosition)
-    {        
-        rectTransform.DOMoveY(rectTransform.position.y + endPosition, moveDuration);
-        StartCoroutine(StartFadeOut());
+    public void UpdateDisplayText(int itemAmount)
+    {
+        lastItemAmount += itemAmount;
+        displayText.text = "+" + lastItemAmount + " " + itemToDisplay.name;
+
+        DoDisplayAnimation();
     }
+
+    private void DoDisplayAnimation()
+    {
+        rectTransform.DOPunchScale(Vector2.up, 0.5f);
+
+        if (isFadeOutStarted)
+        {
+            StopCoroutine("StartFadeOut");
+        }
+
+        StartCoroutine("StartFadeOut");
+    }
+
 
     IEnumerator StartFadeOut()
     {
-        yield return new WaitForSeconds(moveDuration - fadeDuration);
+        isFadeOutStarted = true;
+        canvasGroup.alpha = 1f;
+        yield return new WaitForSeconds(totalDuration - fadeDuration);
 
 
         fadeInterpolator = new Interpolator(fadeDuration);
@@ -58,11 +78,15 @@ public class ItemPickUpDisplay : MonoBehaviour
             yield return null;
         }
 
-        if (OnItemPickDisplayEnd != null) OnItemPickDisplayEnd();
-
-        Destroy(gameObject);
+        if (OnItemPickDisplayEnd != null) OnItemPickDisplayEnd(itemToDisplay.ID);
     }
 
+
+
+    public void ResetPosition(float yOffset)
+    {
+        rectTransform.position = rectTransform.position - (Vector3.up * yOffset);
+    }
 
 
 }
