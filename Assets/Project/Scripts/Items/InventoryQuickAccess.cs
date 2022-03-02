@@ -42,16 +42,16 @@ public class InventoryQuickAccess : MonoBehaviour
         mouseScrollDirection = (int)playerInputs.PlayerMouseScroll().y;
 
         // Check Inputs & Act Accordingly
-        if (PlayerInputs.instance.PlayerPressedQuickAccessButton())
-        {
-            StopCoroutine(CanvasFadeOut(quickAccessGroup));
-            StartCoroutine(CanvasFadeIn(quickAccessGroup));
-        }
-        else if (PlayerInputs.instance.PlayerReleasedQuickAccessButton())
-        {
-            StopCoroutine(CanvasFadeIn(quickAccessGroup));
-            StartCoroutine(CanvasFadeOut(quickAccessGroup));
-        }
+        //if (PlayerInputs.instance.PlayerPressedQuickAccessButton())
+        //{
+        //    StopCoroutine(CanvasFadeOut(quickAccessGroup));
+        //    StartCoroutine(CanvasFadeIn(quickAccessGroup));
+        //}
+        //else if (PlayerInputs.instance.PlayerReleasedQuickAccessButton())
+        //{
+        //    StopCoroutine(CanvasFadeIn(quickAccessGroup));
+        //    StartCoroutine(CanvasFadeOut(quickAccessGroup));
+        //}
 
         if (mouseScrollDirection > 0)
         {
