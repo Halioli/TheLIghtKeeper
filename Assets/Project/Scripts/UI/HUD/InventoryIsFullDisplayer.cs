@@ -4,12 +4,12 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-public class InventoryIsFullManager : MonoBehaviour
+public class InventoryIsFullDisplayer : MonoBehaviour
 {
     Interpolator fadeInterpolator;
     CanvasGroup canvasGroup;
     [SerializeField] TextMeshProUGUI inventoryIsFullText;
-    [SerializeField] Color textColor;
+    //[SerializeField] Color textColor;
 
     [SerializeField] AudioSource audioSource;
 
@@ -19,7 +19,7 @@ public class InventoryIsFullManager : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0f;
-        inventoryIsFullText.color = textColor;
+        //inventoryIsFullText.color = textColor;
     }
 
     private void OnEnable()
@@ -44,24 +44,16 @@ public class InventoryIsFullManager : MonoBehaviour
 
     IEnumerator InventoryIsFullTextPopUpFade(float duration)
     {
-        fadeInterpolator = new Interpolator(duration / 2f);
+        canvasGroup.alpha = 1f;
 
+        fadeInterpolator = new Interpolator(duration);
         fadeInterpolator.ToMax();
         while (!fadeInterpolator.isMaxPrecise)
         {
             fadeInterpolator.Update(Time.deltaTime);
-            canvasGroup.alpha = fadeInterpolator.Value;
+            canvasGroup.alpha = fadeInterpolator.Inverse;
             yield return null;
         }
-
-        fadeInterpolator.ToMin();
-        while (!fadeInterpolator.isMinPrecise)
-        {
-            fadeInterpolator.Update(Time.deltaTime);
-            canvasGroup.alpha = fadeInterpolator.Value;
-            yield return null;
-        }
-
     }
 
 
