@@ -5,14 +5,35 @@ using UnityEngine.SceneManagement;
 
 public class ShipExit : MonoBehaviour
 {
+    public Vector2 shipExteriorPosition;
+    public HUDHandler hudHandler;
+
+
+    public delegate void ShipExitAction();
+    public static event ShipExitAction OnExit;
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collision.gameObject.transform.position = new Vector2(0, 0);
+            StartCoroutine(TeleportToShipExterior(collision.gameObject));
 
             // Unload ship scene
-            SceneManager.UnloadSceneAsync(2);
+            //SceneManager.UnloadSceneAsync(2);
         }
+    }
+
+    IEnumerator TeleportToShipExterior(GameObject gameObjectTeleported)
+    {
+        if (OnExit != null) OnExit();
+
+        hudHandler.DoFadeToBlack();
+        PlayerInputs.instance.canMove = false;
+
+        yield return new WaitForSeconds(1f);
+        gameObjectTeleported.transform.position = shipExteriorPosition;
+        hudHandler.RestoreFades();
+        PlayerInputs.instance.canMove = true;
     }
 }

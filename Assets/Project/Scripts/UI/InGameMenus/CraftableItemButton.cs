@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class CraftableItemButton : MonoBehaviour
+public class CraftableItemButton : HoverButton
 {
     // Private Attributes
 
@@ -12,9 +12,13 @@ public class CraftableItemButton : MonoBehaviour
     public delegate void ClickedRecepieButtonAction(int numb);
     public static event ClickedRecepieButtonAction OnClickedRecepieButton;
 
+
     public void OnClick()
     {
         if (OnClickedRecepieButton != null)
             OnClickedRecepieButton(buttonNumber);
     }
+
+
+
 }

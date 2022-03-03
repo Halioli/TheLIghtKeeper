@@ -5,13 +5,13 @@ using UnityEngine;
 public class UpgradesStation : InteractStation
 {
     public GameObject interactText;
+    public GameObject backgroundText;
     public GameObject upgradesCanvasGameObject;
     public GameObject hudGameObject;
     public UpgradesSystem upgradesSystem;
 
     private bool isOpen = false;
     private UpgradeMenuCanvas upgradeMenuCanvas;
-    //private InventoryMenu inventoryMenu;
 
     void Start()
     {
@@ -19,6 +19,8 @@ public class UpgradesStation : InteractStation
         upgradesSystem.Init(playerInventory);
         upgradeMenuCanvas = upgradesCanvasGameObject.GetComponent<UpgradeMenuCanvas>();
         InitUpgradesMenu();
+        CloseStorageInventory();
+        backgroundText.SetActive(false);
     }
 
     private void Update()
@@ -60,12 +62,14 @@ public class UpgradesStation : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
+        backgroundText.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        backgroundText.SetActive(false);
     }
 
 
@@ -75,10 +79,10 @@ public class UpgradesStation : InteractStation
 
         hudGameObject.SetActive(false);
         upgradesCanvasGameObject.SetActive(true);
-        //inventoryMenu.UpdateInventory();
-        PauseMenu.gameIsPaused = true;
+        PauseMenu.PauseMineAndAttack();
 
         DoOnInteractOpen();
+        DoOnInteractDescriptionOpen();
     }
 
     private void CloseStorageInventory()
@@ -86,7 +90,7 @@ public class UpgradesStation : InteractStation
         isOpen = false;
         hudGameObject.SetActive(true);
         upgradesCanvasGameObject.SetActive(false);
-        PauseMenu.gameIsPaused = false;
+        PauseMenu.ResumeMineAndAttack();
 
         DoOnInteractClose();
     }
