@@ -26,4 +26,24 @@ public class TutorialMessages : MonoBehaviour
             }
         }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            SendMessage(10);
+        }
+    }
+
+    public void SendMessage(int mssgId)
+    {
+        // Send Action
+        if (OnNewMessage != null)
+            OnNewMessage(mssgId);
+    }
+
+    public void ResetAllTutorialMessages()
+    {
+        gameObjectsFound.Clear();
+    }
 }
