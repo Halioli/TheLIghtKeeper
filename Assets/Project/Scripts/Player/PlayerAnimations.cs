@@ -20,14 +20,14 @@ public class PlayerAnimations : PlayerBase
     void Update()
     {
         //Mining animation
-        if (playerStates.PlayerActionIsMining())
-        {
-            animator.SetBool("isMining", true);
-        }
-        else
-        {
-            animator.SetBool("isMining", false);
-        }
+        //if (playerStates.PlayerActionIsMining())
+        //{
+        //    animator.SetBool("isMining", true);
+        //}
+        //else
+        //{
+        //    animator.SetBool("isMining", false);
+        //}
 
         ////Attacking animation
         //if (playerStates.PlayerActionIsAttacking()) 

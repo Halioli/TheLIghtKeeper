@@ -9,6 +9,8 @@ public class EnemyWanderingState : EnemyState
     Animator animator;
 
     bool isMoving;
+    bool isWanderingDone;
+    float wanderingTime;
     [SerializeField] float minimumWanderDistance;
     [SerializeField] float wanderingWaitTime;
     [SerializeField] float wanderingRadius;
@@ -49,6 +51,7 @@ public class EnemyWanderingState : EnemyState
     {
         isMoving = true;
         isTouchingLight = false;
+        isWanderingDone = true;
 
         isPlayerInLight = DarknessSystem.instance.playerInLight;
 
@@ -64,7 +67,7 @@ public class EnemyWanderingState : EnemyState
             nextState = EnemyStates.LIGHT_ENTER;
             return true;
         }
-        else if (isMoving && sinMovement.IsNearTargetPosition(targetPosition))
+        else if (isMoving && isWanderingDone)
         {
             StartCoroutine(WaitForNewWanderingTargetPosition());
         }
@@ -115,6 +118,7 @@ public class EnemyWanderingState : EnemyState
 
     IEnumerator WaitForNewWanderingTargetPosition()
     {
+        isWanderingDone = false;
         isMoving = false;
         enemyAudio.StopFootstepsAudio();
         animator.ResetTrigger("triggerMove");
@@ -127,6 +131,10 @@ public class EnemyWanderingState : EnemyState
         animator.ResetTrigger("triggerIdle");
         animator.SetTrigger("triggerMove");
         SetWanderingTargetPosition();
+
+        wanderingTime = Vector2.Distance(targetPosition, transform.position) % moveSpeed;
+        yield return new WaitForSeconds(wanderingTime);
+        isWanderingDone = true;
     }
 
 

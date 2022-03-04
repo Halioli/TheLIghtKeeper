@@ -8,11 +8,13 @@ public class ItemPickUp : MonoBehaviour
     private CircleCollider2D itemPickUpCheckCollider;
     ItemGameObject itemGameObject;
 
-    bool isOnItemPickUpFailInvoked = false;
-    float onItemPickUpFailDuration = 3f;
+    public delegate void ItemPickUpSuccessAction(int itemID);
+    public static event ItemPickUpSuccessAction OnItemPickUpSuccess;
 
-    public delegate void ItemPickUpAction(float isOnItemPickUpFailDuration);
-    public static event ItemPickUpAction OnItemPickUpFail;
+    bool isOnItemPickUpFailInvoked = false;
+    readonly float onItemPickUpFailDuration = 3f;
+    public delegate void ItemPickUpFailAction(float isOnItemPickUpFailDuration);
+    public static event ItemPickUpFailAction OnItemPickUpFail;
 
 
 
@@ -33,14 +35,11 @@ public class ItemPickUp : MonoBehaviour
             
             if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
             {
-                itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
+                ItemPickUpSuccess();
             }
             else
             {
-                itemGameObject.SetSelfStatic();
-                itemGameObject.canBePickedUp = false;
-
-                if (!isOnItemPickUpFailInvoked) StartCoroutine(DoOnItemPickUpFail());
+                ItemPickUpFail();
             }
         }
     }
@@ -54,14 +53,33 @@ public class ItemPickUp : MonoBehaviour
     }
 
 
+    private void ItemPickUpFail()
+    {
+        itemGameObject.SetSelfStatic();
+        itemGameObject.canBePickedUp = false;
+
+        if (!isOnItemPickUpFailInvoked) StartCoroutine(DoOnItemPickUpFail());
+    }
+
     IEnumerator DoOnItemPickUpFail()
     {
         isOnItemPickUpFailInvoked = true;
+
         if (OnItemPickUpFail != null) OnItemPickUpFail(onItemPickUpFailDuration);
         
         yield return new WaitForSeconds(onItemPickUpFailDuration);
 
         isOnItemPickUpFailInvoked = false;
     }
+
+
+
+    private void ItemPickUpSuccess()
+    {
+        itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
+
+        if (OnItemPickUpSuccess != null) OnItemPickUpSuccess(itemGameObject.item.ID);
+    }
+
 
 }
