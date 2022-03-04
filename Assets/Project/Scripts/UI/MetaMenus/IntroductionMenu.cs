@@ -9,11 +9,14 @@ public class IntroductionMenu : MonoBehaviour
     public Image loadingBarImage;
     public CanvasGroup loadingGroup;
     public CanvasGroup introductionGroup;
-    public CanvasGroup informationGroup;
+    public CanvasGroup tutorial01Group;
+    public CanvasGroup tutorial02Group;
+    public CanvasGroup tutorial03Group;
+    public CanvasGroup tutorial04Group;
     public CanvasGroup controllsGroup;
     public GameObject previousMenuGameObject;
 
-    private const int MAX_PANELS = 2;
+    private const int MAX_PANELS = 5;
     private const int MIN_PANELS = 0;
 
     private MainMenu mainMenu;
@@ -31,6 +34,8 @@ public class IntroductionMenu : MonoBehaviour
         {
             inMainMenu = false;
         }
+
+        ManageShownPanel();
     }
 
     private void ManageShownPanel()
@@ -39,19 +44,55 @@ public class IntroductionMenu : MonoBehaviour
         {
             case 0:
                 introductionGroup.alpha = 1f;
-                informationGroup.alpha = 0f;
+                tutorial01Group.alpha = 0f;
+                tutorial02Group.alpha = 0f;
+                tutorial03Group.alpha = 0f;
+                tutorial04Group.alpha = 0f;
                 controllsGroup.alpha = 0f;
                 break;
 
             case 1:
                 introductionGroup.alpha = 0f;
-                informationGroup.alpha = 1f;
+                tutorial01Group.alpha = 1f;
+                tutorial02Group.alpha = 0f;
+                tutorial03Group.alpha = 0f;
+                tutorial04Group.alpha = 0f;
                 controllsGroup.alpha = 0f;
                 break;
 
             case 2:
                 introductionGroup.alpha = 0f;
-                informationGroup.alpha = 0f;
+                tutorial01Group.alpha = 0f;
+                tutorial02Group.alpha = 1f;
+                tutorial03Group.alpha = 0f;
+                tutorial04Group.alpha = 0f;
+                controllsGroup.alpha = 0f;
+                break;
+
+            case 3:
+                introductionGroup.alpha = 0f;
+                tutorial01Group.alpha = 0f;
+                tutorial02Group.alpha = 0f;
+                tutorial03Group.alpha = 1f;
+                tutorial04Group.alpha = 0f;
+                controllsGroup.alpha = 0f;
+                break;
+
+            case 4:
+                introductionGroup.alpha = 0f;
+                tutorial01Group.alpha = 0f;
+                tutorial02Group.alpha = 0f;
+                tutorial03Group.alpha = 0f;
+                tutorial04Group.alpha = 1f;
+                controllsGroup.alpha = 0f;
+                break;
+
+            case 5:
+                introductionGroup.alpha = 0f;
+                tutorial01Group.alpha = 0f;
+                tutorial02Group.alpha = 0f;
+                tutorial03Group.alpha = 0f;
+                tutorial04Group.alpha = 0f;
                 controllsGroup.alpha = 1f;
                 break;
 

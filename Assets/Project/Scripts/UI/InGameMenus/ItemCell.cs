@@ -6,8 +6,8 @@ using TMPro;
 
 public class ItemCell : HoverButton
 {
-    private InventoryMenu inventoryMenu;
-    private int index;
+    protected InventoryMenu inventoryMenu;
+    protected int index;
 
     public Image itemImage;
     public TextMeshProUGUI itemAmount;
@@ -26,17 +26,16 @@ public class ItemCell : HoverButton
 
     public void SetItemAmount(int amount)
     {
+        if (amount == 0)
+        {
+            SetToEmpty();
+            return;
+        }
         itemAmount.text = amount.ToString();
-    }
-
-    public void ClickedButton()
-    {
-        inventoryMenu.MoveItemToOtherInventory(index);
     }
 
     public void SetToEmpty()
     {
-        //itemImage = empty;
         itemAmount.text = " ";
     }
 
@@ -50,4 +49,14 @@ public class ItemCell : HoverButton
         base.DoDescriptionTextAction();
     }
 
+
+    public void ClickedButton()
+    {
+        inventoryMenu.SetSelectedInventorySlotIndex(index);
+        inventoryMenu.MoveItemToOtherInventory();
+    }
+
+    public virtual void DoOnSelect() { }
+    public virtual void DoOnSelect(bool isConsumible) { }
+    public virtual void DoOnDiselect() { }
 }

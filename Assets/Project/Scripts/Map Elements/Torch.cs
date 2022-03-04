@@ -49,6 +49,8 @@ public class Torch : InteractStation
         }
         PuzzleChecker();
         linkedRune.SetActive(false);
+
+        desactivatedTorch.SetActive(true);
     }
 
     private void Update()

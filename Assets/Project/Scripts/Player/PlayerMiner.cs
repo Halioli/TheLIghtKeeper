@@ -12,7 +12,7 @@ public class PlayerMiner : PlayerBase
 
     private Ore oreToMine;
     private CriticalMiningState criticalMiningState = CriticalMiningState.NONE;
-    private const float MINING_TIME = 1.0f;
+    private const float MINING_TIME = 0.35f;
     private float miningTime = 0;
 
     private bool canCriticalMine = false;
@@ -32,7 +32,7 @@ public class PlayerMiner : PlayerBase
     [SerializeField] Pickaxe pickaxe;
 
     // Public Attributes
-    public GameObject interactArea;
+    //public GameObject interactArea;
     public LayerMask defaultLayerMask;
     public static Collider2D OverlapCircle;
     public Animator animator;
@@ -49,6 +49,7 @@ public class PlayerMiner : PlayerBase
     {
         animator = GetComponent<Animator>();
     }
+
     void Update()
     {
         MineTargetCheck();
@@ -124,7 +125,7 @@ public class PlayerMiner : PlayerBase
 
     private void CheckCriticalMining()
     {
-        if (PlayerInputs.instance.PlayerClickedMineButton())
+        /*if (PlayerInputs.instance.PlayerClickedMineButton())
         {
             if (canCriticalMine)
             {
@@ -137,7 +138,7 @@ public class PlayerMiner : PlayerBase
                 criticalMiningState = CriticalMiningState.FAILED;
                 playerFailMineEvent();
             }
-        }
+        }*/
     }
 
     private void StartMining()
@@ -148,7 +149,9 @@ public class PlayerMiner : PlayerBase
         playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
         playerStates.SetCurrentPlayerAction(PlayerAction.MINING);
         criticalMiningState = CriticalMiningState.NONE;
-        StartCoroutine("Mining");
+
+        PlayerInputs.instance.canMove = false;
+        animator.SetBool("isMining", true);
     }
 
     private void MineOre(int damageToDeal)
@@ -188,11 +191,15 @@ public class PlayerMiner : PlayerBase
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
         playerStates.SetCurrentPlayerAction(PlayerAction.IDLE);
 
+        animator.SetBool("isMining", false);
+
         Array.Clear(collidedElements, 0, collidedElements.Length);
         miningAnOre = false;
         maxColl = null;
         max = -2f;
         dotRes = max;
+
+        PlayerInputs.instance.canMove = true;
     }
 
     private void Mine()
@@ -200,14 +207,7 @@ public class PlayerMiner : PlayerBase
         if (!miningAnOre || oreToMine == null)
             return;
 
-        if (criticalMiningState == CriticalMiningState.SUCCEESSFUL)
-        {
-            MineOre(pickaxe.criticalDamageValue);
-        }
-        else
-        {
-            MineOre(pickaxe.damageValue);
-        }
+        MineOre(pickaxe.damageValue);
     }
 
     private void UpdateOverlapCirlcePositionAndMouseDirection()
@@ -235,27 +235,6 @@ public class PlayerMiner : PlayerBase
     public void FinishCriticalInterval()
     {
         canCriticalMine = false;
-    }
-
-    IEnumerator Mining()
-    {
-        PlayerInputs.instance.canMove = false;
-
-        while (miningTime <= MINING_TIME)
-        {
-
-            yield return new WaitForSeconds(Time.deltaTime);
-            miningTime += Time.deltaTime;
-
-            if (criticalMiningState == CriticalMiningState.NONE)
-                CheckCriticalMining();
-
-        }
-
-        ResetMining();
-
-        PlayerInputs.instance.canMove = true;
-        animator.SetBool("isPerfect", false);
     }
 
     private void FlipPlayerSpriteFacingOreToMine()

@@ -6,6 +6,17 @@ public class ItemPickUp : MonoBehaviour
 {
     private PlayerInventory playerInventory;
     private CircleCollider2D itemPickUpCheckCollider;
+    ItemGameObject itemGameObject;
+
+    public delegate void ItemPickUpSuccessAction(int itemID);
+    public static event ItemPickUpSuccessAction OnItemPickUpSuccess;
+
+    bool isOnItemPickUpFailInvoked = false;
+    readonly float onItemPickUpFailDuration = 3f;
+    public delegate void ItemPickUpFailAction(float isOnItemPickUpFailDuration);
+    public static event ItemPickUpFailAction OnItemPickUpFail;
+
+
 
     private void Start()
     {
@@ -20,16 +31,15 @@ public class ItemPickUp : MonoBehaviour
 
         if (collider.gameObject.CompareTag("Item"))
         {
-            ItemGameObject itemGameObject = collider.GetComponent<ItemGameObject>();
+            itemGameObject = collider.GetComponent<ItemGameObject>();
             
-            if (!itemGameObject.permanentNotPickedUp && playerInventory.inventory.ItemCanBeAdded(itemGameObject.item))
+            if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
             {
-                itemGameObject.canBePickedUp = playerInventory.inventory.AddItemToInventory(itemGameObject.item);
+                ItemPickUpSuccess();
             }
             else
             {
-                itemGameObject.SetSelfStatic();
-                itemGameObject.canBePickedUp = false;
+                ItemPickUpFail();
             }
         }
     }
@@ -41,5 +51,35 @@ public class ItemPickUp : MonoBehaviour
             collider.GetComponent<ItemGameObject>().SetSelfDynamic();
         }
     }
+
+
+    private void ItemPickUpFail()
+    {
+        itemGameObject.SetSelfStatic();
+        itemGameObject.canBePickedUp = false;
+
+        if (!isOnItemPickUpFailInvoked) StartCoroutine(DoOnItemPickUpFail());
+    }
+
+    IEnumerator DoOnItemPickUpFail()
+    {
+        isOnItemPickUpFailInvoked = true;
+
+        if (OnItemPickUpFail != null) OnItemPickUpFail(onItemPickUpFailDuration);
+        
+        yield return new WaitForSeconds(onItemPickUpFailDuration);
+
+        isOnItemPickUpFailInvoked = false;
+    }
+
+
+
+    private void ItemPickUpSuccess()
+    {
+        itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
+
+        if (OnItemPickUpSuccess != null) OnItemPickUpSuccess(itemGameObject.item.ID);
+    }
+
 
 }
