@@ -10462,7 +10462,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickaxe: {fileID: 3407413521592826935}
-  interactArea: {fileID: 1194788267757497830}
   defaultLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -10559,7 +10558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3be414cda14a4a428d97ff3b2cff101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackArea: {fileID: 7233089400078776426}
   hudHandler: {fileID: 0}
   targetWasHitAlready: 0
   playerBlood: {fileID: 3410508154403687448}
@@ -15592,6 +15590,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lantern: {fileID: 7987370480852967012}
+  attackDuration: 0
+  cooldownDuration: 0
 --- !u!1 &9026607882835807031
 GameObject:
   m_ObjectHideFlags: 0
@@ -16846,6 +16846,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.45490196
       objectReference: {fileID: 0}
+    - target: {fileID: 3231333305701039180, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
+      propertyPath: m_BlendStyleIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3231333305701039181, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -16856,6 +16860,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
+--- !u!4 &7842633779062082003 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3231333304631915568, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
+  m_PrefabInstance: {fileID: 4615804082815303139}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7842633779062082002 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3231333304631915569, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
@@ -16867,11 +16876,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217c67c11acd8fa49ac447edf010a03f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &7842633779062082003 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3231333304631915568, guid: 998645942a0e99541a613ebadc4fc784, type: 3}
-  m_PrefabInstance: {fileID: 4615804082815303139}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7207599775178301182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16890,6 +16894,10 @@ PrefabInstance:
     - target: {fileID: 8959189161383685856, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
       propertyPath: m_Color.r
       value: 0.45490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959189161383685856, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
+      propertyPath: m_BlendStyleIndex
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8959189161383685863, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
       propertyPath: m_IsActive

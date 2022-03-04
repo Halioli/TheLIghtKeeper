@@ -131,12 +131,10 @@ public class CraftingSystem : MonoBehaviour
     {
         for (int i = 0; i < recepieToCraft.resultingItem.Value; ++i)
         {
-            if (!playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
-            {
-                // instantiate item in map instead
-                GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
-                item.GetComponent<ItemGameObject>().DropsRandom();
-            }
+            playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key);
+
+            GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
+            item.GetComponent<ItemGameObject>().DropsRandom();
         }
         
     }
