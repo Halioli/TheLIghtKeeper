@@ -26,6 +26,11 @@ public class ItemCell : HoverButton
 
     public void SetItemAmount(int amount)
     {
+        if (amount == 0)
+        {
+            SetToEmpty();
+            return;
+        }
         itemAmount.text = amount.ToString();
     }
 
