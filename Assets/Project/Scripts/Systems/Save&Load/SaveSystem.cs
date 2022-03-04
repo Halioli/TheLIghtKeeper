@@ -8,40 +8,40 @@ public class SaveSystem : MonoBehaviour
     public static List<Teleporter> teleporters = new List<Teleporter>();
 
     public static GameObject player;
-    public static PlayerMovement playerM;
     public static HealthSystem playerHealthSystem;
+    public static Lamp playerLamp;
 
     const string TP_COUNT_SUB = "/tp.count";
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        playerM = player.GetComponent<PlayerMovement>();
         playerHealthSystem = player.GetComponent<HealthSystem>();
+        playerLamp = player.GetComponentInChildren<Lamp>();
 
-        //LoadTeleporters();
         LoadPlayer();
-        LoadPlayerHealth();
     }
 
     private void OnApplicationQuit()
     {
-        //SaveTeleporters();
-        SavePlayer(playerM);
-        SavePlayerHealth(playerHealthSystem);
+        SavePlayerData(player);
     }
-    public static void SavePlayer(PlayerMovement player)
+
+    public static void SavePlayerData(GameObject player)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "player.dat";
-
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player);
+        PlayerData data = new PlayerData(player, teleporters.Count);
 
+        for (int i = 0; i < teleporters.Count; i++)
+        {
+            data.enable[i] = teleporters[i].activated;
+        }
         formatter.Serialize(stream, data);
         stream.Close();
-        Debug.Log("Saved");
+        Debug.Log("Saved " + data.lampTime);
     }
 
     public static PlayerData LoadPlayer()
@@ -50,51 +50,30 @@ public class SaveSystem : MonoBehaviour
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+
             FileStream strm = new FileStream(path, FileMode.Open);
 
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
+
+            playerHealthSystem.health = playerData.health;
             Vector3 position;
             position.x = playerData.playerPos[0];
             position.y = playerData.playerPos[1];
             position.z = playerData.playerPos[2];
             player.transform.position = position;
+
+            for (int i = 0; i < teleporters.Count; i++)
+            {
+                teleporters[i].activated = playerData.enable[i];
+            }
+            playerLamp.lampTime = playerData.lampTime;
+            playerLamp.turnedOn = playerData.lampTurnedOn;
+            playerLamp.active = playerData.activeLamp;
+            playerLamp.turnedOn = playerData.coneActiveLamp;
+
+
             strm.Close();
-            Debug.Log("Player Loaded");
             return playerData;
-        }
-        else
-        {
-            Debug.LogError("Save file not exists " + path);
-            return null;
-        }
-    }
-
-    public static void SavePlayerHealth(HealthSystem playerHealthSystem)
-    {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "playerHealth.dat";
-        FileStream stream = new FileStream(path, FileMode.Create);
-        PlayerHealthData data = new PlayerHealthData(playerHealthSystem);
-        formatter.Serialize(stream, data);
-        stream.Close();
-        Debug.Log("Saved health " + data.health);
-    }
-
-    public static PlayerHealthData LoadPlayerHealth()
-    {
-        string path = Application.persistentDataPath + "playerHealth.dat";
-        if (File.Exists(path))
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            
-            FileStream strm = new FileStream(path, FileMode.Open);
-
-            PlayerHealthData playerDataHealth = formatter.Deserialize(strm) as PlayerHealthData;
-            playerHealthSystem.health = playerDataHealth.health;
-            strm.Close();
-
-            Debug.Log("Health Loaded " + playerHealthSystem.health);
-            return playerDataHealth;
 
         }
         else
@@ -104,79 +83,9 @@ public class SaveSystem : MonoBehaviour
         }
     }
 
-    //public static void SaveTeleporters()
-    //{
-    //    BinaryFormatter formatter = new BinaryFormatter();
-    //    string path = Application.persistentDataPath + "teleport.dat";
-    //    string countPath = Application.persistentDataPath + TP_COUNT_SUB;
+    public static void SetPlayerData(PlayerData playerData)
+    {
 
-    //    FileStream countStream = new FileStream(countPath, FileMode.Create);
-    //    formatter.Serialize(countStream, teleporters.Count);
-    //    countStream.Close();
-
-    //    for (int i = 0; i < teleporters.Count; i++)
-    //    {
-    //        FileStream stream = new FileStream(path + i, FileMode.Create);
-    //        TeleportData data = new TeleportData(teleporters[i]);
-    //        formatter.Serialize(stream, data);
-    //        stream.Close();
-
-    //        if (teleporters[i].activated == true)
-    //        {
-    //            Debug.Log("Activated");
-    //        }
-    //        else
-    //        {
-    //            Debug.Log("Deactivated");
-    //        }
-    //    }
-    //    Debug.Log("Saved");
-    //}
-
-    //public static void LoadTeleporters()
-    //{
-    //    BinaryFormatter formatter = new BinaryFormatter();
-    //    string countPath = Application.persistentDataPath + TP_COUNT_SUB;
-    //    string path = Application.persistentDataPath + "teleport.dat";
-    //    int teleporterCount = 0;
-
-    //    if (File.Exists(countPath))
-    //    {
-    //        FileStream countStrm = new FileStream(countPath, FileMode.Open);
-
-    //        teleporterCount = (int)formatter.Deserialize(countStrm);
-    //        countStrm.Close();
-    //        Debug.Log(teleporterCount);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("Save file not exists " + countPath);
-    //    }
-
-    //    for (int i = 0; i < teleporters.Count; i++)
-    //    {
-    //        Debug.Log("Itration: " + i);
-    //        if (File.Exists(path + i))
-    //        {
-
-    //            FileStream stream = new FileStream(path + i, FileMode.Create);
-    //            TeleportData data = formatter.Deserialize(stream) as TeleportData;
-    //            stream.Close();
-
-    //            teleporters[i].activated = data.enable;
-    //            if(teleporters[i].activated == true)
-    //            {
-    //                Debug.Log("Activated");
-    //            }
-    //            else
-    //            {
-    //                Debug.Log("Deactivated");
-    //            }
-    //        }
-    //        else
-    //        {
-    //            Debug.Log("path not found in " + path + i);
-    //        }
-    //    }
-    //}
+    }
 }
+

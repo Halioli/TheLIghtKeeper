@@ -100,20 +100,4 @@ public class PlayerMovement : PlayerBase
         animator.SetBool("isWalking", false);
         pausePlayerWalkingSoundEvent();
     }
-
-    public void SavePlayer()
-    {
-        SaveSystem.SavePlayer(this);
-    }
-    public void LoadPlayer()
-    {
-        PlayerData data = SaveSystem.LoadPlayer();
-
-        Vector3 position;
-        position.x = data.playerPos[0];
-        position.y = data.playerPos[1];
-        position.z = data.playerPos[2];
-
-        transform.position = position;
-    }
 }

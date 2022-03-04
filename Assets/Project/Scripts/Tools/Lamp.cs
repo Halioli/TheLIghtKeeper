@@ -19,10 +19,10 @@ public class Lamp : MonoBehaviour
 
     private const int MAX_TIME_LEVELS = 3;
     private int timeLevel = 0;
-    public float lampTime { get; private set; }
+    public float lampTime;
     private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
 
-    private bool coneIsActive = false;
+    public bool coneIsActive = false;
 
     private float maxLampTime;
     private Animator playerAnimator;
