@@ -8,36 +8,40 @@ public class ItemPickUpDisplayer : MonoBehaviour
     [SerializeField] ItemPickUpDisplay itemPickUpDisplayOriginal;
 
     Queue<int> displayQueue;
+    Dictionary<int, ItemPickUpDisplay> activeDisplays;
 
     int itemID, itemAmount;
     bool hasItemsToDisplay = false;
     readonly float displayCooldownDuration = 0.5f;
 
     Vector2 spawnPosition;
-    readonly float heightToMove = 250f;
-    readonly float offset = 50f;
+    float startSpawnY;
+    readonly float offset = 100f;
     int offsetMultiplier = 0;
 
     private void Awake()
     {
         displayQueue = new Queue<int>();
+        activeDisplays = new Dictionary<int, ItemPickUpDisplay>();
 
         spawnPosition = GetComponent<RectTransform>().position;
+        startSpawnY = spawnPosition.y;
     }
 
     private void OnEnable()
     {
         ItemPickUp.OnItemPickUpSuccess += AddItemToDisplayQueue;
 
-        ItemPickUpDisplay.OnItemPickDisplayEnd += (() => --offsetMultiplier);
+        ItemPickUpDisplay.OnItemPickDisplayEnd += DeleteActiveDisplay;
     }
 
     private void OnDisable()
     {
         ItemPickUp.OnItemPickUpSuccess -= AddItemToDisplayQueue;
 
-        ItemPickUpDisplay.OnItemPickDisplayEnd -= (() => --offsetMultiplier);
+        ItemPickUpDisplay.OnItemPickDisplayEnd -= DeleteActiveDisplay;
     }
+
 
 
     private void AddItemToDisplayQueue(int itemID)
@@ -61,10 +65,13 @@ public class ItemPickUpDisplayer : MonoBehaviour
 
     private void DisplayPickedUpItem()
     {
-        ItemPickUpDisplay itemPickUpDisplay = Instantiate(itemPickUpDisplayOriginal, spawnPosition, Quaternion.identity, transform);
+        spawnPosition.y = startSpawnY + (offset * offsetMultiplier++);
+        //ItemPickUpDisplay itemPickUpDisplay = Instantiate(itemPickUpDisplayOriginal, spawnPosition, Quaternion.identity, transform);
+        ItemPickUpDisplay itemPickUpDisplay = Instantiate(itemPickUpDisplayOriginal, transform);
+
+        activeDisplays.Add(itemID, itemPickUpDisplay);
 
         itemPickUpDisplay.SetDisplay(itemID, itemAmount);
-        itemPickUpDisplay.DoDisplayAnimation(heightToMove - (offset * offsetMultiplier++));
     }
 
 
@@ -75,7 +82,15 @@ public class ItemPickUpDisplayer : MonoBehaviour
             yield return new WaitForSecondsRealtime(displayCooldownDuration);
 
             SetSameItemAmountInDisplayQueue();
-            DisplayPickedUpItem();
+
+            if (activeDisplays.ContainsKey(itemID))
+            {
+                activeDisplays[itemID].UpdateDisplayText(itemAmount);
+            }
+            else
+            {
+                DisplayPickedUpItem();
+            }
 
             hasItemsToDisplay = displayQueue.Count > 0;
         }
@@ -88,6 +103,27 @@ public class ItemPickUpDisplayer : MonoBehaviour
             hasItemsToDisplay = true;
             StartCoroutine(DisplayCooldown());
         }
+    }
+
+
+    private void DeleteActiveDisplay(int itemID)
+    {
+        //bool itemIDFound = false;
+        
+        //foreach (KeyValuePair<int, ItemPickUpDisplay> displayPair in activeDisplays)
+        //{
+        //    if (displayPair.Key == itemID) itemIDFound = true;
+            
+        //    else if (itemIDFound)
+        //    {
+        //        activeDisplays[displayPair.Key].ResetPosition(offset);
+        //    }
+        //}
+
+        Destroy(activeDisplays[itemID].gameObject);
+        activeDisplays.Remove(itemID);
+
+        --offsetMultiplier;
     }
 
 
