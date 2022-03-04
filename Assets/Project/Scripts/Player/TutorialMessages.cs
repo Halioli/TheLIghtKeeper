@@ -17,7 +17,7 @@ public class TutorialMessages : MonoBehaviour
             if (collision.CompareTag(gameObjectsToFind[i].tag) && 
                 !gameObjectsFound.Contains(gameObjectsToFind[i]))
             {
-                Debug.Log(gameObjectsToFind[i]);
+                // Add game object to list so it doesn't repeat
                 gameObjectsFound.Add(gameObjectsToFind[i]);
 
                 // Send Action
