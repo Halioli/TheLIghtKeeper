@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 7734219591756777509}
   - component: {fileID: 7734219591756777514}
   - component: {fileID: 6529776738348863833}
+  - component: {fileID: 5246989292628515233}
   - component: {fileID: 3448295391379866214}
   m_Layer: 0
   m_Name: 'Teleport '
@@ -484,6 +485,19 @@ MonoBehaviour:
   teleportSprite: {fileID: 9006163087917762924}
   teleportLight: {fileID: 4978320871260295101}
   teleportAudioSource: {fileID: 3448295391379866214}
+--- !u!114 &5246989292628515233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7734219591756777512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3782788c2ac0a7c46801a4d33c5b2dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialMessage: This structure might activate if you bring it something
 --- !u!82 &3448295391379866214
 AudioSource:
   m_ObjectHideFlags: 0
