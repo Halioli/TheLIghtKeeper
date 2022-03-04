@@ -38,7 +38,7 @@ public class Furnace : InteractStation
     FurnaceEvents furnaceEvents;
 
     //Core light 
-    private int lightLevel = 0;
+    public int lightLevel = 0;
 
     //Fuel variables
     private int currentFuel = STARTING_FUEL_AMOUNT;

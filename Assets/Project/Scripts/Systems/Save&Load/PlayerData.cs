@@ -8,27 +8,41 @@ public class PlayerData
     public float[] playerPos;
     public int health;
 
-    public bool[] enable;
+    public bool[] enableTeleport;
 
+    public bool[] torchTurnedOn;
+    
     public float lampTime;
     public bool lampTurnedOn;
     public bool activeLamp;
     public bool coneActiveLamp;
 
-    public PlayerData(GameObject player, int size)
+    public float[] cameraPos;
+
+    public int furnaceLevel;
+
+    public PlayerData(GameObject player, int size, GameObject cam, int sizeTorch, GameObject furnace)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
         playerPos[1] = player.transform.position.y;
         playerPos[2] = player.transform.position.z;
 
+        cameraPos = new float[3];
+        cameraPos[0] = cam.transform.position.x;
+        cameraPos[1] = cam.transform.position.y;
+        cameraPos[2] = cam.transform.position.z;
+
         health = player.GetComponent<HealthSystem>().GetHealth();
 
         lampTime = player.GetComponentInChildren<Lamp>().GetLampTimeRemaining();
-        lampTurnedOn = player.GetComponentInChildren<Lamp>().turnedOn;
         activeLamp = player.GetComponentInChildren<Lamp>().active;
         coneActiveLamp = player.GetComponentInChildren<Lamp>().coneIsActive;
-        enable = new bool[size];
+
+        enableTeleport = new bool[size];
+        torchTurnedOn = new bool[sizeTorch];
+
+        furnaceLevel = furnace.GetComponent<Furnace>().lightLevel;
     }
 
 }
