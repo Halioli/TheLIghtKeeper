@@ -11,16 +11,35 @@ public class ChatBox : MonoBehaviour
     private static float FADE_OUT_TIME = 1.0f;
     private static float WAIT_TIME = 2.0f;
     private static float LETTER_DELAY = 0.05f;
+    private static int MAX_TEXT_LENGHT = 71;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
     private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
+    // World mssgs 0 - 9 // Tutorial mssgs 10 - 19
     private string[] chatMessages = {
         "Ores can be mined",
         "These creatures look hostile",
-        "If we bring it something it might activate"
+        "If we bring it something it might activate",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "", // 9
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", // Max lenght
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "", // 19
     };
 
     public TextMeshProUGUI mssgText;
@@ -108,14 +127,12 @@ public class ChatBox : MonoBehaviour
 
     IEnumerator ShowText()
     {
-        Vector3 punchVec = new Vector3(1.0f, 1.0f, 1.0f);
-
         for (int i = 0; i < fullMssgText.Length + 1; i++)
         {
             currentMssgText = fullMssgText.Substring(0, i);
             mssgText.text = currentMssgText;
 
-            duckFace.transform.DOShakeScale(LETTER_DELAY, 0.2f, 10, 50);
+            duckFace.transform.DOShakeRotation(LETTER_DELAY, 10, 10, 50);
             
             yield return new WaitForSeconds(LETTER_DELAY);
         }
