@@ -6,12 +6,8 @@ using DG.Tweening;
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
-    private Interpolator lerp;
-    private float lerpDistance = 0.3f;
-    private float halfLerpDistance = 0.15f;
-    private float startYLerp;
-
     protected Rigidbody2D rigidbody2D;
+    public bool permanentNotPickedUp = false;
     public bool canBePickedUp;
 
     private const float DROP_DOWN_FORCE_Y = 1.5f;
@@ -39,17 +35,10 @@ public class ItemGameObject : MonoBehaviour
 
     private void Start()
     {
-        lerp = new Interpolator(1f, Interpolator.Type.SMOOTH);
-        startYLerp = transform.position.y;
-
         rigidbody2D.gravityScale = 0f;
     }
 
-    private void Update()
-    {
-        if (canBePickedUp)
-            ItemFloating();
-    }
+
 
     public void DropsDown()
     {
@@ -103,7 +92,7 @@ public class ItemGameObject : MonoBehaviour
 
     IEnumerator Despawning(float despawnTime)
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         Color transparentColor = spriteRenderer.color;
         transparentColor.a = 0.0f;
 
@@ -148,14 +137,5 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 
-    private void ItemFloating()
-    {
-        lerp.Update(Time.deltaTime);
-        if (lerp.isMinPrecise)
-            lerp.ToMax();
-        else if (lerp.isMaxPrecise)
-            lerp.ToMin();
 
-        transform.position = new Vector3(transform.position.x, startYLerp + (halfLerpDistance + lerpDistance * lerp.Value), 0f);
-    }
 }

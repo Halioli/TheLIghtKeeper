@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+
+
 public class Interpolator
 {
 
@@ -93,6 +95,13 @@ public class Interpolator
             default:
                 break;
         }
+    }
+
+
+    public void SetCurrentTime(float currentTime)
+    {
+        if (currentTime > 1f || currentTime < 0f) currentTime = 0f;
+        m_currentTime = currentTime;
     }
 
 }

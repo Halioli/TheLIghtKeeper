@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-
 public enum LightBugMovement { LINEAR, CIRCLE };
 
 public class LightBug : Enemy
@@ -14,9 +13,8 @@ public class LightBug : Enemy
     Interpolator horizontalLerp;
     Interpolator verticalLerp;
 
-
-    private Light2D[] pointLightBug;
-    private bool isTurnedOn = false;
+    private float timeCounter;
+    private Vector3 centerPosition;
 
     public LightBugMovement lightBugMovement;
 
@@ -32,26 +30,24 @@ public class LightBug : Enemy
     public float width;
     public float height;
 
-    private float timeCounter;
-    private Vector3 centerPosition;
-
-    private float initialIntensity = 0.3f;
-    private float maxIntensity = 1f;
-    private float time;
-    private bool cycleFinished;
+    //Audio
+    public AudioClip lightBugFlying;
+    public AudioClip lightBugDeath;
 
     void Start()
     {
         horizontalLerp = new Interpolator(timeToReachEachPoint, Interpolator.Type.SMOOTH);
         verticalLerp = new Interpolator(0.5f, Interpolator.Type.SMOOTH);
 
-        pointLightBug = GetComponentsInChildren<Light2D>();
         healthSystem = GetComponent<BeingHealthSystem>();
         attackSystem = GetComponent<AttackSystem>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         centerPosition = transform.position;
+        FlipSprite();
+
+        FlyingSound();
     }
 
     void Update()
@@ -71,11 +67,11 @@ public class LightBug : Enemy
             UpdateInterpolators();
 
             transform.position = new Vector3(initialPositionX + (finalPositionX - initialPositionX) * horizontalLerp.Value, initialPositionY + (finalPositionY - initialPositionY) * horizontalLerp.Value, 0f);
-            if (initialPositionX - finalPositionX != 0)
+            if ((initialPositionX - finalPositionX != 0) && (initialPositionY == 0) && (finalPositionY == 0))
             {
-                transform.position = new Vector3(transform.position.x, (transform.position.y + 1f) - (transform.position.y + 1f) * verticalLerp.Value, 0f);
+                transform.position = new Vector3(transform.position.x, (transform.position.y + 1f) - (transform.position.y + 1f) * verticalLerp.Value, 0f); 
             }
-            else
+            else if((initialPositionY - finalPositionY != 0) && (initialPositionX == 0) && (finalPositionX == 0))
             {
                 transform.position = new Vector3((transform.position.x + 1f) - (transform.position.x + 1f) * verticalLerp.Value, transform.position.y, 0f);
             }
@@ -88,32 +84,9 @@ public class LightBug : Enemy
 
     }
 
-    //IEnumerator FlashLightAppears()
-    //{
-    //    time = 0f;
-    //    while (time < 1)
-    //    {
-    //        pointLightBug[0].intensity = Mathf.Lerp(initialIntensity, maxIntensity, time);
-    //        pointLightBug[1].intensity = Mathf.Lerp(initialIntensity, maxIntensity, time);
-
-    //        time += Time.deltaTime;
-    //        yield return new WaitForSeconds(Time.deltaTime);
-    //    }
-    //    time = 0f;
-    //    while (time < 1)
-    //    {
-    //        pointLightBug[0].intensity = Mathf.Lerp(maxIntensity, initialIntensity, time);
-    //        pointLightBug[1].intensity = Mathf.Lerp(maxIntensity, initialIntensity, time);
-
-    //        time += Time.deltaTime;
-    //        yield return new WaitForSeconds(Time.deltaTime);
-    //    }
-    //}
-
     protected override void Die()
     {
-        base.Die();
-        Destroy(gameObject);
+        StartCoroutine(Death());
     }
 
     private void UpdateInterpolators()
@@ -121,34 +94,64 @@ public class LightBug : Enemy
         horizontalLerp.Update(Time.deltaTime);
         if (horizontalLerp.isMinPrecise)
         {
-            FlipSprite();
             horizontalLerp.ToMax();
+            FlipSprite();
+
         }
 
         else if (horizontalLerp.isMaxPrecise) 
         {
-            FlipSprite();
             horizontalLerp.ToMin();
+            FlipSprite();
         }
 
 
         verticalLerp.Update(Time.deltaTime);
         if (verticalLerp.isMinPrecise)
         {
-            FlipSprite();
             verticalLerp.ToMax();
         }
         else if (verticalLerp.isMaxPrecise)
         {
-            FlipSprite();
             verticalLerp.ToMin();
         }
     }
 
-    public void FlipSprite()
+    private void DeathSound()
     {
-           spriteRenderer.flipX = !spriteRenderer.flipX;
+        audioSource.loop = false;
+        audioSource.clip = lightBugDeath;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
     }
 
+    private void FlyingSound()
+    {
+        audioSource.clip = lightBugFlying;
+        audioSource.loop = true;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
+    }
+
+    public void FlipSprite()
+    {
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+    }
+
+    IEnumerator Death()
+    {
+        DeathSound();
+
+        yield return new WaitForSeconds(0.5f);
+
+        base.Die();
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(player.GetComponent<PlayerLightChecker>().numberOfLights);
+
+    }
 }
 

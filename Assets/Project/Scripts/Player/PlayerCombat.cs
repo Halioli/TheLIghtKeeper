@@ -22,7 +22,7 @@ public class PlayerCombat : PlayerBase
     protected HealthSystem healthSystem;
 
     // Public Attributes
-    public GameObject attackArea;
+    //public GameObject attackArea;
     public HUDHandler hudHandler;
     public bool targetWasHitAlready = false;
 
@@ -44,16 +44,17 @@ public class PlayerCombat : PlayerBase
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
         inGameHUD = GetComponentInChildren<InGameHUDHandler>();
+        animator = GetComponent<Animator>();
         playerBlood.Stop();
     }
 
-    void Update()
-    {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
-        {
-            StartAttacking();
-        }
-    }
+    //void Update()
+    //{
+    //    if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
+    //    {
+    //        StartAttacking();
+    //    }
+    //}
 
     private void StartAttacking()
     {
