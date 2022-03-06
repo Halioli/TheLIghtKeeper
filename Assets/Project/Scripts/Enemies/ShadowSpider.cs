@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ShadowSpider : EnemyMonster
 {
-    ShadowSpiderStateManager shadowSpiderStateManager;
-    bool isDyingAlready;
+    protected ShadowSpiderStateManager shadowSpiderStateManager;
+    protected bool isDyingAlready;
 
 
     void Awake()
@@ -22,7 +22,7 @@ public class ShadowSpider : EnemyMonster
     private void Start()
     {
         InitColors();
-        InitShadowSpiderStateManager();
+        InitStateManager();
     }
 
 
@@ -79,7 +79,7 @@ public class ShadowSpider : EnemyMonster
         this.playerGameObject = playerGameObject;
     }
 
-    private void InitShadowSpiderStateManager()
+    protected virtual void InitStateManager()
     {
         shadowSpiderStateManager.Init(playerGameObject.transform);
     }
