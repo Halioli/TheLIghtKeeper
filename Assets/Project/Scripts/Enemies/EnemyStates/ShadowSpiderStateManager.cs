@@ -2,15 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShadowSpiderStateManager : MonoBehaviour
+public class ShadowSpiderStateManager : EnemyStateManager
 {
-    Transform playerTransform;
 
-    Dictionary<EnemyStates, EnemyState> states;
-    public EnemyStates currentState { get; private set; }
-
-
-    public void Init(Transform playerTransform)
+    public override void Init(Transform playerTransform)
     {
         this.playerTransform = playerTransform;
 
@@ -41,37 +36,5 @@ public class ShadowSpiderStateManager : MonoBehaviour
         states[currentState].StateStart();
     }
 
-
-    private void Update()
-    {
-        if (!states[currentState].StateUpdate()) return;
-
-        currentState = states[currentState].nextState;
-        states[currentState].StateStart();
-    }
-
-    private void FixedUpdate()
-    {
-        states[currentState].StateFixedUpdate();
-    }
-
-    private void OnTriggerEnter2D(Collider2D otherCollider)
-    {
-        states[currentState].StateOnTriggerEnter(otherCollider);
-    }
-
-    private void OnTriggerExit2D(Collider2D otherCollider)
-    {
-        states[currentState].StateOnTriggerExit(otherCollider);
-    }
-
-
-    public void ForceState(EnemyStates newState)
-    {
-        if (currentState == EnemyStates.DEATH || currentState == EnemyStates.DESTROY) return;
-
-        currentState = newState;
-        states[currentState].StateStart();
-    }
 
 }
