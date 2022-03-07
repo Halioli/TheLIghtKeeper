@@ -16,7 +16,7 @@ public class ItemPickUpDisplayer : MonoBehaviour
 
     Vector2 spawnPosition;
     float startSpawnY;
-    readonly float offset = 100f;
+    readonly float offset = 80f;
     int offsetMultiplier = 0;
 
     private void Awake()
@@ -31,6 +31,7 @@ public class ItemPickUpDisplayer : MonoBehaviour
     private void OnEnable()
     {
         ItemPickUp.OnItemPickUpSuccess += AddItemToDisplayQueue;
+        CraftingSystem.OnItemCraft += AddItemToDisplayQueue;
 
         ItemPickUpDisplay.OnItemPickDisplayEnd += DeleteActiveDisplay;
     }
@@ -38,6 +39,7 @@ public class ItemPickUpDisplayer : MonoBehaviour
     private void OnDisable()
     {
         ItemPickUp.OnItemPickUpSuccess -= AddItemToDisplayQueue;
+        CraftingSystem.OnItemCraft -= AddItemToDisplayQueue;
 
         ItemPickUpDisplay.OnItemPickDisplayEnd -= DeleteActiveDisplay;
     }
@@ -66,8 +68,8 @@ public class ItemPickUpDisplayer : MonoBehaviour
     private void DisplayPickedUpItem()
     {
         spawnPosition.y = startSpawnY + (offset * offsetMultiplier++);
-        //ItemPickUpDisplay itemPickUpDisplay = Instantiate(itemPickUpDisplayOriginal, spawnPosition, Quaternion.identity, transform);
-        ItemPickUpDisplay itemPickUpDisplay = Instantiate(itemPickUpDisplayOriginal, transform);
+        ItemPickUpDisplay itemPickUpDisplay = Instantiate(itemPickUpDisplayOriginal, spawnPosition, Quaternion.identity, transform);
+        //ItemPickUpDisplay itemPickUpDisplay = Instantiate(itemPickUpDisplayOriginal, transform);
 
         activeDisplays.Add(itemID, itemPickUpDisplay);
 
@@ -108,17 +110,17 @@ public class ItemPickUpDisplayer : MonoBehaviour
 
     private void DeleteActiveDisplay(int itemID)
     {
-        //bool itemIDFound = false;
-        
-        //foreach (KeyValuePair<int, ItemPickUpDisplay> displayPair in activeDisplays)
-        //{
-        //    if (displayPair.Key == itemID) itemIDFound = true;
-            
-        //    else if (itemIDFound)
-        //    {
-        //        activeDisplays[displayPair.Key].ResetPosition(offset);
-        //    }
-        //}
+        bool itemIDFound = false;
+
+        foreach (KeyValuePair<int, ItemPickUpDisplay> displayPair in activeDisplays)
+        {
+            if (displayPair.Key == itemID) itemIDFound = true;
+
+            else if (itemIDFound)
+            {
+                activeDisplays[displayPair.Key].ResetPosition(offset);
+            }
+        }
 
         Destroy(activeDisplays[itemID].gameObject);
         activeDisplays.Remove(itemID);

@@ -10,38 +10,34 @@ public class CraftingRecepieDisplayer : MonoBehaviour
     [SerializeField] GameObject requiredMaterialPrefab;
 
     [SerializeField] Image resultingItemImage;
+    [SerializeField] TextMeshProUGUI resultingAmountText;
     [SerializeField] TextMeshProUGUI resultingItemText;
     [SerializeField] TextMeshProUGUI resultingItemDescription;
 
 
     [SerializeField] GameObject holder;
-    List<GameObject> requiredItems;
+    [SerializeField] GameObject[] requiredItems;
 
 
 
-    private void Awake()
-    {
-        requiredItems = new List<GameObject>();
-    }
 
-
-
-    public void SetRecepieResultingItem(int itemID)
+    public void SetRecepieResultingItem(int itemID, int itemAmount)
     {
         resultingItemImage.sprite = ItemLibrary.instance.GetItem(itemID).sprite;
+        resultingAmountText.text = itemAmount + "x";
         resultingItemText.text = ItemLibrary.instance.GetItem(itemID).itemName;
         resultingItemDescription.text = ItemLibrary.instance.GetItem(itemID).description;
     }
 
-    public void ClearCurrentRequiredMaterials()
+    public void ClearRequiredMaterial(int index)
     {
-        requiredItems.Clear();
+        requiredItems[index].SetActive(false);
     }
 
-    public void AddRequiredMaterial(int itemID, int itemAmount)
+    public void AddRequiredMaterial(int index, int itemID, int itemAmount)
     {
-        GameObject requiredMaterial = Instantiate(requiredMaterialPrefab, holder.transform);
-        requiredMaterial.GetComponent<RequiredItemDisplay>().Init(itemID, itemAmount);
+        requiredItems[index].SetActive(true);
+        requiredItems[index].GetComponent<RequiredItemDisplay>().Init(itemID, itemAmount);
     }
     
 }
