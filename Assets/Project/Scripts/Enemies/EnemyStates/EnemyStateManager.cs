@@ -21,7 +21,7 @@ public class EnemyStateManager : MonoBehaviour
         if (!states[currentState].StateUpdate()) return;
 
         currentState = states[currentState].nextState;
-        states[currentState].StateStart();
+        states[currentState].StateStart();  
     }
 
     private void FixedUpdate()

@@ -213,6 +213,9 @@ MonoBehaviour:
   minMoveEffort: 0.5
   maxMoveEffort: 1.5
   tiredDuration: 1
+  garbage: {fileID: 0}
+  footstepsAudioSource: {fileID: 3892944969756627863}
+  screamAudioSource: {fileID: 3892944969756627860}
 --- !u!114 &3892944969756627845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,9 +442,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1109366681320285650, guid: d2d06a73097f0e841a00b2aadc70d386, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 9bc9cd240fb1e5c4db4f0e11a4c2a7b2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9173ef68dcd78734db2007128f7eca59, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.8
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -581,7 +584,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.9
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -677,7 +680,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.9
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
