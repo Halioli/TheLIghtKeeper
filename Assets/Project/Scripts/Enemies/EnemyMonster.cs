@@ -85,7 +85,7 @@ public class EnemyMonster : MonoBehaviour
         Destroy(gameObject);
     }
 
-    protected void DropItem()
+    protected virtual void DropItem()
     {
         if (Random.Range(0, 100) > dropRatePercent) return;
 
