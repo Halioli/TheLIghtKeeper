@@ -21,7 +21,10 @@ public class PlayerData
 
     public int furnaceLevel;
 
-    public PlayerData(GameObject player, int size, GameObject cam, int sizeTorch, GameObject furnace)
+    public int[] inventoryItemQuantity;
+    public int[] inventoryItemID;
+
+    public PlayerData(GameObject player, int size, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
@@ -43,6 +46,18 @@ public class PlayerData
         torchTurnedOn = new bool[sizeTorch];
 
         furnaceLevel = furnace.GetComponent<Furnace>().lightLevel;
+
+
+        inventoryItemQuantity = new int[inventoryData.Count];
+        inventoryItemID = new int[inventoryData.Count];
+
+        int i = 0;
+        foreach(KeyValuePair<int,int> inventoryPair in inventoryData)
+        {
+            inventoryItemQuantity[i] = inventoryPair.Value;
+            inventoryItemID[i] = inventoryPair.Key;
+            i++;
+        }
     }
 
 }

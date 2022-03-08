@@ -13,6 +13,7 @@ public class SaveSystem : MonoBehaviour
     public static HealthSystem playerHealthSystem;
     public static Lamp playerLamp;
     public static GameObject furnace;
+    public static Inventory playerInventory;
 
     const string TP_COUNT_SUB = "/tp.count";
 
@@ -23,6 +24,7 @@ public class SaveSystem : MonoBehaviour
         playerHealthSystem = player.GetComponent<HealthSystem>();
         playerLamp = player.GetComponentInChildren<Lamp>();
         furnace = GameObject.FindGameObjectWithTag("Furnace");
+        playerInventory = player.GetComponentInChildren<Inventory>();
         LoadPlayer();
     }
 
@@ -37,7 +39,7 @@ public class SaveSystem : MonoBehaviour
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace);
+        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace, playerInventory.GetInventoryData());
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -109,6 +111,11 @@ public class SaveSystem : MonoBehaviour
             if(playerData.activeLamp)
             {
                 playerLamp.ActivateCircleLight();
+            }
+
+            for(int i = 0; i < playerData.inventoryItemID.Length; i++)
+            {
+                playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
             }
 
             strm.Close();
