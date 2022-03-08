@@ -483,6 +483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3184300763837892992}
   - component: {fileID: 3184300763837893022}
+  - component: {fileID: 2735904947310958730}
   m_Layer: 0
   m_Name: CoreGarbage_1
   m_TagString: Untagged
@@ -555,6 +556,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2735904947310958730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3184300763837893023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000c9d83732bd96d989f5da465a
+  m_ShapePath:
+  - {x: -1.2987194, y: 0.10292435, z: 0}
+  - {x: 1.4966488, y: 0.4275303, z: 0}
+  - {x: 1.0453682, y: 1.904994, z: 0}
+  - {x: -1.6945782, y: 1.3428698, z: 0}
+  m_ShapePathHash: 1899304901
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -81876
 --- !u!1001 &517575996518348948
 PrefabInstance:
   m_ObjectHideFlags: 0
