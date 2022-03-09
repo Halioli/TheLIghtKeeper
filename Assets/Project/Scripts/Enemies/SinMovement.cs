@@ -53,7 +53,7 @@ public class SinMovement : MonoBehaviour
 
 
 
-    public void MoveTowardsTargetDirectionStraight(Vector2 targetDirection, float moveSpeed)
+    public virtual void MoveTowardsTargetDirectionStraight(Vector2 targetDirection, float moveSpeed)
     {
         rigidbody.MovePosition((Vector2)transform.position + targetDirection * (moveSpeed * Time.deltaTime));
     }

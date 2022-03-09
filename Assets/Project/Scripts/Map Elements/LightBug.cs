@@ -150,8 +150,7 @@ public class LightBug : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(player.GetComponent<PlayerLightChecker>().numberOfLights);
-
+        //Debug.Log(player.GetComponent<PlayerLightChecker>().numberOfLights);
     }
 }
 

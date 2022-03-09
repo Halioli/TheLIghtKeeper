@@ -16,7 +16,7 @@ public class ItemPickUpDisplay : MonoBehaviour
 
     bool isFadeOutStarted = false;
     float totalDuration = 7f;
-    float fadeDuration = 2f;
+    float fadeDuration = 1f;
 
     Item itemToDisplay;
     float lastItemAmount = 0;
@@ -51,7 +51,9 @@ public class ItemPickUpDisplay : MonoBehaviour
 
     private void DoDisplayAnimation()
     {
-        rectTransform.DOPunchScale(Vector2.up, 0.5f);
+        displayImage.GetComponent<RectTransform>().DOPunchScale(Vector2.up * 0.5f, 0.5f);
+        displayText.GetComponent<RectTransform>().DOPunchScale(Vector2.up * 0.5f, 0.5f);
+        //rectTransform.DOPunchScale(Vector2.up, 0.5f);
 
         if (isFadeOutStarted)
         {
