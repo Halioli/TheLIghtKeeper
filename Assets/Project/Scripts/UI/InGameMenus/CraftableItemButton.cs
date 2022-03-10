@@ -1,24 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using DG.Tweening;
+
+
 
 public class CraftableItemButton : HoverButton
 {
-    // Private Attributes
+    float clickCooldownDuration = 0.25f;
+    bool isClicked = false;
 
-    // Public Attributes
+
     public int buttonNumber = 0;
-    public delegate void ClickedRecepieButtonAction(int numb);
+    [SerializeField] Image itemImage;
+
+    public delegate void ClickedRecepieButtonAction(int number);
     public static event ClickedRecepieButtonAction OnClickedRecepieButton;
+
+    public static event ClickedRecepieButtonAction OnHoverRecepieButton;
+
+    public delegate void ExitRecepieButtonAction();
+    public static event ExitRecepieButtonAction OnRecepieButtonHoverExit;
+
+
+    private void Awake()
+    {
+        itemImage = GetComponentsInChildren<Image>()[1];
+    }
 
 
     public void OnClick()
     {
-        if (OnClickedRecepieButton != null)
-            OnClickedRecepieButton(buttonNumber);
+        if (isClicked) return;
+
+        StartCoroutine(OnClickCooldown());
+
+        if (OnClickedRecepieButton != null) OnClickedRecepieButton(buttonNumber);
+    }
+
+    public void DoOnHoverRecepieButton()
+    {
+        if (OnHoverRecepieButton != null) OnHoverRecepieButton(buttonNumber);
+    }
+
+    public void DoOnHoverExitRecepieButton()
+    {
+        if (OnRecepieButtonHoverExit != null) OnRecepieButtonHoverExit();
+    }
+
+    public void Init(int buttonNumber, int itemID)
+    {
+        this.buttonNumber = buttonNumber;
+        itemImage.sprite = ItemLibrary.instance.GetItem(itemID).sprite; 
     }
 
 
+    IEnumerator OnClickCooldown()
+    {
+        isClicked = true;
+        transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), clickCooldownDuration);
+
+        yield return new WaitForSeconds(clickCooldownDuration);
+
+        isClicked = false;
+    }
 
 }

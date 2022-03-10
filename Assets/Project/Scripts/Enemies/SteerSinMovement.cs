@@ -54,6 +54,17 @@ public class SteerSinMovement : SinMovement
         }
     }
 
+    public override void MoveTowardsTargetDirectionStraight(Vector2 targetDirection, float moveSpeed)
+    {
+        this.targetDirection = RaycastSteerCorrection(targetDirection);
+        Debug.DrawRay(transform.position, this.targetDirection * raycastDistance, Color.yellow);
+
+        if (isCorrectingDirection&& IsHitClose()) return;
+
+        rigidbody.MovePosition((Vector2)transform.position + targetDirection * (moveSpeed * Time.deltaTime));
+    }
+
+
 
     private Vector2 RaycastSteerCorrection(Vector3 targetDirection)
     {
@@ -70,6 +81,7 @@ public class SteerSinMovement : SinMovement
         if (leftHit.collider == null && rightHit.collider == null)
         {
             if (!isWaitingToEndCorrection) StartCoroutine(CorrectingDirectionToFalse());
+
             return targetDirection;
         }
 
@@ -110,11 +122,19 @@ public class SteerSinMovement : SinMovement
     IEnumerator CorrectingDirectionToFalse()
     {
         isWaitingToEndCorrection = true;
+        distanceLeftHit = distanceRightHit = 1f;
 
         yield return new WaitForSeconds(0.3f);
 
         if (leftHit.collider == null && rightHit.collider == null) isCorrectingDirection = false;
         isWaitingToEndCorrection = false;
     }
+
+
+    private bool IsHitClose()
+    {
+        return distanceLeftHit < 1f || distanceRightHit < 1f;
+    }
+
 
 }
