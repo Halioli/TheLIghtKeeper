@@ -10362,6 +10362,7 @@ GameObject:
   - component: {fileID: 8397354122656166637}
   - component: {fileID: 1558386269828309269}
   - component: {fileID: 9058898689219941533}
+  - component: {fileID: 7531999573119191728}
   - component: {fileID: 5608326945662042793}
   - component: {fileID: 5742222722491315820}
   - component: {fileID: 8201130277271903534}
@@ -10677,6 +10678,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactArea: {fileID: 1194788267757497830}
   attackArea: {fileID: 7233089400078776426}
+--- !u!114 &7531999573119191728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987370481941902186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ff17621939eee4a8ae21f87b1cbdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5608326945662042793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16507,6 +16520,8 @@ MonoBehaviour:
   lanternDroneAudioSource: {fileID: 5492889445949811830}
   lanternDroneOnOffAudioSource: {fileID: 4987002933223573362}
   lanternOnOffAudioSource: {fileID: 599215778349742733}
+  normalWalkingSound: {fileID: 8300000, guid: 1b38e2d7c41780e449e1926e1cae3e92, type: 3}
+  grassWalkingSound: {fileID: 8300000, guid: c9303a1afa4644840b33837ae9b3d6d6, type: 3}
   attackAudioSound: {fileID: 8300000, guid: c5a448fb001047b4c991329b66fc300f, type: 3}
   missAttackAudioSound: {fileID: 8300000, guid: 9173ef68dcd78734db2007128f7eca59, type: 3}
   mineAudioSound: {fileID: 8300000, guid: 5cece54e8eedf044b942359545a7c3bc, type: 3}
@@ -16842,6 +16857,16 @@ PrefabInstance:
       objectReference: {fileID: 5940327782770282526}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c82b4845fa3932348bf5cfa9601c28c9, type: 3}
+--- !u!224 &4414072722008357957 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1665166768439323779, guid: c82b4845fa3932348bf5cfa9601c28c9, type: 3}
+  m_PrefabInstance: {fileID: 3051808440399745222}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &7574796162236755559 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4847323873589198497, guid: c82b4845fa3932348bf5cfa9601c28c9, type: 3}
+  m_PrefabInstance: {fileID: 3051808440399745222}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5006742323410221808 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8007881752420248118, guid: c82b4845fa3932348bf5cfa9601c28c9, type: 3}
@@ -16853,16 +16878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0bac61fbc35194d9f16916d87a6021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &7574796162236755559 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4847323873589198497, guid: c82b4845fa3932348bf5cfa9601c28c9, type: 3}
-  m_PrefabInstance: {fileID: 3051808440399745222}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &4414072722008357957 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1665166768439323779, guid: c82b4845fa3932348bf5cfa9601c28c9, type: 3}
-  m_PrefabInstance: {fileID: 3051808440399745222}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4615804082815303139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17045,11 +17060,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
---- !u!4 &1752998520983067478 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8959189161861645736, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
-  m_PrefabInstance: {fileID: 7207599775178301182}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1752998520983067473 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8959189161861645743, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
@@ -17061,3 +17071,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b148d9204e595488eb1dae06a89e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1752998520983067478 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8959189161861645736, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
+  m_PrefabInstance: {fileID: 7207599775178301182}
+  m_PrefabAsset: {fileID: 0}
