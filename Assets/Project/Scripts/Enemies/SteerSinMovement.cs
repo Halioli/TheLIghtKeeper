@@ -24,7 +24,7 @@ public class SteerSinMovement : SinMovement
     private void Awake()
     {
         Init();
-        layerMask = LayerMask.GetMask("Default");
+        layerMask = LayerMask.GetMask("Default", "Enemies");
         steerDirection = new Quaternion();
     }
 
