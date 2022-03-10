@@ -13,6 +13,9 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] AudioSource lanternDroneOnOffAudioSource;
     [SerializeField] AudioSource lanternOnOffAudioSource;
 
+    [SerializeField] AudioClip normalWalkingSound;
+    [SerializeField] AudioClip grassWalkingSound;
+
     [SerializeField] AudioClip attackAudioSound;
     [SerializeField] AudioClip missAttackAudioSound;
     [SerializeField] AudioClip mineAudioSound;
@@ -35,6 +38,8 @@ public class PlayerAudio : MonoBehaviour
         // Walking sound
         PlayerMovement.playPlayerWalkingSoundEvent += PlayWalkingSound;
         PlayerMovement.pausePlayerWalkingSoundEvent += StopWalkingSound;
+        LandscapeInteractor.OnGrassEnter += SetGrassWalkingSound;
+        LandscapeInteractor.OnGrassExit += SetNormalWalkingSound;
 
         // ItemPickUp sound
         PlayerInventory.playerPicksUpItemEvent += PlayItemPickUpSound;
@@ -70,6 +75,8 @@ public class PlayerAudio : MonoBehaviour
         // Walking sound
         PlayerMovement.playPlayerWalkingSoundEvent -= PlayWalkingSound;
         PlayerMovement.pausePlayerWalkingSoundEvent -= StopWalkingSound;
+        LandscapeInteractor.OnGrassEnter -= SetGrassWalkingSound;
+        LandscapeInteractor.OnGrassExit -= SetNormalWalkingSound;
 
         // ItemPickUp sound
         PlayerInventory.playerPicksUpItemEvent -= PlayItemPickUpSound;
@@ -112,6 +119,19 @@ public class PlayerAudio : MonoBehaviour
     {
         walkingAudioSource.Stop();
     }
+
+    private void SetNormalWalkingSound()
+    {
+        walkingAudioSource.clip = normalWalkingSound;
+        walkingAudioSource.Play();
+    }
+
+    private void SetGrassWalkingSound()
+    {
+        walkingAudioSource.clip = grassWalkingSound;
+        walkingAudioSource.Play();
+    }
+
 
 
     // ItemPickUp sound
