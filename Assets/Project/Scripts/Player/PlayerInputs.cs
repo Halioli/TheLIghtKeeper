@@ -35,7 +35,7 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public bool PlayerClickedMineButton()
     {
-        if (PauseMenu.gameIsPaused || !instance.canMine) { return false; }
+        if (PauseMenu.gameIsPaused || !instance.canMine || TutorialMessages.tutorialOpened) { return false; }
 
         return Input.GetButton("Fire1");
     }
@@ -92,7 +92,7 @@ public class PlayerInputs : MonoBehaviour
 
     public Vector2 PlayerPressedMovementButtons()
     {
-        if (canMove && !PauseMenu.gameIsPaused)
+        if (canMove && !PauseMenu.gameIsPaused && !TutorialMessages.tutorialOpened)
         {
             return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
