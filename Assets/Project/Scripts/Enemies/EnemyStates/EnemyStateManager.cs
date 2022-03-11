@@ -42,6 +42,8 @@ public class EnemyStateManager : MonoBehaviour
 
     public void ForceState(EnemyStates newState)
     {
+        if (!states.ContainsKey(newState)) return;
+
         if (currentState == EnemyStates.DEATH || currentState == EnemyStates.DESTROY) return;
 
         currentState = newState;
