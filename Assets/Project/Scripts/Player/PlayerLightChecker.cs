@@ -11,6 +11,11 @@ public class PlayerLightChecker : MonoBehaviour
     // Public Attributes
     public Lamp lamp;
 
+    public delegate void PlayerEntersLightAction();
+    public static event PlayerEntersLightAction OnPlayerEntersLight;
+
+
+
     private void Start()
     {
         playerInLight = false;
@@ -39,7 +44,9 @@ public class PlayerLightChecker : MonoBehaviour
     {
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
-            numberOfLights += 1;
+            ++numberOfLights;
+            
+            if (OnPlayerEntersLight != null) OnPlayerEntersLight();
 
             // Lamp turns off
             if (lamp.active)
@@ -55,21 +62,21 @@ public class PlayerLightChecker : MonoBehaviour
 
     }
 
-    private void OnTriggerStay2D(Collider2D lightingCollider)
-    {
-        if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
-        {
-            // Lamp turns off
+    //private void OnTriggerStay2D(Collider2D lightingCollider)
+    //{
+    //    if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
+    //    {
+    //        // Lamp turns off
             
-            if (lightingCollider.gameObject.CompareTag("CoreLight"))
-            {
-                lamp.FullyRefillLampTime();
-            }
+    //        if (lightingCollider.gameObject.CompareTag("CoreLight"))
+    //        {
+    //            lamp.FullyRefillLampTime();
+    //        }
 
-            SetPlayerInLightToTrue();
-        }
+    //        SetPlayerInLightToTrue();
+    //    }
 
-    }
+    //}
 
 
     // Method that checks if the player exits an area with light
@@ -88,7 +95,7 @@ public class PlayerLightChecker : MonoBehaviour
                 else
                 {
                     SetPlayerInLightToFalse();
-                    //lamp.ActivateCircleLight();
+                    lamp.ActivateFadedCircleLight();
                 }
             }
         }

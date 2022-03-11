@@ -20,6 +20,13 @@ public class Ore : MonoBehaviour
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
 
+
+    public delegate void OreGetsMinedAction();
+    public static event OreGetsMinedAction playerMinesOreEvent;
+    public static event OreGetsMinedAction playerBreaksOreEvent;
+
+
+
     private void Start()
     {
         breakState = OreState.WHOLE;
@@ -49,6 +56,7 @@ public class Ore : MonoBehaviour
         if (healthSystem.IsDead())
         {
             breakState = OreState.BROKEN;
+            OnDeathDamageTake();
 
             // Drop mineralItemToDrop
             numberOfDrops = Random.Range(1, numberOfDrops);
@@ -60,10 +68,26 @@ public class Ore : MonoBehaviour
             // Start disappear coroutine
             StartCoroutine("Disappear");
         }
+        else
+        {
+            OnDamageTake();
+        }
+
         UpdateCurrentSprite();
         StartCoroutine("PlayBreakParticles");
 
     }
+
+    protected virtual void OnDamageTake()
+    {
+        if (playerMinesOreEvent != null) playerMinesOreEvent();
+    }
+
+    protected virtual void OnDeathDamageTake()
+    {
+        if (playerBreaksOreEvent != null) playerBreaksOreEvent();
+    }
+
 
     protected void ProgressNAmountOfSprites(int numberOfProgressions)
     {

@@ -40,7 +40,7 @@ public class SteerSinMovement : SinMovement
         {
             this.targetDirection = RaycastSteerCorrection(targetDirection);
         }
-        Debug.DrawRay(transform.position, this.targetDirection * raycastDistance, Color.yellow);
+        //Debug.DrawRay(transform.position, this.targetDirection * raycastDistance, Color.yellow);
 
         UpdateAngleDirection(this.targetDirection, sinPercent);
 
@@ -57,7 +57,7 @@ public class SteerSinMovement : SinMovement
     public override void MoveTowardsTargetDirectionStraight(Vector2 targetDirection, float moveSpeed)
     {
         this.targetDirection = RaycastSteerCorrection(targetDirection);
-        Debug.DrawRay(transform.position, this.targetDirection * raycastDistance, Color.yellow);
+        //Debug.DrawRay(transform.position, this.targetDirection * raycastDistance, Color.yellow);
 
         if (isCorrectingDirection&& IsHitClose()) return;
 
@@ -74,9 +74,9 @@ public class SteerSinMovement : SinMovement
         leftHit = Physics2D.Raycast(transform.position, leftTargetDirection, raycastDistance, layerMask);
         rightHit = Physics2D.Raycast(transform.position, rightTargetDirection, raycastDistance, layerMask);
 
-        Debug.DrawRay(transform.position, targetDirection * raycastDistance, Color.white);
-        Debug.DrawRay(transform.position, leftTargetDirection, Color.green);
-        Debug.DrawRay(transform.position, rightTargetDirection, Color.red);
+        //Debug.DrawRay(transform.position, targetDirection * raycastDistance, Color.white);
+        //Debug.DrawRay(transform.position, leftTargetDirection, Color.green);
+        //Debug.DrawRay(transform.position, rightTargetDirection, Color.red);
 
         if (leftHit.collider == null && rightHit.collider == null)
         {
