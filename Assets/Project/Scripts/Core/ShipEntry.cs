@@ -7,6 +7,12 @@ public class ShipEntry : MonoBehaviour
 {
     public Vector2 shipInteriorPosition;
     public HUDHandler hudHandler;
+    public Animator animator;
+
+
+    public delegate void ShipEntryAction();
+    public static event ShipEntryAction OnEntry;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,6 +27,8 @@ public class ShipEntry : MonoBehaviour
 
     IEnumerator TeleportToShipInterior(GameObject gameObjectTeleported)
     {
+        if (OnEntry != null) OnEntry();
+
         hudHandler.DoFadeToBlack();
         PlayerInputs.instance.canMove = false;
 
@@ -28,5 +36,6 @@ public class ShipEntry : MonoBehaviour
         gameObjectTeleported.transform.position = shipInteriorPosition;
         hudHandler.RestoreFades();
         PlayerInputs.instance.canMove = true;
+        animator.SetBool("isHealed", false);
     }
 }

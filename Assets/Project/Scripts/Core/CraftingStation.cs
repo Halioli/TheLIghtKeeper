@@ -11,6 +11,7 @@ public class CraftingStation : InteractStation
 
     // Public Attributes
     public GameObject interactText;
+    public GameObject backgroundText;
     public GameObject craftingCanvasGameObject;
     public GameObject playerHUDGameObject;
 
@@ -70,12 +71,14 @@ public class CraftingStation : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
+        backgroundText.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        backgroundText.SetActive(false);
     }
 
     private void PlayCraftingParticles()
@@ -102,6 +105,7 @@ public class CraftingStation : InteractStation
     private void OpenCraftingInventory()
     {
         DoOnInteractOpen();
+        DoOnInteractDescriptionOpen();
 
         isOpen = true;
 
@@ -109,7 +113,8 @@ public class CraftingStation : InteractStation
         craftingCanvasGameObject.SetActive(true);
         craftingMenu.ShowRecepies();
 
-        PauseMenu.gameIsPaused = true;
+        PlayerInputs.instance.canMine = false;
+        //PauseMenu.gameIsPaused = true;
     }
 
     private void CloseCraftingInventory()
@@ -121,7 +126,8 @@ public class CraftingStation : InteractStation
         playerHUDGameObject.SetActive(true);
         craftingCanvasGameObject.SetActive(false);
 
-        PauseMenu.gameIsPaused = false;
+        PlayerInputs.instance.canMine = true;
+        //PauseMenu.gameIsPaused = false;
     }
 
 }

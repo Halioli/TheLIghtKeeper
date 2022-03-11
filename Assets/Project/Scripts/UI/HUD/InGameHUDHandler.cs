@@ -6,11 +6,11 @@ using DG.Tweening;
 public class InGameHUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 0.5f;
+    private const float FADE_TIME = 1.5f;
     private const float CLAW_FADE_TIME = 0.2f;
     private const float SHAKE_AMOUNT = 0.1f;
     private const float CLAW_SHAKE_STRENGHT = 40f;
-    private const float SHAKE_STRENGHT = 0.5f;
+    private const float SHAKE_STRENGHT = 0.2f;
 
     private int playerHealthValue;
     private int lampTimeValue;
@@ -32,7 +32,6 @@ public class InGameHUDHandler : MonoBehaviour
     public GameObject lampBarGameObject;
     public GameObject clawStrikeGameObject;
     public GameObject exclamationGameObject;
-    public GameObject crossGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -60,9 +59,6 @@ public class InGameHUDHandler : MonoBehaviour
 
         // Initialize exclamation variables
         exclamationGroup = exclamationGameObject.GetComponent<CanvasGroup>();
-
-        // Initialize cross variables
-        crossGroup = crossGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -250,14 +246,12 @@ public class InGameHUDHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
-        PlayerMiner.playerFailMineEvent += CrossAppears;
+        //PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
     }
 
     private void OnDisable()
     {
-        PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
-        PlayerMiner.playerFailMineEvent -= CrossAppears;
+        //PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
     }
 
     private void ExclamationAppears()
@@ -275,18 +269,5 @@ public class InGameHUDHandler : MonoBehaviour
         exclamationGroup.alpha = 0f;
     }
 
-    private void CrossAppears()
-    {
-        StartCoroutine(StartCrossAppears());
-    }
 
-    IEnumerator StartCrossAppears()
-    {
-        crossGroup.alpha = 1f;
-
-        crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), FADE_TIME);
-        yield return new WaitForSeconds(FADE_TIME);
-
-        crossGroup.alpha = 0f;
-    }
 }

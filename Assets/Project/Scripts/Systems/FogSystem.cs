@@ -9,25 +9,25 @@ public class FogSystem : MonoBehaviour
 
     private bool playerInFog = false;
     private float timer;
+    private bool hasFaded = false;
 
-    private Vector3 respawnPosition;
+    public Vector3 respawnPosition;
 
     public GameObject skullEnemy;
-
+    [SerializeField] private HUDHandler hudHandler;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        Debug.Log(player.tag);
         timer = 1f;
-        respawnPosition = new Vector3(30f, -11f, 0);
         skullEnemy.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (playerInFog)
         {
             skullEnemy.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 0);
@@ -42,9 +42,10 @@ public class FogSystem : MonoBehaviour
                 }
                 else
                 {
-                    ResetTimer();
-                    player.transform.position = respawnPosition;
-                    skullEnemy.SetActive(false);
+                    if (!hasFaded)
+                    {
+                        StartCoroutine(RespawnFade());
+                    }
                 }
             }
             else
@@ -78,5 +79,19 @@ public class FogSystem : MonoBehaviour
     private void ResetTimer()
     {
         timer = 1f;
+    }
+
+    IEnumerator RespawnFade()
+    {
+        hasFaded = true;
+        hudHandler.DoFadeToBlack();
+        PlayerInputs.instance.canMove = false;
+        skullEnemy.SetActive(false);
+        yield return new WaitForSeconds(3f);
+        player.transform.position = respawnPosition;
+        hudHandler.RestoreFades();
+        PlayerInputs.instance.canMove = true;
+        hasFaded = false;
+        ResetTimer();
     }
 }

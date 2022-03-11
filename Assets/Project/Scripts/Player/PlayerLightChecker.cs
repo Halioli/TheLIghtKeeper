@@ -6,10 +6,15 @@ public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
     private bool playerInLight;
-    private int numberOfLights;
+    public int numberOfLights;
 
     // Public Attributes
     public Lamp lamp;
+
+    public delegate void PlayerEntersLightAction();
+    public static event PlayerEntersLightAction OnPlayerEntersLight;
+
+
 
     private void Start()
     {
@@ -20,7 +25,7 @@ public class PlayerLightChecker : MonoBehaviour
 
     private void Update()
     {
-        if (numberOfLights == 0 && !lamp.LampTimeExhausted())
+        if (numberOfLights == 0)// && !lamp.LampTimeExhausted())
         {
             lamp.UpdateLamp();
         }
@@ -39,7 +44,9 @@ public class PlayerLightChecker : MonoBehaviour
     {
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
-            numberOfLights += 1;
+            ++numberOfLights;
+            
+            if (OnPlayerEntersLight != null) OnPlayerEntersLight();
 
             // Lamp turns off
             if (lamp.active)
@@ -54,6 +61,23 @@ public class PlayerLightChecker : MonoBehaviour
         }
 
     }
+
+    //private void OnTriggerStay2D(Collider2D lightingCollider)
+    //{
+    //    if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
+    //    {
+    //        // Lamp turns off
+            
+    //        if (lightingCollider.gameObject.CompareTag("CoreLight"))
+    //        {
+    //            lamp.FullyRefillLampTime();
+    //        }
+
+    //        SetPlayerInLightToTrue();
+    //    }
+
+    //}
+
 
     // Method that checks if the player exits an area with light
     private void OnTriggerExit2D(Collider2D lightingCollider)
@@ -71,6 +95,7 @@ public class PlayerLightChecker : MonoBehaviour
                 else
                 {
                     SetPlayerInLightToFalse();
+                    lamp.ActivateFadedCircleLight();
                 }
             }
         }

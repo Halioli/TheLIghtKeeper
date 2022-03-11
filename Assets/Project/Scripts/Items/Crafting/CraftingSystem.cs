@@ -14,6 +14,8 @@ public class CraftingSystem : MonoBehaviour
 
     private Vector2 droppedItemPosition;
 
+    [SerializeField] Inventory storageStationInventory;
+
     // Public Attributes
     public List<RecepieCollection> recepiesLvl;
     public List<Recepie> availableRecepies;
@@ -23,6 +25,14 @@ public class CraftingSystem : MonoBehaviour
 
     public delegate void CraftAction();
     public static event CraftAction OnCrafting;
+    public static event CraftAction OnCraftingFail;
+
+    public delegate void ItemCraftedAction(int itemID);
+    public static event ItemCraftedAction OnItemCraft;
+
+    public delegate void ItemSentToStorageAction(string message);
+    public static event ItemSentToStorageAction OnItemSentToStorage;
+
 
     void Start()
     {
@@ -42,19 +52,6 @@ public class CraftingSystem : MonoBehaviour
         //{
         //    particle.Stop();
         //}
-    }
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            RecepieWasSelected(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            RecepieWasSelected(1);
-        }
     }
 
 
@@ -143,15 +140,31 @@ public class CraftingSystem : MonoBehaviour
     {
         for (int i = 0; i < recepieToCraft.resultingItem.Value; ++i)
         {
-            if (!playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
+            if (playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
             {
-                // instantiate item in map instead
-                GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
-                item.GetComponent<ItemGameObject>().DropsRandom();
+                InvokeOnItemCraft(recepieToCraft.resultingItemUnit.ID);
+            }
+            else
+            {
+                AddRecepieResultingItemToStorage(recepieToCraft);
             }
         }
         
     }
+
+    private void AddRecepieResultingItemToStorage(Recepie recepieToCraft)
+    {
+        if (storageStationInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
+        {
+            InvokeOnItemSentToStorage();
+        }
+        else
+        {
+            GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
+            item.GetComponent<ItemGameObject>().DropsRandom(30f);
+        }
+    }
+
 
 
     public void RecepieWasSelected(int selectedRecepieIndex)
@@ -159,28 +172,27 @@ public class CraftingSystem : MonoBehaviour
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex]))
         {
-            OnCrafting();
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
+            if (OnCrafting != null) OnCrafting();
         }
         else
         {
-            Debug.Log("Cannot craft " + availableRecepies[selectedRecepieIndex].recepieName);
+            if (OnCraftingFail != null) OnCraftingFail();
         }
     }
 
-   /* IEnumerator CraftingParticleSystem()
+
+    private void InvokeOnItemCraft(int itemID)
     {
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
+        if (OnItemCraft != null) OnItemCraft(itemID);
+    }
 
-        yield return new WaitForSeconds(3.4f);
+    private void InvokeOnItemSentToStorage()
+    {
+        if (OnItemSentToStorage != null) OnItemSentToStorage("I put the items you crafted in the Storage, since you had no inventory space.");
+    }
 
-        foreach (ParticleSystem particle in craftingParticles)
-        {
-            particle.Play();
-        }
-    }*/
+
+
 }
