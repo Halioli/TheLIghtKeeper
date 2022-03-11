@@ -6,11 +6,11 @@ using DG.Tweening;
 public class InGameHUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float FADE_TIME = 0.5f;
+    private const float FADE_TIME = 1.5f;
     private const float CLAW_FADE_TIME = 0.2f;
     private const float SHAKE_AMOUNT = 0.1f;
     private const float CLAW_SHAKE_STRENGHT = 40f;
-    private const float SHAKE_STRENGHT = 0.5f;
+    private const float SHAKE_STRENGHT = 0.2f;
 
     private int playerHealthValue;
     private int lampTimeValue;
@@ -250,14 +250,14 @@ public class InGameHUDHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
-        PlayerMiner.playerFailMineEvent += CrossAppears;
+        //PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
+        PlayerMiner.pickaxeNotStrongEnoughEvent += CrossAppears;
     }
 
     private void OnDisable()
     {
-        PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
-        PlayerMiner.playerFailMineEvent -= CrossAppears;
+        //PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
+        PlayerMiner.pickaxeNotStrongEnoughEvent -= CrossAppears;
     }
 
     private void ExclamationAppears()
@@ -277,6 +277,8 @@ public class InGameHUDHandler : MonoBehaviour
 
     private void CrossAppears()
     {
+        if (crossGroup.alpha == 1f) return;
+
         StartCoroutine(StartCrossAppears());
     }
 
@@ -284,7 +286,7 @@ public class InGameHUDHandler : MonoBehaviour
     {
         crossGroup.alpha = 1f;
 
-        crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), FADE_TIME);
+        crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), FADE_TIME, 5);
         yield return new WaitForSeconds(FADE_TIME);
 
         crossGroup.alpha = 0f;

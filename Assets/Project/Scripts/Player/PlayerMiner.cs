@@ -40,10 +40,7 @@ public class PlayerMiner : PlayerBase
     // Events
     public delegate void PlayPlayerSound();
     public static event PlayPlayerSound playerMinesEvent;
-    public static event PlayPlayerSound playerSucceessfulMineEvent;
-    public static event PlayPlayerSound playerFailMineEvent;
-    public static event PlayPlayerSound playerMineEvent;
-    public static event PlayPlayerSound playerBreaksOreEvent;
+    public static event PlayPlayerSound pickaxeNotStrongEnoughEvent;
 
     private void Start()
     {
@@ -143,7 +140,7 @@ public class PlayerMiner : PlayerBase
 
     private void StartMining()
     {
-        playerMinesEvent();
+        //playerMinesEvent();
 
         FlipPlayerSpriteFacingOreToMine();
         playerStates.SetCurrentPlayerState(PlayerState.BUSSY); 
@@ -161,24 +158,10 @@ public class PlayerMiner : PlayerBase
             if (oreToMine.hardness <= pickaxe.hardness)
             {
                 oreToMine.GetsMined(damageToDeal, pickaxe.extraDrop);
-
-                if (oreToMine.Broke())
-                {
-                    // Play normal mine sound
-                    if (playerBreaksOreEvent != null)
-                        playerBreaksOreEvent();
-                }
-                else
-                {
-                    // Play break sound
-                    if (playerMineEvent != null) { 
-                        playerMineEvent();
-                    }
-                }
             }
             else
             {
-                Debug.Log("!!! Pickaxe NOT strong enough !!!");
+                if (pickaxeNotStrongEnoughEvent != null) pickaxeNotStrongEnoughEvent();
             }
         }
     }
