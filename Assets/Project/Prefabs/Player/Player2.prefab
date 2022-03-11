@@ -1155,6 +1155,8 @@ MonoBehaviour:
   lanternDroneAudioSource: {fileID: 1648606289392802167}
   lanternDroneOnOffAudioSource: {fileID: 2301000522128192115}
   lanternOnOffAudioSource: {fileID: 5947980658247159692}
+  normalWalkingSound: {fileID: 8300000, guid: 1b38e2d7c41780e449e1926e1cae3e92, type: 3}
+  grassWalkingSound: {fileID: 8300000, guid: c9303a1afa4644840b33837ae9b3d6d6, type: 3}
   attackAudioSound: {fileID: 8300000, guid: c5a448fb001047b4c991329b66fc300f, type: 3}
   missAttackAudioSound: {fileID: 8300000, guid: 9173ef68dcd78734db2007128f7eca59, type: 3}
   mineAudioSound: {fileID: 8300000, guid: 5cece54e8eedf044b942359545a7c3bc, type: 3}
@@ -6003,6 +6005,7 @@ GameObject:
   - component: {fileID: 6929503867206481633}
   - component: {fileID: 2298453658428181774}
   - component: {fileID: 2164607947576985437}
+  - component: {fileID: 2105085851515632685}
   - component: {fileID: 5727223543676621844}
   - component: {fileID: 1543562946031534957}
   - component: {fileID: 3101832250444032047}
@@ -6287,6 +6290,18 @@ MonoBehaviour:
   animator: {fileID: 1543562946031534957}
   hudHandler: {fileID: 0}
   animationEnds: 0
+--- !u!114 &2105085851515632685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3747971617821116011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ff17621939eee4a8ae21f87b1cbdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5727223543676621844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11948,9 +11963,9 @@ PrefabInstance:
       objectReference: {fileID: 8618609705104900965}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
---- !u!1 &8618609705104900965 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+--- !u!4 &8618609706183199512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
   m_PrefabInstance: {fileID: 7900096662325101685}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3440172144570092638 stripped
@@ -11964,9 +11979,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94180f33a23397e4697a54a36f9e5963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &8618609706183199512 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+--- !u!1 &8618609705104900965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
   m_PrefabInstance: {fileID: 7900096662325101685}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8106933346929468871
