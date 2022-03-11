@@ -21,8 +21,6 @@ public class InGameHUDHandler : MonoBehaviour
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
     private CanvasGroup clawStrikeGroup;
-    private CanvasGroup exclamationGroup;
-    private CanvasGroup crossGroup;
 
     // Public Attributes
     public HUDBar healthBar;
@@ -31,8 +29,6 @@ public class InGameHUDHandler : MonoBehaviour
     public GameObject healthBarGameObject;
     public GameObject lampBarGameObject;
     public GameObject clawStrikeGameObject;
-    public GameObject exclamationGameObject;
-    public GameObject crossGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -57,12 +53,6 @@ public class InGameHUDHandler : MonoBehaviour
 
         // Initialize claw variables
         clawStrikeGroup = clawStrikeGameObject.GetComponent<CanvasGroup>();
-
-        // Initialize exclamation variables
-        exclamationGroup = exclamationGameObject.GetComponent<CanvasGroup>();
-
-        // Initialize cross variables
-        crossGroup = crossGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -248,47 +238,4 @@ public class InGameHUDHandler : MonoBehaviour
         clawStrikeGroup.alpha = fadeInStartVector.x;
     }
 
-    private void OnEnable()
-    {
-        //PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
-        PlayerMiner.pickaxeNotStrongEnoughEvent += CrossAppears;
-    }
-
-    private void OnDisable()
-    {
-        //PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
-        PlayerMiner.pickaxeNotStrongEnoughEvent -= CrossAppears;
-    }
-
-    private void ExclamationAppears()
-    {
-        StartCoroutine(StartExclamationAppears());
-    }
-
-    IEnumerator StartExclamationAppears()
-    {
-        exclamationGroup.alpha = 1f;
-
-        exclamationGameObject.transform.DOPunchPosition(new Vector2(0f, SHAKE_STRENGHT), FADE_TIME);
-        yield return new WaitForSeconds(FADE_TIME);
-
-        exclamationGroup.alpha = 0f;
-    }
-
-    private void CrossAppears()
-    {
-        if (crossGroup.alpha == 1f) return;
-
-        StartCoroutine(StartCrossAppears());
-    }
-
-    IEnumerator StartCrossAppears()
-    {
-        crossGroup.alpha = 1f;
-
-        crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), FADE_TIME, 5);
-        yield return new WaitForSeconds(FADE_TIME);
-
-        crossGroup.alpha = 0f;
-    }
 }

@@ -1,50 +1,88 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 
 public class HUDText : MonoBehaviour
 {
+    enum DisplayMessege { NONE, PICKAXE_TOO_WEAK, PICK_UP_FAIL, LANTERN_RECHARGED};
+
+
     private float FADE_TIME = 1.5f;
+    private float FADE_OUT_TIME = 0.25f;
+    private const float SHAKE_STRENGHT = 0.2f;
+    private DisplayMessege displayMessage = DisplayMessege.NONE;
 
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] TextMeshProUGUI textMessege;
+    [SerializeField] GameObject crossGameObject;
+    [SerializeField] GameObject exclamationGameObject;
 
 
     private void OnEnable()
     {
         PlayerMiner.pickaxeNotStrongEnoughEvent += DisplayMineErrorText;
         ItemPickUp.OnItemPickUpFail += DisplayItemPickUpError;
+
+        PlayerLightChecker.OnPlayerEntersCoreLight += DisplayLanternRecharged;
     }
 
     private void OnDisable()
     {
         PlayerMiner.pickaxeNotStrongEnoughEvent -= DisplayMineErrorText;
         ItemPickUp.OnItemPickUpFail -= DisplayItemPickUpError;
+
+        PlayerLightChecker.OnPlayerEntersCoreLight -= DisplayLanternRecharged;
     }
 
 
     private void DisplayMineErrorText()
     {
-        textMessege.text = "Pickaxe too weak!";
-        DoDisplayMessage(FADE_TIME);
+        if (displayMessage != DisplayMessege.PICKAXE_TOO_WEAK)
+            textMessege.text = "Pickaxe too weak!";
+
+        displayMessage = DisplayMessege.PICKAXE_TOO_WEAK;
+        DisplayMessageAndCross(FADE_TIME);
     }
 
 
     private void DisplayItemPickUpError(float duration)
     {
-        textMessege.text = "No inventory space!";
-        DoDisplayMessage(duration);
+        if (displayMessage != DisplayMessege.PICK_UP_FAIL)
+            textMessege.text = "No inventory space!";
+
+        displayMessage = DisplayMessege.PICK_UP_FAIL;
+        DisplayMessageAndCross(duration);
+    }
+
+    private void DisplayLanternRecharged()
+    {
+        if (displayMessage != DisplayMessege.LANTERN_RECHARGED)
+            textMessege.text = "Lantern charged up!";
+
+        displayMessage = DisplayMessege.LANTERN_RECHARGED;
+        DisplayMessageAndExclamation(FADE_TIME);
     }
 
 
-    private void DoDisplayMessage(float duration)
+
+
+    private void DisplayMessageAndCross(float duration)
     {
-        if (canvasGroup.alpha == 1f) return;
+        if (canvasGroup.alpha != 0f) return;
 
         StartCoroutine(DisplayMessage(duration));
+        StartCoroutine(StartCrossAppears(duration));
+    }
+
+    private void DisplayMessageAndExclamation(float duration)
+    {
+        if (canvasGroup.alpha != 0f) return;
+
+        StartCoroutine(DisplayMessage(duration));
+        StartCoroutine(StartExclamationAppears(duration));
     }
 
     IEnumerator DisplayMessage(float duration)
@@ -53,8 +91,34 @@ public class HUDText : MonoBehaviour
 
         yield return new WaitForSeconds(duration);
 
+        Interpolator fadeOutInterpolator = new Interpolator(FADE_OUT_TIME);
+        fadeOutInterpolator.ToMax();
+        while (!fadeOutInterpolator.IsMax)
+        {
+            fadeOutInterpolator.Update(Time.deltaTime);
+            canvasGroup.alpha = fadeOutInterpolator.Inverse;
+            yield return null;
+        }
+
         canvasGroup.alpha = 0f;
     }
 
+    IEnumerator StartCrossAppears(float duration)
+    {
+        exclamationGameObject.SetActive(false);
+        crossGameObject.SetActive(true);
+
+        crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), duration, 5);
+        yield return new WaitForSeconds(duration);
+    }
+
+    IEnumerator StartExclamationAppears(float duration)
+    {
+        exclamationGameObject.SetActive(true);
+        crossGameObject.SetActive(false);
+
+        exclamationGameObject.transform.DOPunchPosition(new Vector2(0f, SHAKE_STRENGHT), duration);
+        yield return new WaitForSeconds(duration);
+    }
 
 }

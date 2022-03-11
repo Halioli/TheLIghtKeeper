@@ -13,6 +13,7 @@ public class PlayerLightChecker : MonoBehaviour
 
     public delegate void PlayerEntersLightAction();
     public static event PlayerEntersLightAction OnPlayerEntersLight;
+    public static event PlayerEntersLightAction OnPlayerEntersCoreLight;
 
 
 
@@ -54,7 +55,11 @@ public class PlayerLightChecker : MonoBehaviour
 
             if (lightingCollider.gameObject.CompareTag("CoreLight"))
             {
-                lamp.FullyRefillLampTime();
+                if (!lamp.LampTimeIsMax())
+                {
+                    if (OnPlayerEntersCoreLight != null) OnPlayerEntersCoreLight();
+                    lamp.FullyRefillLampTime();
+                }
             }
 
             SetPlayerInLightToTrue();
