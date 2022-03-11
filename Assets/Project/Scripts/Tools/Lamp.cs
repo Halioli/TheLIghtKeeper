@@ -133,6 +133,11 @@ public class Lamp : MonoBehaviour
         return lampTime <= 0;
     }
 
+    public bool LampTimeIsMax()
+    {
+        return lampTime == maxLampTime;
+    }
+
     public void ConsumeLampTime()
     {
         lampTime -= Time.deltaTime * timeMultiplier;
