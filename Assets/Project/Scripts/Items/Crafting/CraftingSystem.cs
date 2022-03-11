@@ -30,7 +30,7 @@ public class CraftingSystem : MonoBehaviour
     public delegate void ItemCraftedAction(int itemID);
     public static event ItemCraftedAction OnItemCraft;
 
-    public delegate void ItemSentToStorageAction(string message);
+    public delegate void ItemSentToStorageAction();
     public static event ItemSentToStorageAction OnItemSentToStorage;
 
 
@@ -190,9 +190,7 @@ public class CraftingSystem : MonoBehaviour
 
     private void InvokeOnItemSentToStorage()
     {
-        if (OnItemSentToStorage != null) OnItemSentToStorage("I put the items you crafted in the Storage, since you had no inventory space.");
+        if (OnItemSentToStorage != null) 
+            OnItemSentToStorage(); //I put the items you crafted in the Storage, since you had no inventory space.
     }
-
-
-
 }
