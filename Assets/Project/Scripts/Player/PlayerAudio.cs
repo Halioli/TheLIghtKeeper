@@ -18,8 +18,10 @@ public class PlayerAudio : MonoBehaviour
 
     [SerializeField] AudioClip attackAudioSound;
     [SerializeField] AudioClip missAttackAudioSound;
+    [SerializeField] AudioClip mineErrorAudioSource;
     [SerializeField] AudioClip mineAudioSound;
     [SerializeField] AudioClip mineBreakAudioSound;
+    [SerializeField] AudioClip mineMetalAudioSound;
 
     //[SerializeField] AudioClip miningBuildUpSound;
     //[SerializeField] AudioClip successCriticalMiningSound;
@@ -51,8 +53,11 @@ public class PlayerAudio : MonoBehaviour
         PlayerCombat.playerReceivesDamageEvent += PlayReceiveDamageSound;
 
         // Mine sound
+        PlayerMiner.pickaxeNotStrongEnoughEvent += PlayMineErrorSound;
         Ore.playerMinesOreEvent += PlayMineOreSound;
         Ore.playerBreaksOreEvent += PlayMineOreBreakSound;
+        MetalPart.playerMinesMetalPartEvent += PlayMineMetalSound;
+        MetalPart.playerBreaksMetalPartEvent += PlayMineMetalBreakSound;
 
         // MineBuildUp sound
         //PlayerMiner.playerMinesEvent += PlayMineBuildUpSound;
@@ -88,8 +93,11 @@ public class PlayerAudio : MonoBehaviour
         PlayerCombat.playerReceivesDamageEvent -= PlayReceiveDamageSound;
 
         // Mine sound
+        PlayerMiner.pickaxeNotStrongEnoughEvent -= PlayMineErrorSound;
         Ore.playerMinesOreEvent -= PlayMineOreSound;
         Ore.playerBreaksOreEvent -= PlayMineOreBreakSound;
+        MetalPart.playerMinesMetalPartEvent -= PlayMineMetalSound;
+        MetalPart.playerBreaksMetalPartEvent -= PlayMineMetalBreakSound;
 
         // MineBuildUp sound
         //PlayerMiner.playerMinesEvent -= PlayMineBuildUpSound;
@@ -164,31 +172,39 @@ public class PlayerAudio : MonoBehaviour
 
 
     // Mine sound
-    public void PlayMineOreSound()
+
+    private void PlayMineErrorSound()
+    {
+        attackAndMineAudioSource.clip = mineErrorAudioSource;
+        attackAndMineAudioSource.pitch = 0.55f;
+        attackAndMineAudioSource.Play();
+    }
+
+    private void PlayMineOreSound()
     {
         attackAndMineAudioSource.clip = mineAudioSound;
         attackAndMineAudioSource.pitch = Random.Range(0.3f, 0.5f);
         attackAndMineAudioSource.Play();
     }
 
-    public void PlayMineOreBreakSound()
+    private void PlayMineOreBreakSound()
     {
         attackAndMineAudioSource.clip = mineBreakAudioSound;
         attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.2f);
         attackAndMineAudioSource.Play();
     }
 
-    public void PlayMineMetalSound()
+    private void PlayMineMetalSound()
     {
-        attackAndMineAudioSource.clip = mineAudioSound;
-        attackAndMineAudioSource.pitch = Random.Range(0.3f, 0.5f);
+        attackAndMineAudioSource.clip = mineMetalAudioSound;
+        attackAndMineAudioSource.pitch = Random.Range(0.6f, 0.8f);
         attackAndMineAudioSource.Play();
     }
 
-    public void PlayMineMetalBreakSound()
+    private void PlayMineMetalBreakSound()
     {
-        attackAndMineAudioSource.clip = mineBreakAudioSound;
-        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.2f);
+        attackAndMineAudioSource.clip = mineMetalAudioSound;
+        attackAndMineAudioSource.pitch = 1.3f;
         attackAndMineAudioSource.Play();
     }
 
