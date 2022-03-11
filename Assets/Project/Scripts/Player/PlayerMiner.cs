@@ -40,8 +40,7 @@ public class PlayerMiner : PlayerBase
     // Events
     public delegate void PlayPlayerSound();
     public static event PlayPlayerSound playerMinesEvent;
-    public static event PlayPlayerSound playerSucceessfulMineEvent;
-    public static event PlayPlayerSound playerFailMineEvent;
+    public static event PlayPlayerSound pickaxeNotStrongEnoughEvent;
 
     private void Start()
     {
@@ -162,7 +161,7 @@ public class PlayerMiner : PlayerBase
             }
             else
             {
-                Debug.Log("!!! Pickaxe NOT strong enough !!!");
+                if (pickaxeNotStrongEnoughEvent != null) pickaxeNotStrongEnoughEvent();
             }
         }
     }

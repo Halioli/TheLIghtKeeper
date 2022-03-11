@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 public enum OreState { WHOLE, BROKEN };
-public enum Hardness { NORMAL, HARD };
+public enum Hardness { NORMAL, HARD, VERY_HARD };
 
 public class Ore : MonoBehaviour
 {
@@ -47,7 +47,7 @@ public class Ore : MonoBehaviour
 
     public virtual void GetsMined(int damageAmount, int numberOfDrops)
     {
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+        DamageTakeAnimation();
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
         // Update ore Sprite
@@ -76,6 +76,11 @@ public class Ore : MonoBehaviour
         UpdateCurrentSprite();
         StartCoroutine("PlayBreakParticles");
 
+    }
+
+    protected virtual void DamageTakeAnimation()
+    {
+        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
     }
 
     protected virtual void OnDamageTake()
