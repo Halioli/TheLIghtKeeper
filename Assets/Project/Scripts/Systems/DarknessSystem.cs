@@ -71,14 +71,14 @@ public class DarknessSystem : MonoBehaviour
         {
             playerInLight = true;
             //DisableEnemySpawners();
-            if (OnPlayerEntersLight != null) OnPlayerEntersLight();
+            InvokeOnPlayerEntersLight();
             //if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
         }
         else if (IsPlayerExitingLight())
         {
             playerInLight = false;
             //EnableEnemySpawners();
-            if (OnPlayerNotInLight != null) OnPlayerNotInLight();
+            InvokeOnPlayerNotInLight();
             //if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
         }
     }
@@ -89,6 +89,8 @@ public class DarknessSystem : MonoBehaviour
         EnemySpawner.spawnEnemyEvent += AddingEnemy;
         //HostileEnemy.enemyDisappearsEvent += RemovingEnemy;
         EnemyDestroyState.OnEnemyDestroy += RemovingEnemy;
+
+        PlayerLightChecker.OnPlayerEntersLight += InvokeOnPlayerEntersLight;
     }
 
     void OnDisable()
@@ -97,6 +99,18 @@ public class DarknessSystem : MonoBehaviour
         //HostileEnemy.enemyDisappearsEvent -= RemovingEnemy;
         EnemyDestroyState.OnEnemyDestroy -= RemovingEnemy;
     }
+
+
+    private void InvokeOnPlayerEntersLight()
+    {
+        if (OnPlayerEntersLight != null) OnPlayerEntersLight();
+    }
+
+    private void InvokeOnPlayerNotInLight()
+    {
+        if (OnPlayerNotInLight != null) OnPlayerNotInLight();
+    }
+
 
     private void EnableEnemySpawners()
     {
@@ -147,10 +161,7 @@ public class DarknessSystem : MonoBehaviour
         {
             playerInLight = true;
             //DisableEnemySpawners();
-            if (OnPlayerEntersLight != null)
-            {
-                OnPlayerEntersLight();
-            }
+            InvokeOnPlayerEntersLight();
         }
     }
 
@@ -169,7 +180,7 @@ public class DarknessSystem : MonoBehaviour
         {
             playerInLight = false;
             //EnableEnemySpawners();
-            if (OnPlayerNotInLight != null) OnPlayerNotInLight();
+            InvokeOnPlayerNotInLight();
         }
     }
 
