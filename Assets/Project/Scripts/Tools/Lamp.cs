@@ -236,6 +236,16 @@ public class Lamp : MonoBehaviour
         circleLight.Expand(LIGHT_INTENSITY_ON);
     }
 
+    public void ActivateFadedCircleLight()
+    {
+        active = true;
+
+        circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
+        circleLight.Expand(LIGHT_INTENSITY_OFF);
+
+        if (turnOnLanternDroneSoundEvent != null) turnOnLanternDroneSoundEvent();
+    }
+
     public void DeactivateLampLight()
     {
         if (turnedOn && turnOffLanternEvent != null)
