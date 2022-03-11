@@ -32,7 +32,6 @@ public class InGameHUDHandler : MonoBehaviour
     public GameObject lampBarGameObject;
     public GameObject clawStrikeGameObject;
     public GameObject exclamationGameObject;
-    public GameObject crossGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -60,9 +59,6 @@ public class InGameHUDHandler : MonoBehaviour
 
         // Initialize exclamation variables
         exclamationGroup = exclamationGameObject.GetComponent<CanvasGroup>();
-
-        // Initialize cross variables
-        crossGroup = crossGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -251,13 +247,11 @@ public class InGameHUDHandler : MonoBehaviour
     private void OnEnable()
     {
         //PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
-        PlayerMiner.pickaxeNotStrongEnoughEvent += CrossAppears;
     }
 
     private void OnDisable()
     {
         //PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
-        PlayerMiner.pickaxeNotStrongEnoughEvent -= CrossAppears;
     }
 
     private void ExclamationAppears()
@@ -275,20 +269,5 @@ public class InGameHUDHandler : MonoBehaviour
         exclamationGroup.alpha = 0f;
     }
 
-    private void CrossAppears()
-    {
-        if (crossGroup.alpha == 1f) return;
 
-        StartCoroutine(StartCrossAppears());
-    }
-
-    IEnumerator StartCrossAppears()
-    {
-        crossGroup.alpha = 1f;
-
-        crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), FADE_TIME, 5);
-        yield return new WaitForSeconds(FADE_TIME);
-
-        crossGroup.alpha = 0f;
-    }
 }

@@ -9,7 +9,7 @@ public class Pickaxe : MonoBehaviour
     private const int MAX_LEVELS = 3;
     private int currentLevel = 0;
     private int[] damageValueIncrement = { 0, 1, 0 };
-    private Hardness[] hardnessIncrement = { Hardness.HARD, Hardness.HARD, Hardness.HARD };
+    private Hardness[] hardnessIncrement = { Hardness.HARD, Hardness.VERY_HARD, Hardness.VERY_HARD };
     private int[] extraDropIncrement = { 0, 0, 1};
 
     public int damageValue { get; private set; }
