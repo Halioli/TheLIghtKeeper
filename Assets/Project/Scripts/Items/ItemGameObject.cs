@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ItemGameObject : MonoBehaviour
 {
     // Private Attributes
     protected Rigidbody2D rigidbody2D;
+    public bool permanentNotPickedUp = false;
     public bool canBePickedUp;
 
-    
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
 
@@ -20,22 +21,16 @@ public class ItemGameObject : MonoBehaviour
     public float currentDespawnTimeInSeconds = DESPAWN_TIME_IN_SECONDS;
     private const float START_DESPAWN_FADING_TIME = 3.0f;
 
-
     // Public Attributes
     public Item item;
-
 
     // Audio
     public AudioSource audioSource;
     public AudioClip itemIsDropped;
 
-
-
-
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        canBePickedUp = true;
     }
 
     private void Start()
@@ -65,6 +60,18 @@ public class ItemGameObject : MonoBehaviour
         StartCoroutine("StopDroping", DROP_FORWARD_TIME);
     }
 
+    public void DropsRandom(float despawnTime)
+    {
+        transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), 0), 0.1f, 1, 0.3f);
+        StartDespawning(despawnTime);
+    }
+
+    public void DropsRandom()
+    {
+        transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), 0), 0.1f, 1, 0.3f);
+        StartDespawning(DESPAWN_TIME_IN_SECONDS);
+    }
+
     private void PlayDropSound()
     {
         audioSource.clip = itemIsDropped;
@@ -78,23 +85,21 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.gravityScale = 0f;
     }
 
-
-
-    public void StartDespawning()
+    public void StartDespawning(float despawnTime)
     {
-        StartCoroutine("Despawning");
+        StartCoroutine(Despawning(despawnTime));
     }
 
-    IEnumerator Despawning()
+    IEnumerator Despawning(float despawnTime)
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
-        Color transparentColor = spriteRenderer.material.color;
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        Color transparentColor = spriteRenderer.color;
         transparentColor.a = 0.0f;
 
-        Color semiTransparentColor = spriteRenderer.material.color;
-        semiTransparentColor.a = 0.8f;
+        Color semiTransparentColor = spriteRenderer.color;
+        semiTransparentColor.a = 0.5f;
 
+        currentDespawnTimeInSeconds = despawnTime;
         while (currentDespawnTimeInSeconds > START_DESPAWN_FADING_TIME)
         {
             yield return new WaitForSeconds(Time.deltaTime);
@@ -103,9 +108,10 @@ public class ItemGameObject : MonoBehaviour
 
         while (currentDespawnTimeInSeconds > 0.0f)
         {
-            spriteRenderer.material.color = semiTransparentColor;
+            spriteRenderer.color = semiTransparentColor;
             yield return new WaitForSeconds(currentDespawnTimeInSeconds / DESPAWN_TIME_IN_SECONDS);
-            spriteRenderer.material.color = transparentColor;
+
+            spriteRenderer.color = transparentColor;
             yield return new WaitForSeconds(currentDespawnTimeInSeconds / DESPAWN_TIME_IN_SECONDS);
 
             semiTransparentColor.a -= 0.025f;

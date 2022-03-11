@@ -8,29 +8,34 @@ public class InventoryMenu : MonoBehaviour
     public Inventory inventory;
     public ItemCell referenceItemCell;
 
-    // Private
-    public List<ItemCell> itemCellsList = new List<ItemCell>();
+    // Protected
+    protected List<ItemCell> itemCellsList;
+    protected int lastSelectedInventorySlot;
 
 
-    private void Awake()
+    private void Start()
     {
+        itemCellsList = new List<ItemCell>();
+        lastSelectedInventorySlot = 0;
+
         InitInventoryCellsList();
+        SetSelectedInventorySlotIndex(lastSelectedInventorySlot);
     }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
+        if (inventory.gotChanged)
         {
+            inventory.gotChanged = false;
             UpdateInventory();
         }
     }
 
 
-
-    private void InitInventoryCellsList()
+    public void InitInventoryCellsList()
     {
-        for (int i = 0; i < inventory.GetInventorySize(); i++)
+        for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
             AddNewEmptyCell();
         }
@@ -39,14 +44,19 @@ public class InventoryMenu : MonoBehaviour
 
     public void AddNewEmptyCell()
     {
-        itemCellsList.Add(Instantiate(referenceItemCell, transform).GetComponent<ItemCell>());
-       
-        SpriteRenderer sr = inventory.inventory[itemCellsList.Count - 1].itemInStack.prefab.GetComponent<SpriteRenderer>();
-        referenceItemCell.SetItemImage(sr.sprite);
+        ItemCell newItemCell = Instantiate(referenceItemCell, transform).GetComponent<ItemCell>();
 
-        int amount = inventory.inventory[itemCellsList.Count - 1].amountInStack;
-        referenceItemCell.SetItemAmount(amount);
+        itemCellsList.Add(newItemCell);
 
+        newItemCell.InitItemCell(this, itemCellsList.Count - 1);
+
+        //SpriteRenderer sr = inventory.inventory[itemCellsList.Count - 1].itemInStack.prefab.GetComponent<SpriteRenderer>();
+        ////referenceItemCell.SetItemImage(sr.sprite);
+        //newItemCell.SetItemImage(sr.sprite);
+
+        //int amount = inventory.inventory[itemCellsList.Count - 1].amountInStack;
+        ////referenceItemCell.SetItemAmount(amount);
+        //newItemCell.SetItemAmount(amount);
     }
 
 
@@ -54,19 +64,44 @@ public class InventoryMenu : MonoBehaviour
     {
         if (itemCellsList.Count < inventory.GetInventorySize())
         {
-            for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); i++)
+            for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); ++i)
             {
                 AddNewEmptyCell();
             }
         }
 
-        for (int i = 0; i < inventory.GetInventorySize(); i++)
+        SpriteRenderer sr;
+        for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
-            SpriteRenderer sr = inventory.inventory[i].itemInStack.prefab.GetComponent<SpriteRenderer>();
+            sr = inventory.inventory[i].itemInStack.prefab.GetComponentInChildren<SpriteRenderer>();
             itemCellsList[i].SetItemImage(sr.sprite);
 
             int amount = inventory.inventory[i].amountInStack;
             itemCellsList[i].SetItemAmount(amount);
+
+            if (!inventory.inventory[i].StackIsEmpty())
+            {
+                itemCellsList[i].GetComponent<HoverButton>().SetDescription(inventory.inventory[i].itemInStack.description);
+            }
         }
+    }
+
+    public void MoveItemToOtherInventory()
+    {
+        inventory.MoveItemToOtherInventory();
+        inventory.gotChanged = true;
+    }
+
+    public virtual void SetSelectedInventorySlotIndex(int itemCellIndex)
+    {
+        ResetSelectedInventorySlot(itemCellIndex);
+        inventory.SetSelectedInventorySlotIndex(itemCellIndex);
+    }
+
+    protected virtual void ResetSelectedInventorySlot(int newLastSelectedInventorySlot)
+    {
+        itemCellsList[lastSelectedInventorySlot].DoOnDiselect();
+        lastSelectedInventorySlot = newLastSelectedInventorySlot;
+        itemCellsList[newLastSelectedInventorySlot].DoOnSelect();
     }
 }

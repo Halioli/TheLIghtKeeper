@@ -4,30 +4,27 @@ using UnityEngine;
 
 public class TeleportSystem : MonoBehaviour
 {
-    private GameObject playerGameObject;
-    public int currentTeleportInUse = 0;
-
-    public List<Teleporter> teleports;
     private Dictionary<string, int> teleportIdentifier;
 
-
+    public GameObject playerGameObject;
+    public int currentTeleportInUse = 0;
+    public List<Teleporter> teleports;
 
     private void Start()
     {
-        playerGameObject = GameObject.FindGameObjectWithTag("Player");
-
         teleportIdentifier = new Dictionary<string, int>();
+
         for (int i = 0; i < teleports.Count; ++i)
         {
             teleportIdentifier[teleports[i].teleportName] = i;
         }
-        
     }
 
 
     private void OnEnable()
     {
         Teleporter.OnActivation += SetPlayerInCurrentTeleport;
+        Teleporter.OnInteraction += SetPlayerInCurrentTeleport;
 
         TeleportButton.OnSelection += TeleportPlayerToNewPosition;
     }
@@ -35,6 +32,7 @@ public class TeleportSystem : MonoBehaviour
     private void OnDisable()
     {
         Teleporter.OnActivation -= SetPlayerInCurrentTeleport;
+        Teleporter.OnInteraction -= SetPlayerInCurrentTeleport;
         
         TeleportButton.OnSelection -= TeleportPlayerToNewPosition;
     }

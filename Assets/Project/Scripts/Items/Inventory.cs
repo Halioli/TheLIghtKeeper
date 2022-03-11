@@ -14,21 +14,28 @@ public class Inventory : MonoBehaviour
 
     public int indexOfSelectedInventorySlot;
 
-
+    public bool gotChanged = false;
 
     // Private Attributes
-    private int numberOfInventorySlots;
-    private int numberOfOccuppiedInventorySlots;
-    private bool inventoryIsEmpty;
+    [SerializeField] protected int numberOfInventorySlots;
+    protected int numberOfOccuppiedInventorySlots;
+    protected bool inventoryIsEmpty;
 
-    private const int MAX_NUMBER_OF_SLOTS = 9;
+    [SerializeField] protected int maxNumberOfSlots;
 
+
+    private Inventory otherInventory = null;
+
+
+    // Action
+    public delegate void InventoryAction();
+    public static event InventoryAction OnItemMove;
+    public static event InventoryAction OnItemMoveFail;
 
 
     // Initializer Methods
-    public void Start()
+    public void Awake()
     {
-        numberOfInventorySlots = 4;
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
         inventoryIsEmpty = true;
@@ -38,16 +45,14 @@ public class Inventory : MonoBehaviour
     }
 
 
-
     public void InitInventory()
     {
         for (int i = 0; i < numberOfInventorySlots; i++)
         {
             inventory.Add(Instantiate(emptyStack, transform));
         }
-        
+        gotChanged = true;
     }
-
 
     // Getter Methods
     public int GetInventorySize() { return numberOfInventorySlots; }
@@ -80,7 +85,6 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
-
     public int NextEmptyInventorySlot()
     {
         int i = 0;
@@ -99,17 +103,6 @@ public class Inventory : MonoBehaviour
     {
         return (NextEmptyInventorySlot() != -1) ||
                (NextInventorySlotWithAvailableSpaceToAddItem(itemToCompare) != -1);
-    }
-
-
-    // Modifier Methods
-    public void UpgradeInventory()
-    {
-        if (numberOfInventorySlots < MAX_NUMBER_OF_SLOTS)
-        {
-            numberOfInventorySlots++;
-            inventory.Add(Instantiate(emptyStack, transform));
-        }
     }
 
 
@@ -148,7 +141,6 @@ public class Inventory : MonoBehaviour
         return hasEnough;
     }
 
-
     public bool AddItemToInventory(Item itemToAdd)
     {
         bool couldAddItem = false;
@@ -183,11 +175,16 @@ public class Inventory : MonoBehaviour
             }
         }
 
+        if (couldAddItem)
+        {
+            gotChanged = true;
+        }
+
         return couldAddItem;
     }
 
 
-    public bool SubstractItemToInventory(Item itemToSubstract)
+    public bool SubstractItemFromInventory(Item itemToSubstract)
     {
         bool couldRemoveItem = false;
 
@@ -212,15 +209,19 @@ public class Inventory : MonoBehaviour
             couldRemoveItem = true;
         }
 
+        if (couldRemoveItem)
+        {
+            gotChanged = true;
+        }
+    
         return couldRemoveItem;
     }
-
 
     public bool SubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
     {
         for (int i = 0; i < numberOfItemsToSubstract; ++i)
         {
-            if (!SubstractItemToInventory(itemToSubstract))
+            if (!SubstractItemFromInventory(itemToSubstract))
             {
                 return false;
             }
@@ -243,9 +244,9 @@ public class Inventory : MonoBehaviour
                 inventoryIsEmpty = true;
             }
         }
+
+        gotChanged = true;
     }
-
-
 
     // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()
@@ -269,28 +270,43 @@ public class Inventory : MonoBehaviour
         return itemsToDisplay;
     }
 
-
-    public void CycleLeftSelectedItemIndex()
+    public void SetSelectedInventorySlotIndex(int index)
     {
-        --indexOfSelectedInventorySlot;
-        indexOfSelectedInventorySlot = indexOfSelectedInventorySlot < 0 ? indexOfSelectedInventorySlot = numberOfInventorySlots-1 : indexOfSelectedInventorySlot;
-
-    }
-
-    public void CycleRightSelectedItemIndex()
-    {
-        indexOfSelectedInventorySlot = (indexOfSelectedInventorySlot + 1) % numberOfInventorySlots;
+        indexOfSelectedInventorySlot = index;
     }
 
 
-    public void UseSelectedConsumibleItem()
+    public void MoveItemToOtherInventory()
     {
-        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
+        if (otherInventory == null) return;
+        if (inventory[indexOfSelectedInventorySlot].itemInStack == itemNull)
         {
-            GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
-            consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
-
-            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+            if (OnItemMoveFail != null) OnItemMoveFail();
+            return;
         }
+
+
+        bool canSwap = otherInventory.ItemCanBeAdded(inventory[indexOfSelectedInventorySlot].itemInStack);
+
+        if (canSwap)
+        {
+            otherInventory.AddItemToInventory(inventory[indexOfSelectedInventorySlot].itemInStack);
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+
+            otherInventory.gotChanged = true;
+
+            if (OnItemMove != null) OnItemMove();
+        }
+        else
+        {
+            if (OnItemMoveFail != null) OnItemMoveFail();
+        }
+
     }
+
+    public void SetOtherInventory(Inventory otherInventory)
+    {
+        this.otherInventory = otherInventory;
+    }
+
 }

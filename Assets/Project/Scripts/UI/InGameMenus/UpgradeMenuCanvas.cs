@@ -5,16 +5,29 @@ using UnityEngine;
 public class UpgradeMenuCanvas : MonoBehaviour
 {
     [SerializeField] UpgradeButton[] upgradeButtons;
+    public UpgradesSystem upgradesSystem;
 
 
-    public void Init(List<UpgradeBranch> upgradeBranches)
+    private void OnEnable()
+    {
+        UpgradesStation.OnInteractOpen += SetButtonsCanBeClicked;
+    }
+
+    private void OnDisable()
+    {
+        UpgradesStation.OnInteractOpen -= SetButtonsCanBeClicked;
+    }
+
+
+    public void Init()
     {
         int j = 0;
 
-        for (int i = 0; i < upgradeBranches.Count; ++i)
+        for (int i = 0; i < upgradesSystem.upgradeBranches.Count; ++i)
         {
-            upgradeBranches[i].Init(i);
-            Upgrade upgrade = upgradeBranches[i].GetCurrentUpgrade();
+            upgradesSystem.upgradeBranches[i].Init(i);
+
+            Upgrade upgrade = upgradesSystem.upgradeBranches[i].GetCurrentUpgrade();
             Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
             string[] amounts = new string[upgrade.requiredItems.Count];
             j = 0;
@@ -25,8 +38,73 @@ public class UpgradeMenuCanvas : MonoBehaviour
                 amounts[j] = requiredItemPair.Value.ToString();
                 ++j;
             }
-            upgradeButtons[i].UpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
+            upgradeButtons[i].InitUpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
+            upgradeButtons[i].GetComponent<HoverButton>().SetDescription(upgradesSystem.upgradeBranches[i].GetCurrentUpgrade().longDescription); 
+
         }
+    }
+
+    public void UpgradeBranchIsSelected(int index)
+    {
+        if (!upgradeButtons[index].canBeClicked)
+        {
+            upgradesSystem.DoOnUpgardeFail();
+            return;
+        }
+
+        upgradesSystem.UpgradeBranchIsSelected(index);
+        //upgradeButtons[index].CheckSquare();
+
+        upgradesSystem.UpdatePlayerInventoryData();
+        SetButtonsCanBeClicked();
+        UpdateUpgradeButton(index);
+    }
+
+    public void UpdateUpgradeButton(int index)
+    {
+        if (upgradesSystem.upgradeBranches[index].IsCompleted())
+        {
+            upgradeButtons[index].canBeClicked = false;
+            upgradeButtons[index].DisableButton();
+            return;
+        }
+
+        Upgrade upgrade = upgradesSystem.upgradeBranches[index].GetCurrentUpgrade();
+        Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
+        string[] amounts = new string[upgrade.requiredItems.Count];
+        int j = 0;
+
+        foreach (KeyValuePair<Item, int> requiredItemPair in upgrade.requiredItems)
+        {
+            sprites[j] = requiredItemPair.Key.sprite;
+            amounts[j] = requiredItemPair.Value.ToString();
+            ++j;
+        }
+
+        upgradeButtons[index].UpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
+        upgradeButtons[index].GetComponent<HoverButton>().SetDescription(upgradesSystem.upgradeBranches[index].GetCurrentUpgrade().longDescription);
+
+    }
+
+
+    void SetButtonsCanBeClicked()
+    {
+        for (int i=0; i < upgradeButtons.Length; ++i)
+        {
+            SetButtonCanBeClicked(i);
+        }
+    }
+
+    void SetButtonCanBeClicked(int index)
+    {
+        if (upgradesSystem.upgradeBranches[index].IsCompleted())
+        {
+            upgradeButtons[index].GetComponent<HoverButton>().SetDescription("Upgrade branch completed.");
+            return;
+        }
+
+        bool canBeClicked = upgradesSystem.PlayerHasEnoughItemsToUpgrade(upgradesSystem.upgradeBranches[index].GetCurrentUpgrade());
+        upgradeButtons[index].StartClickCooldown(canBeClicked);
     }
 
 }
