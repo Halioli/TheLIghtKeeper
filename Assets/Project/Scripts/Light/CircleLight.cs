@@ -28,17 +28,17 @@ public class CircleLight : CustomLight
         SetColliderRadiusMatchLightOuterRadius();
     }
 
-    public override void Expand(float endIntensity)
+    public override void Expand(float endIntensity, float endRadius = 0f)
     {
         if (lightState == LightState.EXPANDING) return;
 
         active = true;
-        StartCoroutine(ExpandCircleLight());
+        StartCoroutine(ExpandCircleLight(endRadius));
         StartCoroutine(IntensityFadeIn(expandTime, endIntensity));
         StartCoroutine(ExpandCorrection(endIntensity));
     }
 
-    IEnumerator ExpandCircleLight()
+    IEnumerator ExpandCircleLight(float endRadius)
     {
         lightGameObject.SetActive(true);
         lightState = LightState.EXPANDING;
@@ -50,7 +50,7 @@ public class CircleLight : CustomLight
         {
             expandLerp.Update(Time.deltaTime);
 
-            lerpTransitionValue = expandLerp.Value * outerRadius;
+            lerpTransitionValue = (expandLerp.Value * outerRadius) + endRadius;
             circleLight.pointLightOuterRadius = lerpTransitionValue;
             circleLight.pointLightInnerRadius = lerpTransitionValue > radiusDifference ? lerpTransitionValue - radiusDifference : 0f;
             
@@ -71,16 +71,16 @@ public class CircleLight : CustomLight
     }
 
 
-    public override void Shrink(float endIntensity)
+    public override void Shrink(float endIntensity, float endRadius = 0f)
     {
         if (lightState == LightState.SHRINKING) return;
 
         active = false;
-        StartCoroutine(ShrinkCircleLight());
+        StartCoroutine(ShrinkCircleLight(endRadius));
         StartCoroutine(IntensityFadeOut(shrinkTime, endIntensity));
     }
 
-    IEnumerator ShrinkCircleLight()
+    IEnumerator ShrinkCircleLight(float endRadius)
     {
         lightState = LightState.SHRINKING;
 
@@ -91,7 +91,7 @@ public class CircleLight : CustomLight
         {
             shrinkLerp.Update(Time.deltaTime);
 
-            lerpTransitionValue = shrinkLerp.Inverse * outerRadius;
+            lerpTransitionValue = (shrinkLerp.Inverse * outerRadius) + endRadius;
             circleLight.pointLightOuterRadius = lerpTransitionValue;
             circleLight.pointLightInnerRadius = lerpTransitionValue > radiusDifference ? lerpTransitionValue - radiusDifference : 0f;
 

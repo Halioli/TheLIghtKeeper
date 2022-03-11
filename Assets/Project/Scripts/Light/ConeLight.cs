@@ -35,7 +35,7 @@ public class ConeLight : CustomLight
     }
 
 
-    public override void Expand(float endIntensity)
+    public override void Expand(float endIntensity, float endRadius = 0f)
     {
         if (lightState == LightState.EXPANDING) return;
 
@@ -111,7 +111,7 @@ public class ConeLight : CustomLight
         lightState = LightState.NONE;
     }
 
-    public override void Shrink(float endIntensity)
+    public override void Shrink(float endIntensity, float endRadius = 0f)
     {
         if (lightState == LightState.SHRINKING) return;
 
