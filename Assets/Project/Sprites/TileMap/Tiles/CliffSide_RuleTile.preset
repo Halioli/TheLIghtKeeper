@@ -6,7 +6,7 @@ Preset:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RuleTile
+  m_Name: CliffSide_RuleTile
   m_TargetType:
     m_NativeTypeID: 114
     m_ManagedTypePPtr: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
@@ -27,7 +27,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_DefaultSprite
     value: 
-    objectReference: {fileID: -3306246679208638754, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: 8333078557031164839, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_DefaultGameObject
     value: 
@@ -38,7 +38,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.size
-    value: 13
+    value: 15
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[0].m_Id
@@ -46,12 +46,56 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.size
-    value: 1
+    value: 12
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -3306246679208638754, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: 646231094730991057, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[1]
+    value: 
+    objectReference: {fileID: 322789372046917662, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[2]
+    value: 
+    objectReference: {fileID: 448597332739275030, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[3]
+    value: 
+    objectReference: {fileID: -1032064200634920244, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[4]
+    value: 
+    objectReference: {fileID: 708714166785468191, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[5]
+    value: 
+    objectReference: {fileID: 8093399100922411059, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[6]
+    value: 
+    objectReference: {fileID: 3689321258232396650, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[7]
+    value: 
+    objectReference: {fileID: 5314432850294555782, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[8]
+    value: 
+    objectReference: {fileID: 5750487813024786917, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[9]
+    value: 
+    objectReference: {fileID: 8309060796506295810, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[10]
+    value: 
+    objectReference: {fileID: 8082120106243159004, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[0].m_Sprites.Array.data[11]
+    value: 
+    objectReference: {fileID: -3921150617638557845, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[0].m_GameObject
     value: 
@@ -70,11 +114,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[0].m_Output
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[0].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[0].m_RandomTransform
@@ -226,12 +270,16 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[1].m_Sprites.Array.size
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[1].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -8071999228651298917, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: 961043608696178791, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[1].m_Sprites.Array.data[1]
+    value: 
+    objectReference: {fileID: -4877546656362321221, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[1].m_GameObject
     value: 
@@ -250,11 +298,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[1].m_Output
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[1].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[1].m_RandomTransform
@@ -374,12 +422,16 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[2].m_Sprites.Array.size
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[2].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: 9183477403285442539, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: 8333078557031164839, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[2].m_Sprites.Array.data[1]
+    value: 
+    objectReference: {fileID: -5201741205500484105, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[2].m_GameObject
     value: 
@@ -398,11 +450,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[2].m_Output
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[2].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[2].m_RandomTransform
@@ -522,12 +574,16 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[3].m_Sprites.Array.size
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[3].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: 800873910900713662, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: -7338071932697179376, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[3].m_Sprites.Array.data[1]
+    value: 
+    objectReference: {fileID: 535092129344883441, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[3].m_GameObject
     value: 
@@ -546,7 +602,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[3].m_Output
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[3].m_ColliderType
@@ -670,12 +726,16 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[4].m_Sprites.Array.size
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[4].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: 3190587428626321436, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: 3742597786716852508, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[4].m_Sprites.Array.data[1]
+    value: 
+    objectReference: {fileID: 4344624483821310286, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[4].m_GameObject
     value: 
@@ -694,11 +754,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[4].m_Output
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[4].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[4].m_RandomTransform
@@ -814,7 +874,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_Id
-    value: 3
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_Sprites.Array.size
@@ -823,7 +883,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -2393971935723593052, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: -2159358026156143044, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_GameObject
     value: 
@@ -846,7 +906,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_RandomTransform
@@ -854,7 +914,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_Neighbors.Array.size
-    value: 6
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_Neighbors.Array.data[0]
@@ -877,12 +937,8 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[5].m_Neighbors.Array.data[5]
-    value: 2
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.size
-    value: 6
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[0].x
@@ -898,7 +954,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[1].x
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[1].y
@@ -922,7 +978,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[3].x
-    value: -1
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[3].y
@@ -934,7 +990,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[4].x
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[4].y
@@ -945,24 +1001,12 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[5].x
-    value: -1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[5].y
-    value: -1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[5].m_NeighborPositions.Array.data[5].z
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[5].m_RuleTransform
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Id
-    value: 5
+    value: 9
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Sprites.Array.size
@@ -971,7 +1015,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -4211486662573531005, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: 7194089969749266260, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_GameObject
     value: 
@@ -994,7 +1038,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_RandomTransform
@@ -1002,7 +1046,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Neighbors.Array.size
-    value: 5
+    value: 6
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Neighbors.Array.data[0]
@@ -1014,7 +1058,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Neighbors.Array.data[2]
-    value: 2
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Neighbors.Array.data[3]
@@ -1022,19 +1066,23 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_Neighbors.Array.data[4]
-    value: 1
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[6].m_Neighbors.Array.data[5]
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.size
-    value: 5
+    value: 6
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[0].x
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[0].y
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[0].z
@@ -1042,11 +1090,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[1].x
-    value: -1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[1].y
-    value: 0
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[1].z
@@ -1054,7 +1102,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[2].x
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[2].y
@@ -1066,7 +1114,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[3].x
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[3].y
@@ -1078,7 +1126,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[4].x
-    value: -1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[4].y
@@ -1089,12 +1137,24 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[5].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[5].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[6].m_NeighborPositions.Array.data[5].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[6].m_RuleTransform
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Id
-    value: 6
+    value: 10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Sprites.Array.size
@@ -1103,7 +1163,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -618623349585358731, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: -2835555011787421749, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_GameObject
     value: 
@@ -1126,7 +1186,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_RandomTransform
@@ -1134,19 +1194,19 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Neighbors.Array.size
-    value: 5
+    value: 6
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Neighbors.Array.data[0]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Neighbors.Array.data[1]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Neighbors.Array.data[2]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Neighbors.Array.data[3]
@@ -1154,19 +1214,23 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_Neighbors.Array.data[4]
-    value: 2
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[7].m_Neighbors.Array.data[5]
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.size
-    value: 5
+    value: 6
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[0].x
-    value: -1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[0].y
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[0].z
@@ -1174,11 +1238,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[1].x
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[1].y
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[1].z
@@ -1186,11 +1250,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[2].x
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[2].y
-    value: -1
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[2].z
@@ -1198,7 +1262,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[3].x
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[3].y
@@ -1210,14 +1274,26 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[4].x
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[4].y
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[4].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[5].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[5].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[7].m_NeighborPositions.Array.data[5].z
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -1226,7 +1302,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_Id
-    value: 8
+    value: 3
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_Sprites.Array.size
@@ -1235,7 +1311,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -5990274334810204225, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: -7618706137678291425, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_GameObject
     value: 
@@ -1258,7 +1334,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_RandomTransform
@@ -1270,7 +1346,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_Neighbors.Array.data[0]
-    value: 2
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_Neighbors.Array.data[1]
@@ -1282,11 +1358,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_Neighbors.Array.data[3]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_Neighbors.Array.data[4]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.size
@@ -1294,7 +1370,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[0].x
-    value: -1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[0].y
@@ -1306,7 +1382,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[1].x
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[1].y
@@ -1318,7 +1394,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[2].x
-    value: -1
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[2].y
@@ -1342,7 +1418,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[4].x
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[8].m_NeighborPositions.Array.data[4].y
@@ -1358,7 +1434,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_Id
-    value: 9
+    value: 11
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_Sprites.Array.size
@@ -1367,7 +1443,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -6550507702450040760, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: 4824561167146015441, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_GameObject
     value: 
@@ -1390,7 +1466,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_RandomTransform
@@ -1398,7 +1474,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_Neighbors.Array.size
-    value: 6
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_Neighbors.Array.data[0]
@@ -1414,27 +1490,23 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_Neighbors.Array.data[3]
-    value: 2
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_Neighbors.Array.data[4]
     value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[9].m_Neighbors.Array.data[5]
-    value: 2
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.size
-    value: 6
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[0].x
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[0].y
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[0].z
@@ -1442,11 +1514,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[1].x
-    value: 0
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[1].y
-    value: -1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[1].z
@@ -1454,7 +1526,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[2].x
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[2].y
@@ -1466,7 +1538,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[3].x
-    value: -1
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[3].y
@@ -1478,26 +1550,14 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[4].x
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[4].y
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[4].z
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[5].x
     value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[5].y
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[5].z
+    propertyPath: m_TilingRules.Array.data[9].m_NeighborPositions.Array.data[4].z
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -1506,7 +1566,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Id
-    value: 10
+    value: 12
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Sprites.Array.size
@@ -1515,7 +1575,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: 8607098310456960148, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: -1743151858556240929, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_GameObject
     value: 
@@ -1538,7 +1598,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_RandomTransform
@@ -1546,19 +1606,19 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Neighbors.Array.size
-    value: 6
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Neighbors.Array.data[0]
-    value: 2
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Neighbors.Array.data[1]
-    value: 2
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Neighbors.Array.data[2]
-    value: 2
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Neighbors.Array.data[3]
@@ -1566,15 +1626,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_Neighbors.Array.data[4]
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[10].m_Neighbors.Array.data[5]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.size
-    value: 6
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[0].x
@@ -1590,7 +1646,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[1].x
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[1].y
@@ -1602,11 +1658,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[2].x
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[2].y
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[2].z
@@ -1614,7 +1670,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[3].x
-    value: -1
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[3].y
@@ -1626,7 +1682,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[4].x
-    value: 0
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[4].y
@@ -1637,24 +1693,12 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[5].x
-    value: -1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[5].y
-    value: -1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[10].m_NeighborPositions.Array.data[5].z
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[10].m_RuleTransform
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Id
-    value: 11
+    value: 8
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Sprites.Array.size
@@ -1663,7 +1707,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: -5684502715020029520, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: -6004004288734835983, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_GameObject
     value: 
@@ -1694,7 +1738,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Neighbors.Array.size
-    value: 5
+    value: 7
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Neighbors.Array.data[0]
@@ -1706,19 +1750,27 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Neighbors.Array.data[2]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Neighbors.Array.data[3]
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_Neighbors.Array.data[4]
     value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_Neighbors.Array.data[5]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_Neighbors.Array.data[6]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.size
-    value: 5
+    value: 7
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[0].x
@@ -1746,11 +1798,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[2].x
-    value: 0
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[2].y
-    value: -1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[2].z
@@ -1758,11 +1810,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[3].x
-    value: 1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[3].y
-    value: 0
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[3].z
@@ -1781,12 +1833,36 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[5].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[5].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[5].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[6].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[6].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[11].m_NeighborPositions.Array.data[6].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[11].m_RuleTransform
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_Id
-    value: 0
+    value: 13
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_Sprites.Array.size
@@ -1795,7 +1871,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_Sprites.Array.data[0]
     value: 
-    objectReference: {fileID: 8948593046151139786, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+    objectReference: {fileID: -2927819592102404184, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_GameObject
     value: 
@@ -1818,7 +1894,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_ColliderType
-    value: 1
+    value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_RandomTransform
@@ -1826,7 +1902,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.size
-    value: 5
+    value: 7
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[0]
@@ -1834,23 +1910,31 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[1]
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[2]
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[3]
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[4]
     value: 2
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[2]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[3]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[4]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[5]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_Neighbors.Array.data[6]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.size
-    value: 5
+    value: 7
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[0].x
@@ -1890,11 +1974,11 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[3].x
-    value: 1
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[3].y
-    value: 0
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[3].z
@@ -1902,18 +1986,402 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[4].x
-    value: -1
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[4].y
-    value: -1
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[4].z
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[5].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[5].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[5].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[6].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[6].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[12].m_NeighborPositions.Array.data[6].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_TilingRules.Array.data[12].m_RuleTransform
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Id
+    value: 14
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Sprites.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Sprites.Array.data[0]
+    value: 
+    objectReference: {fileID: 7821689196816984861, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_GameObject
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_MinAnimationSpeed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_MaxAnimationSpeed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_PerlinScale
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Output
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_ColliderType
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_RandomTransform
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.size
+    value: 8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[0]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[1]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[2]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[3]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[4]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[5]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[6]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_Neighbors.Array.data[7]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.size
+    value: 8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[0].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[0].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[0].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[1].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[1].y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[1].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[2].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[2].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[2].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[3].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[3].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[3].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[4].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[4].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[4].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[5].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[5].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[5].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[6].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[6].y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[6].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[7].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[7].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_NeighborPositions.Array.data[7].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[13].m_RuleTransform
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Id
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Sprites.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Sprites.Array.data[0]
+    value: 
+    objectReference: {fileID: -5554294246870011916, guid: 7f935dc8b5db86e4ea3e3695973284cb, type: 3}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_GameObject
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_MinAnimationSpeed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_MaxAnimationSpeed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_PerlinScale
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Output
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_ColliderType
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_RandomTransform
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.size
+    value: 8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[1]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[2]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[3]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[4]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[5]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[6]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_Neighbors.Array.data[7]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.size
+    value: 8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[0].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[0].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[0].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[1].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[1].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[1].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[2].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[2].y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[2].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[3].x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[3].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[3].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[4].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[4].y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[4].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[5].x
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[5].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[5].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[6].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[6].y
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[6].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[7].x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[7].y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_NeighborPositions.Array.data[7].z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_TilingRules.Array.data[14].m_RuleTransform
     value: 0
     objectReference: {fileID: 0}
   m_ExcludedProperties: []
