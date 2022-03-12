@@ -9,6 +9,8 @@ public class TutorialMessages : MonoBehaviour
 
     [TextArea(5, 20)] public string mssg;
 
+    public static bool tutorialOpened;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -19,6 +21,8 @@ public class TutorialMessages : MonoBehaviour
 
     protected virtual void SendMessage()
     {
+        tutorialOpened = true;
+
         // Send Action
         if (OnNewMessage != null)
             OnNewMessage(mssg);
