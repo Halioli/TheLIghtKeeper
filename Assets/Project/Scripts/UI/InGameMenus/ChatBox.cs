@@ -18,29 +18,6 @@ public class ChatBox : MonoBehaviour
     private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
-    // World mssgs 0 - 9 // Tutorial mssgs 10 - 19
-    private string[] chatMessages = {
-        "Ores can be mined",
-        "These creatures look hostile",
-        "If we bring it something it might activate",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "", // 9
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", // Max lenght
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "", // 19
-    };
 
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
@@ -55,15 +32,21 @@ public class ChatBox : MonoBehaviour
     private void OnEnable()
     {
         TutorialMessages.OnNewMessage += ShowChatBox;
+        MessageItemToStorage.OnNewMessage += ShowChatBox;
     }
 
     private void OnDisable()
     {
         TutorialMessages.OnNewMessage -= ShowChatBox;
+        MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(int mssgID)
+    private void ShowChatBox(string mssg)
     {
+        Debug.Log("yooooooooooooooo");
+        Debug.Log(mssg);
+
+
         if (!chatOpen)
         {
             // Set canvas group to 1
@@ -71,7 +54,7 @@ public class ChatBox : MonoBehaviour
         }
 
         // Display text
-        fullMssgText = chatMessages[mssgID];
+        fullMssgText = mssg;
         StartCoroutine("ShowText");
 
         // Set canvas group to 0

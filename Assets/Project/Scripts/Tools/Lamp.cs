@@ -133,6 +133,11 @@ public class Lamp : MonoBehaviour
         return lampTime <= 0;
     }
 
+    public bool LampTimeIsMax()
+    {
+        return lampTime == maxLampTime;
+    }
+
     public void ConsumeLampTime()
     {
         lampTime -= Time.deltaTime * timeMultiplier;
@@ -234,6 +239,16 @@ public class Lamp : MonoBehaviour
 
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
         circleLight.Expand(LIGHT_INTENSITY_ON);
+    }
+
+    public void ActivateFadedCircleLight()
+    {
+        active = true;
+
+        circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
+        circleLight.Expand(LIGHT_INTENSITY_OFF);
+
+        if (turnOnLanternDroneSoundEvent != null) turnOnLanternDroneSoundEvent();
     }
 
     public void DeactivateLampLight()
