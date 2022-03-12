@@ -32,6 +32,7 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] AudioClip turnOnLanternDroneSound;
     [SerializeField] AudioClip turnOffLanternDroneSound;
     [SerializeField] AudioClip refillLanternSound;
+    [SerializeField] AudioClip fullLanternRechargeSound;
 
 
 
@@ -72,6 +73,7 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOnLanternEvent += PlayTurnOnLanternSound;
         Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill += PlayRefillLanternSound;
+        PlayerLightChecker.OnPlayerEntersCoreLight += PlayFullLanternRechargeSound;
     }
 
 
@@ -112,7 +114,7 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOnLanternEvent -= PlayTurnOnLanternSound;
         Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill -= PlayRefillLanternSound;
-
+        PlayerLightChecker.OnPlayerEntersCoreLight -= PlayFullLanternRechargeSound;
     }
 
 
@@ -277,5 +279,13 @@ public class PlayerAudio : MonoBehaviour
         lanternOnOffAudioSource.volume = 0.25f;
         lanternOnOffAudioSource.Play();
     }
+
+    private void PlayFullLanternRechargeSound()
+    {
+        attackAndMineAudioSource.clip = fullLanternRechargeSound;
+        attackAndMineAudioSource.pitch = 1.7f;
+        attackAndMineAudioSource.Play();
+    }
+
 
 }

@@ -13,6 +13,8 @@ public class PlayerInputs : MonoBehaviour
     public bool facingLeft = true;
     public bool canFlip = true;
     public bool canMove = true;
+    public bool canMoveLantern = true;
+    public bool isLanternPaused = false;
     public float playerReach = 3f;
 
     public bool canMine = true;

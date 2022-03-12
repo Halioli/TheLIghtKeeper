@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class MessageItemToStorage : TutorialMessages
 {
-    //public delegate void MessageItemToStorageDone();
-    //public static event MessageItemToStorageDone DoItemToStorageMessage;
-
     private void OnEnable()
     {
         CraftingSystem.OnItemSentToStorage += SendMessage;
@@ -17,13 +14,10 @@ public class MessageItemToStorage : TutorialMessages
         CraftingSystem.OnItemSentToStorage -= SendMessage;
     }
 
-    protected override void SendMessage()
-    {
-        Debug.Log("AAAAAAAAAAAAA");
-        base.SendMessage();
+    //protected override void SendMessage()
+    //{
+    //    base.SendMessage();
 
-        // Send Action
-        //if (DoItemToStorageMessage != null)
-        //    DoItemToStorageMessage();
-    }
+    //    Debug.Log(mssg);
+    //}
 }

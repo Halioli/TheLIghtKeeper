@@ -35,6 +35,7 @@ public class InventoryMenu : MonoBehaviour
 
     public void InitInventoryCellsList()
     {
+        itemCellsList = new List<ItemCell>();
         for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
             AddNewEmptyCell();
@@ -62,6 +63,8 @@ public class InventoryMenu : MonoBehaviour
 
     public void UpdateInventory()
     {
+        if (itemCellsList == null) return;
+
         if (itemCellsList.Count < inventory.GetInventorySize())
         {
             for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); ++i)

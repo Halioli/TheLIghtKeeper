@@ -33,11 +33,13 @@ public class ChatBox : MonoBehaviour
     private void OnEnable()
     {
         TutorialMessages.OnNewMessage += ShowChatBox;
+        MessageItemToStorage.OnNewMessage += ShowChatBox;
     }
 
     private void OnDisable()
     {
         TutorialMessages.OnNewMessage -= ShowChatBox;
+        MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
     private void ShowChatBox(string mssg)
