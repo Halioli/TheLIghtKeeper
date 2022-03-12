@@ -9,7 +9,6 @@ public class HUDText : MonoBehaviour
 {
     enum DisplayMessege { NONE, PICKAXE_TOO_WEAK, PICK_UP_FAIL, LANTERN_RECHARGED};
 
-
     private float FADE_TIME = 1.5f;
     private float FADE_OUT_TIME = 0.25f;
     private const float SHAKE_STRENGHT = 0.2f;
@@ -40,9 +39,10 @@ public class HUDText : MonoBehaviour
 
     private void DisplayMineErrorText()
     {
-        if (displayMessage != DisplayMessege.PICKAXE_TOO_WEAK)
-            textMessege.text = "Pickaxe too weak!";
+        if (displayMessage == DisplayMessege.PICKAXE_TOO_WEAK && canvasGroup.alpha != 0f)
+            return;
 
+        textMessege.text = "Pickaxe too weak!";
         displayMessage = DisplayMessege.PICKAXE_TOO_WEAK;
         DisplayMessageAndCross(FADE_TIME);
     }
@@ -50,18 +50,20 @@ public class HUDText : MonoBehaviour
 
     private void DisplayItemPickUpError(float duration)
     {
-        if (displayMessage != DisplayMessege.PICK_UP_FAIL)
-            textMessege.text = "No inventory space!";
+        if (displayMessage == DisplayMessege.PICK_UP_FAIL && canvasGroup.alpha != 0f)
+            return;
 
+        textMessege.text = "No inventory space!";
         displayMessage = DisplayMessege.PICK_UP_FAIL;
         DisplayMessageAndCross(duration);
     }
 
     private void DisplayLanternRecharged()
     {
-        if (displayMessage != DisplayMessege.LANTERN_RECHARGED)
-            textMessege.text = "Lantern charged up!";
+        if (displayMessage == DisplayMessege.LANTERN_RECHARGED && canvasGroup.alpha != 0f)
+            return;
 
+        textMessege.text = "Lantern charged up!";
         displayMessage = DisplayMessege.LANTERN_RECHARGED;
         DisplayMessageAndExclamation(FADE_TIME);
     }
@@ -71,16 +73,12 @@ public class HUDText : MonoBehaviour
 
     private void DisplayMessageAndCross(float duration)
     {
-        if (canvasGroup.alpha != 0f) return;
-
         StartCoroutine(DisplayMessage(duration));
         StartCoroutine(StartCrossAppears(duration));
     }
 
     private void DisplayMessageAndExclamation(float duration)
     {
-        if (canvasGroup.alpha != 0f) return;
-
         StartCoroutine(DisplayMessage(duration));
         StartCoroutine(StartExclamationAppears(duration));
     }

@@ -118,7 +118,7 @@ public class Lamp : MonoBehaviour
 
             if (turnOffLanternEvent != null) turnOffLanternEvent();
         }
-        else
+        else if (!PlayerInputs.instance.isLanternPaused)
         {
             ConsumeLampTime();
             if (lampTime <= SECONDS_HIGH_FREQUENCY_FLICK)
