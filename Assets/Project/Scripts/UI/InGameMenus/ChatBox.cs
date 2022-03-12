@@ -18,6 +18,7 @@ public class ChatBox : MonoBehaviour
     private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
+    private List<string> textToShow = new List<string>();
 
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
@@ -43,30 +44,51 @@ public class ChatBox : MonoBehaviour
 
     private void ShowChatBox(string mssg)
     {
-        Debug.Log("yooooooooooooooo");
-        Debug.Log(mssg);
+        ParseText(mssg);
 
-
-        if (!chatOpen)
-        {
-            // Set canvas group to 1
-            StartCoroutine("CanvasFadeIn", chatCanvasGroup);
-        }
+        // Set canvas group to 1
+        StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
         // Display text
-        fullMssgText = mssg;
+        fullMssgText = textToShow[0];
+
         StartCoroutine("ShowText");
 
-        // Set canvas group to 0
-        StartCoroutine("CanvasFadeOut", chatCanvasGroup);
+    }
+
+    private void ParseText(string msg)
+    {
+        string modText;
+        int numMssgs;
+        int currentPos = 0;
+        int nextPos = MAX_TEXT_LENGHT;
+
+        //Split full message into smaller fragments
+        if (msg.Length < MAX_TEXT_LENGHT)
+        {
+            return;            
+        }
+
+        while(currentPos < msg.Length)
+        {
+            textToShow.Add(msg.Substring(currentPos * 72, Mathf.Min(currentPos * 72 + 72, msg.Length)));
+        }
     }
 
     private void ResetValues()
     {
+        Debug.Log(TutorialMessages.tutorialOpened);
+        Debug.Log(TutorialMessages.tutorialOpened);
+
         chatOpen = false;
         allTextShown = false;
     }
 
+    private void HideChat()
+    {
+        // Set canvas group to 0
+        StartCoroutine("CanvasFadeOut", chatCanvasGroup);
+    }
     IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(0f, 0f);
