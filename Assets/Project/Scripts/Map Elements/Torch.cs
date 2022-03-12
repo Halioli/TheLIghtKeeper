@@ -29,7 +29,12 @@ public class Torch : InteractStation
 
     [SerializeField] AudioSource torchAudioSource;
 
-    // Start is called before the first frame update
+
+    void Awake()
+    {
+        SaveSystem.torches.Add(this);
+    }
+
     void Start()
     {
         smokeTorchParticles.Stop();
@@ -86,7 +91,7 @@ public class Torch : InteractStation
         }
 
     }
-    void SetTorchLightOff()
+    public void SetTorchLightOff()
     {
         smokeTorchParticles.Stop();
         torchLight.intensity = 1f;
@@ -99,7 +104,7 @@ public class Torch : InteractStation
         }
     }
 
-    void SetTorchLightOn()
+    public void SetTorchLightOn()
     {
         smokeTorchParticles.Play();
         torchLight.intensity = 1f;

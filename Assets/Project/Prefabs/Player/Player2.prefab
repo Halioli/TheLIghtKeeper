@@ -1155,18 +1155,20 @@ MonoBehaviour:
   lanternDroneAudioSource: {fileID: 1648606289392802167}
   lanternDroneOnOffAudioSource: {fileID: 2301000522128192115}
   lanternOnOffAudioSource: {fileID: 5947980658247159692}
+  normalWalkingSound: {fileID: 8300000, guid: 1b38e2d7c41780e449e1926e1cae3e92, type: 3}
+  grassWalkingSound: {fileID: 8300000, guid: c9303a1afa4644840b33837ae9b3d6d6, type: 3}
   attackAudioSound: {fileID: 8300000, guid: c5a448fb001047b4c991329b66fc300f, type: 3}
   missAttackAudioSound: {fileID: 8300000, guid: 9173ef68dcd78734db2007128f7eca59, type: 3}
+  mineErrorAudioSource: {fileID: 8300000, guid: f7ac3405865a86142a891ae893551da4, type: 3}
   mineAudioSound: {fileID: 8300000, guid: 5cece54e8eedf044b942359545a7c3bc, type: 3}
   mineBreakAudioSound: {fileID: 8300000, guid: d10a881cc844a0244a25a4249c26c4dd, type: 3}
-  miningBuildUpSound: {fileID: 8300000, guid: c79e6646cb220064881a8a58bcad7a79, type: 3}
-  successCriticalMiningSound: {fileID: 8300000, guid: f7ac3405865a86142a891ae893551da4, type: 3}
-  failCriticalMiningSound: {fileID: 8300000, guid: f49a276de2ad28b4892328492a258258, type: 3}
+  mineMetalAudioSound: {fileID: 8300000, guid: e57d538606fde6c4781b5d14f025735b, type: 3}
   turnOnLanternSound: {fileID: 8300000, guid: 636036592dba1ae4fa68f231da57db97, type: 3}
   turnOffLanternSound: {fileID: 8300000, guid: a8bf75ecaa28f984ea1dd8af287e3338, type: 3}
   turnOnLanternDroneSound: {fileID: 8300000, guid: 0ab41d13598324447a91c78db1d77afe, type: 3}
   turnOffLanternDroneSound: {fileID: 8300000, guid: 0e5019a944cb1b542b1f2f0d1683656a, type: 3}
   refillLanternSound: {fileID: 8300000, guid: 13335f3ce23f30745b9ce846c033359e, type: 3}
+  fullLanternRechargeSound: {fileID: 8300000, guid: d9400666b7db9ce41b7de8abc73a6931, type: 3}
 --- !u!1 &3445750883222959973
 GameObject:
   m_ObjectHideFlags: 0
@@ -6003,7 +6005,9 @@ GameObject:
   - component: {fileID: 6929503867206481633}
   - component: {fileID: 2298453658428181774}
   - component: {fileID: 2164607947576985437}
+  - component: {fileID: 2105085851515632685}
   - component: {fileID: 5727223543676621844}
+  - component: {fileID: 222604397228054894}
   - component: {fileID: 1543562946031534957}
   - component: {fileID: 3101832250444032047}
   - component: {fileID: 1870523755677931703}
@@ -6287,6 +6291,18 @@ MonoBehaviour:
   animator: {fileID: 1543562946031534957}
   hudHandler: {fileID: 0}
   animationEnds: 0
+--- !u!114 &2105085851515632685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3747971617821116011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ff17621939eee4a8ae21f87b1cbdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5727223543676621844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6300,6 +6316,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1543562946031534957}
+--- !u!114 &222604397228054894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3747971617821116011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddcc0d799ce5e7e4a9aad75c1cbc8ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coalMineral: {fileID: 3125845114834575730, guid: 41b01b1473e6747489fd36c552981ca8, type: 3}
+  ironMineral: {fileID: 5798179137086951883, guid: f60b77ac4e39adf419985fb62c42a11e, type: 3}
+  darkEssenceMineral: {fileID: 4956097848011580223, guid: e2c57d1dc2d45ed4cac975acf415c722, type: 3}
+  luxuniteMineral: {fileID: 7714621029357433215, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
 --- !u!95 &1543562946031534957
 Animator:
   serializedVersion: 3
@@ -11948,9 +11980,9 @@ PrefabInstance:
       objectReference: {fileID: 8618609705104900965}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
---- !u!1 &8618609705104900965 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+--- !u!4 &8618609706183199512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
   m_PrefabInstance: {fileID: 7900096662325101685}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3440172144570092638 stripped
@@ -11964,9 +11996,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94180f33a23397e4697a54a36f9e5963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &8618609706183199512 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+--- !u!1 &8618609705104900965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
   m_PrefabInstance: {fileID: 7900096662325101685}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8106933346929468871

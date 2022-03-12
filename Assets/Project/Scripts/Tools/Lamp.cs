@@ -19,10 +19,10 @@ public class Lamp : MonoBehaviour
 
     private const int MAX_TIME_LEVELS = 3;
     private int timeLevel = 0;
-    public float lampTime { get; private set; }
+    public float lampTime;
     private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
 
-    private bool coneIsActive = false;
+    public bool coneIsActive = false;
 
     private float maxLampTime;
     private Animator playerAnimator;
@@ -118,7 +118,7 @@ public class Lamp : MonoBehaviour
 
             if (turnOffLanternEvent != null) turnOffLanternEvent();
         }
-        else
+        else if (!PlayerInputs.instance.isLanternPaused)
         {
             ConsumeLampTime();
             if (lampTime <= SECONDS_HIGH_FREQUENCY_FLICK)
@@ -131,6 +131,11 @@ public class Lamp : MonoBehaviour
     public bool LampTimeExhausted()
     {
         return lampTime <= 0;
+    }
+
+    public bool LampTimeIsMax()
+    {
+        return lampTime == maxLampTime;
     }
 
     public void ConsumeLampTime()
@@ -234,6 +239,16 @@ public class Lamp : MonoBehaviour
 
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
         circleLight.Expand(LIGHT_INTENSITY_ON);
+    }
+
+    public void ActivateFadedCircleLight()
+    {
+        active = true;
+
+        circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
+        circleLight.Expand(LIGHT_INTENSITY_OFF);
+
+        if (turnOnLanternDroneSoundEvent != null) turnOnLanternDroneSoundEvent();
     }
 
     public void DeactivateLampLight()
