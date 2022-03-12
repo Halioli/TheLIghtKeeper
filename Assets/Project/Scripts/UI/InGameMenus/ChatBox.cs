@@ -19,6 +19,7 @@ public class ChatBox : MonoBehaviour
     private string fullMssgText;
     private string currentMssgText = "";
     private List<string> textToShow = new List<string>();
+    private int currentTextNumb;
 
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
@@ -28,6 +29,14 @@ public class ChatBox : MonoBehaviour
         chatCanvasGroup = GetComponent<CanvasGroup>();
         chatOpen = false;
         allTextShown = false;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            NextText();
+        }
     }
 
     private void OnEnable()
@@ -49,11 +58,8 @@ public class ChatBox : MonoBehaviour
         // Set canvas group to 1
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
-        // Display text
         fullMssgText = textToShow[0];
-
-        StartCoroutine("ShowText");
-
+        DisplayText();
     }
 
     private void ParseText(string msg)
@@ -66,6 +72,7 @@ public class ChatBox : MonoBehaviour
         //Split full message into smaller fragments
         if (msg.Length < MAX_TEXT_LENGHT)
         {
+            textToShow.Add(msg);
             return;            
         }
 
@@ -75,13 +82,25 @@ public class ChatBox : MonoBehaviour
         }
     }
 
-    private void ResetValues()
+    private void DisplayText()
     {
-        Debug.Log(TutorialMessages.tutorialOpened);
-        Debug.Log(TutorialMessages.tutorialOpened);
+        // Display text
+        StartCoroutine("ShowText");
+    }
 
-        chatOpen = false;
-        allTextShown = false;
+    private void NextText()
+    {
+        if (textToShow.Count < currentTextNumb)
+        {
+            currentTextNumb++;
+            fullMssgText = textToShow[currentTextNumb];
+
+            DisplayText();
+        }
+        else
+        {
+            HideChat();
+        }
     }
 
     private void HideChat()
@@ -89,6 +108,15 @@ public class ChatBox : MonoBehaviour
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
     }
+
+    private void ResetValues()
+    {
+        textToShow.Clear();
+        TutorialMessages.tutorialOpened = false;
+        chatOpen = false;
+        allTextShown = false;
+    }
+
     IEnumerator CanvasFadeIn(CanvasGroup canvasGroup)
     {
         Vector2 startVector = new Vector2(0f, 0f);
@@ -115,8 +143,6 @@ public class ChatBox : MonoBehaviour
         {
             yield return null;
         }
-
-        yield return new WaitForSeconds(WAIT_TIME);
 
         for (float t = 0f; t < FADE_OUT_TIME; t += Time.deltaTime)
         {
