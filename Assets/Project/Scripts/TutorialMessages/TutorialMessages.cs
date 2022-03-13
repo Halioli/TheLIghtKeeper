@@ -7,7 +7,7 @@ public class TutorialMessages : MonoBehaviour
     public delegate void OpenChatBox(string mssg);
     public static event OpenChatBox OnNewMessage;
 
-    [TextArea(5, 20)] public string mssg;
+    [TextArea(5, 20)] public string[] mssgs;
 
     public static bool tutorialOpened;
 
@@ -23,9 +23,12 @@ public class TutorialMessages : MonoBehaviour
     {
         tutorialOpened = true;
 
-        // Send Action
-        if (OnNewMessage != null)
-            OnNewMessage(mssg);
+        for (int i = 0; i < mssgs.Length; i++)
+        {
+            // Send Action
+            if (OnNewMessage != null)
+                OnNewMessage(mssgs[i]);
+        }
 
         DisableSelf();
     }

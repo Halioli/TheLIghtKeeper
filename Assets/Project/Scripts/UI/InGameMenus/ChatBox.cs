@@ -8,8 +8,7 @@ using DG.Tweening;
 public class ChatBox : MonoBehaviour
 {
     private static float FADE_IN_TIME = 0.3f;
-    private static float FADE_OUT_TIME = 1.0f;
-    private static float WAIT_TIME = 2.0f;
+    private static float FADE_OUT_TIME = 0.3f;
     private static float LETTER_DELAY = 0.05f;
     private static int MAX_TEXT_LENGHT = 71;
 
@@ -19,7 +18,7 @@ public class ChatBox : MonoBehaviour
     private string fullMssgText;
     private string currentMssgText = "";
     private List<string> textToShow = new List<string>();
-    private int currentTextNumb;
+    private int currentTextNumb = 0;
 
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
@@ -53,32 +52,32 @@ public class ChatBox : MonoBehaviour
 
     private void ShowChatBox(string mssg)
     {
-        ParseText(mssg);
+        //ParseText(mssg);
+        textToShow.Add(mssg);
 
         // Set canvas group to 1
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
-        fullMssgText = textToShow[0];
+        fullMssgText = textToShow[currentTextNumb];
         DisplayText();
     }
 
     private void ParseText(string msg)
     {
-        string modText;
-        int numMssgs;
         int currentPos = 0;
-        int nextPos = MAX_TEXT_LENGHT;
 
-        //Split full message into smaller fragments
+        // Check if message needs to be fragmented
         if (msg.Length < MAX_TEXT_LENGHT)
         {
             textToShow.Add(msg);
             return;            
         }
 
-        while(currentPos < msg.Length)
+        // Split full message into smaller fragments
+        while (currentPos < msg.Length)
         {
-            textToShow.Add(msg.Substring(currentPos * 72, Mathf.Min(currentPos * 72 + 72, msg.Length)));
+            textToShow.Add(msg.Substring(currentPos, Mathf.Min(currentPos + MAX_TEXT_LENGHT, msg.Length)));
+            currentPos += MAX_TEXT_LENGHT;
         }
     }
 
@@ -90,16 +89,25 @@ public class ChatBox : MonoBehaviour
 
     private void NextText()
     {
-        if (textToShow.Count < currentTextNumb)
+        if (!allTextShown)
         {
-            currentTextNumb++;
-            fullMssgText = textToShow[currentTextNumb];
-
-            DisplayText();
+            StopCoroutine("ShowText");
+            mssgText.text = fullMssgText;
+            allTextShown = true;
         }
         else
         {
-            HideChat();
+            currentTextNumb++;
+            if ((textToShow.Count - 1) > currentTextNumb)
+            {
+                fullMssgText = textToShow[currentTextNumb];
+
+                DisplayText();
+            }
+            else
+            {
+                HideChat();
+            }
         }
     }
 
@@ -112,6 +120,7 @@ public class ChatBox : MonoBehaviour
     private void ResetValues()
     {
         textToShow.Clear();
+        currentTextNumb = 0;
         TutorialMessages.tutorialOpened = false;
         chatOpen = false;
         allTextShown = false;
