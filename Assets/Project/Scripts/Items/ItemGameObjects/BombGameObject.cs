@@ -9,7 +9,9 @@ public class BombGameObject : ItemGameObject
 
     public override void DoFunctionality()
     {
-        Instantiate(bombAuxiliar, PlayerInputs.instance.transform.position, Quaternion.identity);
+        Vector2 spawnPosition = PlayerInputs.instance.transform.position;
+        spawnPosition.y -= 0.5f;
+        Instantiate(bombAuxiliar, spawnPosition, Quaternion.identity);
     }
 
 }

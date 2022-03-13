@@ -22,4 +22,9 @@ public class CustomLight : MonoBehaviour
     public virtual void Shrink(float endIntensity) { }
     public virtual void SetIntensity(float intensity) { }
     public virtual void SetDistance(float distance) { }
+
+    public void SetLightActive(bool active)
+    {
+        lightGameObject.SetActive(active);
+    }
 }

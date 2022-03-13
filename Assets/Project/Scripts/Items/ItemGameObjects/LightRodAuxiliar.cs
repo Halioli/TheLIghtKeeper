@@ -52,6 +52,11 @@ public class LightRodAuxiliar : MonoBehaviour
             }
         }
 
+        
+        circleLight.SetLightActive(false);
+        yield return new WaitForSeconds(0.15f);
+
+
         Destroy(gameObject);
     }
 
@@ -59,7 +64,7 @@ public class LightRodAuxiliar : MonoBehaviour
     {
         startedFading = true;
         audioSource.clip = lightRodUseSound;
-        audioSource.pitch = Random.Range(0.4f, 0.5f);
+        audioSource.pitch = Random.Range(1.4f, 1.5f);
         audioSource.Play();
     }
 

@@ -9,11 +9,13 @@ public class BombAuxiliar : MonoBehaviour
     [SerializeField] float timeBeforeExplode = 2f;
     [SerializeField] float timeBeforeDetonation = 1.25f;
     private const float FORCE = 12f;
-    private const float OVERLAP_CIRCLE_RADIUS = 1.5f;
+    private const float OVERLAP_CIRCLE_RADIUS = 2f;
     private const int DAMAGE = 5;
     private Collider2D[] collidedElements;
     private bool wasThrown = false;
     private Vector2 dir;
+
+    [SerializeField] ConeLight light;
 
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip bombUseSound;
@@ -45,6 +47,7 @@ public class BombAuxiliar : MonoBehaviour
 
         StartCoroutine(Functionality());
         animator = GetComponent<Animator>();
+        light.Expand(0.5f);
     }
 
     private void FunctionalitySound()
@@ -108,12 +111,15 @@ public class BombAuxiliar : MonoBehaviour
         DetonationTickSound();
         transform.DOShakeRotation(timeBeforeDetonation, 40, 20, 40, false);
         yield return new WaitForSeconds(timeBeforeDetonation);
+        light.ExtraExpand(360, 360, 1.5f);
+        light.SetDistance(OVERLAP_CIRCLE_RADIUS);
 
 
         //rigidbody2D.bodyType = RigidbodyType2D.Static;
 
         ExplosionSound();
         animator.SetBool("explosion", true);
+
         collidedElements = ReturnAllOverlapedColliders(transform.position);
         DamageAllCollided();
     }
