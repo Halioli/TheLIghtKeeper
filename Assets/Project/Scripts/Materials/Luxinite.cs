@@ -34,24 +34,7 @@ public class Luxinite : Ore
     {
         StartCoroutine(FlashLightAppears());
 
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
-        // Damage the Ore
-        healthSystem.ReceiveDamage(damageAmount);
-        // Update ore Sprite
-        ProgressNAmountOfSprites(damageAmount);
-
-        if (healthSystem.IsDead())
-        {
-            breakState = OreState.BROKEN;
-
-            // Drop mineralItemToDrop
-            DropMineralItem();
-
-            // Start disappear coroutine
-            StartCoroutine("Disappear");
-        }
-        UpdateCurrentSprite();
-        StartCoroutine("PlayBreakParticles");
+        base.GetsMined(damageAmount, 1);
     }
 
     IEnumerator FlashLightAppears()

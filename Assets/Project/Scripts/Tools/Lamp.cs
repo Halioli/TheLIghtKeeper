@@ -164,6 +164,8 @@ public class Lamp : MonoBehaviour
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
+
+        if (!turnedOn) ActivateLampLight();
     }
 
     public void ConsumeSpecificLampTime(float time)
