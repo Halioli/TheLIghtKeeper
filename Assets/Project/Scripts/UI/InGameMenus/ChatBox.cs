@@ -7,9 +7,8 @@ using DG.Tweening;
 
 public class ChatBox : MonoBehaviour
 {
-    private static float FADE_IN_TIME = 0.3f;
-    private static float FADE_OUT_TIME = 1.0f;
-    private static float WAIT_TIME = 2.0f;
+    private static float FADE_IN_TIME = 0.1f;
+    private static float FADE_OUT_TIME = 0.1f;
     private static float LETTER_DELAY = 0.05f;
     private static int MAX_TEXT_LENGHT = 71;
 
@@ -18,6 +17,8 @@ public class ChatBox : MonoBehaviour
     private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
+    private List<string> textToShow;
+    private int currentTextNumb = 0;
 
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
@@ -27,6 +28,14 @@ public class ChatBox : MonoBehaviour
         chatCanvasGroup = GetComponent<CanvasGroup>();
         chatOpen = false;
         allTextShown = false;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            NextText();
+        }
     }
 
     private void OnEnable()
@@ -41,28 +50,78 @@ public class ChatBox : MonoBehaviour
         MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(string mssg)
+    private void ShowChatBox(string[] mssg)
     {
-        Debug.Log("yooooooooooooooo");
-        Debug.Log(mssg);
+        //ParseText(mssg);
+        textToShow = new List<string>(mssg);
 
+        // Set canvas group to 1
+        StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
-        if (!chatOpen)
+        NextText();
+    }
+
+    private void ParseText(string msg)
+    {
+        int currentPos = 0;
+
+        // Check if message needs to be fragmented
+        if (msg.Length < MAX_TEXT_LENGHT)
         {
-            // Set canvas group to 1
-            StartCoroutine("CanvasFadeIn", chatCanvasGroup);
+            textToShow.Add(msg);
+            return;            
         }
 
-        // Display text
-        fullMssgText = mssg;
-        StartCoroutine("ShowText");
+        // Split full message into smaller fragments
+        while (currentPos < msg.Length)
+        {
+            textToShow.Add(msg.Substring(currentPos, Mathf.Min(currentPos + MAX_TEXT_LENGHT, msg.Length)));
+            currentPos += MAX_TEXT_LENGHT;
+        }
+    }
 
+    private void DisplayText()
+    {
+        // Display text
+        StartCoroutine("ShowText");
+    }
+
+    private void NextText()
+    {
+        if (!allTextShown)
+        {
+            StopCoroutine("ShowText");
+            mssgText.text = fullMssgText;
+            allTextShown = true;
+        }
+        else
+        {
+            if (textToShow.Count > currentTextNumb)
+            {
+                fullMssgText = textToShow[currentTextNumb];
+
+                DisplayText();
+
+                currentTextNumb++;
+            }
+            else
+            {
+                HideChat();
+            }
+        }
+    }
+
+    private void HideChat()
+    {
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
     }
 
     private void ResetValues()
     {
+        textToShow.Clear();
+        currentTextNumb = 0;
+        TutorialMessages.tutorialOpened = false;
         chatOpen = false;
         allTextShown = false;
     }
@@ -94,8 +153,6 @@ public class ChatBox : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(WAIT_TIME);
-
         for (float t = 0f; t < FADE_OUT_TIME; t += Time.deltaTime)
         {
             float normalizedTime = t / FADE_OUT_TIME;
@@ -110,6 +167,7 @@ public class ChatBox : MonoBehaviour
 
     IEnumerator ShowText()
     {
+        allTextShown = false;
         for (int i = 0; i < fullMssgText.Length + 1; i++)
         {
             currentMssgText = fullMssgText.Substring(0, i);

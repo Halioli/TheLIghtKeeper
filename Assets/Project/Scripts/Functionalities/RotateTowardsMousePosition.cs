@@ -25,7 +25,7 @@ public class RotateTowardsMousePosition : MonoBehaviour
 
     private void RotateTowardsMouse()
     {
-        if (!PlayerInputs.instance.canMove) return;
+        if (!PlayerInputs.instance.canMoveLantern) return;
 
         direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

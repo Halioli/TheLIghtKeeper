@@ -39,7 +39,7 @@ public class PlayerHandler : PlayerBase
                 // Teleport to starting position (0, 0)
                 gameObject.layer = LayerMask.NameToLayer("Player");
                 playerRigidbody2D.transform.position = Vector3.zero;
-                playerHealthSystem.RestoreHealthToMaxHealth();
+                //playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
         }
