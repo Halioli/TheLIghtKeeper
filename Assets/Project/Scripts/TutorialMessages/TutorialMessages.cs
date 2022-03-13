@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorialMessages : MonoBehaviour
 {
-    public delegate void OpenChatBox(string mssg);
+    public delegate void OpenChatBox(string[] mssg);
     public static event OpenChatBox OnNewMessage;
 
     [TextArea(5, 20)] public string[] mssgs;
@@ -23,12 +23,9 @@ public class TutorialMessages : MonoBehaviour
     {
         tutorialOpened = true;
 
-        for (int i = 0; i < mssgs.Length; i++)
-        {
-            // Send Action
-            if (OnNewMessage != null)
-                OnNewMessage(mssgs[i]);
-        }
+        // Send Action
+        if (OnNewMessage != null)
+            OnNewMessage(mssgs);
 
         DisableSelf();
     }

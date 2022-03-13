@@ -7,8 +7,8 @@ using DG.Tweening;
 
 public class ChatBox : MonoBehaviour
 {
-    private static float FADE_IN_TIME = 0.3f;
-    private static float FADE_OUT_TIME = 0.3f;
+    private static float FADE_IN_TIME = 0.1f;
+    private static float FADE_OUT_TIME = 0.1f;
     private static float LETTER_DELAY = 0.05f;
     private static int MAX_TEXT_LENGHT = 71;
 
@@ -17,7 +17,7 @@ public class ChatBox : MonoBehaviour
     private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
-    private List<string> textToShow = new List<string>();
+    private List<string> textToShow;
     private int currentTextNumb = 0;
 
     public TextMeshProUGUI mssgText;
@@ -50,16 +50,15 @@ public class ChatBox : MonoBehaviour
         MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(string mssg)
+    private void ShowChatBox(string[] mssg)
     {
         //ParseText(mssg);
-        textToShow.Add(mssg);
+        textToShow = new List<string>(mssg);
 
         // Set canvas group to 1
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
-        fullMssgText = textToShow[currentTextNumb];
-        DisplayText();
+        NextText();
     }
 
     private void ParseText(string msg)
@@ -97,12 +96,13 @@ public class ChatBox : MonoBehaviour
         }
         else
         {
-            currentTextNumb++;
-            if ((textToShow.Count - 1) > currentTextNumb)
+            if (textToShow.Count > currentTextNumb)
             {
                 fullMssgText = textToShow[currentTextNumb];
 
                 DisplayText();
+
+                currentTextNumb++;
             }
             else
             {
@@ -167,6 +167,7 @@ public class ChatBox : MonoBehaviour
 
     IEnumerator ShowText()
     {
+        allTextShown = false;
         for (int i = 0; i < fullMssgText.Length + 1; i++)
         {
             currentMssgText = fullMssgText.Substring(0, i);
