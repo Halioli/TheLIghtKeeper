@@ -12,7 +12,7 @@ public class DarknessSystem : MonoBehaviour
     public bool playerInLight { get; private set; }
     private List<GameObject> enemySpawners = new List<GameObject>();
 
-    private int ENEMY_CAP = 4;
+    [SerializeField] int ENEMY_CAP = 4;
     private int numberOfAliveEnemies = 0;
     public bool enemyCapIsFull = false;
     private bool spawnersEnabledAlready = false;
