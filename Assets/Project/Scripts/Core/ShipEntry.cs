@@ -19,15 +19,13 @@ public class ShipEntry : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             StartCoroutine(TeleportToShipInterior(collision.gameObject));
-
-            // Add ship scene to current scene as to not lose anything
-            //SceneManager.LoadScene(2, LoadSceneMode.Additive);
         }
     }
 
     IEnumerator TeleportToShipInterior(GameObject gameObjectTeleported)
     {
-        if (OnEntry != null) OnEntry();
+        if (OnEntry != null) 
+            OnEntry();
 
         hudHandler.DoFadeToBlack();
         PlayerInputs.instance.canMove = false;
