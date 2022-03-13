@@ -8,7 +8,7 @@ public class ShipEntry : MonoBehaviour
     public Vector2 shipInteriorPosition;
     public HUDHandler hudHandler;
     public Animator animator;
-
+    public GameObject mainCamera;
 
     public delegate void ShipEntryAction();
     public static event ShipEntryAction OnEntry;
@@ -34,6 +34,9 @@ public class ShipEntry : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         gameObjectTeleported.transform.position = shipInteriorPosition;
+        mainCamera.transform.position = shipInteriorPosition;
+
+        yield return new WaitForSeconds(1f);
         hudHandler.RestoreFades();
         PlayerInputs.instance.canMove = true;
         animator.SetBool("isHealed", false);
