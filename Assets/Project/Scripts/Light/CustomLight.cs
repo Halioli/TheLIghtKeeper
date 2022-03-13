@@ -16,7 +16,7 @@ public class CustomLight : MonoBehaviour
     [SerializeField] protected float extraExpandTime = 0.05f;
     [SerializeField] protected float partialShrinkTime = 0.05f;
     protected float lerpTransitionValue;
-    protected float intensity;
+    public float intensity { protected set; get; }
 
     public virtual void Expand(float endIntensity) { }
     public virtual void Shrink(float endIntensity) { }
