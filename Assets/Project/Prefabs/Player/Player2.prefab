@@ -6656,7 +6656,7 @@ GameObject:
   - component: {fileID: 7975315929796009490}
   - component: {fileID: 1600917185611695868}
   - component: {fileID: 5530320921557673719}
-  - component: {fileID: 8021568847530530413}
+  - component: {fileID: 5187585514544503929}
   m_Layer: 11
   m_Name: ItemPickUp
   m_TagString: Untagged
@@ -6706,7 +6706,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
   m_Radius: 2.2
---- !u!114 &8021568847530530413
+--- !u!114 &5187585514544503929
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6715,14 +6715,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6211937987840880488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18012c4806a284d4c9853a3aa50a1abe, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d13c9a7c78ce804bac2d163d0b36146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hostInventory: {fileID: 624847868498748703}
   hostDropRate: 0.5
   itemsWillDespawn: 0
   dropSpreadRandomness: 2
-  notPickupableDuration: 3
+  notPickupableDuration: 15
+  spawnInDontDestroyOnLoad: 1
 --- !u!1 &7210195587280680990
 GameObject:
   m_ObjectHideFlags: 0
