@@ -15,6 +15,7 @@ public class BombAuxiliar : MonoBehaviour
     private bool wasThrown = false;
     private Vector2 dir;
 
+    [SerializeField] Hardness hardness = Hardness.NORMAL;
     [SerializeField] ConeLight light;
 
     [SerializeField] AudioSource audioSource;
@@ -82,7 +83,8 @@ public class BombAuxiliar : MonoBehaviour
         {
             if (collidedElements[i].CompareTag("Ore"))
             {
-                collidedElements[i].GetComponent<Ore>().GetsMined(DAMAGE, 1);
+                Ore ore = collidedElements[i].GetComponent<Ore>();
+                if (ore.hardness <= hardness) ore.GetsMined(DAMAGE, 1);
             }
             else if (collidedElements[i].CompareTag("Enemy"))
             {
@@ -111,13 +113,14 @@ public class BombAuxiliar : MonoBehaviour
         DetonationTickSound();
         transform.DOShakeRotation(timeBeforeDetonation, 40, 20, 40, false);
         yield return new WaitForSeconds(timeBeforeDetonation);
-        light.ExtraExpand(360, 360, 1.5f);
+        light.ExtraExpand(400, 400, 1.5f);
         light.SetDistance(OVERLAP_CIRCLE_RADIUS);
 
 
         //rigidbody2D.bodyType = RigidbodyType2D.Static;
 
         ExplosionSound();
+        CinemachineShake.Instance.ShakeCamera(4f, 1f);
         animator.SetBool("explosion", true);
 
         collidedElements = ReturnAllOverlapedColliders(transform.position);
