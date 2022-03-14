@@ -14,6 +14,8 @@ public class ElectricPlant : InteractStation
     private SpriteRenderer spritePlant;
     public GameObject interactText;
 
+    public GameObject electricOrb;
+
     private bool hasBeenUsed = false;
     private float timeStart = 0;
     
@@ -29,6 +31,7 @@ public class ElectricPlant : InteractStation
         playerLamp = player.GetComponentInChildren<Lamp>();
         plantAnimator.SetBool("used", false);
         plantLight = GetComponentInChildren<Light2D>();
+        
     }
 
     // Update is called once per frame
@@ -88,6 +91,4 @@ public class ElectricPlant : InteractStation
         plantLight.pointLightInnerRadius = 0.43f;
         plantAnimator.SetBool("used", false);
     }
-
-
 }
