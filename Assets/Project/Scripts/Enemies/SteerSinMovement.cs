@@ -19,6 +19,7 @@ public class SteerSinMovement : SinMovement
 
     bool isCorrectingDirection = false;
     bool isWaitingToEndCorrection = false;
+    float rotationAngle = 40f;
     float angleScaler;
 
     private void Awake()
@@ -113,7 +114,7 @@ public class SteerSinMovement : SinMovement
 
         }
 
-        steerDirection = Quaternion.Euler(0, 0, 65 * angleScaler);
+        steerDirection = Quaternion.Euler(0, 0, rotationAngle * angleScaler);
 
         return steerDirection * targetDirection;
     }

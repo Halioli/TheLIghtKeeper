@@ -41,7 +41,7 @@ public class PlayerInventory : MonoBehaviour
 
             if (collider.IsTouching(itemCollectionCollider))
             {
-                if (itemGameObject.canBePickedUp)
+                if (itemGameObject.canBePickedUp && itemGameObject.isPickedUpAlready)
                 {
                     PickUpItem(itemGameObject);
                 }

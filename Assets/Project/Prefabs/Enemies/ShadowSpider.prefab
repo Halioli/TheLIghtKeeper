@@ -145,7 +145,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: e6361d4e10d7a7b4894cc734e3454c30, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -242,9 +242,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad125c98a4233a4ca5443971072f669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumWanderDistance: 1.2
-  wanderingWaitTime: 1
-  wanderingRadius: 5
+  minimumWanderDistance: 0.6
+  wanderingWaitTime: 3
+  wanderingRadius: 3
   moveSpeed: 8
   distanceToAggro: 20
 --- !u!114 &2096602507651081432
@@ -393,6 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae1eb2b336aa104697b3fb5afa7d565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   maxHealth: 20
 --- !u!114 &2096602507651081409
 MonoBehaviour:
