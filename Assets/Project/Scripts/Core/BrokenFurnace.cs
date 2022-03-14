@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BrokenFurnace : InteractStation
 {
     private const int REPAIR_AMOUNT = 6;
+    private PopUp popUp;
 
     public Item coal;
-    public CanvasGroup requirementsCanvasGroup;
-    public GameObject furnaceGameObject;
-    public Inventory playerInventory;
+    public HUDHandler hud;
 
     private void Start()
     {
-        furnaceGameObject.SetActive(false);
+        popUp = GetComponentInChildren<PopUp>();
     }
 
     private void Update()
@@ -37,26 +37,29 @@ public class BrokenFurnace : InteractStation
         // Check if player has enough items
         if (playerInventory.InventoryContainsItemAndAmount(coal, REPAIR_AMOUNT))
         {
+            popUp.ChangeMessageText("6 coal added");
             playerInventory.SubstractNItemsFromInventory(coal, REPAIR_AMOUNT);
-            
-            furnaceGameObject.SetActive(true);
-            gameObject.SetActive(false);
+            hud.DoFadeToBlack();
+
+            // Load Scene
+            //SceneManager.LoadSceneAsync(2, LoadSceneMode.Single);
         }
         else
         {
-
+            popUp.ChangeMessageText("Not enough coal");
         }
     }
 
     // Interactive pop up disappears
     private void PopUpAppears()
     {
-        requirementsCanvasGroup.alpha = 1f;
+        popUp.ShowAll();
     }
 
     // Interactive pop up disappears
     private void PopUpDisappears()
     {
-        requirementsCanvasGroup.alpha = 0f;
+        popUp.HideAll();
+        popUp.ChangeMessageText("6 coal needed");
     }
 }

@@ -78,7 +78,6 @@ public class OreRespawner : Spawner
         do
         {
             yield return new WaitForSeconds(spawnCooldown);
-            Debug.Log(playerInArea);
 
             if (CheckIfCanSpawn())
             {
