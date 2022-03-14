@@ -18,6 +18,7 @@ public class HUDText : MonoBehaviour
     [SerializeField] TextMeshProUGUI textMessege;
     [SerializeField] GameObject crossGameObject;
     [SerializeField] GameObject exclamationGameObject;
+    [SerializeField] GameObject lightningGameObject;
 
 
     private void OnEnable()
@@ -65,7 +66,7 @@ public class HUDText : MonoBehaviour
 
         textMessege.text = "Lantern charged up!";
         displayMessage = DisplayMessege.LANTERN_RECHARGED;
-        DisplayMessageAndExclamation(FADE_TIME);
+        DisplayMessageAndLightning(FADE_TIME);
     }
 
 
@@ -81,6 +82,12 @@ public class HUDText : MonoBehaviour
     {
         StartCoroutine(DisplayMessage(duration));
         StartCoroutine(StartExclamationAppears(duration));
+    }
+
+    private void DisplayMessageAndLightning(float duration)
+    {
+        StartCoroutine(DisplayMessage(duration));
+        StartCoroutine(StartLightningAppears(duration));
     }
 
     IEnumerator DisplayMessage(float duration)
@@ -105,6 +112,7 @@ public class HUDText : MonoBehaviour
     {
         exclamationGameObject.SetActive(false);
         crossGameObject.SetActive(true);
+        lightningGameObject.SetActive(false);
 
         crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), duration, 5);
         yield return new WaitForSeconds(duration);
@@ -114,8 +122,19 @@ public class HUDText : MonoBehaviour
     {
         exclamationGameObject.SetActive(true);
         crossGameObject.SetActive(false);
+        lightningGameObject.SetActive(false);
 
         exclamationGameObject.transform.DOPunchPosition(new Vector2(0f, SHAKE_STRENGHT), duration);
+        yield return new WaitForSeconds(duration);
+    }
+
+    IEnumerator StartLightningAppears(float duration)
+    {
+        exclamationGameObject.SetActive(false);
+        crossGameObject.SetActive(false);
+        lightningGameObject.SetActive(true);
+
+        lightningGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), duration);
         yield return new WaitForSeconds(duration);
     }
 
