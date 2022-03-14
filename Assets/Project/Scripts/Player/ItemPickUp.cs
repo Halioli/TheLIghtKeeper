@@ -8,6 +8,9 @@ public class ItemPickUp : MonoBehaviour
     private CircleCollider2D itemPickUpCheckCollider;
     ItemGameObject itemGameObject;
 
+
+    public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerPicksUpItemEvent;
     public delegate void ItemPickUpSuccessAction(int itemID);
     public static event ItemPickUpSuccessAction OnItemPickUpSuccess;
 
@@ -32,16 +35,19 @@ public class ItemPickUp : MonoBehaviour
         if (collider.gameObject.CompareTag("Item"))
         {
             itemGameObject = collider.GetComponent<ItemGameObject>();
-            
-            if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
+            if (!itemGameObject.isPickedUpAlready)
             {
-                ItemPickUpSuccess();
-            }
-            else
-            {
-                ItemPickUpFail();
+                if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
+                {
+                    ItemPickUpSuccess();
+                }
+                else
+                {
+                    ItemPickUpFail();
+                }
             }
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collider)
@@ -79,6 +85,8 @@ public class ItemPickUp : MonoBehaviour
         itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
 
         if (OnItemPickUpSuccess != null) OnItemPickUpSuccess(itemGameObject.item.ID);
+
+        itemGameObject.isPickedUpAlready = true;
     }
 
 
