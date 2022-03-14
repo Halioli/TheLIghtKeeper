@@ -9,6 +9,7 @@ public class ItemGameObject : MonoBehaviour
     protected Rigidbody2D rigidbody2D;
     public bool permanentNotPickedUp = false;
     public bool canBePickedUp;
+    public bool isPickedUpAlready = false;
 
     private const float DROP_DOWN_FORCE_Y = 1.5f;
     private const float DROP_DOWN_TIME = 0.37f;
@@ -70,6 +71,13 @@ public class ItemGameObject : MonoBehaviour
     {
         transform.DOJump(new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), 0), 0.1f, 1, 0.3f);
         StartDespawning(DESPAWN_TIME_IN_SECONDS);
+    }
+
+    public void DropsRandom(bool willDespawn, float dropRandomness = 0.5f, float despawnTime = DESPAWN_TIME_IN_SECONDS)
+    {
+        transform.DOJump(new Vector3(transform.position.x + Random.Range(-dropRandomness, dropRandomness), 
+            transform.position.y + Random.Range(-dropRandomness, dropRandomness), 0), 0.1f, 1, 0.3f);
+        if (willDespawn) StartDespawning(despawnTime);
     }
 
     private void PlayDropSound()
@@ -137,5 +145,24 @@ public class ItemGameObject : MonoBehaviour
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 
+
+
+    public void MakeNotPickupableForDuration(float duration = 0.5f)
+    {
+        StartCoroutine(NotPickupableForDuration(duration));
+    }
+
+    IEnumerator NotPickupableForDuration(float duration)
+    {
+        permanentNotPickedUp = true;
+        canBePickedUp = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        yield return new WaitForSeconds(duration);
+
+        permanentNotPickedUp = false;
+        canBePickedUp = true;
+        GetComponent<Collider2D>().enabled = true;
+    }
 
 }
