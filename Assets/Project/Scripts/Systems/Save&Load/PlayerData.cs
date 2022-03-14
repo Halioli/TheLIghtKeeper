@@ -24,7 +24,8 @@ public class PlayerData
     public int[] inventoryItemQuantity;
     public int[] inventoryItemID;
 
-    public PlayerData(GameObject player, int size, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData)
+    public bool[] luxiniteMined;
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData, int sizeLuxinites)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
@@ -42,15 +43,16 @@ public class PlayerData
         activeLamp = player.GetComponentInChildren<Lamp>().active;
         coneActiveLamp = player.GetComponentInChildren<Lamp>().coneIsActive;
 
-        enableTeleport = new bool[size];
+        enableTeleport = new bool[sizeTeleports];
         torchTurnedOn = new bool[sizeTorch];
 
         furnaceLevel = furnace.GetComponent<Furnace>().lightLevel;
 
+        luxiniteMined = new bool[sizeLuxinites];
 
         inventoryItemQuantity = new int[inventoryData.Count];
         inventoryItemID = new int[inventoryData.Count];
-
+        
         int i = 0;
         foreach(KeyValuePair<int,int> inventoryPair in inventoryData)
         {

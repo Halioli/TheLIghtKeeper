@@ -18,7 +18,7 @@ public class ItemDropper : MonoBehaviour
         Item item;
         for (int i = 0; i < hostInventory.inventory.Count; ++i)
         {
-            if (hostInventory.inventory[i].StackIsEmpty()) continue;
+            if (hostInventory.inventory[i].StackIsEmpty() || hostInventory.inventory[i].itemInStack.isSpecial) continue;
 
             dropAmount = (int)(hostInventory.inventory[i].amountInStack * hostDropRate);
             item = hostInventory.inventory[i].itemInStack;

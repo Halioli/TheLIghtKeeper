@@ -123,6 +123,8 @@ public class BombAuxiliar : MonoBehaviour
         CinemachineShake.Instance.ShakeCamera(4f, 1f);
         animator.SetBool("explosion", true);
 
+        yield return new WaitForSeconds(0.10f);
+
         collidedElements = ReturnAllOverlapedColliders(transform.position);
         DamageAllCollided();
     }
