@@ -13,6 +13,12 @@ public class Luxinite : Ore
     private float maxIntensity;
     private float time;
 
+    public bool hasBeenMined;
+
+    private void Awake()
+    {
+        SaveSystem.luxinites.Add(this);
+    }
     void Start()
     {
         breakState = OreState.WHOLE;
@@ -35,6 +41,11 @@ public class Luxinite : Ore
         StartCoroutine(FlashLightAppears());
 
         base.GetsMined(damageAmount, 1);
+
+        if(healthSystem.GetHealth() <= 0)
+        {
+            hasBeenMined = true;
+        }
     }
 
     IEnumerator FlashLightAppears()
