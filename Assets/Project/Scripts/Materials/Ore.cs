@@ -75,7 +75,6 @@ public class Ore : MonoBehaviour
 
         UpdateCurrentSprite();
         StartCoroutine("PlayBreakParticles");
-
     }
 
     protected virtual void DamageTakeAnimation()

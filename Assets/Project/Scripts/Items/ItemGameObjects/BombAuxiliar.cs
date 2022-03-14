@@ -1,54 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
-public class PikeBombGameObject : ItemGameObject
+
+public class BombAuxiliar : MonoBehaviour
 {
+    [SerializeField] float timeBeforeExplode = 2f;
+    [SerializeField] float timeBeforeDetonation = 1.25f;
     private const float FORCE = 12f;
-    private const float OVERLAP_CIRCLE_RADIUS = 1.5f;
+    private const float OVERLAP_CIRCLE_RADIUS = 2f;
     private const int DAMAGE = 5;
     private Collider2D[] collidedElements;
     private bool wasThrown = false;
     private Vector2 dir;
 
-    public AudioClip pikeBombUseSound;
-    public AudioClip pikeBombExplosionSound;
+    [SerializeField] ConeLight light;
+
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip bombUseSound;
+    [SerializeField] AudioClip bombDetonationTick;
+    [SerializeField] AudioClip bombExplosionSound;
     public Animator animator;
 
 
 
-    private void FixedUpdate()
+    //private void FixedUpdate()
+    //{
+    //    if (!wasThrown)
+    //    {
+    //        //ThrowBomb();
+    //        wasThrown = true;
+    //    }
+    //}
+
+    private void Start()
     {
-        if (!wasThrown)
-        {
-            ThrowBomb();
-            wasThrown = true;
-        }
+        DoFunctionality();
     }
 
 
-    public override void DoFunctionality()
+    public void DoFunctionality()
     {
-        permanentNotPickedUp = true;
-        canBePickedUp = false;
-        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-        gameObject.layer = LayerMask.NameToLayer("Default");
+        //rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        //gameObject.layer = LayerMask.NameToLayer("Default");
 
         StartCoroutine(Functionality());
         animator = GetComponent<Animator>();
+        light.Expand(0.5f);
     }
 
     private void FunctionalitySound()
     {
-        audioSource.clip = pikeBombUseSound;
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.clip = bombUseSound;
+        audioSource.pitch = Random.Range(0.9f, 1.1f);
+        audioSource.Play();
+    }
+
+    private void DetonationTickSound()
+    {
+        audioSource.clip = bombDetonationTick;
+        audioSource.pitch = Random.Range(0.9f, 1.1f);
         audioSource.Play();
     }
 
     private void ExplosionSound()
     {
-        audioSource.clip = pikeBombExplosionSound;
-        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.clip = bombExplosionSound;
+        audioSource.pitch = Random.Range(0.9f, 1.1f);
         audioSource.Play();
     }
 
@@ -87,18 +106,28 @@ public class PikeBombGameObject : ItemGameObject
         dir = dir.normalized;
 
         FunctionalitySound();
+        yield return new WaitForSeconds(timeBeforeExplode - timeBeforeDetonation);
 
-        yield return new WaitForSeconds(0.4f);
-        rigidbody2D.bodyType = RigidbodyType2D.Static;
+        DetonationTickSound();
+        transform.DOShakeRotation(timeBeforeDetonation, 40, 20, 40, false);
+        yield return new WaitForSeconds(timeBeforeDetonation);
+        light.ExtraExpand(360, 360, 1.5f);
+        light.SetDistance(OVERLAP_CIRCLE_RADIUS);
+
+
+        //rigidbody2D.bodyType = RigidbodyType2D.Static;
 
         ExplosionSound();
         animator.SetBool("explosion", true);
+
         collidedElements = ReturnAllOverlapedColliders(transform.position);
         DamageAllCollided();
     }
 
-    private void ThrowBomb()
-    {
-        rigidbody2D.AddForce(dir * FORCE, ForceMode2D.Impulse);
-    }
+    //private void ThrowBomb()
+    //{
+    //    rigidbody2D.AddForce(dir * FORCE, ForceMode2D.Impulse);
+    //}
+
+
 }
