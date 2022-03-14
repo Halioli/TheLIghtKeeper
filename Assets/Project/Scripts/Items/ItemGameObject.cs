@@ -156,11 +156,13 @@ public class ItemGameObject : MonoBehaviour
     {
         permanentNotPickedUp = true;
         canBePickedUp = false;
+        GetComponent<Collider2D>().enabled = false;
 
         yield return new WaitForSeconds(duration);
 
         permanentNotPickedUp = false;
         canBePickedUp = true;
+        GetComponent<Collider2D>().enabled = true;
     }
 
 }

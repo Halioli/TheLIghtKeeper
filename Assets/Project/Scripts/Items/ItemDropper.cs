@@ -9,18 +9,10 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] bool itemsWillDespawn = false;
     [SerializeField] float dropSpreadRandomness = 2f;
     [SerializeField] float notPickupableDuration = 3f;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DropItems();
-        }
-    }
+    [SerializeField] bool spawnInDontDestroyOnLoad = true;
 
 
-
-    private void DropItems()
+    protected void DropItems()
     {
         int dropAmount;
         Item item;
@@ -39,7 +31,7 @@ public class ItemDropper : MonoBehaviour
                 itemGameObject.DropsRandom(itemsWillDespawn, dropSpreadRandomness);
                 itemGameObject.MakeNotPickupableForDuration(notPickupableDuration);
 
-                //DontDestroyOnLoad(itemGameObject);
+                if (spawnInDontDestroyOnLoad) DontDestroyOnLoad(itemGameObject);
             }
         }
 
