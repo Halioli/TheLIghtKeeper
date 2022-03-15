@@ -7,6 +7,7 @@ public class SaveSystem : MonoBehaviour
 {
     public static List<Teleporter> teleporters = new List<Teleporter>();
     public static List<Torch> torches = new List<Torch>();
+    public static List<Luxinite> luxinites = new List<Luxinite>();
 
     public static GameObject player;
     public static GameObject cam;
@@ -39,7 +40,7 @@ public class SaveSystem : MonoBehaviour
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace, playerInventory.GetInventoryData());
+        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace, playerInventory.GetInventoryData(), luxinites.Count);
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -49,6 +50,11 @@ public class SaveSystem : MonoBehaviour
         for (int i = 0; i < teleporters.Count; i++)
         {
             data.enableTeleport[i] = teleporters[i].activated;
+        }
+
+        for(int i = 0; i < luxinites.Count; i++)
+        {
+            data.luxiniteMined[i] = luxinites[i].hasBeenMined;
         }
 
         formatter.Serialize(stream, data);
@@ -116,6 +122,16 @@ public class SaveSystem : MonoBehaviour
             for(int i = 0; i < playerData.inventoryItemID.Length; i++)
             {
                 playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
+            }
+
+            for(int i = 0; i < luxinites.Count; i++)
+            {
+                luxinites[i].hasBeenMined = playerData.luxiniteMined[i];
+
+                if (luxinites[i].hasBeenMined)
+                {
+                    luxinites[i].gameObject.SetActive(false);
+                }
             }
 
             strm.Close();

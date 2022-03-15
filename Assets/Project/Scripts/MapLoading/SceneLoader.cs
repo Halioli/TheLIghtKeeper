@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum CheckMethod
-{
-    Distance,
-    Trigger
-}
-
 public class SceneLoader : MonoBehaviour
 {
     private bool isLoaded;
     private bool shouldLoad;
-
-    public CheckMethod checkMethod;
-    public Transform playerTransform;
-    public float loadRange;
 
     private void Start()
     {
@@ -36,14 +26,7 @@ public class SceneLoader : MonoBehaviour
 
     private void Update()
     {
-        if (checkMethod == CheckMethod.Distance)
-        {
-            DistaceCheck();
-        }
-        else if (checkMethod == CheckMethod.Trigger)
-        {
-            TriggerCheck();
-        }
+        TriggerCheck();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -59,18 +42,6 @@ public class SceneLoader : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             shouldLoad = false;
-        }
-    }
-
-    private void DistaceCheck()
-    {
-        if (Vector3.Distance(playerTransform.position, transform.position) < loadRange)
-        {
-            LoadScene();
-        }
-        else
-        {
-            UnloadScene();
         }
     }
 
