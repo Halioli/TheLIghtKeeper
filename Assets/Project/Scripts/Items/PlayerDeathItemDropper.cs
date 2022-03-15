@@ -16,4 +16,9 @@ public class PlayerDeathItemDropper : ItemDropper
     }
 
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) { DropItems(); }
+    }
+
 }
