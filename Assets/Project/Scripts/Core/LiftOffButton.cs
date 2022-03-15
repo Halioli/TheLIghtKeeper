@@ -39,12 +39,14 @@ public class LiftOffButton : InteractStation
     // Interactive pop up disappears
     private void PopUpAppears()
     {
-        popUp.ShowAll();
+        popUp.ShowInteraction();
+        //popUp.ShowAll();
     }
 
     // Interactive pop up disappears
     private void PopUpDisappears()
     {
-        popUp.HideAll();
+        popUp.HideInteraction();
+        //popUp.HideAll();
     }
 }
