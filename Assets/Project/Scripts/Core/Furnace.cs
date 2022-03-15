@@ -10,10 +10,9 @@ public class Furnace : InteractStation
     // Public Attributes
     public bool countdownActive { get; set; }
 
-    public Item fuelItem;
-    public Item repairsItem;
-    public Item upgradeItem;
-    public GameObject player;
+    //public Item fuelItem;
+    //public Item repairsItem;
+    public GameObject liftOffButtonGameObject;
 
     //TextMesh gameobjects
     public GameObject popUpGameObject;
@@ -21,18 +20,18 @@ public class Furnace : InteractStation
 
     //Core light 
     public GameObject coreLight;
+    public int lightLevel = 0;
+    [SerializeField] ConeLight light;
 
     // Private Attributes
+    private enum FurnaceEvents { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
+    FurnaceEvents furnaceEvents;
     private const int MAX_FUEL_AMOUNT = 150;
     private const int STARTING_FUEL_AMOUNT = 50;
     private const int LOW_FUEL_AMOUNT = 30;
-    private const int MAX_CORE_LEVEL = 5;
-    private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f; 
-    private enum FurnaceEvents { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
-    FurnaceEvents furnaceEvents;
-
-    //Core light 
-    public int lightLevel = 0;
+    private const int MAX_CORE_LEVEL = 4;
+    private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f;
+    private const float UPGRADE_LIGHT_DISTANCE = 5f;
 
     //Fuel variables
     private int currentFuel = STARTING_FUEL_AMOUNT;
@@ -43,7 +42,9 @@ public class Furnace : InteractStation
     private bool couroutineStartedConsumeCoal = false;
 
     //Scalation variables
-    private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
+    private float currentColliderRadius = 10f;
+    private CircleCollider2D coreLightCollider;
+    //private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
 
     private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
@@ -60,12 +61,14 @@ public class Furnace : InteractStation
     private void Start()
     {
         furnaceEvents = FurnaceEvents.CALM;
+        coreLightCollider = coreLight.GetComponent<CircleCollider2D>();
         popUp = popUpGameObject.GetComponent<PopUp>();
         addCoalParticleSystem.Stop();
         popUp.ChangeMessageText("");
 
         popUp.HideAll();
         popUpGameObject.SetActive(false);
+        light.Expand(1f);
     }
 
     void Update()
@@ -94,27 +97,27 @@ public class Furnace : InteractStation
             case FurnaceEvents.STABILIZING:
                 break;
 
-            case FurnaceEvents.NEEDS_COAL:
-                if (playerInventory.SubstractItemFromInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
-                {
-                    FuelAdded((int)furnaceEvents);
-                }
-                else
-                {
-                    NoFuelToAdd((int)furnaceEvents);
-                }
-                break;
+            //case FurnaceEvents.NEEDS_COAL:
+            //    if (playerInventory.SubstractItemFromInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
+            //    {
+            //        FuelAdded((int)furnaceEvents);
+            //    }
+            //    else
+            //    {
+            //        NoFuelToAdd((int)furnaceEvents);
+            //    }
+            //    break;
 
-            case FurnaceEvents.NEEDS_REPAIRS:
-                if (playerInventory.SubstractItemFromInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
-                {
-                    FuelAdded((int)furnaceEvents);
-                }
-                else
-                {
-                    NoFuelToAdd((int)furnaceEvents);
-                }
-                break;
+            //case FurnaceEvents.NEEDS_REPAIRS:
+            //    if (playerInventory.SubstractItemFromInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
+            //    {
+            //        FuelAdded((int)furnaceEvents);
+            //    }
+            //    else
+            //    {
+            //        NoFuelToAdd((int)furnaceEvents);
+            //    }
+            //    break;
 
             default:
                 break;
@@ -268,13 +271,28 @@ public class Furnace : InteractStation
     {
         if(lightLevel < MAX_CORE_LEVEL)
         {
+            currentColliderRadius += UPGRADE_LIGHT_DISTANCE;
+
             popUp.ChangeMessageText("Luxinite Added");
-            coreLight.transform.localScale += scaleChange;
+            coreLightCollider.radius = currentColliderRadius;
+            //coreLight.transform.localScale += scaleChange;
             ++lightLevel;
+
+            light.ExtraExpand(400, 400, 1f);
+            light.SetDistance(currentColliderRadius);
 
             if (!couroutineStartedAddCoal)
             {
                 StartCoroutine(UsingYieldAddCoal(1));
+            }
+        }
+        else
+        {
+            lightLevel = MAX_CORE_LEVEL;
+
+            if (!liftOffButtonGameObject.activeInHierarchy)
+            {
+                liftOffButtonGameObject.SetActive(true);
             }
         }
     }
