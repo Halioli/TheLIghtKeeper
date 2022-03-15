@@ -28,6 +28,7 @@ public class Lamp : MonoBehaviour
     private Animator playerAnimator;
 
     // Public Attributes
+    public bool playerInLight;
     public bool turnedOn;
     public bool active = false;
     public bool canRefill;
@@ -165,7 +166,7 @@ public class Lamp : MonoBehaviour
         }
         flickCooldown = START_FLICK_COOLDOWN;
 
-        if (!turnedOn) ActivateLampLight();
+        if (!turnedOn && !playerInLight) ActivateLampLight();
     }
 
     public void ConsumeSpecificLampTime(float time)

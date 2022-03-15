@@ -112,8 +112,14 @@ public class PlayerLightChecker : MonoBehaviour
     public bool IsPlayerInLight() { return playerInLight; }
 
     // Method that sets playerInLight bool to true
-    public void SetPlayerInLightToTrue() { playerInLight = true; }
+    public void SetPlayerInLightToTrue() { 
+        playerInLight = true;
+        lamp.playerInLight = true;
+    }
 
     // Method that sets playerInLight bool to false
-    public void SetPlayerInLightToFalse() { playerInLight = false; }
+    public void SetPlayerInLightToFalse() { 
+        playerInLight = false;
+        lamp.playerInLight = false;
+    }
 }

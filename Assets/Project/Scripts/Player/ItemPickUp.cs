@@ -5,7 +5,8 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     private PlayerInventory playerInventory;
-    private CircleCollider2D itemPickUpCheckCollider;
+    [SerializeField] Collider2D itemPickUpCheckCollider;
+    [SerializeField] CircleCollider2D itemPickUpCollider;
     ItemGameObject itemGameObject;
 
 
@@ -24,27 +25,37 @@ public class ItemPickUp : MonoBehaviour
     private void Start()
     {
         playerInventory = GetComponentInParent<PlayerInventory>();
-        itemPickUpCheckCollider = GetComponent<CircleCollider2D>();
     }
 
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!collider.IsTouching(itemPickUpCheckCollider)) return;
-
         if (collider.gameObject.CompareTag("Item"))
         {
             itemGameObject = collider.GetComponent<ItemGameObject>();
-            if (!itemGameObject.isPickedUpAlready)
+
+            if (itemGameObject.isPickedUpAlready)
             {
-                if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
+                if (collider.IsTouching(itemPickUpCollider))
                 {
-                    ItemPickUpSuccess();
+                    DestroyPickedUpItem();
                 }
-                else
+
+            }
+            else
+            {
+                if (collider.IsTouching(itemPickUpCheckCollider))
                 {
-                    ItemPickUpFail();
+                    if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
+                    {
+                        ItemPickUpSuccess();
+                    }
+                    else
+                    {
+                        ItemPickUpFail();
+                    }
                 }
+
             }
         }
 
@@ -64,6 +75,8 @@ public class ItemPickUp : MonoBehaviour
         itemGameObject.SetSelfStatic();
         itemGameObject.canBePickedUp = false;
 
+        if (Vector2.Distance(itemGameObject.transform.position, transform.position) > 1.5f) return;
+
         if (!isOnItemPickUpFailInvoked) StartCoroutine(DoOnItemPickUpFail());
     }
 
@@ -82,12 +95,25 @@ public class ItemPickUp : MonoBehaviour
 
     private void ItemPickUpSuccess()
     {
+        //itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
+
+        //if (OnItemPickUpSuccess != null) OnItemPickUpSuccess(itemGameObject.item.ID);
+
+        itemGameObject.isPickedUpAlready = true;
+    }
+
+
+    private void DestroyPickedUpItem()
+    {
         itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
 
         if (OnItemPickUpSuccess != null) OnItemPickUpSuccess(itemGameObject.item.ID);
 
-        itemGameObject.isPickedUpAlready = true;
+
+        Destroy(itemGameObject.gameObject);
+        if (playerPicksUpItemEvent != null) playerPicksUpItemEvent();
     }
+
 
 
 }
