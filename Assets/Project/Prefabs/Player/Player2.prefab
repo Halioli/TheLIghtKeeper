@@ -100,6 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b86401d8a72a54b859a1e68221f2ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lampTime: 0
+  coneIsActive: 0
   turnedOn: 0
   active: 0
   canRefill: 0
@@ -6147,6 +6149,8 @@ MonoBehaviour:
   facingLeft: 1
   canFlip: 1
   canMove: 1
+  canMoveLantern: 1
+  isLanternPaused: 0
   playerReach: 3
   canMine: 1
   canAttack: 1
@@ -6237,6 +6241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f5148ae2c28b94fb7566099d227932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   maxHealth: 20
 --- !u!114 &3228268764196678923
 MonoBehaviour:
@@ -6651,6 +6656,7 @@ GameObject:
   - component: {fileID: 7975315929796009490}
   - component: {fileID: 1600917185611695868}
   - component: {fileID: 5530320921557673719}
+  - component: {fileID: 5187585514544503929}
   m_Layer: 11
   m_Name: ItemPickUp
   m_TagString: Untagged
@@ -6700,6 +6706,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
   m_Radius: 2.2
+--- !u!114 &5187585514544503929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6211937987840880488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d13c9a7c78ce804bac2d163d0b36146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostInventory: {fileID: 624847868498748703}
+  hostDropRate: 0.5
+  itemsWillDespawn: 0
+  dropSpreadRandomness: 2
+  notPickupableDuration: 15
+  spawnInDontDestroyOnLoad: 1
 --- !u!1 &7210195587280680990
 GameObject:
   m_ObjectHideFlags: 0
@@ -11980,6 +12004,11 @@ PrefabInstance:
       objectReference: {fileID: 8618609705104900965}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+--- !u!1 &8618609705104900965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+  m_PrefabInstance: {fileID: 7900096662325101685}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8618609706183199512 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
@@ -11996,11 +12025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94180f33a23397e4697a54a36f9e5963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8618609705104900965 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
-  m_PrefabInstance: {fileID: 7900096662325101685}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8106933346929468871
 PrefabInstance:
   m_ObjectHideFlags: 0

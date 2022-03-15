@@ -15,6 +15,13 @@ public class PlayerHandler : PlayerBase
 
     public bool animationEnds = false;
 
+
+    public delegate void PlayerHandlerAction();
+    public static event PlayerHandlerAction OnPlayerDeath;
+
+
+
+
     private void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
@@ -30,6 +37,8 @@ public class PlayerHandler : PlayerBase
             {
                 playerStates.SetCurrentPlayerState(PlayerState.DEAD);
                 gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+
+                if (OnPlayerDeath != null) OnPlayerDeath();
 
                 if (!inCoroutine)
                     StartCoroutine(DeathAnimation());
