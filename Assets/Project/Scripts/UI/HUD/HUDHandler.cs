@@ -19,11 +19,20 @@ public class HUDHandler : MonoBehaviour
     private void OnEnable()
     {
         LiftOffButton.OnLiftOff += ShowEndGameMessage;
+        LoadBaseScenes.OnKeepBlackFade += KeepBlackFade;
+        LoadBaseScenes.OnFadeToNormal += DoFadeToNormal;
     }
 
     private void OnDisable()
     {
         LiftOffButton.OnLiftOff -= ShowEndGameMessage;
+        LoadBaseScenes.OnKeepBlackFade -= KeepBlackFade;
+        LoadBaseScenes.OnFadeToNormal -= DoFadeToNormal;
+    }
+
+    private void KeepBlackFade()
+    {
+        fadeOutGroup.alpha = 1f;
     }
 
     private void ShowEndGameMessage()
