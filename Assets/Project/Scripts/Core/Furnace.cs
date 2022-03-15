@@ -17,13 +17,7 @@ public class Furnace : InteractStation
 
     //TextMesh gameobjects
     public GameObject popUpGameObject;
-    public GameObject warning;
-    public GameObject endGameMessage;
     public ParticleSystem addCoalParticleSystem;
-
-    //Text references
-    public TextMeshProUGUI currentFuelText;
-    public TextMeshProUGUI eventText;
 
     //Core light 
     public GameObject coreLight;
@@ -72,15 +66,11 @@ public class Furnace : InteractStation
 
         popUp.HideAll();
         popUpGameObject.SetActive(false);
-        warning.SetActive(false);
-        endGameMessage.SetActive(false);
     }
 
     void Update()
     {
-        SwitchFurnaceEvents();
-
-        CheckForEndGame();
+        //SwitchFurnaceEvents();
 
         //If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
@@ -208,97 +198,60 @@ public class Furnace : InteractStation
         return lightLevel >= 3;//MAX_CORE_LEVEL;
     }
 
-    private void CheckForEndGame()
-    {
-        if (CheckIfNoFuelLeft())
-        {
-            endGameMessage.SetActive(true);
-            endGameMessage.GetComponent<TextMeshProUGUI>().text = "GAME OVER";
-            currentTextTime += Time.deltaTime;
-            if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
-            {
-                SceneManager.LoadScene(1);
-            }
-        }
-        else if (CheckIfMaxCoreLevel())
-        {
-            endGameMessage.SetActive(true);
-            endGameMessage.GetComponent<TextMeshProUGUI>().text = "YOU WIN";
-            currentTextTime += Time.deltaTime;
-            if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
-            {
-                SceneManager.LoadScene(0);
-            }
-        }
-    }
+    //private void SwitchFurnaceEvents()
+    //{
+    //    switch (furnaceEvents)
+    //    {
+    //        case FurnaceEvents.CALM:
+    //            countdownActive = false;
+    //            eventText.text = eventTextToDisplay[0];
+    //            break;
 
-    private void CheckWarningMessageAppears()
-    {
-        //Warning if currentFuel is low
-        if (currentFuel <= LOW_FUEL_AMOUNT)
-        {
-            warning.SetActive(true);
-        }
-        else
-        {
-            warning.SetActive(false);
-        }
-    }
+    //        case FurnaceEvents.NEEDS_COAL:
+    //            countdownActive = true;
+    //            eventText.text = eventTextToDisplay[1];
 
-    private void SwitchFurnaceEvents()
-    {
-        switch (furnaceEvents)
-        {
-            case FurnaceEvents.CALM:
-                countdownActive = false;
-                eventText.text = eventTextToDisplay[0];
-                break;
+    //            ConsumesFuel();
+    //            CheckWarningMessageAppears();
 
-            case FurnaceEvents.NEEDS_COAL:
-                countdownActive = true;
-                eventText.text = eventTextToDisplay[1];
+    //            if (currentFuel >= MAX_FUEL_AMOUNT)
+    //            {
+    //                furnaceEvents = FurnaceEvents.STABILIZING;
+    //            }
+    //            break;
 
-                ConsumesFuel();
-                CheckWarningMessageAppears();
+    //        case FurnaceEvents.NEEDS_REPAIRS:
+    //            countdownActive = true;
+    //            eventText.text = eventTextToDisplay[2];
 
-                if (currentFuel >= MAX_FUEL_AMOUNT)
-                {
-                    furnaceEvents = FurnaceEvents.STABILIZING;
-                }
-                break;
+    //            ConsumesFuel();
+    //            CheckWarningMessageAppears();
 
-            case FurnaceEvents.NEEDS_REPAIRS:
-                countdownActive = true;
-                eventText.text = eventTextToDisplay[2];
+    //            if (currentFuel >= MAX_FUEL_AMOUNT)
+    //            {
+    //                furnaceEvents = FurnaceEvents.STABILIZING;
+    //            }
+    //            break;
 
-                ConsumesFuel();
-                CheckWarningMessageAppears();
+    //        case FurnaceEvents.STABILIZING:
+    //            countdownActive = false;
+    //            eventText.text = eventTextToDisplay[3];
 
-                if (currentFuel >= MAX_FUEL_AMOUNT)
-                {
-                    furnaceEvents = FurnaceEvents.STABILIZING;
-                }
-                break;
+    //            if (couroutineStartedConsumeCoal)
+    //            {
+    //                couroutineStartedConsumeCoal = false;
+    //                StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
+    //            }
 
-            case FurnaceEvents.STABILIZING:
-                countdownActive = false;
-                eventText.text = eventTextToDisplay[3];
+    //            currentFuel = STARTING_FUEL_AMOUNT;
+    //            furnaceEvents = FurnaceEvents.CALM;
+    //            break;
 
-                if (couroutineStartedConsumeCoal)
-                {
-                    couroutineStartedConsumeCoal = false;
-                    StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
-                }
-
-                currentFuel = STARTING_FUEL_AMOUNT;
-                furnaceEvents = FurnaceEvents.CALM;
-                break;
-
-            default:
-                furnaceEvents = FurnaceEvents.STABILIZING;
-                break;
-        }
-    }
+    //        default:
+    //            furnaceEvents = FurnaceEvents.STABILIZING;
+    //            break;
+    //    }
+    //}
 
     private void OnEnable()
     {
