@@ -13,6 +13,12 @@ public class Luxinite : Ore
     private float maxIntensity;
     private float time;
 
+    public bool hasBeenMined;
+
+    private void Awake()
+    {
+        SaveSystem.luxinites.Add(this);
+    }
     void Start()
     {
         breakState = OreState.WHOLE;
@@ -34,24 +40,12 @@ public class Luxinite : Ore
     {
         StartCoroutine(FlashLightAppears());
 
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
-        // Damage the Ore
-        healthSystem.ReceiveDamage(damageAmount);
-        // Update ore Sprite
-        ProgressNAmountOfSprites(damageAmount);
+        base.GetsMined(damageAmount, 1);
 
-        if (healthSystem.IsDead())
+        if(healthSystem.GetHealth() <= 0)
         {
-            breakState = OreState.BROKEN;
-
-            // Drop mineralItemToDrop
-            DropMineralItem();
-
-            // Start disappear coroutine
-            StartCoroutine("Disappear");
+            hasBeenMined = true;
         }
-        UpdateCurrentSprite();
-        StartCoroutine("PlayBreakParticles");
     }
 
     IEnumerator FlashLightAppears()
