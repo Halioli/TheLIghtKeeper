@@ -2,69 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HUDHandler : MonoBehaviour
 {
     // Private Attributes
-    private const float COUNTDOWN_FADE_TIME = 0.5f;
     private const float DEATH_FADE_TIME = 1f;
     private const float DAMAGE_FADE_TIME = 0.2f;
     private const float FADE_TIME = 0.5f;
 
-    private int coreTimeValue;
-    private bool showingCountdown;
-
-    // Public Attributes
-    public HUDBar coreBar;
-    public Furnace furnace;
-    public CanvasGroup coreGroup;
+    public CanvasGroup endGameMessageGroup;
     public CanvasGroup deathImageGroup;
     public CanvasGroup fadeOutGroup;
     public CanvasGroup recieveDamageGroup;
 
-    private void Start()
+    private void OnEnable()
     {
-        showingCountdown = false;
-
-        // Initialize core variables
-        coreTimeValue = furnace.GetMaxFuel();
-        coreBar.SetMaxValue(coreTimeValue);
-        coreBar.UpdateText(CheckTextForZeros(coreTimeValue.ToString()));
+        LiftOffButton.OnLiftOff += ShowEndGameMessage;
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        if (furnace.countdownActive && !showingCountdown)
-        {
-            StopCoroutine(CanvasFadeOut(coreGroup, COUNTDOWN_FADE_TIME));
-            StartCoroutine(CanvasFadeIn(coreGroup, COUNTDOWN_FADE_TIME));
-        }
-        else if (!furnace.countdownActive && showingCountdown)
-        {
-            StopCoroutine(CanvasFadeIn(coreGroup, COUNTDOWN_FADE_TIME));
-            StartCoroutine(CanvasFadeOut(coreGroup, COUNTDOWN_FADE_TIME));
-        }
-
-        coreTimeValue = furnace.GetCurrentFuel();
-        ChangeValueInHUD(coreBar, coreTimeValue, coreTimeValue.ToString());
+        LiftOffButton.OnLiftOff -= ShowEndGameMessage;
     }
 
-    private string CheckTextForZeros(string text)
+    private void ShowEndGameMessage()
     {
-        string zero = "0";
-
-        if (text.Length < 2)
-        {
-            text = zero + text;
-        }
-
-        return text;
+        StartCoroutine("EndGameFadeAndLogic");
     }
 
-    private void ChangeValueInHUD(HUDBar bar, int value, string text)
+    public void DoFadeToNormal()
     {
-        bar.SetValue(value);
-        bar.UpdateText(CheckTextForZeros(text));
+        StartCoroutine(CanvasFadeOut(fadeOutGroup, FADE_TIME));
     }
 
     public void DoDeathImageFade()
@@ -77,6 +46,11 @@ public class HUDHandler : MonoBehaviour
         StartCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
     }
 
+    public void ShowRecieveDamageFades()
+    {
+        StartCoroutine(RecieveDamageFadeInAndOut());
+    }
+
     public void RestoreFades()
     {
         StopCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
@@ -84,11 +58,6 @@ public class HUDHandler : MonoBehaviour
 
         deathImageGroup.alpha = 0f;
         fadeOutGroup.alpha = 0f;
-    }
-
-    public void ShowRecieveDamageFades()
-    {
-        StartCoroutine(RecieveDamageFadeInAndOut());
     }
 
     IEnumerator CanvasFadeOut(CanvasGroup canvasGroup, float fadeTime)
@@ -104,8 +73,6 @@ public class HUDHandler : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = endVector.x;
-
-        showingCountdown = false;
     }
 
     IEnumerator CanvasFadeIn(CanvasGroup canvasGroup, float fadeTime)
@@ -121,8 +88,6 @@ public class HUDHandler : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = endVector.x;
-
-        showingCountdown = true;
     }
 
     IEnumerator RecieveDamageFadeInAndOut()
@@ -149,5 +114,23 @@ public class HUDHandler : MonoBehaviour
             yield return null;
         }
         recieveDamageGroup.alpha = fadeInStartVector.x;
+    }
+
+    IEnumerator EndGameFadeAndLogic()
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < FADE_TIME; t += Time.deltaTime)
+        {
+            float normalizedTime = t / FADE_TIME;
+
+            endGameMessageGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        endGameMessageGroup.alpha = endVector.x;
+
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadSceneAsync(0, LoadSceneMode.Single);
     }
 }
