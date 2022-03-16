@@ -13,26 +13,28 @@ public class Gecko : MonoBehaviour
     private Vector2 geckoPos;
     private float speeddModifier;
     private bool coroutineAllowed;
+    private float xAngle, yAngle, zAngle;
 
     private Animator geckoAnimator;
 
     public bool playerIsNear;
-
+    public bool touched;
     // Start is called before the first frame update
     void Start()
     {
+        touched = false;
         geckoAnimator = GetComponent<Animator>();
         routeToGo = 0;
         tParam = 0f;
         speeddModifier = 0.5f;
+        transform.position = routes[0].GetChild(0).position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (coroutineAllowed)
+        if (coroutineAllowed && !touched)
         {
-
             geckoAnimator.SetBool("running", true);
             StartCoroutine(GoByTheRoute(routeToGo));
         }
@@ -41,6 +43,7 @@ public class Gecko : MonoBehaviour
     private IEnumerator GoByTheRoute(int routeNumber)
     {
         coroutineAllowed = false;
+        touched = true;
 
         Vector2 p0 = routes[routeNumber].GetChild(0).position;
         Vector2 p1 = routes[routeNumber].GetChild(1).position;
@@ -57,6 +60,7 @@ public class Gecko : MonoBehaviour
                 Mathf.Pow(tParam, 3) * p3;
 
             transform.position = geckoPos;
+            //transform.Rotate(xAngle, yAngle, zAngle);
             yield return new WaitForEndOfFrame();
         }
         geckoAnimator.SetBool("running", false);
@@ -72,7 +76,7 @@ public class Gecko : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             coroutineAllowed = true;
-            Debug.Log(playerIsNear);
+            Debug.Log(touched);
             //geckoAnimator.SetBool("running", true);
         }
     }

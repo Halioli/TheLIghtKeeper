@@ -27,10 +27,6 @@ public class EnemyMonster : MonoBehaviour
     [SerializeField] protected int dropRatePercent = 100;
     public ItemGameObject dropOnDeathItem;
 
-
-
-
-
     private void OnEnable()
     {
         DarknessSystem.OnPlayerNotInLight += OnPlayerNotInLight;
