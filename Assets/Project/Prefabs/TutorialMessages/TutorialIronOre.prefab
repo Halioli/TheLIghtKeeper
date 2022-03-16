@@ -5225,6 +5225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f5148ae2c28b94fb7566099d227932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   maxHealth: 5
 --- !u!114 &3995433157599464873
 MonoBehaviour:
@@ -5400,8 +5401,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b80bad94c0d4f4193d2f1da3f5c8e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mssg: The path to the ship is blocked by some rocks. Hit them with the pickaxe
-    to break through (left button).
+  mssgs:
+  - The path to the ship is blocked by some rocks. Hit them with the pickaxe to break
+    through (Left Mouse Button).
 --- !u!1 &8610340552274861552
 GameObject:
   m_ObjectHideFlags: 0
