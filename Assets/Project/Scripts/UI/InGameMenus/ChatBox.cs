@@ -7,8 +7,10 @@ using DG.Tweening;
 
 public class ChatBox : MonoBehaviour
 {
+    public bool allTextShown;
     public delegate void ChatNextInput();
     public static event ChatNextInput OnChatNextInput;
+
 
     private static float FADE_IN_TIME = 0.1f;
     private static float FADE_OUT_TIME = 0.1f;
@@ -16,7 +18,6 @@ public class ChatBox : MonoBehaviour
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
-    private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
     private List<string> textToShow;
