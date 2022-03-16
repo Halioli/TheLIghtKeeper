@@ -7,6 +7,7 @@ public class BrokenFurnace : InteractStation
 {
     private const int COAL_REPAIR_AMOUNT = 6;
     private PopUp popUp;
+    private Animator furnaceAnimator;
 
     public Item coal;
     public HUDHandler hud;
@@ -14,6 +15,9 @@ public class BrokenFurnace : InteractStation
     private void Start()
     {
         popUp = GetComponentInChildren<PopUp>();
+        furnaceAnimator = GetComponent<Animator>();
+
+        furnaceAnimator.SetBool("isActivate", false);
     }
 
     private void Update()
@@ -39,10 +43,8 @@ public class BrokenFurnace : InteractStation
         {
             popUp.ChangeMessageText("Materials added");
             playerInventory.SubstractNItemsFromInventory(coal, COAL_REPAIR_AMOUNT);
-            hud.DoFadeToBlack();
 
-            // Load Scene
-            SceneManager.LoadSceneAsync("Spaceship", LoadSceneMode.Single);
+            StartCoroutine(StartFurnace());
         }
         else
         {
@@ -61,5 +63,21 @@ public class BrokenFurnace : InteractStation
     {
         popUp.HideAll();
         popUp.ChangeMessageText("Press E to interact");
+    }
+
+    IEnumerator StartFurnace()
+    {
+        // Play animation
+        furnaceAnimator.SetBool("isActivate", true);
+
+        yield return new WaitForSeconds(2f);
+
+        // HUD fade to black
+        hud.DoFadeToBlack();
+        
+        yield return new WaitForSeconds(2f);
+
+        // Load Scene
+        SceneManager.LoadSceneAsync("Spaceship", LoadSceneMode.Single);
     }
 }
