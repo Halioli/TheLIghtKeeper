@@ -7,11 +7,6 @@ using DG.Tweening;
 
 public class ChatBox : MonoBehaviour
 {
-    public bool allTextShown;
-    public delegate void ChatNextInput();
-    public static event ChatNextInput OnChatNextInput;
-
-
     private static float FADE_IN_TIME = 0.1f;
     private static float FADE_OUT_TIME = 0.1f;
     private static float LETTER_DELAY = 0.05f;
@@ -21,8 +16,11 @@ public class ChatBox : MonoBehaviour
     private string fullMssgText;
     private string currentMssgText = "";
     private List<string> textToShow;
-    private int currentTextNumb = 0;
 
+    public delegate void ChatNextInput();
+    public static event ChatNextInput OnChatNextInput;
+    public bool allTextShown;
+    public int currentTextNumb = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
     public Transform buttonTransoform;
@@ -36,7 +34,7 @@ public class ChatBox : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && chatOpen)
         {
             if (OnChatNextInput != null)
                 OnChatNextInput();
@@ -89,6 +87,7 @@ public class ChatBox : MonoBehaviour
         {
             if (textToShow.Count > currentTextNumb)
             {
+                allTextShown = false;
                 fullMssgText = textToShow[currentTextNumb];
 
                 DisplayText();
