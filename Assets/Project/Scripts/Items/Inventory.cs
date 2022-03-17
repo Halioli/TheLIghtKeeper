@@ -47,12 +47,27 @@ public class Inventory : MonoBehaviour
 
     public void InitInventory()
     {
-        for (int i = 0; i < numberOfInventorySlots; i++)
+        inventory.Clear();
+        for (int i = 0; i < numberOfInventorySlots; ++i)
         {
             inventory.Add(Instantiate(emptyStack, transform));
         }
         gotChanged = true;
     }
+
+    public void InitInventory(List<ItemStack> inventoryData)
+    {
+        numberOfInventorySlots = inventoryData.Count;
+        inventory.Clear();
+
+        for (int i = 0; i < numberOfInventorySlots; ++i)
+        {
+            inventory.Add(Instantiate(inventoryData[i], transform));
+        }
+        gotChanged = true;
+    }
+
+
 
     // Getter Methods
     public int GetInventorySize() { return numberOfInventorySlots; }
