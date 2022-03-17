@@ -47,12 +47,27 @@ public class Inventory : MonoBehaviour
 
     public void InitInventory()
     {
-        for (int i = 0; i < numberOfInventorySlots; i++)
+        inventory.Clear();
+        for (int i = 0; i < numberOfInventorySlots; ++i)
         {
             inventory.Add(Instantiate(emptyStack, transform));
         }
         gotChanged = true;
     }
+
+    public void InitInventory(List<ItemStack> inventoryData)
+    {
+        numberOfInventorySlots = inventoryData.Count;
+        inventory.Clear();
+
+        for (int i = 0; i < numberOfInventorySlots; ++i)
+        {
+            inventory.Add(Instantiate(inventoryData[i], transform));
+        }
+        gotChanged = true;
+    }
+
+
 
     // Getter Methods
     public int GetInventorySize() { return numberOfInventorySlots; }
@@ -183,6 +198,18 @@ public class Inventory : MonoBehaviour
         return couldAddItem;
     }
 
+    public bool AddNItemsToInventory(Item itemToAdd, int numberOfItemsToAdd)
+    {
+        for (int i = 0; i < numberOfItemsToAdd; ++i)
+        {
+            if (!AddItemToInventory(itemToAdd))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public bool SubstractItemFromInventory(Item itemToSubstract)
     {
@@ -308,5 +335,27 @@ public class Inventory : MonoBehaviour
     {
         this.otherInventory = otherInventory;
     }
+
+    public Dictionary<int,int> GetInventoryData()
+    {
+        Dictionary<int, int> inventoryData = new Dictionary<int, int>();
+
+        for(int i = 0; i < inventory.Count; i++)
+        {
+            if(!inventory[i].StackIsEmpty())
+            {
+                if (inventoryData.ContainsKey(inventory[i].itemInStack.ID))
+                {
+                    inventoryData[inventory[i].itemInStack.ID] += inventory[i].amountInStack;
+                }
+                else
+                {
+                    inventoryData[inventory[i].itemInStack.ID] = inventory[i].amountInStack;
+                }
+            }
+        }
+        return inventoryData;
+    }
+
 
 }

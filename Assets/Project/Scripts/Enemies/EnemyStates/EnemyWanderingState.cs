@@ -9,6 +9,8 @@ public class EnemyWanderingState : EnemyState
     Animator animator;
 
     bool isMoving;
+    bool isWanderingDone;
+    float wanderingTime;
     [SerializeField] float minimumWanderDistance;
     [SerializeField] float wanderingWaitTime;
     [SerializeField] float wanderingRadius;
@@ -18,8 +20,10 @@ public class EnemyWanderingState : EnemyState
     Vector2 targetPosition;
 
     [SerializeField] float distanceToAggro;
-
+    float distanceToStartBanishing = 45f;
     bool isTouchingLight;
+
+    bool isPlayerInLight;
 
 
     private void Awake()
@@ -29,11 +33,27 @@ public class EnemyWanderingState : EnemyState
         animator = GetComponent<Animator>();
     }
 
+    private void OnEnable()
+    {
+        DarknessSystem.OnPlayerEntersLight += () => isPlayerInLight = true;
+        DarknessSystem.OnPlayerNotInLight += () => isPlayerInLight = false;
+    }
+
+    private void OnDisable()
+    {
+        DarknessSystem.OnPlayerEntersLight -= () => isPlayerInLight = true;
+        DarknessSystem.OnPlayerNotInLight -= () => isPlayerInLight = false;
+    }
+
+
 
     protected override void StateDoStart()
     {
         isMoving = true;
         isTouchingLight = false;
+        isWanderingDone = true;
+
+        isPlayerInLight = DarknessSystem.instance.playerInLight;
 
         SetWanderingCentrePosition();
         StartCoroutine(WaitForNewWanderingTargetPosition());
@@ -47,19 +67,28 @@ public class EnemyWanderingState : EnemyState
             nextState = EnemyStates.LIGHT_ENTER;
             return true;
         }
-        else if (isMoving && sinMovement.IsNearTargetPosition(targetPosition))
+        else if (isMoving && isWanderingDone)
         {
             StartCoroutine(WaitForNewWanderingTargetPosition());
         }
-        else if (IsCloseToPlayerPosition())
-        {
+        else if (IsCloseToPlayerPosition()) {
+            
             if (!isMoving) StopCoroutine(WaitForNewWanderingTargetPosition());
-
             enemyAudio.PlayFootstepsAudio();
+
+            if (isPlayerInLight) 
+            {
+                nextState = EnemyStates.SCARED;
+                return true;
+            }
             nextState = EnemyStates.AGGRO;
             return true;
         }
-
+        else if(distanceToStartBanishing < Vector2.Distance(transform.position, playerTransform.position))
+        {
+            nextState = EnemyStates.SCARED;
+            return true;
+        }
 
         return false;
     }
@@ -87,13 +116,14 @@ public class EnemyWanderingState : EnemyState
     private void SetWanderingTargetPosition()
     {
         do {
-            targetPosition = wanderingCentrePosition + Random.insideUnitCircle * wanderingRadius;
+            targetPosition = wanderingCentrePosition + (Random.insideUnitCircle * wanderingRadius);
         } while (Vector2.Distance(targetPosition, transform.position) < minimumWanderDistance);
     }
 
 
     IEnumerator WaitForNewWanderingTargetPosition()
     {
+        isWanderingDone = false;
         isMoving = false;
         enemyAudio.StopFootstepsAudio();
         animator.ResetTrigger("triggerMove");
@@ -106,6 +136,10 @@ public class EnemyWanderingState : EnemyState
         animator.ResetTrigger("triggerIdle");
         animator.SetTrigger("triggerMove");
         SetWanderingTargetPosition();
+
+        wanderingTime = Vector2.Distance(targetPosition, transform.position) / moveSpeed;
+        yield return new WaitForSeconds(wanderingTime);
+        isWanderingDone = true;
     }
 
 

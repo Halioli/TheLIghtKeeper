@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class DarknessSystem : MonoBehaviour
 {
+    public static DarknessSystem instance;
+
+
     // Private Attributes
     private PlayerLightChecker playerLightChecker;
-    private bool playerInLight;
+    public bool playerInLight { get; private set; }
     private List<GameObject> enemySpawners = new List<GameObject>();
 
-    private int ENEMY_CAP = 4;
+    [SerializeField] int ENEMY_CAP = 4;
     private int numberOfAliveEnemies = 0;
     public bool enemyCapIsFull = false;
     private bool spawnersEnabledAlready = false;
@@ -21,6 +24,21 @@ public class DarknessSystem : MonoBehaviour
     public delegate void PlayerEntersLightAction();
     public static event PlayerEntersLightAction OnPlayerEntersLight;
     public static event PlayerEntersLightAction OnPlayerNotInLight;
+
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(instance);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
 
     void Start()
     {
@@ -51,21 +69,17 @@ public class DarknessSystem : MonoBehaviour
 
         if (IsPlayerEnteringLight())
         {
-            //playerInLight = true;
-            ////DisableEnemySpawners();
-            //if(OnPlayerEntersLight != null)
-            //{
-            //    OnPlayerEntersLight();
-            //}
-            if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
+            playerInLight = true;
+            //DisableEnemySpawners();
+            InvokeOnPlayerEntersLight();
+            //if (!isDuringLightEnterDelay) StartCoroutine(DelayOnPlayerInLight());
         }
         else if (IsPlayerExitingLight())
         {
-            //playerInLight = false;
-            ////EnableEnemySpawners();
-            //if (OnPlayerNotInLight != null) OnPlayerNotInLight();
-
-            if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
+            playerInLight = false;
+            //EnableEnemySpawners();
+            InvokeOnPlayerNotInLight();
+            //if (!isDuringLightExitDelay) StartCoroutine(DelayOnPlayerNotInLight());
         }
     }
 
@@ -75,6 +89,8 @@ public class DarknessSystem : MonoBehaviour
         EnemySpawner.spawnEnemyEvent += AddingEnemy;
         //HostileEnemy.enemyDisappearsEvent += RemovingEnemy;
         EnemyDestroyState.OnEnemyDestroy += RemovingEnemy;
+
+        PlayerLightChecker.OnPlayerEntersLight += InvokeOnPlayerEntersLight;
     }
 
     void OnDisable()
@@ -83,6 +99,18 @@ public class DarknessSystem : MonoBehaviour
         //HostileEnemy.enemyDisappearsEvent -= RemovingEnemy;
         EnemyDestroyState.OnEnemyDestroy -= RemovingEnemy;
     }
+
+
+    private void InvokeOnPlayerEntersLight()
+    {
+        if (OnPlayerEntersLight != null) OnPlayerEntersLight();
+    }
+
+    private void InvokeOnPlayerNotInLight()
+    {
+        if (OnPlayerNotInLight != null) OnPlayerNotInLight();
+    }
+
 
     private void EnableEnemySpawners()
     {
@@ -133,10 +161,7 @@ public class DarknessSystem : MonoBehaviour
         {
             playerInLight = true;
             //DisableEnemySpawners();
-            if (OnPlayerEntersLight != null)
-            {
-                OnPlayerEntersLight();
-            }
+            InvokeOnPlayerEntersLight();
         }
     }
 
@@ -155,7 +180,7 @@ public class DarknessSystem : MonoBehaviour
         {
             playerInLight = false;
             //EnableEnemySpawners();
-            if (OnPlayerNotInLight != null) OnPlayerNotInLight();
+            InvokeOnPlayerNotInLight();
         }
     }
 

@@ -19,6 +19,7 @@ public class EnemyScaredState : EnemyState
     bool isBanishingFinished;
     Vector2 fleeTargetDirection;
 
+    bool isPlayerNotInLight;
 
 
     private void Awake()
@@ -31,9 +32,20 @@ public class EnemyScaredState : EnemyState
         //fleeTime = 3.0f;
     }
 
+    private void OnEnable()
+    {
+        DarknessSystem.OnPlayerNotInLight += () => isPlayerNotInLight = true;
+    }
+
+    private void OnDisable()
+    {
+        DarknessSystem.OnPlayerNotInLight -= () => isPlayerNotInLight = true;
+    }
+
 
     protected override void StateDoStart()
     {
+        isPlayerNotInLight = false;
         ResetFleeing();
         animator.ResetTrigger("triggerMove");
         animator.SetTrigger("triggerIdle");
@@ -41,6 +53,11 @@ public class EnemyScaredState : EnemyState
 
     public override bool StateUpdate()
     {
+        if (isPlayerNotInLight)
+        {
+            nextState = EnemyStates.WANDERING;
+            return true;
+        }
         if (isBanishingFinished)
         {
             nextState = EnemyStates.DESTROY;
@@ -85,8 +102,8 @@ public class EnemyScaredState : EnemyState
         while (!fadeLerp.isMaxPrecise)
         {
             fadeLerp.Update(Time.deltaTime);
-            fadeColor.a = fadeLerp.Value;
-            //spriteRenderer.material.color = fadeColor;
+            fadeColor.a = fadeLerp.Inverse;
+            spriteRenderer.color = fadeColor;
             yield return null;
         }
 

@@ -27,10 +27,6 @@ public class EnemyMonster : MonoBehaviour
     [SerializeField] protected int dropRatePercent = 100;
     public ItemGameObject dropOnDeathItem;
 
-
-
-
-
     private void OnEnable()
     {
         DarknessSystem.OnPlayerNotInLight += OnPlayerNotInLight;
@@ -85,7 +81,7 @@ public class EnemyMonster : MonoBehaviour
         Destroy(gameObject);
     }
 
-    protected void DropItem()
+    protected virtual void DropItem()
     {
         if (Random.Range(0, 100) > dropRatePercent) return;
 
@@ -113,7 +109,7 @@ public class EnemyMonster : MonoBehaviour
 
         transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
 
-        //spriteRenderer.color = transparent;
+        spriteRenderer.color = transparent;
         yield return new WaitForSeconds(damagedTime / 2);
 
         spriteRenderer.color = normal;

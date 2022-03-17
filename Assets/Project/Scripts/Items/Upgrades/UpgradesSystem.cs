@@ -10,7 +10,6 @@ public class UpgradesSystem : MonoBehaviour
     [SerializeField] public List<UpgradeBranch> upgradeBranches;
     [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
 
-
     // Events
     public delegate void UpgardeAction();
     public static event UpgardeAction OnUpgrade;
