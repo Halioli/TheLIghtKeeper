@@ -16,7 +16,6 @@ public class TutorialEnterShip : TutorialMessages
     [SerializeField] Transform furnaceStationTransform;
 
     private bool mssgSent = false;
-    private int mssgNumb = -1;
 
     private void Start()
     {
@@ -27,31 +26,32 @@ public class TutorialEnterShip : TutorialMessages
     {
         if (mssgSent)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && chatBox.allTextShown)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                mssgNumb++;
-                switch (mssgNumb)
+                switch (chatBox.currentTextNumb)
                 {
                     case 0:
-                        break;
-
                     case 1:
-                        worldMark.AppearAtPosition(healthStationTransform.position);
-                        break;
-
                     case 2:
-                        worldMark.AppearAtPosition(craftingStationTransform.position);
                         break;
 
                     case 3:
-                        worldMark.AppearAtPosition(upgradesStationTransform.position);
+                        worldMark.AppearAtPosition(healthStationTransform.position);
                         break;
 
                     case 4:
-                        worldMark.AppearAtPosition(storageStationTransform.position);
+                        worldMark.AppearAtPosition(craftingStationTransform.position);
                         break;
 
                     case 5:
+                        worldMark.AppearAtPosition(upgradesStationTransform.position);
+                        break;
+
+                    case 6:
+                        worldMark.AppearAtPosition(storageStationTransform.position);
+                        break;
+
+                    case 7:
                         worldMark.AppearAtPosition(furnaceStationTransform.position);
                         break;
 
@@ -60,6 +60,10 @@ public class TutorialEnterShip : TutorialMessages
                         DisableSelf();
                         break;
                 }
+            }
+            if (chatBox.allTextShown)
+            {
+                worldMark.Disappear();
             }
         }
     }
