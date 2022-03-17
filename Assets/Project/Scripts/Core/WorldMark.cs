@@ -20,6 +20,15 @@ public class WorldMark : MonoBehaviour
         transform.RotateAroundLocal(Vector3.forward, rotationSpeed * Time.deltaTime);
     }
 
+    private void OnEnable()
+    {
+        ChatBox.OnFinishChatMessage += Disappear;
+    }
+
+    private void OnDisable()
+    {
+        ChatBox.OnFinishChatMessage -= Disappear;
+    }
 
     public void AppearAtPosition(Vector2 position)
     {
