@@ -127,7 +127,7 @@ MonoBehaviour:
   m_ShadowVolumeIntensity: 0
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 3
+  m_PointLightInnerRadius: 5
   m_PointLightOuterRadius: 6
   m_PointLightDistance: 3
   m_PointLightQuality: 1
@@ -154,6 +154,8 @@ GameObject:
   - component: {fileID: 7659041918544259839}
   - component: {fileID: 7659041918544259832}
   - component: {fileID: 7659041918544259838}
+  - component: {fileID: 854693573}
+  - component: {fileID: 854693569}
   m_Layer: 0
   m_Name: EscapePod
   m_TagString: Untagged
@@ -173,6 +175,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5790754505299291269}
+  - {fileID: 5527674486052669899}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -289,3 +292,147 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &854693573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659041918544259835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b148d9204e595488eb1dae06a89e57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightGameObject: {fileID: 5790754505299291266}
+  expandTime: 0
+  shrinkTime: 0
+  extraExpandTime: 0.05
+  partialShrinkTime: 0.05
+  startDistance: 6
+  lightAngle: 400
+--- !u!114 &854693569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659041918544259835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd64e3b4c8ac58043ba99d53328c6022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coneLight: {fileID: 854693573}
+--- !u!1001 &1008685449
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7659041918544259833}
+    m_Modifications:
+    - target: {fileID: 1438214556120550995, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_Name
+      value: TutorialMssg
+      objectReference: {fileID: 0}
+    - target: {fileID: 1438214556120550995, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.data[0]
+      value: "Attention, commander. I have landed the spaceship. It is in very bad
+        condition, but it can be repaired.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.data[1]
+      value: I am receiving the signal from the escape pod. Leave and head towards
+        me. I will send you the location.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.data[2]
+      value: The planet is in complete darkness, so you will need to take your flashlight
+        with you to light the way.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.data[3]
+      value: "If the battery runs out, simply approach the pod again to recharge
+        it.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.data[4]
+      value: 'Ducky:
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.data[5]
+      value: 'Ducky:
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3881348615072332145, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: mssgs.Array.data[6]
+      value: 'Ducky:
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8969289263260853978, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+      propertyPath: m_Radius
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+--- !u!4 &5527674486052669899 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5527674485047007298, guid: d35af8475f5b41c4986627a5865f460f, type: 3}
+  m_PrefabInstance: {fileID: 1008685449}
+  m_PrefabAsset: {fileID: 0}
