@@ -19,6 +19,8 @@ public class ChatBox : MonoBehaviour
 
     public delegate void ChatNextInput();
     public static event ChatNextInput OnChatNextInput;
+    public delegate void FinishedChatMessage();
+    public static event FinishedChatMessage OnFinishChatMessage;
     public bool allTextShown;
     public int currentTextNumb = 0;
     public TextMeshProUGUI mssgText;
@@ -96,6 +98,10 @@ public class ChatBox : MonoBehaviour
             }
             else
             {
+                // Send Action
+                if (OnFinishChatMessage != null)
+                    OnFinishChatMessage();
+
                 HideChat();
             }
         }
