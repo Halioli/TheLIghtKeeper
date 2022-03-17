@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2447099115174808965}
   - component: {fileID: 2447099115174808962}
+  - component: {fileID: 7239393480247585922}
+  - component: {fileID: 698198206}
+  - component: {fileID: 698198207}
   m_Layer: 0
   m_Name: brokenLightTube
   m_TagString: Untagged
@@ -84,6 +87,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &7239393480247585922
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2447099115174808963}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.75, y: 1.75}
+    newSize: {x: 2.75, y: 1.75}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.0900116, y: 0.5949745}
+      - {x: -0.7924843, y: 0.4024582}
+      - {x: -1.2999916, y: -0.047538757}
+      - {x: -1.2349854, y: -0.68499374}
+      - {x: -0.92246246, y: -0.86499786}
+      - {x: -0.39508057, y: -0.875}
+      - {x: 1.3800011, y: -0.40748215}
+      - {x: 1.1499786, y: 0.8600006}
+--- !u!114 &698198206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2447099115174808963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b148d9204e595488eb1dae06a89e57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightGameObject: {fileID: 2447099115645692994}
+  expandTime: 0
+  shrinkTime: 0
+  extraExpandTime: 0.05
+  partialShrinkTime: 0.05
+  startDistance: 4.5
+  lightAngle: 400
+--- !u!114 &698198207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2447099115174808963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd64e3b4c8ac58043ba99d53328c6022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coneLight: {fileID: 698198206}
 --- !u!1 &2447099115645692994
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,6 +163,7 @@ GameObject:
   - component: {fileID: 2447099115645692997}
   - component: {fileID: 2447099115645692998}
   - component: {fileID: 2447099115645692999}
+  - component: {fileID: 803141981649283861}
   - component: {fileID: 2447099115645692996}
   m_Layer: 6
   m_Name: CoreLight
@@ -184,6 +253,36 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 4.5
+--- !u!60 &803141981649283861
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2447099115645692994}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.038108826, y: 0.533165}
+      - {x: -0.15076739, y: 0.080360204}
+      - {x: 0.041014254, y: -0.24690998}
+      - {x: 0.46392977, y: -0.26596427}
+      - {x: 0.6461859, y: 0.30901712}
 --- !u!114 &2447099115645692996
 MonoBehaviour:
   m_ObjectHideFlags: 0

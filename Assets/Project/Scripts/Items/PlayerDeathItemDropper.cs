@@ -15,10 +15,4 @@ public class PlayerDeathItemDropper : ItemDropper
         PlayerHandler.OnPlayerDeath -= DropItems;
     }
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) { DropItems(); }
-    }
-
 }
