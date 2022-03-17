@@ -11,6 +11,7 @@ public class HotbarInventory : Inventory
     private int[] extraSlotsOnUpgrade = { 1, 1, 2 };
     private float[] hotbarWidthOnUpgrade = { 674f, 798f, 1042f };
 
+    [SerializeField] InventoryData playerInventoryData;
 
     private void OnEnable()
     {
@@ -22,6 +23,25 @@ public class HotbarInventory : Inventory
     {
         OnItemMove -= SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
+    }
+    private void Start()
+    {
+        StartCoroutine(KEKWAIT());
+    }
+
+    IEnumerator KEKWAIT()
+    {
+        yield return new WaitForSeconds(2f);
+        playerInventoryData.SaveInventoryItems(inventory);
+    }
+
+    public override void InitInventory()
+    {
+        base.InitInventory();
+        playerInventoryData.LoadInventoryItems(this, transform);
+
+        gotChanged = true;
+        inventoryIsEmpty = false;
     }
 
 

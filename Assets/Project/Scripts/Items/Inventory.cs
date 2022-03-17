@@ -36,16 +36,20 @@ public class Inventory : MonoBehaviour
     // Initializer Methods
     public void Awake()
     {
+        Init();
+    }
+
+    protected virtual void Init()
+    {
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;
         inventoryIsEmpty = true;
-
 
         InitInventory();
     }
 
 
-    public void InitInventory()
+    public virtual void InitInventory()
     {
         inventory.Clear();
         for (int i = 0; i < numberOfInventorySlots; ++i)
@@ -54,19 +58,6 @@ public class Inventory : MonoBehaviour
         }
         gotChanged = true;
     }
-
-    public void InitInventory(List<ItemStack> inventoryData)
-    {
-        numberOfInventorySlots = inventoryData.Count;
-        inventory.Clear();
-
-        for (int i = 0; i < numberOfInventorySlots; ++i)
-        {
-            inventory.Add(Instantiate(inventoryData[i], transform));
-        }
-        gotChanged = true;
-    }
-
 
 
     // Getter Methods

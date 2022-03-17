@@ -8,20 +8,29 @@ using UnityEngine;
 
 public class InventoryData : ScriptableObject
 {
+    public bool firstTime = true;
     [SerializeField] ItemStack emptyItemStack;
-    [SerializeField] List<ItemStack> inventoryData = new List<ItemStack>();
+    public List<KeyValuePair<Item, int>> inventoryData = new List<KeyValuePair<Item, int>>();
 
     public void SaveInventoryItems(List<ItemStack> inventoryItems)
     {
         inventoryData.Clear();
-        inventoryData = new List<ItemStack>(inventoryItems);
+
+        foreach (ItemStack itemStack in inventoryItems)
+        {
+            inventoryData.Add(new KeyValuePair<Item, int>(itemStack.itemInStack, itemStack.amountInStack));
+        }
     }
 
-    public void LoadInventoryItems(out List<ItemStack> inventoryItems)
+    public bool LoadInventoryItems(Inventory inventory, Transform transform)
     {
-        inventoryItems = inventoryData;
-    }
+        foreach (KeyValuePair<Item, int> stackData in inventoryData)
+        {
+            inventory.AddNItemsToInventory(stackData.Key, stackData.Value);
+        }
 
+        return true;
+    }
 
 
 }
