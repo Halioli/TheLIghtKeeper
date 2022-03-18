@@ -21,7 +21,7 @@ public class TutorialEnterShip : TutorialMessages
 
             worldMark.AppearAtPosition(furnaceStationTransform.position);
 
-            if (chatBox.currentTextNumb == 2)
+            if (chatBox.currentTextNum == 2)
             {
                 worldMark.gameObject.SetActive(false);
             }

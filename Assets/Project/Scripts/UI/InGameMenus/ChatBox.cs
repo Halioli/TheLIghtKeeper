@@ -9,7 +9,8 @@ public class ChatBox : MonoBehaviour
 {
     private static float FADE_IN_TIME = 0.1f;
     private static float FADE_OUT_TIME = 0.1f;
-    private static float LETTER_DELAY = 0.05f;
+    private static float LETTER_DELAY = 0.035f;
+    private static float DOT_DELAY = 0.4f;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
@@ -22,7 +23,7 @@ public class ChatBox : MonoBehaviour
     public delegate void FinishedChatMessage();
     public static event FinishedChatMessage OnFinishChatMessage;
     public bool allTextShown;
-    public int currentTextNumb = 0;
+    public int currentTextNum = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
     public Transform buttonTransoform;
@@ -43,6 +44,8 @@ public class ChatBox : MonoBehaviour
 
             buttonTransoform.DOComplete();
             buttonTransoform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
+
+            mssgText.maxVisibleCharacters = fullMssgText.Length;
 
             NextText();
         }
@@ -82,19 +85,18 @@ public class ChatBox : MonoBehaviour
         if (!allTextShown)
         {
             StopCoroutine("ShowText");
-            mssgText.text = fullMssgText;
             allTextShown = true;
         }
         else
         {
-            if (textToShow.Count > currentTextNumb)
+            if (textToShow.Count > currentTextNum)
             {
                 allTextShown = false;
-                fullMssgText = textToShow[currentTextNumb];
+                fullMssgText = textToShow[currentTextNum];
 
                 DisplayText();
 
-                currentTextNumb++;
+                currentTextNum++;
             }
             else
             {
@@ -116,7 +118,7 @@ public class ChatBox : MonoBehaviour
     private void ResetValues()
     {
         textToShow.Clear();
-        currentTextNumb = 0;
+        currentTextNum = 0;
         TutorialMessages.tutorialOpened = false;
         chatOpen = false;
         allTextShown = false;
@@ -164,14 +166,13 @@ public class ChatBox : MonoBehaviour
     IEnumerator ShowText()
     {
         allTextShown = false;
-        for (int i = 0; i < fullMssgText.Length + 1; i++)
+        mssgText.text = fullMssgText;
+        mssgText.maxVisibleCharacters = 0;
+        for (int i = 0; i < fullMssgText.Length; i++)
         {
-            currentMssgText = fullMssgText.Substring(0, i);
-            mssgText.text = currentMssgText;
-
+            mssgText.maxVisibleCharacters++;
             duckFace.transform.DOShakeRotation(LETTER_DELAY, 10, 10, 50);
-            
-            yield return new WaitForSeconds(LETTER_DELAY);
+            yield return new WaitForSeconds(fullMssgText[i] == '.' ? DOT_DELAY : LETTER_DELAY);
         }
         allTextShown = true;
     }
