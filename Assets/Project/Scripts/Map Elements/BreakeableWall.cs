@@ -34,8 +34,25 @@ public class BreakeableWall : Ore
 
             // Start disappear coroutine
             StartCoroutine(Disappear());
+
+            OnDeathDamageTake();
+        }
+        else
+        {
+            OnDamageTake();
         }
         UpdateCurrentSprite();
         StartCoroutine(PlayBreakParticles());
     }
+
+    protected override void OnDamageTake()
+    {
+        base.OnDamageTake();
+    }
+
+    protected override void OnDeathDamageTake()
+    {
+        base.OnDeathDamageTake();
+    }
+
 }
