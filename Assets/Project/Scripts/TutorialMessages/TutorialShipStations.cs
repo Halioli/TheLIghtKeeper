@@ -25,7 +25,7 @@ public class TutorialShipStations : TutorialMessages
     {
         if (mssgSent)
         {
-            switch (chatBox.currentTextNumb)
+            switch (chatBox.currentTextNum)
             {
                 case 2:
                     worldMark.AppearAtPosition(healingStationTransform.position);
