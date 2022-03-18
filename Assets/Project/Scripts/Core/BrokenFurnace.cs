@@ -6,16 +6,22 @@ using UnityEngine.SceneManagement;
 public class BrokenFurnace : InteractStation
 {
     private const int COAL_REPAIR_AMOUNT = 6;
-    private const int IRON_REPAIR_AMOUNT = 4;
     private PopUp popUp;
+    private Animator furnaceAnimator;
 
     public Item coal;
-    public Item iron;
     public HUDHandler hud;
+
+    public delegate void BrokenFurnaceAction();
+    public static event BrokenFurnaceAction OnTutorialFinish;
+
 
     private void Start()
     {
         popUp = GetComponentInChildren<PopUp>();
+        furnaceAnimator = GetComponent<Animator>();
+
+        furnaceAnimator.SetBool("isActivate", false);
     }
 
     private void Update()
@@ -29,7 +35,8 @@ public class BrokenFurnace : InteractStation
         }
         else
         {
-            PopUpDisappears();
+            //PopUpDisappears();
+            popUp.ChangeMessageText("Press E to interact");
         }
     }
 
@@ -37,16 +44,12 @@ public class BrokenFurnace : InteractStation
     public override void StationFunction()
     {
         // Check if player has enough items
-        if (playerInventory.InventoryContainsItemAndAmount(coal, COAL_REPAIR_AMOUNT) 
-            && playerInventory.InventoryContainsItemAndAmount(iron, IRON_REPAIR_AMOUNT))
+        if (playerInventory.InventoryContainsItemAndAmount(coal, COAL_REPAIR_AMOUNT))
         {
             popUp.ChangeMessageText("Materials added");
             playerInventory.SubstractNItemsFromInventory(coal, COAL_REPAIR_AMOUNT);
-            playerInventory.SubstractNItemsFromInventory(iron, IRON_REPAIR_AMOUNT);
-            hud.DoFadeToBlack();
 
-            // Load Scene
-            SceneManager.LoadSceneAsync("Spaceship", LoadSceneMode.Single);
+            StartCoroutine(StartFurnace());
         }
         else
         {
@@ -65,5 +68,22 @@ public class BrokenFurnace : InteractStation
     {
         popUp.HideAll();
         popUp.ChangeMessageText("Press E to interact");
+    }
+
+    IEnumerator StartFurnace()
+    {
+        // Play animation
+        furnaceAnimator.SetBool("isActivate", true);
+
+        yield return new WaitForSeconds(2f);
+
+        // HUD fade to black
+        hud.DoFadeToBlack();
+        if (OnTutorialFinish != null) OnTutorialFinish();
+
+        yield return new WaitForSeconds(2f);
+
+        // Load Scene
+        SceneManager.LoadSceneAsync("Spaceship", LoadSceneMode.Single);
     }
 }

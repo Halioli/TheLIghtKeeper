@@ -102,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lampTime: 0
   coneIsActive: 0
+  playerInLight: 0
   turnedOn: 0
   active: 0
   canRefill: 0
@@ -1159,8 +1160,7 @@ MonoBehaviour:
   lanternOnOffAudioSource: {fileID: 5947980658247159692}
   normalWalkingSound: {fileID: 8300000, guid: 1b38e2d7c41780e449e1926e1cae3e92, type: 3}
   grassWalkingSound: {fileID: 8300000, guid: c9303a1afa4644840b33837ae9b3d6d6, type: 3}
-  attackAudioSound: {fileID: 8300000, guid: c5a448fb001047b4c991329b66fc300f, type: 3}
-  missAttackAudioSound: {fileID: 8300000, guid: 9173ef68dcd78734db2007128f7eca59, type: 3}
+  missMineAudioSound: {fileID: 8300000, guid: 16821e2c106bf8e46924d48a7de94de9, type: 3}
   mineErrorAudioSource: {fileID: 8300000, guid: f7ac3405865a86142a891ae893551da4, type: 3}
   mineAudioSound: {fileID: 8300000, guid: 5cece54e8eedf044b942359545a7c3bc, type: 3}
   mineBreakAudioSound: {fileID: 8300000, guid: d10a881cc844a0244a25a4249c26c4dd, type: 3}
@@ -6602,6 +6602,7 @@ MonoBehaviour:
   maxNumberOfSlots: 8
   hotbarInventoryMenu: {fileID: 2278868602422071281}
   hotbarRectTransform: {fileID: 3730312602512923494}
+  playerInventoryData: {fileID: 11400000, guid: 688f490128c84004c9bc0c5472ea2918, type: 2}
 --- !u!1 &5961327213277172465
 GameObject:
   m_ObjectHideFlags: 0
@@ -6656,6 +6657,7 @@ GameObject:
   - component: {fileID: 7975315929796009490}
   - component: {fileID: 1600917185611695868}
   - component: {fileID: 5530320921557673719}
+  - component: {fileID: 1716986925818669278}
   - component: {fileID: 5187585514544503929}
   m_Layer: 11
   m_Name: ItemPickUp
@@ -6690,6 +6692,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d785a0ec36046041b316e40223ea535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPickUpCheckCollider: {fileID: 5530320921557673719}
+  itemPickUpCollider: {fileID: 1716986925818669278}
 --- !u!58 &5530320921557673719
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6706,6 +6710,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
   m_Radius: 2.2
+--- !u!58 &1716986925818669278
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6211937987840880488}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.5}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!114 &5187585514544503929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6722,7 +6742,7 @@ MonoBehaviour:
   hostDropRate: 0.5
   itemsWillDespawn: 0
   dropSpreadRandomness: 2
-  notPickupableDuration: 15
+  notPickupableDuration: 20
   spawnInDontDestroyOnLoad: 1
 --- !u!1 &7210195587280680990
 GameObject:
@@ -12004,16 +12024,6 @@ PrefabInstance:
       objectReference: {fileID: 8618609705104900965}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
---- !u!1 &8618609705104900965 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
-  m_PrefabInstance: {fileID: 7900096662325101685}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8618609706183199512 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
-  m_PrefabInstance: {fileID: 7900096662325101685}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3440172144570092638 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4764591082063808555, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
@@ -12025,6 +12035,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94180f33a23397e4697a54a36f9e5963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8618609705104900965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1889748037255825168, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+  m_PrefabInstance: {fileID: 7900096662325101685}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8618609706183199512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+  m_PrefabInstance: {fileID: 7900096662325101685}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8106933346929468871
 PrefabInstance:
   m_ObjectHideFlags: 0

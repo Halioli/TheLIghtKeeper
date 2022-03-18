@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class LoadBaseScenes : MonoBehaviour
 {
+    public delegate void KeepBlackFadeAction();
+    public static event KeepBlackFadeAction OnKeepBlackFade;
+
+    public delegate void FadeToNormalAction();
+    public static event FadeToNormalAction OnFadeToNormal;
+
     private bool spaceshipLoaded = false;
     private bool mapElementsLoaded = false;
 
@@ -44,13 +50,25 @@ public class LoadBaseScenes : MonoBehaviour
 
     private void LoadSpaceshipScene()
     {
+        if (OnKeepBlackFade != null)
+            OnKeepBlackFade();
+
         SceneManager.LoadSceneAsync(spaceshipScene, LoadSceneMode.Additive);
         spaceshipLoaded = true;
+
+        if (OnFadeToNormal != null)
+            OnFadeToNormal();
     }
 
     private void LoadMapElementsScene()
     {
+        if (OnKeepBlackFade != null)
+            OnKeepBlackFade();
+
         SceneManager.LoadSceneAsync(mapElementsScene, LoadSceneMode.Additive);
         mapElementsLoaded = true;
+
+        if (OnFadeToNormal != null)
+            OnFadeToNormal();
     }
 }

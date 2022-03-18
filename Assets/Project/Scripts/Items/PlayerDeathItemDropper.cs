@@ -15,5 +15,4 @@ public class PlayerDeathItemDropper : ItemDropper
         PlayerHandler.OnPlayerDeath -= DropItems;
     }
 
-
 }
