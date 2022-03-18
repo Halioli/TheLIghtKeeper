@@ -32,13 +32,17 @@ public class PlayerHandler : PlayerBase
     {
         if (playerHealthSystem.IsDead())
         {
+            Debug.Log("player is dead");
+
             //Start corroutine and play animation
             if (!animationEnds)
             {
                 playerStates.SetCurrentPlayerState(PlayerState.DEAD);
                 gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
 
-                if (OnPlayerDeath != null) OnPlayerDeath();
+                // Send Action
+                if (OnPlayerDeath != null) 
+                    OnPlayerDeath();
 
                 if (!inCoroutine)
                     StartCoroutine(DeathAnimation());
@@ -57,11 +61,6 @@ public class PlayerHandler : PlayerBase
         {
             // Pause game
         }
-    }
-
-    public void DoDeathImageFade()
-    {
-        hudHandler.DoDeathImageFade();
     }
 
     public void DoFadeToBlack()
