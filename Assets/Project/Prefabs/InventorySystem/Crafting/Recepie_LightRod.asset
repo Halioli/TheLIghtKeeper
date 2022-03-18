@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0351f39765d356e418c1b83f181fc23c, type: 3}
-  m_Name: Recepie_3
+  m_Name: Recepie_LightRod
   m_EditorClassIdentifier: 
-  recepieName: Bomb
+  recepieName: Light Rod
   requiredItemsList:
+  - {fileID: 11400000, guid: 3ad1a6f564b80f743a80f5b6a541cd25, type: 2}
   - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  requiredAmountsList: 04000000
-  resultingItemUnit: {fileID: 11400000, guid: fe1423d4f51c65e409f790eedd9d1249, type: 2}
-  resultingAmountUnit: 3
+  requiredAmountsList: 0400000004000000
+  resultingItemUnit: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
+  resultingAmountUnit: 1

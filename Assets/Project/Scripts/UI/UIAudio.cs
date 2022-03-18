@@ -14,7 +14,7 @@ public class UIAudio : MonoBehaviour
     [SerializeField] AudioClip upgradeAudioClip;
     [SerializeField] AudioClip craftAudioClip;
     [SerializeField] AudioClip failCraftAudioClip;
-
+    [SerializeField] AudioClip nextMessageAudioClip;
 
     bool canPlaybuttonHoverSound = true;
     float buttonHoverSoundCooldown = 0.1f;
@@ -33,6 +33,8 @@ public class UIAudio : MonoBehaviour
 
         CraftingSystem.OnCrafting += PlayCraftingSound;
         CraftingSystem.OnCraftingFail += PlayFailCraftingSound;
+
+        ChatBox.OnChatNextInput += PlayNextMessageSound;
     }
 
 
@@ -50,6 +52,8 @@ public class UIAudio : MonoBehaviour
 
         CraftingSystem.OnCrafting -= PlayCraftingSound;
         CraftingSystem.OnCraftingFail -= PlayFailCraftingSound;
+
+        ChatBox.OnChatNextInput -= PlayNextMessageSound;
     }
 
 
@@ -120,6 +124,16 @@ public class UIAudio : MonoBehaviour
         buttonHoverAudioSource.volume = 0.1f;
         buttonHoverAudioSource.pitch = Random.Range(1.3f, 1.4f);
         buttonHoverAudioSource.Play();
+    }
+
+    private void PlayNextMessageSound()
+    {
+        if (upgardeAndCraftAudioSource.isPlaying) return;
+
+        upgardeAndCraftAudioSource.volume = 0.1f;
+        upgardeAndCraftAudioSource.clip = nextMessageAudioClip;
+        upgardeAndCraftAudioSource.pitch = 1.0f;
+        upgardeAndCraftAudioSource.Play();
     }
 
     IEnumerator ButtonHoverSoundCooldown()
