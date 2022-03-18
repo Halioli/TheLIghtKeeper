@@ -10,18 +10,22 @@ public class ChatBox : MonoBehaviour
     private static float FADE_IN_TIME = 0.1f;
     private static float FADE_OUT_TIME = 0.1f;
     private static float LETTER_DELAY = 0.05f;
-    private static int MAX_TEXT_LENGHT = 71;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
-    private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
     private List<string> textToShow;
-    private int currentTextNumb = 0;
 
+    public delegate void ChatNextInput();
+    public static event ChatNextInput OnChatNextInput;
+    public delegate void FinishedChatMessage();
+    public static event FinishedChatMessage OnFinishChatMessage;
+    public bool allTextShown;
+    public int currentTextNumb = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
+    public Transform buttonTransoform;
 
     void Start()
     {
@@ -32,8 +36,14 @@ public class ChatBox : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Space) && chatOpen)
         {
+            if (OnChatNextInput != null)
+                OnChatNextInput();
+
+            buttonTransoform.DOComplete();
+            buttonTransoform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
+
             NextText();
         }
     }
@@ -61,25 +71,6 @@ public class ChatBox : MonoBehaviour
         NextText();
     }
 
-    private void ParseText(string msg)
-    {
-        int currentPos = 0;
-
-        // Check if message needs to be fragmented
-        if (msg.Length < MAX_TEXT_LENGHT)
-        {
-            textToShow.Add(msg);
-            return;            
-        }
-
-        // Split full message into smaller fragments
-        while (currentPos < msg.Length)
-        {
-            textToShow.Add(msg.Substring(currentPos, Mathf.Min(currentPos + MAX_TEXT_LENGHT, msg.Length)));
-            currentPos += MAX_TEXT_LENGHT;
-        }
-    }
-
     private void DisplayText()
     {
         // Display text
@@ -98,6 +89,7 @@ public class ChatBox : MonoBehaviour
         {
             if (textToShow.Count > currentTextNumb)
             {
+                allTextShown = false;
                 fullMssgText = textToShow[currentTextNumb];
 
                 DisplayText();
@@ -106,6 +98,10 @@ public class ChatBox : MonoBehaviour
             }
             else
             {
+                // Send Action
+                if (OnFinishChatMessage != null)
+                    OnFinishChatMessage();
+
                 HideChat();
             }
         }
