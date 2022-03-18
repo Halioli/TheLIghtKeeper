@@ -27,19 +27,19 @@ public class TutorialShipStations : TutorialMessages
         {
             switch (chatBox.currentTextNumb)
             {
-                case 1:
+                case 2:
                     worldMark.AppearAtPosition(healingStationTransform.position);
                     break;
 
-                case 2:
+                case 3:
                     worldMark.AppearAtPosition(craftingStationTransform.position);
                     break;
 
-                case 3:
+                case 4:
                     worldMark.AppearAtPosition(upgradesStationTransform.position);
                     break;
 
-                case 4:
+                case 5:
                     worldMark.AppearAtPosition(storageStationTransform.position);
                     break;
 
