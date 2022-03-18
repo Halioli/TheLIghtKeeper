@@ -18,10 +18,10 @@ public class WorldMark : MonoBehaviour
     }
 
 
-    void Update()
-    {
-        transform.RotateAroundLocal(Vector3.forward, rotationSpeed * Time.deltaTime);
-    }
+    //void Update()
+    //{
+    //    transform.RotateAroundLocal(Vector3.forward, rotationSpeed * Time.deltaTime);
+    //}
 
     private void OnEnable()
     {
