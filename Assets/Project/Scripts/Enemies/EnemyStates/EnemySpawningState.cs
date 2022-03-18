@@ -6,7 +6,6 @@ using DG.Tweening;
 public class EnemySpawningState : EnemyState
 {
     SpriteRenderer spriteRenderer;
-    Collider2D collider;
     float spawnTime;
     bool isSpawning;
     bool isSpawningFinished;
@@ -14,7 +13,6 @@ public class EnemySpawningState : EnemyState
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        collider = GetComponent<Collider2D>();
         spawnTime = 1.0f;
     }
 
@@ -49,31 +47,26 @@ public class EnemySpawningState : EnemyState
     IEnumerator SpawnAnimation()
     {
         isSpawning = true;
-        collider.enabled = false;
         Color fadeColor = spriteRenderer.material.color;
         fadeColor.a = 0;
         spriteRenderer.material.color = fadeColor;
-        fadeColor.a = 1;
-        spriteRenderer.DOBlendableColor(fadeColor, spawnTime);
-        yield return new WaitForSeconds(spawnTime);
 
-        //Interpolator fadeLerp = new Interpolator(spawnTime, Interpolator.Type.LINEAR);
-        //fadeLerp.ToMax();
 
-        //while (!fadeLerp.isMaxPrecise)
-        //{
-        //    fadeLerp.Update(Time.deltaTime);
-        //    fadeColor.a = fadeLerp.Value;
-        //    spriteRenderer.material.color = fadeColor;
-            
-        //    yield return null;
-        //}
-        //fadeColor.a = fadeLerp.Value;
-        //spriteRenderer.material.color = fadeColor;
+        Interpolator fadeLerp = new Interpolator(spawnTime, Interpolator.Type.LINEAR);
+        fadeLerp.ToMax();
+
+        while (!fadeLerp.isMaxPrecise)
+        {
+            fadeLerp.Update(Time.deltaTime);
+            fadeColor.a = fadeLerp.Value;
+            spriteRenderer.color = fadeColor;
+            yield return null;
+        }
+        fadeColor.a = fadeLerp.Value;
+        spriteRenderer.material.color = fadeColor;
 
         isSpawning = false;
         isSpawningFinished = true;
-        collider.enabled = true;
     }
 
 

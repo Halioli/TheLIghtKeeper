@@ -7,43 +7,25 @@ using DG.Tweening;
 
 public class ChatBox : MonoBehaviour
 {
-    private static float FADE_IN_TIME = 0.3f;
-    private static float FADE_OUT_TIME = 1.0f;
-    private static float WAIT_TIME = 2.0f;
+    private static float FADE_IN_TIME = 0.1f;
+    private static float FADE_OUT_TIME = 0.1f;
     private static float LETTER_DELAY = 0.05f;
-    private static int MAX_TEXT_LENGHT = 71;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
-    private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
-    // World mssgs 0 - 9 // Tutorial mssgs 10 - 19
-    private string[] chatMessages = {
-        "Ores can be mined",
-        "These creatures look hostile",
-        "If we bring it something it might activate",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "", // 9
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", // Max lenght
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "", // 19
-    };
+    private List<string> textToShow;
 
+    public delegate void ChatNextInput();
+    public static event ChatNextInput OnChatNextInput;
+    public delegate void FinishedChatMessage();
+    public static event FinishedChatMessage OnFinishChatMessage;
+    public bool allTextShown;
+    public int currentTextNumb = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
+    public Transform buttonTransoform;
 
     void Start()
     {
@@ -52,34 +34,90 @@ public class ChatBox : MonoBehaviour
         allTextShown = false;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && chatOpen)
+        {
+            if (OnChatNextInput != null)
+                OnChatNextInput();
+
+            buttonTransoform.DOComplete();
+            buttonTransoform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
+
+            NextText();
+        }
+    }
+
     private void OnEnable()
     {
         TutorialMessages.OnNewMessage += ShowChatBox;
+        MessageItemToStorage.OnNewMessage += ShowChatBox;
     }
 
     private void OnDisable()
     {
         TutorialMessages.OnNewMessage -= ShowChatBox;
+        MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(int mssgID)
+    private void ShowChatBox(string[] mssg)
     {
-        if (!chatOpen)
-        {
-            // Set canvas group to 1
-            StartCoroutine("CanvasFadeIn", chatCanvasGroup);
-        }
+        //ParseText(mssg);
+        textToShow = new List<string>(mssg);
 
+        // Set canvas group to 1
+        StartCoroutine("CanvasFadeIn", chatCanvasGroup);
+
+        NextText();
+    }
+
+    private void DisplayText()
+    {
         // Display text
-        fullMssgText = chatMessages[mssgID];
         StartCoroutine("ShowText");
+    }
 
+    private void NextText()
+    {
+        if (!allTextShown)
+        {
+            StopCoroutine("ShowText");
+            mssgText.text = fullMssgText;
+            allTextShown = true;
+        }
+        else
+        {
+            if (textToShow.Count > currentTextNumb)
+            {
+                allTextShown = false;
+                fullMssgText = textToShow[currentTextNumb];
+
+                DisplayText();
+
+                currentTextNumb++;
+            }
+            else
+            {
+                // Send Action
+                if (OnFinishChatMessage != null)
+                    OnFinishChatMessage();
+
+                HideChat();
+            }
+        }
+    }
+
+    private void HideChat()
+    {
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
     }
 
     private void ResetValues()
     {
+        textToShow.Clear();
+        currentTextNumb = 0;
+        TutorialMessages.tutorialOpened = false;
         chatOpen = false;
         allTextShown = false;
     }
@@ -111,8 +149,6 @@ public class ChatBox : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(WAIT_TIME);
-
         for (float t = 0f; t < FADE_OUT_TIME; t += Time.deltaTime)
         {
             float normalizedTime = t / FADE_OUT_TIME;
@@ -127,6 +163,7 @@ public class ChatBox : MonoBehaviour
 
     IEnumerator ShowText()
     {
+        allTextShown = false;
         for (int i = 0; i < fullMssgText.Length + 1; i++)
         {
             currentMssgText = fullMssgText.Substring(0, i);

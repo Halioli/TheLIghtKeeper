@@ -57,6 +57,7 @@ public class CircleLight : CustomLight
             yield return null;
         }
 
+        collider.radius = circleLight.pointLightOuterRadius;
         lightState = LightState.NONE;
     }
 
@@ -102,6 +103,7 @@ public class CircleLight : CustomLight
         {
             lightGameObject.SetActive(false);
         }
+
         lightState = LightState.NONE;
     }
 
