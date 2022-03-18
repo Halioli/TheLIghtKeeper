@@ -202,7 +202,6 @@ GameObject:
   - component: {fileID: 3140839475406367458}
   - component: {fileID: 3140839475406367459}
   - component: {fileID: 3140839475406367456}
-  - component: {fileID: 3140839475406367457}
   m_Layer: 0
   m_Name: ElectricPlant
   m_TagString: Untagged
@@ -337,32 +336,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 3, y: 2.9357796}
-  m_EdgeRadius: 0
---- !u!61 &3140839475406367457
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3140839475406367462}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.064064026, y: -1.2339897}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5625, y: 1.5625}
-    newSize: {x: 1.5625, y: 1.5625}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.71336365, y: 0.25185394}
   m_EdgeRadius: 0
 --- !u!1 &3140839475673752892
 GameObject:
