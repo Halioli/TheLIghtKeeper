@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
+
 
 public class WorldMark : MonoBehaviour
 {
@@ -33,6 +36,9 @@ public class WorldMark : MonoBehaviour
     public void AppearAtPosition(Vector2 position)
     {
         transform.position = position;
+
+        //transform.DOComplete();
+        //transform.DOPunchScale(Vector2.one, fadeTime, 1);
         StartCoroutine(FadeIn());
     }
 
