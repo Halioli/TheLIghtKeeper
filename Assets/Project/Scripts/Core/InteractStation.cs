@@ -49,6 +49,12 @@ public class InteractStation : MonoBehaviour
         if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
             StationFunction();
+            PlayerInputs.instance.canPause = false;
+        }
+        if (playerInsideTriggerArea && PlayerInputs.instance.PlayerPressedInteractExitButton())
+        {
+            StationFunction();
+            PlayerInputs.instance.canPause = true;
         }
     }
 

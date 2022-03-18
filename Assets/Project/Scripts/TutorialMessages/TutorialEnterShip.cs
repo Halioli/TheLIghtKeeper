@@ -12,11 +12,13 @@ public class TutorialEnterShip : TutorialMessages
     [SerializeField] Transform furnaceStationTransform;
 
     private bool mssgSent = false;
+    private bool mssgSent1stSent = true;
 
     private void Update()
     {
         if (mssgSent)
         {
+
             worldMark.AppearAtPosition(furnaceStationTransform.position);
 
             if (chatBox.currentTextNumb == 2)
