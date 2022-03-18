@@ -39,7 +39,7 @@ public class Inventory : MonoBehaviour
         Init();
     }
 
-    protected virtual void Init()
+    protected void Init()
     {
         numberOfOccuppiedInventorySlots = 0;
         indexOfSelectedInventorySlot = 0;

@@ -17,28 +17,25 @@ public class HotbarInventory : Inventory
     {
         OnItemMove += SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting += SetInventroyMenuSelectedSlotIndex;
+        //BrokenFurnace. += SaveInventory;
     }
 
     private void OnDisable()
     {
         OnItemMove -= SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
-    }
-    private void Start()
-    {
-        StartCoroutine(KEKWAIT());
+        //-= SaveInventory;
     }
 
-    IEnumerator KEKWAIT()
+    public void SaveInventory()
     {
-        yield return new WaitForSeconds(2f);
         playerInventoryData.SaveInventoryItems(inventory);
     }
 
     public override void InitInventory()
     {
         base.InitInventory();
-        playerInventoryData.LoadInventoryItems(this, transform);
+        playerInventoryData.LoadInventoryItems(this);
 
         gotChanged = true;
         inventoryIsEmpty = false;

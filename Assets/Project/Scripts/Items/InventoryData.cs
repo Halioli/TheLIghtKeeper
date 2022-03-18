@@ -10,23 +10,35 @@ public class InventoryData : ScriptableObject
 {
     public bool firstTime = true;
     [SerializeField] ItemStack emptyItemStack;
-    public List<KeyValuePair<Item, int>> inventoryData = new List<KeyValuePair<Item, int>>();
+
+    public List<Item> itemsData;
+    public List<int> itemAmountsData;
 
     public void SaveInventoryItems(List<ItemStack> inventoryItems)
     {
-        inventoryData.Clear();
+        itemsData.Clear();
+        itemAmountsData.Clear();
+
+        if (firstTime) return;
 
         foreach (ItemStack itemStack in inventoryItems)
         {
-            inventoryData.Add(new KeyValuePair<Item, int>(itemStack.itemInStack, itemStack.amountInStack));
+            itemsData.Add(itemStack.itemInStack);
+            itemAmountsData.Add(itemStack.amountInStack);
         }
     }
 
-    public bool LoadInventoryItems(Inventory inventory, Transform transform)
+    public bool LoadInventoryItems(Inventory inventory)
     {
-        foreach (KeyValuePair<Item, int> stackData in inventoryData)
+        if (firstTime)
         {
-            inventory.AddNItemsToInventory(stackData.Key, stackData.Value);
+            firstTime = false;
+            return false;
+        }
+
+        for (int i = 0; i < itemsData.Count; ++i)
+        {
+            inventory.AddNItemsToInventory(itemsData[i], itemAmountsData[i]);
         }
 
         return true;
