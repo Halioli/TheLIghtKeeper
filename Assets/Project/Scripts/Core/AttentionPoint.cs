@@ -26,6 +26,9 @@ public class AttentionPoint : MonoBehaviour
     {
         isActive = true;
         exclamationObject.SetActive(true);
+        Color spriteColor = spriteRenderer.color;
+        spriteColor.a = 1f;
+        spriteRenderer.color = spriteColor;
     }
 
 

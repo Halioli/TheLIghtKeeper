@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08c61468a08f254ea86bb86ed853a3d, type: 3}
   m_Name: PlayerInventoryData
   m_EditorClassIdentifier: 
+  firstTime: 1
   emptyItemStack: {fileID: 419745106864333776, guid: 20dcdd1b0f6ec3d44aeff4c735cab1c5, type: 3}
-  inventoryData:
-  - {fileID: 419745106864333776, guid: 20dcdd1b0f6ec3d44aeff4c735cab1c5, type: 3}
-  - {fileID: 419745106864333776, guid: 20dcdd1b0f6ec3d44aeff4c735cab1c5, type: 3}
-  - {fileID: 419745106864333776, guid: 20dcdd1b0f6ec3d44aeff4c735cab1c5, type: 3}
-  - {fileID: 419745106864333776, guid: 20dcdd1b0f6ec3d44aeff4c735cab1c5, type: 3}
+  itemsData: []
+  itemAmountsData: 
