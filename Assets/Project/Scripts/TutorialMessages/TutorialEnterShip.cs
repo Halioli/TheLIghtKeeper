@@ -9,10 +9,6 @@ public class TutorialEnterShip : TutorialMessages
 
     [SerializeField] ChatBox chatBox;
     [SerializeField] WorldMark worldMark;
-    [SerializeField] Transform healthStationTransform;
-    [SerializeField] Transform craftingStationTransform;
-    [SerializeField] Transform upgradesStationTransform;
-    [SerializeField] Transform storageStationTransform;
     [SerializeField] Transform furnaceStationTransform;
 
     private bool mssgSent = false;
@@ -26,45 +22,7 @@ public class TutorialEnterShip : TutorialMessages
     {
         if (mssgSent)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                switch (chatBox.currentTextNumb)
-                {
-                    case 0:
-                    case 1:
-                    case 2:
-                        break;
-
-                    case 3:
-                        worldMark.AppearAtPosition(healthStationTransform.position);
-                        break;
-
-                    case 4:
-                        worldMark.AppearAtPosition(craftingStationTransform.position);
-                        break;
-
-                    case 5:
-                        worldMark.AppearAtPosition(upgradesStationTransform.position);
-                        break;
-
-                    case 6:
-                        worldMark.AppearAtPosition(storageStationTransform.position);
-                        break;
-
-                    case 7:
-                        worldMark.AppearAtPosition(furnaceStationTransform.position);
-                        break;
-
-                    default:
-                        worldMark.Disappear();
-                        DisableSelf();
-                        break;
-                }
-            }
-            if (chatBox.allTextShown)
-            {
-                worldMark.Disappear();
-            }
+            worldMark.AppearAtPosition(furnaceStationTransform.position);
         }
     }
 
