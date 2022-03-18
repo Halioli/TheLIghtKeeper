@@ -6,6 +6,8 @@ using TMPro;
 
 public class CraftingMenu : MonoBehaviour
 {
+    private readonly int MAX_REQUIRED_MATERIALS = 3;
+
     // Private Attribute
     private Inventory playerInventory;
     private CraftingSystem craftingSystem;
@@ -31,6 +33,8 @@ public class CraftingMenu : MonoBehaviour
         updatedCraftingMenu = false;
 
         craftingRecepieDisplayer = craftingRecepieDisplayerGameObject.GetComponent<CraftingRecepieDisplayer>();
+
+        HideRecepieDisplayer();
     }
 
     private void Update()
@@ -72,12 +76,14 @@ public class CraftingMenu : MonoBehaviour
         recepieButtonsGameObjects.Clear();
 
 
+
         int buttonNumber = 0;
         foreach (Recepie recepie in craftingSystem.availableRecepies)
         {
             GameObject gameObjectButton = Instantiate(buttonPrefab, craftingList.transform);
 
             recepieButtonsGameObjects.Add(gameObjectButton);
+            gameObjectButton.GetComponent<CraftableItemButton>().Init(buttonNumber, recepie.resultingItemUnit.ID);
 
             //RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
             //craftingListRectTransform.sizeDelta = new Vector2(craftingListRectTransform.sizeDelta.x,
@@ -104,7 +110,7 @@ public class CraftingMenu : MonoBehaviour
 
             ++buttonNumber;
         }
-        craftingList.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, buttonPrefab.GetComponent<RectTransform>().sizeDelta.y * recepieButtonsGameObjects.Count);
+        //craftingList.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, buttonPrefab.GetComponent<RectTransform>().sizeDelta.y * recepieButtonsGameObjects.Count);
     }
 
     private void SetFirstElemtTextToRed()
@@ -122,15 +128,17 @@ public class CraftingMenu : MonoBehaviour
     {
         craftingRecepieDisplayerGameObject.SetActive(true);
 
-
         Recepie recepie = craftingSystem.availableRecepies[recepieIndex];
+        craftingRecepieDisplayer.SetRecepieResultingItem(recepie.resultingItemUnit.ID, recepie.resultingAmountUnit);
 
-        craftingRecepieDisplayer.SetRecepieResultingItem(recepie.resultingItemUnit.ID);
 
-        craftingRecepieDisplayer.ClearCurrentRequiredMaterials();
         for (int i = 0; i < recepie.requiredItemsList.Count; ++i)
         {
-            craftingRecepieDisplayer.AddRequiredMaterial(recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i]);
+            craftingRecepieDisplayer.AddRequiredMaterial(i, recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i]);
+        }
+        for (int i = recepie.requiredItemsList.Count; i < MAX_REQUIRED_MATERIALS; ++i)
+        {
+            craftingRecepieDisplayer.ClearRequiredMaterial(i);
         }
 
     }

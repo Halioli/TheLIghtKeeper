@@ -11,17 +11,34 @@ public class HotbarInventory : Inventory
     private int[] extraSlotsOnUpgrade = { 1, 1, 2 };
     private float[] hotbarWidthOnUpgrade = { 674f, 798f, 1042f };
 
+    [SerializeField] InventoryData playerInventoryData;
 
     private void OnEnable()
     {
         OnItemMove += SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting += SetInventroyMenuSelectedSlotIndex;
+        BrokenFurnace.OnTutorialFinish += SaveInventory;
     }
 
     private void OnDisable()
     {
         OnItemMove -= SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
+        BrokenFurnace.OnTutorialFinish -= SaveInventory;
+    }
+
+    public void SaveInventory()
+    {
+        playerInventoryData.SaveInventoryItems(inventory);
+    }
+
+    public override void InitInventory()
+    {
+        base.InitInventory();
+        playerInventoryData.LoadInventoryItems(this);
+
+        gotChanged = true;
+        inventoryIsEmpty = false;
     }
 
 
@@ -44,8 +61,9 @@ public class HotbarInventory : Inventory
     {
         if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
         {
-            GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
-            consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
+            inventory[indexOfSelectedInventorySlot].itemInStack.prefab.GetComponent<ItemGameObject>().DoFunctionality();
+            //GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
+            //consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
 
             SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
             SetInventroyMenuSelectedSlotIndex();

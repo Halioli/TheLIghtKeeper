@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     // Private Attributes
-    private Collider2D itemCollectionCollider;
     private float mouseScrollDirection = 0f;
 
     // Public Attributes
@@ -24,30 +23,11 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         hotbarInventory = GetComponentInChildren<HotbarInventory>();
-        itemCollectionCollider = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
     {
         DoInputsHotbarInventory();
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.CompareTag("Item"))
-        {
-            ItemGameObject itemGameObject = GetItemGameObjectFromCollider(collider);
-
-            if (collider.IsTouching(itemCollectionCollider))
-            {
-                if (itemGameObject.canBePickedUp)
-                {
-                    PickUpItem(itemGameObject);
-                }
-            }
-            
-        }
     }
 
 
@@ -79,19 +59,6 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    private ItemGameObject GetItemGameObjectFromCollider(Collider2D collider)
-    {
-        return collider.GetComponent<ItemGameObject>();
-    }
-
-    private bool PickUpItem(ItemGameObject itemToPickUp)
-    {
-        if (playerPicksUpItemEvent != null)
-            playerPicksUpItemEvent();
-
-        Destroy(itemToPickUp.gameObject);
-        return false;
-    }
 
     private void UpgradeInventory()
     {

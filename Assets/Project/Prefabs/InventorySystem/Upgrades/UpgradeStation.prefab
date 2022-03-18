@@ -44,14 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1f59bcf3d0f8d44b3ca03c466c29af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mousePosition: {x: 0, y: 0}
-  mouseWorldPosition: {x: 0, y: 0}
-  facingLeft: 1
-  canFlip: 1
-  canMove: 1
-  playerReach: 3
-  selectSpotGameObject: {fileID: 0}
   triggerArea: {fileID: 0}
+  interactText: {fileID: 0}
+  backgroundText: {fileID: 0}
+  upgradesCanvasGameObject: {fileID: 0}
+  hudGameObject: {fileID: 0}
+  upgradesSystem: {fileID: 0}
 --- !u!114 &5321044159776248723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,5 +67,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: edfc0b943661d114f8a9a27f2df30100, type: 2}
   - {fileID: 11400000, guid: c9fc76bdbef6d9f48bf1d1b0d0454a72, type: 2}
   - {fileID: 11400000, guid: 7ba32148c73e18841ac22c5ad65ceaf9, type: 2}
-  - {fileID: 11400000, guid: b69211fa782534740bbda92eb3c3333a, type: 2}
   - {fileID: 11400000, guid: e26374cc621eb504db5dfe6219cb0f74, type: 2}
+  upgradeMenuCanvas: {fileID: 0}

@@ -14,6 +14,8 @@ public class CraftingSystem : MonoBehaviour
 
     private Vector2 droppedItemPosition;
 
+    [SerializeField] Inventory storageStationInventory;
+
     // Public Attributes
     public List<RecepieCollection> recepiesLvl;
     public List<Recepie> availableRecepies;
@@ -24,6 +26,13 @@ public class CraftingSystem : MonoBehaviour
     public delegate void CraftAction();
     public static event CraftAction OnCrafting;
     public static event CraftAction OnCraftingFail;
+
+    public delegate void ItemCraftedAction(int itemID);
+    public static event ItemCraftedAction OnItemCraft;
+
+    public delegate void ItemSentToStorageAction();
+    public static event ItemSentToStorageAction OnItemSentToStorage;
+
 
     void Start()
     {
@@ -131,13 +140,31 @@ public class CraftingSystem : MonoBehaviour
     {
         for (int i = 0; i < recepieToCraft.resultingItem.Value; ++i)
         {
-            playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key);
-
-            GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
-            item.GetComponent<ItemGameObject>().DropsRandom();
+            if (playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
+            {
+                InvokeOnItemCraft(recepieToCraft.resultingItemUnit.ID);
+            }
+            else
+            {
+                AddRecepieResultingItemToStorage(recepieToCraft);
+            }
         }
         
     }
+
+    private void AddRecepieResultingItemToStorage(Recepie recepieToCraft)
+    {
+        if (storageStationInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
+        {
+            InvokeOnItemSentToStorage();
+        }
+        else
+        {
+            GameObject item = Instantiate(recepieToCraft.resultingItem.Key.prefab, droppedItemPosition, Quaternion.identity);
+            item.GetComponent<ItemGameObject>().DropsRandom(30f);
+        }
+    }
+
 
 
     public void RecepieWasSelected(int selectedRecepieIndex)
@@ -156,4 +183,14 @@ public class CraftingSystem : MonoBehaviour
     }
 
 
+    private void InvokeOnItemCraft(int itemID)
+    {
+        if (OnItemCraft != null) OnItemCraft(itemID);
+    }
+
+    private void InvokeOnItemSentToStorage()
+    {
+        if (OnItemSentToStorage != null) 
+            OnItemSentToStorage(); //I put the items you crafted in the Storage, since you had no inventory space.
+    }
 }
