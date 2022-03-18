@@ -22,22 +22,12 @@ public class WorldMark : MonoBehaviour
 
     private void OnEnable()
     {
-        ChatBox.OnFinishChatMessage += DeactivateSelf;
+        ChatBox.OnFinishChatMessage += Disappear;
     }
 
     private void OnDisable()
     {
-        ChatBox.OnFinishChatMessage -= DeactivateSelf;
-    }
-
-    private void ActivateSelf()
-    {
-        gameObject.SetActive(true);
-    }
-
-    private void DeactivateSelf()
-    {
-        gameObject.SetActive(false);
+        ChatBox.OnFinishChatMessage -= Disappear;
     }
 
     public void AppearAtPosition(Vector2 position)

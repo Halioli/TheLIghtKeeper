@@ -31,7 +31,8 @@ public class BrokenFurnace : InteractStation
         }
         else
         {
-            PopUpDisappears();
+            //PopUpDisappears();
+            popUp.ChangeMessageText("Press E to interact");
         }
     }
 

@@ -13,16 +13,16 @@ public class TutorialEnterShip : TutorialMessages
 
     private bool mssgSent = false;
 
-    private void Start()
-    {
-        worldMark.Disappear();
-    }
-
     private void Update()
     {
         if (mssgSent)
         {
             worldMark.AppearAtPosition(furnaceStationTransform.position);
+
+            if (chatBox.currentTextNumb == 2)
+            {
+                worldMark.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -38,6 +38,13 @@ public class TutorialEnterShip : TutorialMessages
 
     protected override void SendMessage()
     {
+        StartCoroutine(DelayedMessage());
+    }
+
+    IEnumerator DelayedMessage()
+    {
+        yield return new WaitForSeconds(1f);
+
         mssgSent = true;
         base.SendMessage();
 
