@@ -12,6 +12,10 @@ public class BrokenFurnace : InteractStation
     public Item coal;
     public HUDHandler hud;
 
+    public delegate void BrokenFurnaceAction();
+    public static event BrokenFurnaceAction OnTutorialFinish;
+
+
     private void Start()
     {
         popUp = GetComponentInChildren<PopUp>();
@@ -74,7 +78,8 @@ public class BrokenFurnace : InteractStation
 
         // HUD fade to black
         hud.DoFadeToBlack();
-        
+        if (OnTutorialFinish != null) OnTutorialFinish();
+
         yield return new WaitForSeconds(2f);
 
         // Load Scene

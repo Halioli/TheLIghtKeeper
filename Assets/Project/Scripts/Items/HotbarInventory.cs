@@ -17,14 +17,14 @@ public class HotbarInventory : Inventory
     {
         OnItemMove += SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting += SetInventroyMenuSelectedSlotIndex;
-        //BrokenFurnace. += SaveInventory;
+        BrokenFurnace.OnTutorialFinish += SaveInventory;
     }
 
     private void OnDisable()
     {
         OnItemMove -= SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
-        //-= SaveInventory;
+        BrokenFurnace.OnTutorialFinish -= SaveInventory;
     }
 
     public void SaveInventory()
