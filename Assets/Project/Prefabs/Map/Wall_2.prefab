@@ -5026,8 +5026,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdbdd8a63b76f134881e983a426c68b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventIndex: 1
   mssgs:
   - This rocks might be too hard to break with the standard pickaxe.
+  - You should try to upgrade your Pickaxe, but first you will need some materials.
 --- !u!1001 &1102338810502418139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5053,7 +5055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5862608219131059999, guid: ebc2b3b62a3fb3647a1acb888c3d2efd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5862608219131059999, guid: ebc2b3b62a3fb3647a1acb888c3d2efd, type: 3}
       propertyPath: m_LocalPosition.z

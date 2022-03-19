@@ -18,6 +18,7 @@ public class ElectricPlant : InteractStation
 
     private bool hasBeenUsed = false;
     private float timeStart = 0;
+    [SerializeField] private float cooldown;
 
     private Vector3 positionSpawnOrb = new Vector3(1, 1, 0);
 
@@ -72,14 +73,14 @@ public class ElectricPlant : InteractStation
 
     private void TurnOffElectricPlant()
     {
-        transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0f), 0.2f);
+        transform.DOPunchScale(new Vector3(0.4f, -0.4f, 0f), 0.4f, 1);
         plantAnimator.SetBool("used", true);
-        timeStart = 5f;
+        timeStart = cooldown;
         hasBeenUsed = true;
 
         GameObject gameObject = Instantiate(electricOrb, transform);
-        gameObject.GetComponent<ItemGameObject>().DropsRandom();
-        gameObject.GetComponent<ItemGameObject>().MakeNotPickupableForDuration();
+        gameObject.GetComponent<ItemGameObject>().DropsRandom(true, 3f) ;
+        //gameObject.GetComponent<ItemGameObject>().MakeNotPickupableForDuration(0.1f);
 
         //playerLamp.lampTime = playerLamp.GetMaxLampTime();
         plantLight.intensity = 0.5f;
@@ -92,8 +93,8 @@ public class ElectricPlant : InteractStation
     {
         hasBeenUsed = false;
         plantLight.intensity = 1f;
-        plantLight.pointLightOuterRadius = 1.84f;
-        plantLight.pointLightInnerRadius = 0.43f;
+        plantLight.pointLightOuterRadius = 2f;
+        plantLight.pointLightInnerRadius = 0.66f;
         plantAnimator.SetBool("used", false);
     }
 }

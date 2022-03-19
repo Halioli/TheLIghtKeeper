@@ -19,6 +19,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool canMine = true;
     public bool canAttack = true;
+    public bool canPause = true;
 
     public GameObject selectSpotGameObject;
 
@@ -80,6 +81,11 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button1);
     }
 
+    public bool PlayerPressedInteractExitButton()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
+    }
+
     public bool PlayerPressedUseButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
@@ -89,7 +95,14 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedPauseButton()
     {
-        return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        if (!canPause) return false;
+
+        if (!canAttack && !canMine)
+        {
+            return Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        }
+
+        return Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()

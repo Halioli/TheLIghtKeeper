@@ -27,6 +27,8 @@ public class HUDText : MonoBehaviour
         ItemPickUp.OnItemPickUpFail += DisplayItemPickUpError;
 
         PlayerLightChecker.OnPlayerEntersCoreLight += DisplayLanternRecharged;
+
+        LanternFuelAuxiliar.OnLanternRefill += DisplayLanternRecharged;
     }
 
     private void OnDisable()
@@ -35,6 +37,8 @@ public class HUDText : MonoBehaviour
         ItemPickUp.OnItemPickUpFail -= DisplayItemPickUpError;
 
         PlayerLightChecker.OnPlayerEntersCoreLight -= DisplayLanternRecharged;
+
+        LanternFuelAuxiliar.OnLanternRefill -= DisplayLanternRecharged;
     }
 
 
@@ -69,7 +73,15 @@ public class HUDText : MonoBehaviour
         DisplayMessageAndLightning(FADE_TIME);
     }
 
+    private void DisplayLanternRecharged(string messege)
+    {
+        if (displayMessage == DisplayMessege.LANTERN_RECHARGED && canvasGroup.alpha != 0f)
+            return;
 
+        textMessege.text = messege;
+        displayMessage = DisplayMessege.LANTERN_RECHARGED;
+        DisplayMessageAndLightning(FADE_TIME);
+    }
 
 
     private void DisplayMessageAndCross(float duration)

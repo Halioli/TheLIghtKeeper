@@ -12,15 +12,15 @@ public class PlayerHandler : PlayerBase
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
-
+    public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
 
-
+    // Start fades
     public delegate void PlayerHandlerAction();
     public static event PlayerHandlerAction OnPlayerDeath;
-
-
-
+    // Restore fades
+    public delegate void RestoreFadesAction();
+    public static event RestoreFadesAction OnRestoreFades;
 
     private void Start()
     {
@@ -32,23 +32,27 @@ public class PlayerHandler : PlayerBase
     {
         if (playerHealthSystem.IsDead())
         {
+            Debug.Log("player is dead");
+
             //Start corroutine and play animation
             if (!animationEnds)
             {
                 playerStates.SetCurrentPlayerState(PlayerState.DEAD);
                 gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
 
-                if (OnPlayerDeath != null) OnPlayerDeath();
+                // Send Action
+                if (OnPlayerDeath != null) 
+                    OnPlayerDeath();
 
                 if (!inCoroutine)
                     StartCoroutine(DeathAnimation());
             }
             else
             {
-                // Teleport to starting position (0, 0)
+                // Teleport to desired position
                 gameObject.layer = LayerMask.NameToLayer("Player");
-                playerRigidbody2D.transform.position = Vector3.zero;
-                //playerHealthSystem.RestoreHealthToMaxHealth();
+                playerRigidbody2D.transform.position = respawnPosition;
+                playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
         }
@@ -59,11 +63,6 @@ public class PlayerHandler : PlayerBase
         }
     }
 
-    public void DoDeathImageFade()
-    {
-        hudHandler.DoDeathImageFade();
-    }
-
     public void DoFadeToBlack()
     {
         hudHandler.DoFadeToBlack();
@@ -71,8 +70,10 @@ public class PlayerHandler : PlayerBase
 
     public void RestoreHUD()
     {
-        Debug.Log("Restore HUD");
-        hudHandler.RestoreFades();
+        //hudHandler.RestoreFades();
+
+        if (OnRestoreFades != null)
+            OnRestoreFades();
     }
 
     public void DeathAnimationFinished()
@@ -86,8 +87,13 @@ public class PlayerHandler : PlayerBase
 
         PlayerInputs.instance.canMove = false;
         animator.SetBool("isDead", true);
-        yield return new WaitForSeconds(2f);
+
+        while (!animationEnds)
+        {
+            yield return null;
+        }
         RestoreHUD();
+
         animator.SetBool("isDead", false);
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
 
