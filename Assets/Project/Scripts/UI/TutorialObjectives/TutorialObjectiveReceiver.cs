@@ -24,7 +24,10 @@ public class TutorialObjectiveReceiver : MonoBehaviour
         TutorialObjective.OnObjectiveEnd -= FinishObjective;
     }
 
-
+    private void Awake()
+    {
+        canvasGroup.alpha = 0f;
+    }
 
 
     private void SetNewObjective(string messege)
