@@ -15,12 +15,12 @@ public class PlayerHandler : PlayerBase
 
     public bool animationEnds = false;
 
-
+    // Start fades
     public delegate void PlayerHandlerAction();
     public static event PlayerHandlerAction OnPlayerDeath;
-
-
-
+    // Restore fades
+    public delegate void RestoreFadesAction();
+    public static event RestoreFadesAction OnRestoreFades;
 
     private void Start()
     {
@@ -52,7 +52,7 @@ public class PlayerHandler : PlayerBase
                 // Teleport to starting position (0, 0)
                 gameObject.layer = LayerMask.NameToLayer("Player");
                 playerRigidbody2D.transform.position = Vector3.zero;
-                //playerHealthSystem.RestoreHealthToMaxHealth();
+                playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
         }
@@ -70,8 +70,10 @@ public class PlayerHandler : PlayerBase
 
     public void RestoreHUD()
     {
-        Debug.Log("Restore HUD");
-        hudHandler.RestoreFades();
+        //hudHandler.RestoreFades();
+
+        if (OnRestoreFades != null)
+            OnRestoreFades();
     }
 
     public void DeathAnimationFinished()
@@ -85,8 +87,13 @@ public class PlayerHandler : PlayerBase
 
         PlayerInputs.instance.canMove = false;
         animator.SetBool("isDead", true);
-        yield return new WaitForSeconds(2f);
+
+        while (!animationEnds)
+        {
+            yield return null;
+        }
         RestoreHUD();
+
         animator.SetBool("isDead", false);
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
 
