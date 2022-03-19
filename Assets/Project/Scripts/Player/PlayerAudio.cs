@@ -176,8 +176,6 @@ public class PlayerAudio : MonoBehaviour
         attackAndMineAudioSource.clip = mineAudioSound;
         attackAndMineAudioSource.pitch = Random.Range(0.3f, 0.5f);
         attackAndMineAudioSource.Play();
-
-        Debug.Log("MINE OREEEEEEEEE");
     }
 
     private void PlayMineOreBreakSound()
