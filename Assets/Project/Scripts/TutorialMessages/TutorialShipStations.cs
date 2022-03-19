@@ -53,7 +53,7 @@ public class TutorialShipStations : TutorialMessages
 
     private void MarkSpaceshipElements()
     {
-        switch (chatBox.currentTextNumb)
+        switch (chatBox.currentTextNum)
         {
             case 1:
                 break;
