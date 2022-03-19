@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class BridgeBroken : InteractStation
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private const int IRON_REPAIR_AMOUNT = 12;
+    private const int METAL_REPAIR_AMOUNT = 1;
 
-    // Update is called once per frame
-    void Update()
+    private ConstuctionPopUp constuctionPopUp;
+
+    [SerializeField] Item ironMaterial;
+    [SerializeField] Item enrichedMetalMaterial;
+
+    private void Start()
     {
-        
+        constuctionPopUp = GetComponentInChildren<ConstuctionPopUp>();
     }
 }

@@ -656,7 +656,7 @@ GameObject:
   - component: {fileID: 580844726135050559}
   - component: {fileID: 20363072711889059}
   - component: {fileID: 2838824587136619409}
-  - component: {fileID: 1523978057290832376}
+  - component: {fileID: 3878108387542131769}
   m_Layer: 0
   m_Name: Canvas_PopUp
   m_TagString: Untagged
@@ -746,7 +746,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1523978057290832376
+--- !u!114 &3878108387542131769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -755,13 +755,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2046629259282685515}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7768114d157d6240abba463007e6e3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fe5fc14a084a2f42b4f9df3fa8ac3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionCanvasGroup: {fileID: 2156857484978941635}
   messageCanvasGroup: {fileID: 1468376990952884082}
   interactionText: {fileID: 0}
   messageText: {fileID: 1259257233671763942}
+  firstItemQuantityText: {fileID: 1612290926828117331}
+  secondItemQuantityText: {fileID: 3049635460117208749}
+  firstItemQuantityValue: 12
+  secondItemQuantityValue: 1
 --- !u!1 &2732235756909378524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1715,7 +1719,7 @@ GameObject:
   - component: {fileID: 5149757507236460769}
   - component: {fileID: 8665255396127910901}
   - component: {fileID: 3880125806309077622}
-  - component: {fileID: 76033868902121905}
+  - component: {fileID: 2847530806222217702}
   m_Layer: 0
   m_Name: Canvas_PopUp
   m_TagString: Untagged
@@ -1805,7 +1809,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &76033868902121905
+--- !u!114 &2847530806222217702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1814,13 +1818,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5842848389875035585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7768114d157d6240abba463007e6e3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fe5fc14a084a2f42b4f9df3fa8ac3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionCanvasGroup: {fileID: 1270794033753664795}
   messageCanvasGroup: {fileID: 7758352039869039716}
   interactionText: {fileID: 0}
   messageText: {fileID: 4211824146116980266}
+  firstItemQuantityText: {fileID: 8711076248390260152}
+  secondItemQuantityText: {fileID: 9196082256620540240}
+  firstItemQuantityValue: 12
+  secondItemQuantityValue: 1
 --- !u!1 &5896773325952135003
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,6 +2353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 7287520778715345178}
+  ironMaterial: {fileID: 0}
+  enrichedMetalMaterial: {fileID: 0}
 --- !u!1 &8162340169813988672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2669,6 +2679,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 3259724434073029424}
+  ironMaterial: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
+  enrichedMetalMaterial: {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
 --- !u!1 &8439397179069265644
 GameObject:
   m_ObjectHideFlags: 0
