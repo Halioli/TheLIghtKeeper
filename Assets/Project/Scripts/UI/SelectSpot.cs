@@ -12,7 +12,7 @@ public class SelectSpot : MonoBehaviour
     private bool active = false;
     private bool looping = false;
 
-    private float punchTime = 0.25f;
+    private float punchTime = 0.5f;
     private int punchVibrato = 1;
     private float punchElasticity = 0.25f;
 

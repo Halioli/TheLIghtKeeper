@@ -23,6 +23,7 @@ public class Lamp : MonoBehaviour
     private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
 
     public bool coneIsActive = false;
+    public bool intenseCircleIsActive = false;
 
     private float maxLampTime;
     private Animator playerAnimator;
@@ -239,6 +240,7 @@ public class Lamp : MonoBehaviour
     public void ActivateCircleLight()
     {
         active = true;
+        intenseCircleIsActive = true;
 
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
         circleLight.Expand(LIGHT_INTENSITY_ON);
@@ -288,6 +290,7 @@ public class Lamp : MonoBehaviour
     public void DeactivateCircleLight()
     {
         active = false;
+        intenseCircleIsActive = false;
 
         circleLight.Shrink(LIGHT_INTENSITY_OFF);
     }

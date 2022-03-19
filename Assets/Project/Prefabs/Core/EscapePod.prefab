@@ -108,7 +108,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5790754505299291266}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 4238506372352113564}
   - component: {fileID: 854693573}
   - component: {fileID: 854693569}
+  - component: {fileID: 7542233763988987262}
   m_Layer: 0
   m_Name: EscapePod
   m_TagString: Untagged
@@ -376,6 +377,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coneLight: {fileID: 854693573}
+--- !u!70 &7542233763988987262
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659041918544259835}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.4, y: 3.24}
+  m_Size: {x: 5, y: 2}
+  m_Direction: 1
 --- !u!1001 &1008685449
 PrefabInstance:
   m_ObjectHideFlags: 0
