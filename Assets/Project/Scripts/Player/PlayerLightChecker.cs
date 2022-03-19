@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
-    private bool playerInLight;
+    public static bool playerInLight;
     public int numberOfLights;
 
     // Public Attributes
@@ -19,13 +19,13 @@ public class PlayerLightChecker : MonoBehaviour
 
     private void Start()
     {
-        playerInLight = false;
         numberOfLights = 0;
     }
 
 
     private void Update()
     {
+        playerInLight = numberOfLights > 0;
         if (numberOfLights == 0)// && !lamp.LampTimeExhausted())
         {
             lamp.UpdateLamp();
@@ -89,7 +89,7 @@ public class PlayerLightChecker : MonoBehaviour
     {
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
-            numberOfLights -= 1;
+            --numberOfLights;
             if (numberOfLights == 0)
             {
                 if (!lamp.LampTimeExhausted())
