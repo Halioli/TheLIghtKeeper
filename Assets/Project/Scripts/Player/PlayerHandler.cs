@@ -12,7 +12,7 @@ public class PlayerHandler : PlayerBase
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
-
+    public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
 
     // Start fades
@@ -49,9 +49,9 @@ public class PlayerHandler : PlayerBase
             }
             else
             {
-                // Teleport to starting position (0, 0)
+                // Teleport to desired position
                 gameObject.layer = LayerMask.NameToLayer("Player");
-                playerRigidbody2D.transform.position = Vector3.zero;
+                playerRigidbody2D.transform.position = respawnPosition;
                 playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
