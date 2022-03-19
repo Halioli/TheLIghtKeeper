@@ -15,9 +15,9 @@ public class MainMenu : MonoBehaviour
     public void PlayButtonClick(int sceneIndex)
     {
         StopRespawns();
-        introductionMenuGameObject.SetActive(true);
-        //loadingGroup.alpha = 1f;
-        //StartCoroutine(AsyncLoading(sceneIndex));
+        //introductionMenuGameObject.SetActive(true);
+        loadingGroup.alpha = 1f;
+        StartCoroutine(AsyncLoading(sceneIndex));
     }
 
     public void OptionsButtonClick()
