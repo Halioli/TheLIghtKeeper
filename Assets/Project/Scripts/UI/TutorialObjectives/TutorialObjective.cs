@@ -11,7 +11,7 @@ public class TutorialObjective : MonoBehaviour
 
     Part 2
     3. Upgrade the Pickaxe
-    4. Bring Luxinite to the Core
+    4. Bring Luxinite to the Upgrade Station
     */
 
 

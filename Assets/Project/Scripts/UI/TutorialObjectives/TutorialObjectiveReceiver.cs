@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 
 
@@ -34,6 +35,8 @@ public class TutorialObjectiveReceiver : MonoBehaviour
     {
         canvasGroup.alpha = 1f;
         objectiveMessege.text = messege;
+
+        objectiveMessege.transform.DOPunchScale(new Vector2(0.1f, 0.2f), 5f, 1);
     }
 
     private void FinishObjective()
