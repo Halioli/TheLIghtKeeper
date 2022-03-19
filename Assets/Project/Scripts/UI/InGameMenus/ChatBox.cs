@@ -11,6 +11,7 @@ public class ChatBox : MonoBehaviour
     private static float FADE_OUT_TIME = 0.1f;
     private static float LETTER_DELAY = 0.035f;
     private static float DOT_DELAY = 0.4f;
+    private static float COMMA_DELAY = 0.2f;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
@@ -18,8 +19,11 @@ public class ChatBox : MonoBehaviour
     private string currentMssgText = "";
     private List<string> textToShow;
 
+    private int eventIndex = -1;
+
     public delegate void ChatNextInput();
     public static event ChatNextInput OnChatNextInput;
+    public static event ChatNextInput OnChatEvent;
     public delegate void FinishedChatMessage();
     public static event FinishedChatMessage OnFinishChatMessage;
     public bool allTextShown;
@@ -63,10 +67,11 @@ public class ChatBox : MonoBehaviour
         MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(string[] mssg)
+    private void ShowChatBox(string[] mssg, int eventIndex)
     {
         //ParseText(mssg);
         textToShow = new List<string>(mssg);
+        this.eventIndex = eventIndex;
 
         // Set canvas group to 1
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
@@ -95,6 +100,11 @@ public class ChatBox : MonoBehaviour
                 fullMssgText = textToShow[currentTextNum];
 
                 DisplayText();
+                
+                if (currentTextNum == eventIndex)
+                {
+                    if (OnChatEvent != null) OnChatEvent();
+                }
 
                 currentTextNum++;
             }
@@ -172,7 +182,20 @@ public class ChatBox : MonoBehaviour
         {
             mssgText.maxVisibleCharacters++;
             duckFace.transform.DOShakeRotation(LETTER_DELAY, 10, 10, 50);
-            yield return new WaitForSeconds(fullMssgText[i] == '.' ? DOT_DELAY : LETTER_DELAY);
+
+            if (fullMssgText[i] == '.' || fullMssgText[i] == '!' || fullMssgText[i] == '?')
+            {
+                yield return new WaitForSeconds(DOT_DELAY);
+            }
+            else if (fullMssgText[i] == ',')
+            {
+                yield return new WaitForSeconds(COMMA_DELAY);
+            }
+            else
+            {
+                yield return new WaitForSeconds(LETTER_DELAY);
+            }
+            //yield return new WaitForSeconds(fullMssgText[i] == '.' ? DOT_DELAY : LETTER_DELAY);
         }
         allTextShown = true;
     }
