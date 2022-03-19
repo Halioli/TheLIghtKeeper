@@ -138,11 +138,13 @@ public class ItemGameObject : MonoBehaviour
     public void SetSelfStatic()
     {
         rigidbody2D.bodyType = RigidbodyType2D.Static;
+        GetComponent<Collider2D>().enabled = false;
     }
 
     public void SetSelfDynamic()
     {
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        GetComponent<Collider2D>().enabled = true;
     }
 
 

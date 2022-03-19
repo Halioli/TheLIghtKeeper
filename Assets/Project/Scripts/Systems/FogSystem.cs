@@ -31,6 +31,7 @@ public class FogSystem : MonoBehaviour
         if (playerInFog)
         {
             skullEnemy.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 0);
+            player.GetComponent<Lamp>().lampTime = 0;
             if (!playerLightChecker.IsPlayerInLight())
             {
 
