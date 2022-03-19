@@ -5433,6 +5433,7 @@ GameObject:
   - component: {fileID: 5212719635502525700}
   - component: {fileID: 5212719635502525755}
   - component: {fileID: 5212719635502525754}
+  - component: {fileID: 5427016454446187225}
   - component: {fileID: 5212719635502525753}
   - component: {fileID: 5212719635502525752}
   m_Layer: 6
@@ -5578,6 +5579,22 @@ MonoBehaviour:
   animTorch: {fileID: 5212719635502525753}
   puzzleSystem: {fileID: 0}
   torchAudioSource: {fileID: 5212719635502525752}
+--- !u!114 &5427016454446187225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212719635502525759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c69b832e7d4cf4794431d91ae10f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventIndex: -1
+  mssgs:
+  - It looks like some kind of unlit torch. It seems to be connected to something
+    somewhere.
 --- !u!95 &5212719635502525753
 Animator:
   serializedVersion: 3
