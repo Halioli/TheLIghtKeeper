@@ -361,6 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfa930820670f945a7fdbd4db0ed7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allTextShown: 0
+  currentTextNumb: 0
   mssgText: {fileID: 1102000679193491774}
   duckFace: {fileID: 9010058019660600183}
   buttonTransoform: {fileID: 1085771418865861820}
@@ -699,10 +701,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
+  m_fontSize: 12.15
   m_fontSizeBase: 14
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 12
   m_fontSizeMax: 14
   m_fontStyle: 0
@@ -735,7 +737,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 5, y: 2, z: 2, w: 2}
+  m_margin: {x: 5, y: 8.161118, z: 2, w: 8.161137}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
