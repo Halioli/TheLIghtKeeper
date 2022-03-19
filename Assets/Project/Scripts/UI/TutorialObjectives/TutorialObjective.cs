@@ -5,10 +5,13 @@ using UnityEngine;
 public class TutorialObjective : MonoBehaviour
 {
     /*
-    1. Return to the Spaceship
+    Part 1
+    1. Reach the Spaceship
     2. Bring 6 Coal to the Core
+
+    Part 2
     3. Upgrade the Pickaxe
-    4. Bring Luxinite to the Core
+    4. Bring Luxinite to the Upgrade Station
     */
 
 
@@ -23,12 +26,12 @@ public class TutorialObjective : MonoBehaviour
     public static event TutorialObjectiveEndAction OnObjectiveEnd;
 
 
-    protected void InvokeOnObjectiveStart()
+    public void InvokeOnObjectiveStart()
     {
         if (OnObjectiveStart != null) OnObjectiveStart(messege);
     }
 
-    protected void InvokeOnObjectiveEnd()
+    public void InvokeOnObjectiveEnd()
     {
         if (OnObjectiveEnd != null) OnObjectiveEnd();
     }
@@ -37,14 +40,7 @@ public class TutorialObjective : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (isLast)
-            {
-                InvokeOnObjectiveEnd();
-            }
-            else
-            {
-                InvokeOnObjectiveStart();
-            }
+            InvokeOnObjectiveStart();
         }
     }
 

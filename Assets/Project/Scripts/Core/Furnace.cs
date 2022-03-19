@@ -275,10 +275,9 @@ public class Furnace : InteractStation
 
             popUp.ChangeMessageText("Luxinite Added");
             coreLightCollider.radius = currentColliderRadius;
-            //coreLight.transform.localScale += scaleChange;
             ++lightLevel;
 
-            light.ExtraExpand(400, 400, 1f);
+            light.ExtraExpand(400, 400, 0.8f);
             light.SetDistance(currentColliderRadius);
 
             if (!couroutineStartedAddCoal)
