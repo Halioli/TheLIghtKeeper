@@ -1613,7 +1613,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5761439723146510289}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1629,6 +1629,7 @@ GameObject:
   - component: {fileID: 376245164613801665}
   - component: {fileID: 2130637922202618328}
   - component: {fileID: 1270794033753664795}
+  - component: {fileID: 804366943202017596}
   m_Layer: 0
   m_Name: InteractionBackgroundImage
   m_TagString: Untagged
@@ -1703,10 +1704,25 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5776810099166109980}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &804366943202017596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5776810099166109980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b609c2651d940144954983652ee4ece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpTime: 1
+  lerpDistance: 0.3
+  halfLerpDistance: 0.15
 --- !u!1 &5842848389875035585
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,7 +2214,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7658993056736300432}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -2338,7 +2354,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.625, y: 5.1875}
+  m_Size: {x: 6, y: 6}
   m_EdgeRadius: 0
 --- !u!114 &5517864219422397415
 MonoBehaviour:
@@ -2353,8 +2369,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 7287520778715345178}
-  ironMaterial: {fileID: 0}
-  enrichedMetalMaterial: {fileID: 0}
+  bridgeManager: {fileID: 8980250115562695839}
+  ironMaterial: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
+  enrichedMetalMaterial: {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
 --- !u!1 &8162340169813988672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2399,7 +2416,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8162340169813988672}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2432,7 +2449,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c57496b3a71b61c49b4f18713b1faf28, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2440,7 +2457,7 @@ SpriteRenderer:
   m_Size: {x: 13.125, y: 6.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &8162340169813988685
@@ -2528,6 +2545,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb30bc192e87bd4d89dc0adddba819f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftBridgeGameObject: {fileID: 8162340169763138479}
+  rightBridgeGameObject: {fileID: 8162340169815014873}
+  bridgeSprite: {fileID: 21300000, guid: c57496b3a71b61c49b4f18713b1faf28, type: 3}
 --- !u!1 &8162340169815014873
 GameObject:
   m_ObjectHideFlags: 0
@@ -2664,7 +2684,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.25, y: 5.1875}
+  m_Size: {x: 6, y: 6}
   m_EdgeRadius: 0
 --- !u!114 &5443589513646284993
 MonoBehaviour:
@@ -2679,6 +2699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 3259724434073029424}
+  bridgeManager: {fileID: 8980250115562695839}
   ironMaterial: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
   enrichedMetalMaterial: {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
 --- !u!1 &8439397179069265644
@@ -2693,6 +2714,7 @@ GameObject:
   - component: {fileID: 6941255350328966150}
   - component: {fileID: 3588075797332574365}
   - component: {fileID: 2156857484978941635}
+  - component: {fileID: 7721445601358792132}
   m_Layer: 0
   m_Name: InteractionBackgroundImage
   m_TagString: Untagged
@@ -2767,10 +2789,25 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8439397179069265644}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &7721445601358792132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8439397179069265644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b609c2651d940144954983652ee4ece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpTime: 1
+  lerpDistance: 0.3
+  halfLerpDistance: 0.15
 --- !u!1 &8494816730303862017
 GameObject:
   m_ObjectHideFlags: 0
