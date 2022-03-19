@@ -34,10 +34,9 @@ public class FogSystem : MonoBehaviour
             player.GetComponentInChildren<Lamp>().lampTime = 0;
             if (!playerLightChecker.IsPlayerInLight())
             {
-
-                if(timer > 0f)
+                timer -= Time.deltaTime;
+                if (timer > 0f)
                 {
-                    timer -= Time.deltaTime;
                     Debug.Log(timer);
                     skullEnemy.SetActive(true);
                     PlayerInputs.instance.canMove = false;
@@ -71,8 +70,7 @@ public class FogSystem : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-        {
-            
+        {  
             playerInFog = false;
             Debug.Log("PlayerOut");
             ResetTimer();
