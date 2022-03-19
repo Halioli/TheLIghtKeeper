@@ -278,7 +278,8 @@ public class Furnace : InteractStation
             //coreLight.transform.localScale += scaleChange;
             ++lightLevel;
 
-            light.ExtraExpand(400, 400, 1f);
+            light.ExtraExpand(400, 400, 0.8f);
+            //light.SetIntensity(0.8f);
             light.SetDistance(currentColliderRadius);
 
             if (!couroutineStartedAddCoal)
