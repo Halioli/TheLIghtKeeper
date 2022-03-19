@@ -18,8 +18,11 @@ public class ChatBox : MonoBehaviour
     private string currentMssgText = "";
     private List<string> textToShow;
 
+    private int eventIndex = -1;
+
     public delegate void ChatNextInput();
     public static event ChatNextInput OnChatNextInput;
+    public static event ChatNextInput OnChatEvent;
     public delegate void FinishedChatMessage();
     public static event FinishedChatMessage OnFinishChatMessage;
     public bool allTextShown;
@@ -63,10 +66,11 @@ public class ChatBox : MonoBehaviour
         MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(string[] mssg)
+    private void ShowChatBox(string[] mssg, int eventIndex)
     {
         //ParseText(mssg);
         textToShow = new List<string>(mssg);
+        this.eventIndex = eventIndex;
 
         // Set canvas group to 1
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
@@ -95,6 +99,11 @@ public class ChatBox : MonoBehaviour
                 fullMssgText = textToShow[currentTextNum];
 
                 DisplayText();
+                
+                if (currentTextNum == eventIndex)
+                {
+                    if (OnChatEvent != null) OnChatEvent();
+                }
 
                 currentTextNum++;
             }

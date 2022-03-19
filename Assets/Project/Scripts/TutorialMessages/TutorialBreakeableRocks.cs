@@ -10,11 +10,13 @@ public class TutorialBreakeableRocks : TutorialMessages
     private void OnEnable()
     {
         DoTutorialBreakeableRocks += DisableSelf;
+        PickaxeUpgrade.OnPickaxeUpgrade += ModifyMessege;
     }
 
     private void OnDisable()
     {
         DoTutorialBreakeableRocks -= DisableSelf;
+        PickaxeUpgrade.OnPickaxeUpgrade -= ModifyMessege;
     }
 
     protected override void SendMessage()
@@ -25,4 +27,13 @@ public class TutorialBreakeableRocks : TutorialMessages
         if (DoTutorialBreakeableRocks != null)
             DoTutorialBreakeableRocks();
     }
+
+
+    private void ModifyMessege()
+    {
+        mssgs = new string[1];
+        mssgs[0] = "Great, you already upgraded the Pickaxe. Use it to break this heavy rocks.";
+    }
+
+
 }
