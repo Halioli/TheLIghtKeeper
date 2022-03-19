@@ -25,29 +25,7 @@ public class TutorialShipStations : TutorialMessages
     {
         if (mssgSent)
         {
-            switch (chatBox.currentTextNum)
-            {
-                case 2:
-                    worldMark.AppearAtPosition(healingStationTransform.position);
-                    break;
-
-                case 3:
-                    worldMark.AppearAtPosition(craftingStationTransform.position);
-                    break;
-
-                case 4:
-                    worldMark.AppearAtPosition(upgradesStationTransform.position);
-                    break;
-
-                case 5:
-                    worldMark.AppearAtPosition(storageStationTransform.position);
-                    break;
-
-                default:
-                    worldMark.Disappear();
-                    DisableSelf();
-                    break;
-            }
+            MarkSpaceshipElements();
         }
     }
 
@@ -69,5 +47,38 @@ public class TutorialShipStations : TutorialMessages
         // Send Action
         if (OnShipStationsTutorial != null)
             OnShipStationsTutorial();
+
     }
+
+
+    private void MarkSpaceshipElements()
+    {
+        switch (chatBox.currentTextNum)
+        {
+            case 1:
+                break;
+            case 2:
+                worldMark.AppearAtPosition(healingStationTransform.position);
+                break;
+
+            case 3:
+                worldMark.AppearAtPosition(craftingStationTransform.position);
+                break;
+
+            case 4:
+                worldMark.AppearAtPosition(upgradesStationTransform.position);
+                break;
+
+            case 5:
+                worldMark.AppearAtPosition(storageStationTransform.position);
+                break;
+
+            default:
+                //worldMark.Disappear();
+                Destroy(worldMark.gameObject);
+                Destroy(gameObject);
+                break;
+        }
+    }
+
 }
