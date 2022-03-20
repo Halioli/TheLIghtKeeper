@@ -10,6 +10,8 @@ public class InteractStation : MonoBehaviour
     protected bool playerInsideTriggerArea;
     protected Inventory playerInventory;
 
+    private bool isCanvasOpen = false;
+
     // Action
     public delegate void InteractStationAction();
     public static event InteractStationAction OnInteractOpen;
@@ -52,12 +54,14 @@ public class InteractStation : MonoBehaviour
         if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
             StationFunction();
-            PlayerInputs.instance.canPause = false;
+            PlayerInputs.instance.canPause = !PlayerInputs.instance.canPause;
+            isCanvasOpen = !isCanvasOpen;
         }
-        if (playerInsideTriggerArea && PlayerInputs.instance.PlayerPressedInteractExitButton())
+        if (isCanvasOpen && PlayerInputs.instance.PlayerPressedInteractExitButton())
         {
             StationFunction();
             PlayerInputs.instance.canPause = true;
+            isCanvasOpen = !isCanvasOpen;
         }
     }
 

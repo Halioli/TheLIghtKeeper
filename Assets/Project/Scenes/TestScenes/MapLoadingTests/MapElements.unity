@@ -2526,6 +2526,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7201014974828083350, guid: 7a5914c8c4abde34ba5fa40b1962a7d2, type: 3}
   m_PrefabInstance: {fileID: 192470286}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &193908210
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1539345380}
+    m_Modifications:
+    - target: {fileID: 640109987367956295, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_Name
+      value: LuxiniteOre (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 125.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 80.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5510999736943189071, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+      propertyPath: MinDistance
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+--- !u!4 &193908211 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 640109987367956300, guid: 12c585e62d57ecd4f9b4ac2be8f8a2b9, type: 3}
+  m_PrefabInstance: {fileID: 193908210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &213993877
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4768,7 +4834,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 190, y: 150}
+  m_Size: {x: 210, y: 170}
   m_EdgeRadius: 0
 --- !u!1001 &414350995
 PrefabInstance:
@@ -8322,7 +8388,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 110.9, y: 130}
+  m_Size: {x: 150, y: 140}
   m_EdgeRadius: 0
 --- !u!1001 &681614485
 PrefabInstance:
@@ -12611,7 +12677,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 185, y: 150}
+  m_Size: {x: 200, y: 180}
   m_EdgeRadius: 0
 --- !u!1001 &1184399147
 PrefabInstance:
@@ -17081,6 +17147,7 @@ Transform:
   - {fileID: 1057502251}
   - {fileID: 1784215702}
   - {fileID: 545522816}
+  - {fileID: 193908211}
   m_Father: {fileID: 1909008013}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -23472,7 +23539,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 130, y: 140}
+  m_Size: {x: 150, y: 160}
   m_EdgeRadius: 0
 --- !u!1001 &2075312490
 PrefabInstance:
@@ -24603,7 +24670,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 300, y: 145}
+  m_Size: {x: 300, y: 160}
   m_EdgeRadius: 0
 --- !u!4 &1437670548794243252
 Transform:
