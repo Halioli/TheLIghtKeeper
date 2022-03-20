@@ -207,9 +207,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.5}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 2.5
 --- !u!114 &994094411469527820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +224,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventIndex: -1
   mssgs:
-  - Metal Part
+  - This is a fragment of the ship that must have come off during the landing. The
+    metal will be useful for upgrades.
 --- !u!1 &7488840507486608966
 GameObject:
   m_ObjectHideFlags: 0
