@@ -1,24 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class TorchCameraManager : MonoBehaviour
 {
-    [SerializeField] GameObject normalCamera;
-    [SerializeField] GameObject pilarCamera;
+    [SerializeField] CinemachineVirtualCamera normalCamera;
+    [SerializeField] CinemachineVirtualCamera pilarCamera;
 
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            SwapToNormalCamera();
-        }
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            SwapToPilarCamera();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.M))
+    //    {
+    //        SwapToNormalCamera();
+    //    }
+    //    else if (Input.GetKeyDown(KeyCode.N))
+    //    {
+    //        SwapToPilarCamera();
+    //    }
+    //}
 
     private void OnEnable()
     {
@@ -35,14 +36,12 @@ public class TorchCameraManager : MonoBehaviour
 
     private void SwapToNormalCamera()
     {
-        normalCamera.SetActive(true);
-        pilarCamera.SetActive(false);
+        pilarCamera.Priority = 9;
     }
 
     private void SwapToPilarCamera()
     {
-        pilarCamera.SetActive(true);
-        normalCamera.SetActive(false);
+        pilarCamera.Priority = 11;
     }
 
 
