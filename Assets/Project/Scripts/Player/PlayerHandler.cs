@@ -12,6 +12,7 @@ public class PlayerHandler : PlayerBase
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
+    public Transform mainCameraTransform;
     public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
 
@@ -32,13 +33,11 @@ public class PlayerHandler : PlayerBase
     {
         if (playerHealthSystem.IsDead())
         {
-            Debug.Log("player is dead");
-
             //Start corroutine and play animation
             if (!animationEnds)
             {
                 playerStates.SetCurrentPlayerState(PlayerState.DEAD);
-                gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+                SetPlayerInvulnerable();
 
                 // Send Action
                 if (OnPlayerDeath != null) 
@@ -50,8 +49,9 @@ public class PlayerHandler : PlayerBase
             else
             {
                 // Teleport to desired position
-                gameObject.layer = LayerMask.NameToLayer("Player");
+                SetPlayerNotInvulnerable();
                 playerRigidbody2D.transform.position = respawnPosition;
+                mainCameraTransform.position = respawnPosition;
                 playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
@@ -62,6 +62,20 @@ public class PlayerHandler : PlayerBase
             // Pause game
         }
     }
+
+    private void OnEnable()
+    {
+        Torch.OnTorchStartActivation += SetPlayerInvulnerable;
+        Torch.OnTorchEndActivation += SetPlayerNotInvulnerable;
+    }
+
+    private void OnDisable()
+    {
+        Torch.OnTorchStartActivation -= SetPlayerInvulnerable;
+        Torch.OnTorchEndActivation -= SetPlayerNotInvulnerable;
+    }
+
+
 
     public void DoFadeToBlack()
     {
@@ -100,4 +114,17 @@ public class PlayerHandler : PlayerBase
         PlayerInputs.instance.canMove = true;
         inCoroutine = false;
     }
+
+
+    private void SetPlayerInvulnerable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Invulnerable"); // Enemies layer can't collide with Default layer
+    }
+
+    private void SetPlayerNotInvulnerable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
+
 }

@@ -106,6 +106,8 @@ public class Teleporter : InteractStation
         {
             popUp.GetComponent<PopUp>().ShowMessage();
             mssgText.text = messagesToShow[1];
+
+            InvokeOnNotEnoughMaterials();
         }
         else
         {
