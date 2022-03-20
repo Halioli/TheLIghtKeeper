@@ -19,6 +19,9 @@ public class InteractStation : MonoBehaviour
     public static event InteractStationAction OnDescriptionOpen;
     public static event InteractStationDescriptionAction OnDescriptionSet;
 
+    public delegate void InteractStationRequiredItems();
+    public static event InteractStationRequiredItems OnNotEnoughMaterials;
+
 
     private void Awake()
     {
@@ -90,6 +93,12 @@ public class InteractStation : MonoBehaviour
         {
             OnDescriptionOpen();
         }
+    }
+
+
+    protected void InvokeOnNotEnoughMaterials()
+    {
+        if (OnNotEnoughMaterials != null) OnNotEnoughMaterials();
     }
 
 }

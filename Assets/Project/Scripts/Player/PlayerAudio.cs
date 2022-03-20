@@ -71,6 +71,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill += PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight += PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials += PlayMineErrorSound;
     }
 
 
@@ -110,6 +112,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill -= PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight -= PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials -= PlayMineErrorSound;
     }
 
 

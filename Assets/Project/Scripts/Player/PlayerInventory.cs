@@ -57,6 +57,10 @@ public class PlayerInventory : MonoBehaviour
         {
             hotbarInventory.UseSelectedConsumibleItem();
         }
+        //else if (PlayerInputs.instance.PlayerPressedDropButton())
+        //{
+        //    hotbarInventory.DropSelectedItem();
+        //}
     }
 
 
