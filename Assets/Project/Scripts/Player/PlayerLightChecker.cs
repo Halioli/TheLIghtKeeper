@@ -6,6 +6,8 @@ public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
     public static bool playerInLight;
+    private bool wasPlayerInDarknessNoLantern = false;
+    public static bool playerInDarknessNoLantern;
     public int numberOfLights;
 
     // Public Attributes
@@ -14,6 +16,7 @@ public class PlayerLightChecker : MonoBehaviour
     public delegate void PlayerEntersLightAction();
     public static event PlayerEntersLightAction OnPlayerEntersLight;
     public static event PlayerEntersLightAction OnPlayerEntersCoreLight;
+    public static event PlayerEntersLightAction OnPlayerInDarknessNoLantern;
 
 
 
@@ -26,6 +29,19 @@ public class PlayerLightChecker : MonoBehaviour
     private void Update()
     {
         playerInLight = numberOfLights > 0;
+
+        playerInDarknessNoLantern = lamp.LampTimeExhausted() && !playerInLight;
+        if (playerInDarknessNoLantern && !wasPlayerInDarknessNoLantern)
+        {
+            wasPlayerInDarknessNoLantern = true;
+            if (OnPlayerInDarknessNoLantern != null) OnPlayerInDarknessNoLantern();
+        }
+        else if (!playerInDarknessNoLantern)
+        {
+            wasPlayerInDarknessNoLantern = false;
+        }
+
+
         if (numberOfLights == 0)// && !lamp.LampTimeExhausted())
         {
             lamp.UpdateLamp();
@@ -92,15 +108,15 @@ public class PlayerLightChecker : MonoBehaviour
             --numberOfLights;
             if (numberOfLights == 0)
             {
-                if (!lamp.LampTimeExhausted())
-                {
-                    // Lamp turns on
-                    lamp.ActivateLampLight();
-                }
-                else
+                if (lamp.LampTimeExhausted())
                 {
                     SetPlayerInLightToFalse();
                     lamp.ActivateFadedCircleLight();
+                }
+                else
+                {
+                    // Lamp turns on
+                    lamp.ActivateLampLight();
                 }
             }
         }
