@@ -330,6 +330,7 @@ public class Lamp : MonoBehaviour
             return;
         }
         ++sourceLevel;
+        if (sourceLevel >= LIGHT_ANGLE_LVL.Length) sourceLevel = LIGHT_ANGLE_LVL.Length;
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];

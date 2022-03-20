@@ -77,6 +77,21 @@ public class HotbarInventory : Inventory
     }
 
 
+    public void DropSelectedItem()
+    {
+        if (!inventory[indexOfSelectedInventorySlot].StackIsEmpty())
+        {
+            ItemGameObject itemGameObject = inventory[indexOfSelectedInventorySlot].itemInStack.prefab.GetComponent<ItemGameObject>();
+            itemGameObject.DropsRandom(true);
+            itemGameObject.MakeNotPickupableForDuration(1f);
+
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+            SetInventroyMenuSelectedSlotIndex();
+        }
+    }
+
+
+
     // Modifier Methods
     public void UpgradeInventory()
     {
