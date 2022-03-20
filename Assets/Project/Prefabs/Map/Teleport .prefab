@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81441b52f325d6a47a246799072bccb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventIndex: -1
   mssgs:
   - This structure is unpowered. It also seems to be connected to others like it.
     It might be used as a teleportation device.
@@ -310,7 +311,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.0000007748604}
+  m_AnchoredPosition: {x: 0, y: -0.00000071525574}
   m_SizeDelta: {x: 1.2, y: 1.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6902866823805723349
@@ -605,10 +606,10 @@ RectTransform:
   m_Father: {fileID: 7448308073138032399}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.3}
-  m_SizeDelta: {x: -0.00000047684, y: 0.6}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.4}
+  m_SizeDelta: {x: -4, y: 0.6}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7383043553148640733
 CanvasRenderer:
