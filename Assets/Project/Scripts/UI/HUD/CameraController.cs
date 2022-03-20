@@ -66,7 +66,8 @@ public class CameraController : MonoBehaviour
         // Check if smooth or teleport follow
         if (IsFarFromTarget())
         {
-            transform.position = new Vector3(targetPosition.x, targetPosition.y, -10);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, followDuration, 400f);
+            //transform.position = new Vector3(targetPosition.x, targetPosition.y, -10);
         }
         else
         {
