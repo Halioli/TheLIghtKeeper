@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class BridgeManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject leftBridgeGameObject;
+    [SerializeField] GameObject rightBridgeGameObject;
+    [SerializeField] Sprite bridgeSprite;
+
+    [SerializeField] AudioSource audioSource;
+
+    private SpriteRenderer bridgeSpriteRenderer;
+
+    private void Start()
     {
-        
+        bridgeSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BridgeConstructed()
     {
-        
+        bridgeSpriteRenderer.sprite = bridgeSprite;
+
+        leftBridgeGameObject.SetActive(false);
+        rightBridgeGameObject.SetActive(false);
+
+        audioSource.Play();
     }
 }

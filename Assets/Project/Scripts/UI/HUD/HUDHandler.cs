@@ -22,6 +22,7 @@ public class HUDHandler : MonoBehaviour
         LoadBaseScenes.OnKeepBlackFade += KeepBlackFade;
         LoadBaseScenes.OnFadeToNormal += DoFadeToNormal;
         PlayerHandler.OnPlayerDeath += DoDeathImageFade;
+        PlayerHandler.OnRestoreFades += RestoreFades;
     }
 
     private void OnDisable()
@@ -30,6 +31,7 @@ public class HUDHandler : MonoBehaviour
         LoadBaseScenes.OnKeepBlackFade -= KeepBlackFade;
         LoadBaseScenes.OnFadeToNormal -= DoFadeToNormal;
         PlayerHandler.OnPlayerDeath -= DoDeathImageFade;
+        PlayerHandler.OnRestoreFades -= RestoreFades;
     }
 
     private void KeepBlackFade()
@@ -49,6 +51,11 @@ public class HUDHandler : MonoBehaviour
 
     public void DoDeathImageFade()
     {
+        if (!deathImageGroup.gameObject.activeInHierarchy)
+        {
+            deathImageGroup.gameObject.SetActive(true);
+        }
+
         StartCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
     }
 
@@ -67,7 +74,8 @@ public class HUDHandler : MonoBehaviour
         StopCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
         StopCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
 
-        deathImageGroup.alpha = 0f;
+        deathImageGroup.gameObject.SetActive(false);
+        //deathImageGroup.alpha = 0f;
         fadeOutGroup.alpha = 0f;
     }
 

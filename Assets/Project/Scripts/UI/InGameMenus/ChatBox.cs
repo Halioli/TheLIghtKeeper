@@ -11,6 +11,7 @@ public class ChatBox : MonoBehaviour
     private static float FADE_OUT_TIME = 0.1f;
     private static float LETTER_DELAY = 0.035f;
     private static float DOT_DELAY = 0.4f;
+    private static float COMMA_DELAY = 0.2f;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
@@ -76,6 +77,8 @@ public class ChatBox : MonoBehaviour
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
         NextText();
+
+        PlayerInputs.instance.isLanternPaused = true;
     }
 
     private void DisplayText()
@@ -122,6 +125,8 @@ public class ChatBox : MonoBehaviour
     {
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
+
+        PlayerInputs.instance.isLanternPaused = false;
     }
 
     private void ResetValues()
@@ -181,7 +186,20 @@ public class ChatBox : MonoBehaviour
         {
             mssgText.maxVisibleCharacters++;
             duckFace.transform.DOShakeRotation(LETTER_DELAY, 10, 10, 50);
-            yield return new WaitForSeconds(fullMssgText[i] == '.' ? DOT_DELAY : LETTER_DELAY);
+
+            if (fullMssgText[i] == '.' || fullMssgText[i] == '!' || fullMssgText[i] == '?')
+            {
+                yield return new WaitForSeconds(DOT_DELAY);
+            }
+            else if (fullMssgText[i] == ',')
+            {
+                yield return new WaitForSeconds(COMMA_DELAY);
+            }
+            else
+            {
+                yield return new WaitForSeconds(LETTER_DELAY);
+            }
+            //yield return new WaitForSeconds(fullMssgText[i] == '.' ? DOT_DELAY : LETTER_DELAY);
         }
         allTextShown = true;
     }

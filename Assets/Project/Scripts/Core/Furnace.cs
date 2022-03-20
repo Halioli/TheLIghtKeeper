@@ -29,7 +29,7 @@ public class Furnace : InteractStation
     private const int MAX_FUEL_AMOUNT = 150;
     private const int STARTING_FUEL_AMOUNT = 50;
     private const int LOW_FUEL_AMOUNT = 30;
-    [SerializeField] private const int MAX_CORE_LEVEL = 3;
+    [SerializeField] private const int MAX_CORE_LEVEL = 4;
     private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f;
     private const float UPGRADE_LIGHT_DISTANCE = 5f;
 
@@ -275,11 +275,9 @@ public class Furnace : InteractStation
 
             popUp.ChangeMessageText("Luxinite Added");
             coreLightCollider.radius = currentColliderRadius;
-            //coreLight.transform.localScale += scaleChange;
             ++lightLevel;
 
             light.ExtraExpand(400, 400, 0.8f);
-            //light.SetIntensity(0.8f);
             light.SetDistance(currentColliderRadius);
 
             if (!couroutineStartedAddCoal)

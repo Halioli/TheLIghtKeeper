@@ -86,7 +86,6 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Escape);
     }
 
-
     public bool PlayerPressedUseButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
@@ -94,11 +93,18 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button0);
     }
 
+    public bool PlayerPressedDropButton()
+    {
+        if (PauseMenu.gameIsPaused) { return false; }
+
+        return Input.GetKeyDown(KeyCode.X);
+    }
+
     public bool PlayerPressedPauseButton()
     {
         if (!canPause) return false;
 
-        return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        return Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()

@@ -26,7 +26,6 @@ public class Ore : MonoBehaviour
     public static event OreGetsMinedAction playerBreaksOreEvent;
 
 
-
     private void Start()
     {
         breakState = OreState.WHOLE;
