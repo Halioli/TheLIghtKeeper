@@ -77,7 +77,7 @@ public class ElectricPlant : InteractStation
         hasBeenUsed = true;
 
         GameObject gameObject = Instantiate(electricOrb, transform);
-        gameObject.GetComponent<ItemGameObject>().DropsRandom(true, 3f) ;
+        gameObject.GetComponent<ItemGameObject>().DropsRandom(true, 1.5f) ;
 
         plantLight.intensity = 0.5f;
         plantLight.pointLightOuterRadius = 1.21f;
