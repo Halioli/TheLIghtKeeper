@@ -93,6 +93,13 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button0);
     }
 
+    public bool PlayerPressedDropButton()
+    {
+        if (PauseMenu.gameIsPaused) { return false; }
+
+        return Input.GetKeyDown(KeyCode.X);
+    }
+
     public bool PlayerPressedPauseButton()
     {
         if (!canPause) return false;
