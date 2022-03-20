@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInputs : MonoBehaviour
 {
@@ -12,7 +13,13 @@ public class PlayerInputs : MonoBehaviour
     public bool facingLeft = true;
     public bool canFlip = true;
     public bool canMove = true;
+    public bool canMoveLantern = true;
+    public bool isLanternPaused = false;
     public float playerReach = 3f;
+
+    public bool canMine = true;
+    public bool canAttack = true;
+    public bool canPause = true;
 
     public GameObject selectSpotGameObject;
 
@@ -31,16 +38,30 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public bool PlayerClickedMineButton()
     {
-        if (PauseMenu.gameIsPaused) { return false; }
+        if (PauseMenu.gameIsPaused || !instance.canMine || TutorialMessages.tutorialOpened) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Mouse0);
+        return Input.GetButton("Fire1");
     }
 
-    public bool PlayerClickedAttackButton()
+    public bool IsAttackButtonDown()
+    {
+        if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
+
+        return Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button4);
+    }
+
+    public bool IsAttackButtonUp()
+    {
+        if (PauseMenu.gameIsPaused || !instance.canAttack) { return false; }
+
+        return Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Joystick1Button4);
+    }
+
+    public bool PlayerClickedCloseLamp()
     {
         if (PauseMenu.gameIsPaused) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Mouse1);
+        return Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Joystick1Button3);
     }
 
     public void SetNewMousePosition()
@@ -57,45 +78,38 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedInteractButton()
     {
-        return Input.GetKeyDown(KeyCode.E);
+        return Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button1);
+    }
+
+    public bool PlayerPressedInteractExitButton()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
     }
 
     public bool PlayerPressedUseButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Q);
+        return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button0);
     }
 
-    public bool PlayerPressedInventoryButton()
+    public bool PlayerPressedDropButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
 
-        return Input.GetKeyDown(KeyCode.Tab);
-    }
-
-    public bool PlayerPressedQuickAccessButton()
-    {
-        if (PauseMenu.gameIsPaused) { return false; }
-
-        return Input.GetKeyDown(KeyCode.LeftShift);
-    }
-
-    public bool PlayerReleasedQuickAccessButton()
-    {
-        if (PauseMenu.gameIsPaused) { return false; }
-
-        return Input.GetKeyUp(KeyCode.LeftShift);
+        return Input.GetKeyDown(KeyCode.X);
     }
 
     public bool PlayerPressedPauseButton()
     {
-        return Input.GetKeyDown(KeyCode.Escape);
+        if (!canPause) return false;
+
+        return Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()
     {
-        if (canMove && !PauseMenu.gameIsPaused)
+        if (canMove && !PauseMenu.gameIsPaused && !TutorialMessages.tutorialOpened)
         {
             return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
@@ -112,7 +126,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void SpawnSelectSpotAtTransform(Transform transform)
     {
-        Instantiate(selectSpotGameObject, transform);
+        GameObject selectedSpot = Instantiate(selectSpotGameObject, transform);
+        selectedSpot.GetComponent<SelectSpot>().DoSelectLoop();
     }
 
     public void FlipSprite(Vector2 direction)
@@ -132,4 +147,6 @@ public class PlayerInputs : MonoBehaviour
         Debug.Log("Closing application...");
         Application.Quit();
     }
+
+
 }

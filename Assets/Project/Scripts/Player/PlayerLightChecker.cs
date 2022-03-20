@@ -5,22 +5,44 @@ using UnityEngine;
 public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
-    private bool playerInLight;
-    private int numberOfLights;
+    public static bool playerInLight;
+    private bool wasPlayerInDarknessNoLantern = false;
+    public static bool playerInDarknessNoLantern;
+    public int numberOfLights;
 
     // Public Attributes
     public Lamp lamp;
 
+    public delegate void PlayerEntersLightAction();
+    public static event PlayerEntersLightAction OnPlayerEntersLight;
+    public static event PlayerEntersLightAction OnPlayerEntersCoreLight;
+    public static event PlayerEntersLightAction OnPlayerInDarknessNoLantern;
+
+
+
     private void Start()
     {
-        playerInLight = false;
         numberOfLights = 0;
     }
 
 
     private void Update()
     {
-        if (numberOfLights == 0 && !lamp.LampTimeExhausted())
+        playerInLight = numberOfLights > 0;
+
+        playerInDarknessNoLantern = lamp.LampTimeExhausted() && !playerInLight;
+        if (playerInDarknessNoLantern && !wasPlayerInDarknessNoLantern)
+        {
+            wasPlayerInDarknessNoLantern = true;
+            if (OnPlayerInDarknessNoLantern != null) OnPlayerInDarknessNoLantern();
+        }
+        else if (!playerInDarknessNoLantern)
+        {
+            wasPlayerInDarknessNoLantern = false;
+        }
+
+
+        if (numberOfLights == 0)// && !lamp.LampTimeExhausted())
         {
             lamp.UpdateLamp();
         }
@@ -39,7 +61,9 @@ public class PlayerLightChecker : MonoBehaviour
     {
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
-            numberOfLights += 1;
+            ++numberOfLights;
+            
+            if (OnPlayerEntersLight != null) OnPlayerEntersLight();
 
             // Lamp turns off
             if (lamp.active)
@@ -47,7 +71,11 @@ public class PlayerLightChecker : MonoBehaviour
 
             if (lightingCollider.gameObject.CompareTag("CoreLight"))
             {
-                lamp.FullyRefillLampTime();
+                if (!lamp.LampTimeIsMax())
+                {
+                    if (OnPlayerEntersCoreLight != null) OnPlayerEntersCoreLight();
+                    lamp.FullyRefillLampTime();
+                }
             }
 
             SetPlayerInLightToTrue();
@@ -55,22 +83,40 @@ public class PlayerLightChecker : MonoBehaviour
 
     }
 
+    //private void OnTriggerStay2D(Collider2D lightingCollider)
+    //{
+    //    if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
+    //    {
+    //        // Lamp turns off
+            
+    //        if (lightingCollider.gameObject.CompareTag("CoreLight"))
+    //        {
+    //            lamp.FullyRefillLampTime();
+    //        }
+
+    //        SetPlayerInLightToTrue();
+    //    }
+
+    //}
+
+
     // Method that checks if the player exits an area with light
     private void OnTriggerExit2D(Collider2D lightingCollider)
     {
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
-            numberOfLights -= 1;
+            --numberOfLights;
             if (numberOfLights == 0)
             {
-                if (!lamp.LampTimeExhausted())
+                if (lamp.LampTimeExhausted())
                 {
-                    // Lamp turns on
-                    lamp.ActivateLampLight();
+                    SetPlayerInLightToFalse();
+                    lamp.ActivateFadedCircleLight();
                 }
                 else
                 {
-                    SetPlayerInLightToFalse();
+                    // Lamp turns on
+                    lamp.ActivateLampLight();
                 }
             }
         }
@@ -82,8 +128,14 @@ public class PlayerLightChecker : MonoBehaviour
     public bool IsPlayerInLight() { return playerInLight; }
 
     // Method that sets playerInLight bool to true
-    public void SetPlayerInLightToTrue() { playerInLight = true; }
+    public void SetPlayerInLightToTrue() { 
+        playerInLight = true;
+        lamp.playerInLight = true;
+    }
 
     // Method that sets playerInLight bool to false
-    public void SetPlayerInLightToFalse() { playerInLight = false; }
+    public void SetPlayerInLightToFalse() { 
+        playerInLight = false;
+        lamp.playerInLight = false;
+    }
 }

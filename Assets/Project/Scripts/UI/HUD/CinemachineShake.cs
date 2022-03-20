@@ -20,6 +20,7 @@ public class CinemachineShake : MonoBehaviour
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
     }
 
+
     public void ShakeCamera(float intensity, float time)
     {
         CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
@@ -30,6 +31,12 @@ public class CinemachineShake : MonoBehaviour
         shakeTimer = time;
         shakeTimerTotal = time;
     }
+
+    public void ForceStopShakeCamera()
+    {
+        shakeTimer = Time.deltaTime;
+    }
+
 
     // Update is called once per frame
     void Update()

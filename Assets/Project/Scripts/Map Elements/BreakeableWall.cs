@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BreakeableWall : Ore
 {
     private void Start()
     {
+        mineralItemToDrop = null;
         breakState = OreState.WHOLE;
 
         currentSpriteIndex = 0;
@@ -18,8 +20,39 @@ public class BreakeableWall : Ore
         }
     }
 
-    public override void GetsMined(int damageAmount)
+    public override void GetsMined(int damageAmount, int numberOfDrops)
     {
-        base.GetsMined(damageAmount);
+        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+        // Damage the Ore
+        healthSystem.ReceiveDamage(damageAmount);
+        // Update ore Sprite
+        ProgressNAmountOfSprites(damageAmount);
+
+        if (healthSystem.IsDead())
+        {
+            breakState = OreState.BROKEN;
+
+            // Start disappear coroutine
+            StartCoroutine(Disappear());
+
+            OnDeathDamageTake();
+        }
+        else
+        {
+            OnDamageTake();
+        }
+        UpdateCurrentSprite();
+        StartCoroutine(PlayBreakParticles());
     }
+
+    protected override void OnDamageTake()
+    {
+        base.OnDamageTake();
+    }
+
+    protected override void OnDeathDamageTake()
+    {
+        base.OnDeathDamageTake();
+    }
+
 }

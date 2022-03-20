@@ -6,14 +6,17 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-public class UpgradeButton : MonoBehaviour
+public class UpgradeButton : HoverButton
 {
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] Image[] upgradeStatus;
     [SerializeField] GameObject[] requiredMaterials;
-    private int currentUpgradeStatus = 0;
+    [SerializeField] GameObject attention;
+    [SerializeField] bool isAttentionActive = false;
 
-    private bool canBeClicked = true;
+    private int currentUpgradeStatus = 0;
+    public bool canBeClicked = true;
+
 
 
     public void GetsClicked()
@@ -21,20 +24,40 @@ public class UpgradeButton : MonoBehaviour
         if (canBeClicked)
         {
             transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
-            StartCoroutine(ClickCooldown());
+            if (isAttentionActive)
+            {
+                isAttentionActive = false;
+                attention.SetActive(false);
+            }
         }
+    }
+
+
+    public void InitUpdateButtonElements(string descriptionText, Sprite[] requiredMaterialImages, string[] requiredMaterialAmountTexts)
+    {
+        SetDescriptionText(descriptionText);
+
+        UpdateRequiredMaterials(requiredMaterialImages.Length);
+        SetRequiredMaterialImages(requiredMaterialImages);
+        SetRequiredMaterialAmountTexts(requiredMaterialAmountTexts);
     }
 
     public void UpdateButtonElements(string descriptionText, Sprite[] requiredMaterialImages, string[] requiredMaterialAmountTexts)
     {
-        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
-        ++currentUpgradeStatus;
+        if (!canBeClicked) return;
+
+        CheckSquare();
 
         SetDescriptionText(descriptionText);
 
         UpdateRequiredMaterials(requiredMaterialImages.Length);
         SetRequiredMaterialImages(requiredMaterialImages);
         SetRequiredMaterialAmountTexts(requiredMaterialAmountTexts);
+    }
+
+    public void CheckSquare(){
+        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
+        ++currentUpgradeStatus;
     }
 
     private void SetDescriptionText(string descriptionText)
@@ -75,11 +98,29 @@ public class UpgradeButton : MonoBehaviour
 
     }
 
-    IEnumerator ClickCooldown()
+    IEnumerator ClickCooldown(bool canBeClicked)
     {
-        canBeClicked = false;
-        yield return new WaitForSeconds(1.5f);
-        canBeClicked = true;
+        this.canBeClicked = false;
+        yield return new WaitForSeconds(1f);
+        this.canBeClicked = canBeClicked;
+    }
+
+    public void StartClickCooldown(bool canBeClicked)
+    {
+        StartCoroutine(ClickCooldown(canBeClicked));
+    }
+
+    public void DisableButton()
+    {
+        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
+        ClearButton();
+        GetComponent<Button>().enabled = false;
+    }
+
+    private void ClearButton()
+    {
+        UpdateRequiredMaterials(0);
+        SetDescriptionText("Branch completed");
     }
 
 }

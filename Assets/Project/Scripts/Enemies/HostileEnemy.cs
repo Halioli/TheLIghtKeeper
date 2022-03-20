@@ -52,7 +52,6 @@ public class HostileEnemy : Enemy
 
         // Fading
         Color fadeColor = spriteRenderer.material.color;
-        currentBanishTime = BANISH_TIME;
         while (currentBanishTime > 0f)
         {
             fadeColor.a = currentBanishTime / BANISH_TIME;
@@ -61,6 +60,7 @@ public class HostileEnemy : Enemy
             currentBanishTime -= Time.deltaTime;
             yield return null;
         }
+        currentBanishTime = BANISH_TIME;
         Destroy(gameObject);
     }
 
@@ -68,6 +68,7 @@ public class HostileEnemy : Enemy
     {
         // Play death animation
         DropItem();
+        currentBanishTime = 0.3f;
         Banish();
     }
 

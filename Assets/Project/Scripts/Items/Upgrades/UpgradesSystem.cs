@@ -8,6 +8,12 @@ public class UpgradesSystem : MonoBehaviour
     private Dictionary<Item, int> playerInventoryItems;
     Inventory playerInventory;
     [SerializeField] public List<UpgradeBranch> upgradeBranches;
+    [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
+
+    // Events
+    public delegate void UpgardeAction();
+    public static event UpgardeAction OnUpgrade;
+    public static event UpgardeAction OnUpgradeFail;
 
 
     private void Start()
@@ -25,21 +31,29 @@ public class UpgradesSystem : MonoBehaviour
         this.playerInventory = playerInventory;
     }
 
-
     public void UpgradeBranchIsSelected(int index)
     {
+        if (upgradeBranches[index].IsCompleted()) return;
+
         UpdatePlayerInventoryData();
         if (PlayerHasEnoughItemsToUpgrade(upgradeBranches[index].GetCurrentUpgrade()))
         {
             RemoveUpgradeRequiredItems(upgradeBranches[index].GetCurrentUpgrade());
 
             upgradeBranches[index].Upgrade();
+
+            if (OnUpgrade != null) OnUpgrade();
         }
+        else
+        {
+            if (OnUpgradeFail != null) OnUpgradeFail();
+        }
+        UpdatePlayerInventoryData();
+        upgradeMenuCanvas.UpdateUpgradeButton(index);
+
     }
 
-
-
-    private void UpdatePlayerInventoryData()
+    public void UpdatePlayerInventoryData()
     {
         playerInventoryItems.Clear();
 
@@ -57,7 +71,7 @@ public class UpgradesSystem : MonoBehaviour
 
     }
 
-    private bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade)
+    public bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade)
     {
         foreach (KeyValuePair<Item, int> requiredItem in upgrade.requiredItems)
         {
@@ -75,6 +89,11 @@ public class UpgradesSystem : MonoBehaviour
         {
             playerInventory.SubstractNItemsFromInventory(requiredItem.Key, requiredItem.Value);
         }
+    }
+
+    public void DoOnUpgardeFail()
+    {
+        if (OnUpgradeFail != null) OnUpgradeFail();
     }
 
 }
