@@ -87,7 +87,7 @@ public class HUDHandler : MonoBehaviour
 
     private void FadeInThenOutSequence(float duration)
     {
-        StartCoroutine(CanvasFadeInThenOut(fadeOutGroup, duration/2f));
+        StartCoroutine(CanvasFadeOutThenIn(fadeOutGroup, duration/2f));
     }
 
 
@@ -121,10 +121,10 @@ public class HUDHandler : MonoBehaviour
         canvasGroup.alpha = endVector.x;
     }
 
-    IEnumerator CanvasFadeInThenOut(CanvasGroup canvasGroup, float fadeTime)
+    IEnumerator CanvasFadeOutThenIn(CanvasGroup canvasGroup, float fadeTime)
     {
-        Vector2 startVector = new Vector2(1f, 1f);
-        Vector2 endVector = new Vector2(0f, 0f);
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
 
         for (float t = 0f; t < fadeTime; t += Time.deltaTime)
         {
@@ -135,8 +135,8 @@ public class HUDHandler : MonoBehaviour
         }
         canvasGroup.alpha = endVector.x;
 
-        startVector = new Vector2(0f, 0f);
-        endVector = new Vector2(1f, 1f);
+        startVector = new Vector2(1f, 1f);
+        endVector = new Vector2(0f, 0f);
 
         for (float t = 0f; t < fadeTime; t += Time.deltaTime)
         {
