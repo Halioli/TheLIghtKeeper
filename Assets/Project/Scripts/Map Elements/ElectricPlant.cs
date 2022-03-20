@@ -6,9 +6,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class ElectricPlant : InteractStation
 {
-    private GameObject player;
-    private Lamp playerLamp;
-
     private Light2D plantLight;
     private Animator plantAnimator;
     private SpriteRenderer spritePlant;
@@ -20,31 +17,32 @@ public class ElectricPlant : InteractStation
     private float timeStart = 0;
     [SerializeField] private float cooldown;
 
-    private Vector3 positionSpawnOrb = new Vector3(1, 1, 0);
+    // Audio
+    [SerializeField] AudioSource electricDroneAudioSource;
+    [SerializeField] AudioSource popAndRechargeAudioSource;
+    [SerializeField] AudioClip popOffAudioClip;
+    [SerializeField] AudioClip rechargeAudioClip;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         plantAnimator = GetComponent<Animator>();
         spritePlant = GetComponent<SpriteRenderer>();
         interactText.SetActive(false);
         spritePlant.color = new Color(255, 255, 255, 255);
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerLamp = player.GetComponentInChildren<Lamp>();
         plantAnimator.SetBool("used", false);
         plantLight = GetComponentInChildren<Light2D>();
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (playerInsideTriggerArea)
+        if (playerInsideTriggerArea && !hasBeenUsed)
         {
             interactText.SetActive(true);
             GetInput();
         }
-        else
+        else if (!playerInsideTriggerArea)
         {
             interactText.SetActive(false);
         }
@@ -80,13 +78,15 @@ public class ElectricPlant : InteractStation
 
         GameObject gameObject = Instantiate(electricOrb, transform);
         gameObject.GetComponent<ItemGameObject>().DropsRandom(true, 3f) ;
-        //gameObject.GetComponent<ItemGameObject>().MakeNotPickupableForDuration(0.1f);
 
-        //playerLamp.lampTime = playerLamp.GetMaxLampTime();
         plantLight.intensity = 0.5f;
         plantLight.pointLightOuterRadius = 1.21f;
         plantLight.pointLightInnerRadius = 0.20f;
 
+        interactText.SetActive(false);
+
+        StopElectricDroneSound();
+        PlayPopOffSound();
     }
 
     private void TurnOnElectricPlant()
@@ -96,5 +96,34 @@ public class ElectricPlant : InteractStation
         plantLight.pointLightOuterRadius = 2f;
         plantLight.pointLightInnerRadius = 0.66f;
         plantAnimator.SetBool("used", false);
+
+        if (playerInsideTriggerArea) interactText.SetActive(true);
+
+        PlayElectricDroneSound();
+        PlayRechargedSound();
     }
+
+
+    private void PlayElectricDroneSound()
+    {
+        electricDroneAudioSource.Play();
+    }
+    private void StopElectricDroneSound()
+    {
+        electricDroneAudioSource.Stop();
+    }
+
+    private void PlayPopOffSound()
+    {
+        popAndRechargeAudioSource.clip = popOffAudioClip;
+        popAndRechargeAudioSource.Play();
+    }
+    private void PlayRechargedSound()
+    {
+        popAndRechargeAudioSource.clip = rechargeAudioClip;
+        popAndRechargeAudioSource.Play();
+    }
+
+
+
 }
