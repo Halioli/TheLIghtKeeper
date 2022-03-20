@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2819909919347767359}
   - component: {fileID: 2819909919347767358}
   - component: {fileID: 2819909919347767357}
+  - component: {fileID: 3617139476372382575}
   m_Layer: 0
   m_Name: AmbientAudio
   m_TagString: Untagged
@@ -47,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ambientCanPlay: 1
   musicCanPlay: 1
-  randomChance: 3
-  ambientCooldown: 20
+  randomChance: 2
+  ambientCooldown: 10
   ambientAudioSource: {fileID: 2819909919347767358}
   ambientAudioClips:
   - {fileID: 8300000, guid: 5e6529743c7579c4d93db4b86d403186, type: 3}
@@ -63,6 +64,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fb7ed49a1359e904390a01b3449e1d34, type: 3}
   - {fileID: 8300000, guid: 55df4ef65c8ef374dbdb191462b7b6ad, type: 3}
   teleportMusic: {fileID: 8300000, guid: f9ba60e7492dcda4fa9ed732bb0e5c9b, type: 3}
+  audioReverbZone: {fileID: 3617139476372382575}
 --- !u!82 &2819909919347767358
 AudioSource:
   m_ObjectHideFlags: 0
@@ -255,3 +257,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!167 &3617139476372382575
+AudioReverbZone:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2819909919347767353}
+  m_Enabled: 1
+  m_MinDistance: 15
+  m_MaxDistance: 15
+  m_ReverbPreset: 26
+  m_Room: -1000
+  m_RoomHF: -151
+  m_DecayTime: 7.56
+  m_DecayHFRatio: 0.91
+  m_Reflections: -626
+  m_ReflectionsDelay: 0.02
+  m_Reverb: 774
+  m_ReverbDelay: 0.03
+  m_HFReference: 5000
+  m_Diffusion: 100
+  m_Density: 100
+  m_LFReference: 250
+  m_RoomLF: 0
