@@ -15,30 +15,32 @@ public class GameEventsSystem : MonoBehaviour
 
     void Update()
     {
-        if (furnace.GetLightLevel() >= 1)
-        {
-            if (!randomEventEnumeratorActive && !eventInAction)
-            {
-                StartCoroutine(CreateRandomEvent());
-            }
-            else if (eventInAction)
-            {
-                if (furnace.GetCurrentEventID() == 0)
-                {
-                    eventInAction = false;
-                }
-            }
-        }
+        //if (furnace.GetLightLevel() >= 2)
+        //{
+        //    if (!randomEventEnumeratorActive && !eventInAction)
+        //    {
+        //        StartCoroutine("CreateRandomEvent");
+        //    }
+        //    else if (eventInAction)
+        //    {
+        //        if (furnace.GetCurrentEventID() == 0)
+        //        {
+        //            eventInAction = false;
+        //        }
+        //    }
+        //}
     }
 
     IEnumerator CreateRandomEvent()
     {
         randomEventEnumeratorActive = true;
         int randomEventID;
+        float numbSecondsToWait;
 
         while (!eventInAction)
         {
-            yield return new WaitForSeconds(10);
+            numbSecondsToWait = Random.Range(60, 230);
+            yield return new WaitForSeconds(numbSecondsToWait);
 
             randomEventID = Random.Range(0, MAX_FURNACE_EVENTS);
 

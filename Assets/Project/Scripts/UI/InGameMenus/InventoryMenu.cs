@@ -8,13 +8,18 @@ public class InventoryMenu : MonoBehaviour
     public Inventory inventory;
     public ItemCell referenceItemCell;
 
-    // Private
-    private List<ItemCell> itemCellsList = new List<ItemCell>();
+    // Protected
+    protected List<ItemCell> itemCellsList;
+    protected int lastSelectedInventorySlot;
 
 
-    private void Awake()
+    private void Start()
     {
+        itemCellsList = new List<ItemCell>();
+        lastSelectedInventorySlot = 0;
+
         InitInventoryCellsList();
+        SetSelectedInventorySlotIndex(lastSelectedInventorySlot);
     }
 
 
@@ -30,6 +35,7 @@ public class InventoryMenu : MonoBehaviour
 
     public void InitInventoryCellsList()
     {
+        itemCellsList = new List<ItemCell>();
         for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
             AddNewEmptyCell();
@@ -57,6 +63,8 @@ public class InventoryMenu : MonoBehaviour
 
     public void UpdateInventory()
     {
+        if (itemCellsList == null) return;
+
         if (itemCellsList.Count < inventory.GetInventorySize())
         {
             for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); ++i)
@@ -65,9 +73,10 @@ public class InventoryMenu : MonoBehaviour
             }
         }
 
+        SpriteRenderer sr;
         for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
-            SpriteRenderer sr = inventory.inventory[i].itemInStack.prefab.GetComponent<SpriteRenderer>();
+            sr = inventory.inventory[i].itemInStack.prefab.GetComponentInChildren<SpriteRenderer>();
             itemCellsList[i].SetItemImage(sr.sprite);
 
             int amount = inventory.inventory[i].amountInStack;
@@ -75,15 +84,28 @@ public class InventoryMenu : MonoBehaviour
 
             if (!inventory.inventory[i].StackIsEmpty())
             {
-                itemCellsList[i].GetComponent<HoverButton>().SetDescription(inventory.inventory[i].itemInStack.description);
+                itemCellsList[i].GetComponent<HoverButton>().SetDescription("<b>"+inventory.inventory[i].itemInStack.itemName+ ":</b>" + "\n\n" 
+                    + inventory.inventory[i].itemInStack.description);
             }
         }
     }
 
-
-    public void MoveItemToOtherInventory(int itemCellIndex)
+    public void MoveItemToOtherInventory()
     {
-        inventory.MoveItemToOtherInventory(itemCellIndex);
+        inventory.MoveItemToOtherInventory();
         inventory.gotChanged = true;
+    }
+
+    public virtual void SetSelectedInventorySlotIndex(int itemCellIndex)
+    {
+        ResetSelectedInventorySlot(itemCellIndex);
+        inventory.SetSelectedInventorySlotIndex(itemCellIndex);
+    }
+
+    protected virtual void ResetSelectedInventorySlot(int newLastSelectedInventorySlot)
+    {
+        itemCellsList[lastSelectedInventorySlot].DoOnDiselect();
+        lastSelectedInventorySlot = newLastSelectedInventorySlot;
+        itemCellsList[newLastSelectedInventorySlot].DoOnSelect();
     }
 }

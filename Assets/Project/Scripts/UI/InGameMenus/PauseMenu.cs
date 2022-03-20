@@ -11,7 +11,6 @@ public class PauseMenu : MonoBehaviour
     public CanvasGroup loadingGroup;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
-    public InGameToolTips inGameTooltips;
 
     void Update()
     {
@@ -99,11 +98,6 @@ public class PauseMenu : MonoBehaviour
     public void ClickedExitButton()
     {
         PlayerInputs.instance.QuitGame();
-    }
-
-    public void SetTooltips(bool toolTipsState)
-    {
-        inGameTooltips.SetTooltipsState(toolTipsState);
     }
 
     IEnumerator AsyncLoading(int sceneIndex)

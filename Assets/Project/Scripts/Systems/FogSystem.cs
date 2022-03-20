@@ -8,7 +8,7 @@ public class FogSystem : MonoBehaviour
     private GameObject player;
 
     private bool playerInFog = false;
-    private float timer;
+    public float timer;
     private bool hasFaded = false;
 
     public Vector3 respawnPosition;
@@ -20,9 +20,8 @@ public class FogSystem : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        Debug.Log(player.tag);
-        timer = 1f;
         skullEnemy.SetActive(false);
+        respawnPosition = new Vector3(110,-16,0);
     }
 
     // Update is called once per frame
@@ -32,14 +31,15 @@ public class FogSystem : MonoBehaviour
         if (playerInFog)
         {
             skullEnemy.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 0);
+            player.GetComponentInChildren<Lamp>().lampTime = 0;
             if (!playerLightChecker.IsPlayerInLight())
             {
-
-                if(timer > 0f)
+                timer -= Time.deltaTime;
+                if (timer > 0f)
                 {
-                    timer -= Time.deltaTime;
                     Debug.Log(timer);
                     skullEnemy.SetActive(true);
+                    PlayerInputs.instance.canMove = false;
                 }
                 else
                 {
@@ -51,6 +51,7 @@ public class FogSystem : MonoBehaviour
             }
             else
             {
+                PlayerInputs.instance.canMove = true;
                 ResetTimer();
                 skullEnemy.SetActive(false);
             }
@@ -69,8 +70,7 @@ public class FogSystem : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-        {
-            
+        {  
             playerInFog = false;
             Debug.Log("PlayerOut");
             ResetTimer();
@@ -86,11 +86,16 @@ public class FogSystem : MonoBehaviour
     {
         hasFaded = true;
         hudHandler.DoFadeToBlack();
-        PlayerInputs.instance.canMove = false;
+
+        //PlayerInputs.instance.canMove = false;
         skullEnemy.SetActive(false);
+
         yield return new WaitForSeconds(3f);
+
         player.transform.position = respawnPosition;
+
         hudHandler.RestoreFades();
+
         PlayerInputs.instance.canMove = true;
         hasFaded = false;
         ResetTimer();
