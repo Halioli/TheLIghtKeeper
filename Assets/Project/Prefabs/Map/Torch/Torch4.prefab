@@ -134,6 +134,70 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3864592558136380693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8705755077587035549}
+  - component: {fileID: 1074525395579085066}
+  - component: {fileID: 716619754664616304}
+  m_Layer: 0
+  m_Name: TutorialMssg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8705755077587035549
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3864592558136380693}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8248398533057971605}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1074525395579085066
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3864592558136380693}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 4
+--- !u!114 &716619754664616304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3864592558136380693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c69b832e7d4cf4794431d91ae10f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventIndex: -1
+  mssgs:
+  - It looks like some kind of unlit torch. It seems to be connected to something
+    somewhere.
 --- !u!1 &4744838787252592943
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +382,6 @@ GameObject:
   - component: {fileID: 8248398533057971607}
   - component: {fileID: 8248398533057971624}
   - component: {fileID: 8248398533057971625}
-  - component: {fileID: 3323005627094742845}
   - component: {fileID: 8248398533057971626}
   - component: {fileID: 8248398533057971627}
   m_Layer: 6
@@ -342,6 +405,7 @@ Transform:
   - {fileID: 8248398533884983295}
   - {fileID: 8248398534140791355}
   - {fileID: 951632648738503151}
+  - {fileID: 8705755077587035549}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -3.382, z: 0}
@@ -464,22 +528,6 @@ MonoBehaviour:
   animTorch: {fileID: 8248398533057971626}
   puzzleSystem: {fileID: 0}
   torchAudioSource: {fileID: 8248398533057971627}
---- !u!114 &3323005627094742845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8248398533057971628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4c69b832e7d4cf4794431d91ae10f2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventIndex: -1
-  mssgs:
-  - It looks like some kind of unlit torch. It seems to be connected to something
-    somewhere.
 --- !u!95 &8248398533057971626
 Animator:
   serializedVersion: 3

@@ -8,6 +8,8 @@ public class BridgeManager : MonoBehaviour
     [SerializeField] GameObject rightBridgeGameObject;
     [SerializeField] Sprite bridgeSprite;
 
+    [SerializeField] AudioSource audioSource;
+
     private SpriteRenderer bridgeSpriteRenderer;
 
     private void Start()
@@ -21,5 +23,7 @@ public class BridgeManager : MonoBehaviour
 
         leftBridgeGameObject.SetActive(false);
         rightBridgeGameObject.SetActive(false);
+
+        audioSource.Play();
     }
 }
