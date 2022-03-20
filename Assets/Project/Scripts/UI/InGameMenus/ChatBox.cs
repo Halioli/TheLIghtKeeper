@@ -77,6 +77,8 @@ public class ChatBox : MonoBehaviour
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
         NextText();
+
+        PlayerInputs.instance.isLanternPaused = true;
     }
 
     private void DisplayText()
@@ -123,6 +125,8 @@ public class ChatBox : MonoBehaviour
     {
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
+
+        PlayerInputs.instance.isLanternPaused = false;
     }
 
     private void ResetValues()
