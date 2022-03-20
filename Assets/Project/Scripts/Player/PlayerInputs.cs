@@ -97,11 +97,6 @@ public class PlayerInputs : MonoBehaviour
     {
         if (!canPause) return false;
 
-        if (!canAttack && !canMine)
-        {
-            return Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
-        }
-
         return Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
