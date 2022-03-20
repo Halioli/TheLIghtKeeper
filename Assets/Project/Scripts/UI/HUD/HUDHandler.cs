@@ -24,8 +24,8 @@ public class HUDHandler : MonoBehaviour
         PlayerHandler.OnPlayerDeath += DoDeathImageFade;
         PlayerHandler.OnRestoreFades += RestoreFades;
 
-        Torch.OnTorchPreStartActivation += FadeInThenOutSequence;
-        Torch.OnTorchPreEndActivation += FadeInThenOutSequence;
+        Torch.OnTorchPreStartActivation += FadeOutThenInSequence;
+        Torch.OnTorchPreEndActivation += FadeOutThenInSequence;
     }
 
     private void OnDisable()
@@ -36,8 +36,8 @@ public class HUDHandler : MonoBehaviour
         PlayerHandler.OnPlayerDeath -= DoDeathImageFade;
         PlayerHandler.OnRestoreFades -= RestoreFades;
 
-        Torch.OnTorchPreStartActivation -= FadeInThenOutSequence;
-        Torch.OnTorchPreEndActivation -= FadeInThenOutSequence;
+        Torch.OnTorchPreStartActivation -= FadeOutThenInSequence;
+        Torch.OnTorchPreEndActivation -= FadeOutThenInSequence;
     }
 
     private void KeepBlackFade()
@@ -85,11 +85,15 @@ public class HUDHandler : MonoBehaviour
         fadeOutGroup.alpha = 0f;
     }
 
-    private void FadeInThenOutSequence(float duration)
+    private void FadeOutThenInSequence(float duration)
     {
         StartCoroutine(CanvasFadeOutThenIn(fadeOutGroup, duration/2f));
     }
-
+    private void FadeInThenOutSequence(float duration)
+    {
+        StartCoroutine(CanvasFadeInThenOut(fadeOutGroup, duration / 2f));
+    }
+    
 
     IEnumerator CanvasFadeOut(CanvasGroup canvasGroup, float fadeTime)
     {
@@ -133,7 +137,11 @@ public class HUDHandler : MonoBehaviour
             canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
             yield return null;
         }
-        canvasGroup.alpha = endVector.x;
+        canvasGroup.alpha = 1f;
+
+
+        yield return new WaitForSeconds(fadeTime);
+
 
         startVector = new Vector2(1f, 1f);
         endVector = new Vector2(0f, 0f);
@@ -147,6 +155,37 @@ public class HUDHandler : MonoBehaviour
         }
         canvasGroup.alpha = endVector.x;
     }
+
+    IEnumerator CanvasFadeInThenOut(CanvasGroup canvasGroup, float fadeTime)
+    {
+
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        yield return fadeTime;
+
+        startVector = new Vector2(0f, 0f);
+        endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+    }
+
 
 
 

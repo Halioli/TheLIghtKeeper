@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1071528980603285872}
   - component: {fileID: 7681219504050026814}
   - component: {fileID: 5460554026986564641}
+  - component: {fileID: 8030672931860483248}
   m_Layer: 5
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -108,6 +109,7 @@ MonoBehaviour:
   followDuration: 0.1
   maximumFollowSpeed: 10
   player: {fileID: 0}
+  pilarTransform: {fileID: 0}
 --- !u!114 &1071528980603285872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +162,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 0.1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -194,6 +196,20 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
+--- !u!114 &8030672931860483248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55427215653021469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222b1f48da09a96459573fffc8e83a9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalCamera: {fileID: 8284038577793331683}
+  pilarCamera: {fileID: 0}
 --- !u!1 &798601384140140725
 GameObject:
   m_ObjectHideFlags: 0

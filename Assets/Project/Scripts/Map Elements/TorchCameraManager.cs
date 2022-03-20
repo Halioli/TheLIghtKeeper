@@ -9,6 +9,11 @@ public class TorchCameraManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera pilarCamera;
 
 
+    private void Awake()
+    {
+        SwapToNormalCamera();
+    }
+
     //private void Update()
     //{
     //    if (Input.GetKeyDown(KeyCode.M))
@@ -36,12 +41,12 @@ public class TorchCameraManager : MonoBehaviour
 
     private void SwapToNormalCamera()
     {
-        pilarCamera.Priority = 9;
+        normalCamera.Priority = 11;
     }
 
     private void SwapToPilarCamera()
     {
-        pilarCamera.Priority = 11;
+        normalCamera.Priority = 9;
     }
 
 
