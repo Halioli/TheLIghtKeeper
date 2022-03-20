@@ -107,7 +107,7 @@ public class Ore : MonoBehaviour
         currentSprite = spriteList[currentSpriteIndex];
     }
 
-    protected void DropMineralItem()
+    protected virtual void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsRandom();
