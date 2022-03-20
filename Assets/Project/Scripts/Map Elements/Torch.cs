@@ -215,8 +215,8 @@ public class Torch : InteractStation
 
     IEnumerator CameraTransitionToPilar()
     {
-        float pretime = 3f;
-        float time = 10f;
+        float pretime = 1.5f;
+        float time = 6f;
 
         PlayerInputs.instance.canMove = false;
         PlayerInputs.instance.isLanternPaused = true;
@@ -224,7 +224,6 @@ public class Torch : InteractStation
         yield return new WaitForSeconds(pretime/2f);
 
         if (OnTorchStartActivation != null) OnTorchStartActivation();
-        yield return new WaitForSeconds(pretime/2f);
 
         yield return new WaitForSeconds(time);
 
