@@ -38,6 +38,7 @@ public class ChainTutorialObjective : MonoBehaviour
             tutorialObjectives[objectiveIndex++].GetComponent<TutorialObjective>().InvokeOnObjectiveStart();
         else
         {
+            tutorialObjectives[objectiveIndex++].GetComponent<TutorialObjective>().InvokeOnObjectiveEnd();
             Destroy(gameObject);
         }
     }
