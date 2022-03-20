@@ -130,7 +130,7 @@ public class UIAudio : MonoBehaviour
     {
         if (upgardeAndCraftAudioSource.isPlaying) return;
 
-        upgardeAndCraftAudioSource.volume = 0.1f;
+        upgardeAndCraftAudioSource.volume = 0.05f;
         upgardeAndCraftAudioSource.clip = nextMessageAudioClip;
         upgardeAndCraftAudioSource.pitch = 1.0f;
         upgardeAndCraftAudioSource.Play();

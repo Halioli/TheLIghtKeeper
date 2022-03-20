@@ -30,6 +30,18 @@ public class Torch : InteractStation
     [SerializeField] AudioSource torchAudioSource;
 
 
+    public delegate void TorchPreAction(float duration);
+    public static event TorchPreAction OnTorchPreStartActivation;
+    public static event TorchPreAction OnTorchPreEndActivation;
+
+    public delegate void TorchAction();
+    public static event TorchAction OnTorchStartActivation;
+    public static event TorchAction OnTorchEndActivation;
+
+
+
+
+
     void Awake()
     {
         SaveSystem.torches.Add(this);
@@ -60,6 +72,8 @@ public class Torch : InteractStation
 
     private void Update()
     {
+        if (turnedOn) return;
+
         if (playerInsideTriggerArea)
         {
             popUpCanvasGroup.alpha = 1f;
@@ -157,6 +171,7 @@ public class Torch : InteractStation
         if (turnedOn && hasToBurn)
         {
             puzzleSystem.torchesOn += 1;
+            StartCoroutine(CameraTransitionToPilar());
         }
         else if (!turnedOn && hasToBurn)
         {
@@ -169,6 +184,7 @@ public class Torch : InteractStation
         else if (!turnedOn && !hasToBurn)
         {
             puzzleSystem.torchesOff += 1;
+            StartCoroutine(CameraTransitionToPilar());
         }
 
     }
@@ -195,4 +211,33 @@ public class Torch : InteractStation
     {
         desactivatedTorch.SetActive(true);
     }
+
+
+    IEnumerator CameraTransitionToPilar()
+    {
+        float pretime = 3f;
+        float time = 10f;
+
+        PlayerInputs.instance.canMove = false;
+        PlayerInputs.instance.isLanternPaused = true;
+        if (OnTorchPreStartActivation != null) OnTorchPreStartActivation(pretime);
+        yield return new WaitForSeconds(pretime/2f);
+
+        if (OnTorchStartActivation != null) OnTorchStartActivation();
+        yield return new WaitForSeconds(pretime/2f);
+
+        yield return new WaitForSeconds(time);
+
+
+        if (OnTorchPreEndActivation != null) OnTorchPreEndActivation(pretime);
+        yield return new WaitForSeconds(pretime);
+        
+
+        PlayerInputs.instance.canMove = true;
+        PlayerInputs.instance.isLanternPaused = false;
+        if (OnTorchEndActivation != null) OnTorchEndActivation();
+
+    }
+
+
 }
