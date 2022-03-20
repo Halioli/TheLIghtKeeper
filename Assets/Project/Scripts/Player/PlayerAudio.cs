@@ -45,6 +45,7 @@ public class PlayerAudio : MonoBehaviour
 
         // ItemPickUp sound
         ItemPickUp.playerPicksUpItemEvent += PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop += PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent += PlayReceiveDamageSound;
@@ -71,6 +72,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill += PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight += PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials += PlayMineErrorSound;
     }
 
 
@@ -84,6 +87,7 @@ public class PlayerAudio : MonoBehaviour
 
         // ItemPickUp sound
         ItemPickUp.playerPicksUpItemEvent -= PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop -= PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent -= PlayReceiveDamageSound;
@@ -110,6 +114,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill -= PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight -= PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials -= PlayMineErrorSound;
     }
 
 
@@ -140,10 +146,18 @@ public class PlayerAudio : MonoBehaviour
 
 
     // ItemPickUp sound
-    public void PlayItemPickUpSound()
+    private void PlayItemPickUpSound()
     {
+        itemPickUpAudioSource.pitch = 1f;
         itemPickUpAudioSource.Play();
     }
+
+    private void PlayItemDroppedSound()
+    {
+        itemPickUpAudioSource.pitch = 0.75f;
+        itemPickUpAudioSource.Play();
+    }
+
 
 
 

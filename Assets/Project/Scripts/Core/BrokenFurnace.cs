@@ -54,6 +54,8 @@ public class BrokenFurnace : InteractStation
         else
         {
             popUp.ChangeMessageText("Not enough materials");
+
+            InvokeOnNotEnoughMaterials();
         }
     }
 

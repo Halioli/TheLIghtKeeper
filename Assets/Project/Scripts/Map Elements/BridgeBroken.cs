@@ -37,8 +37,10 @@ public class BridgeBroken : InteractStation
     public override void StationFunction()
     {
         // Check if player has enough items
-        if (playerInventory.InventoryContainsItemAndAmount(ironMaterial, IRON_REPAIR_AMOUNT) && 
-            playerInventory.InventoryContainsItemAndAmount(enrichedMetalMaterial, METAL_REPAIR_AMOUNT))
+        bool hasEnoughIron = playerInventory.InventoryContainsItemAndAmount(ironMaterial, IRON_REPAIR_AMOUNT);
+        bool hasEnoughMetal = playerInventory.InventoryContainsItemAndAmount(enrichedMetalMaterial, METAL_REPAIR_AMOUNT);
+
+        if (hasEnoughIron && hasEnoughMetal)
         {
             constuctionPopUp.ChangeMessageText("Materials added");
             playerInventory.SubstractNItemsFromInventory(ironMaterial, IRON_REPAIR_AMOUNT);
@@ -50,6 +52,8 @@ public class BridgeBroken : InteractStation
         else
         {
             constuctionPopUp.ChangeMessageText("Not enough materials");
+
+            InvokeOnNotEnoughMaterials();            
         }
     }
 
