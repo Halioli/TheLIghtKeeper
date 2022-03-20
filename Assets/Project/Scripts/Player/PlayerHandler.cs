@@ -12,6 +12,7 @@ public class PlayerHandler : PlayerBase
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
+    public Transform mainCameraTransform;
     public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
 
@@ -52,6 +53,7 @@ public class PlayerHandler : PlayerBase
                 // Teleport to desired position
                 gameObject.layer = LayerMask.NameToLayer("Player");
                 playerRigidbody2D.transform.position = respawnPosition;
+                mainCameraTransform.position = respawnPosition;
                 playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
