@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 1095322454380323929}
   - component: {fileID: 1335165778855991290}
   - component: {fileID: 4157177602606125955}
-  - component: {fileID: 6238493391311081024}
+  - component: {fileID: 5831878142961720311}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -319,8 +319,8 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
   m_FrequencyGain: 5
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
---- !u!114 &6238493391311081024
+  mNoiseOffsets: {x: -346.51648, y: 408.80746, z: -608.36194}
+--- !u!114 &5831878142961720311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -509,6 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb446d62690ac174fb3705141321d577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cinemachineVirtual: {fileID: 8284038577793331683}
 --- !u!1001 &1424235518766980271
 PrefabInstance:
   m_ObjectHideFlags: 0
