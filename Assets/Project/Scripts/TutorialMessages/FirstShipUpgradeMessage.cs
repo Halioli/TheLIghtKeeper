@@ -27,5 +27,6 @@ public class FirstShipUpgradeMessage : TutorialMessages
     protected override void SendMessage()
     {
         base.SendMessage();
+        Destroy(gameObject);
     }
 }

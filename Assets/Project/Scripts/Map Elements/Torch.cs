@@ -97,12 +97,6 @@ public class Torch : InteractStation
             torchAudioSource.Stop();
         }
         DoPuzzle();
-        if (PuzzleChecker())
-        {
-            //Debug.Log("Puzzle Completed");
-            puzzleSystem.animator.SetBool("isCompleted", true);
-
-        }
 
     }
     public void SetTorchLightOff()
@@ -215,16 +209,26 @@ public class Torch : InteractStation
 
     IEnumerator CameraTransitionToPilar()
     {
-        float pretime = 3f;
-        float time = 10f;
+        float pretime = 1.5f;
+        float time = 3f;
 
         PlayerInputs.instance.canMove = false;
         PlayerInputs.instance.isLanternPaused = true;
+
+        yield return new WaitForSeconds(1f);
+        
         if (OnTorchPreStartActivation != null) OnTorchPreStartActivation(pretime);
         yield return new WaitForSeconds(pretime/2f);
 
         if (OnTorchStartActivation != null) OnTorchStartActivation();
-        yield return new WaitForSeconds(pretime/2f);
+
+        yield return new WaitForSeconds(time);
+
+        if (PuzzleChecker())
+        {
+            //Debug.Log("Puzzle Completed");
+            puzzleSystem.animator.SetBool("isCompleted", true);
+        }
 
         yield return new WaitForSeconds(time);
 
