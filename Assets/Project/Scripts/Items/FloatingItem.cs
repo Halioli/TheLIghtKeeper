@@ -5,14 +5,15 @@ using UnityEngine;
 public class FloatingItem : MonoBehaviour
 {
     private Interpolator lerp;
-    private float lerpDistance = 0.3f;
-    private float halfLerpDistance = 0.15f;
+    [SerializeField] private float lerpTime = 1f;
+    [SerializeField] private float lerpDistance = 0.3f;
+    [SerializeField] private float halfLerpDistance = 0.15f;
     private float startYLerp;
 
 
     void Awake()
     {
-        lerp = new Interpolator(1f, Interpolator.Type.SMOOTH);
+        lerp = new Interpolator(lerpTime, Interpolator.Type.SMOOTH);
         startYLerp = transform.position.y;
 
         RandomFloatStart();

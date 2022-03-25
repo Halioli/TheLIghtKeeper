@@ -414,7 +414,6 @@ MonoBehaviour:
   interactText: {fileID: 2334290290006228159}
   backgroundText: {fileID: 2402521578211243530}
   craftingCanvasGameObject: {fileID: 9067862641030041039}
-  playerHUDGameObject: {fileID: 0}
   craftingParticles:
   - {fileID: 9047341742234616188}
   - {fileID: 2588220476506501664}
@@ -15125,7 +15124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebd20e8438335e4d80f01cd6f94831f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mssg: I put the items you crafted in the Storage, since you had no inventory space.
+  mssgs:
+  - I put the items you crafted in the Storage, since you had no inventory space.
 --- !u!1 &8759467107526528893
 GameObject:
   m_ObjectHideFlags: 0

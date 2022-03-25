@@ -10,9 +10,9 @@ public class DarknessSystem : MonoBehaviour
     // Private Attributes
     private PlayerLightChecker playerLightChecker;
     public bool playerInLight { get; private set; }
-    private List<GameObject> enemySpawners = new List<GameObject>();
+    [SerializeField] private List<GameObject> enemySpawners = new List<GameObject>();
 
-    private int ENEMY_CAP = 4;
+    [SerializeField] int ENEMY_CAP = 4;
     private int numberOfAliveEnemies = 0;
     public bool enemyCapIsFull = false;
     private bool spawnersEnabledAlready = false;
@@ -45,7 +45,7 @@ public class DarknessSystem : MonoBehaviour
         playerLightChecker = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLightChecker>();
         playerInLight = playerLightChecker.IsPlayerInLight();
 
-        enemySpawners = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemySpawner"));
+        //enemySpawners = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemySpawner"));
     }
 
     void Update()

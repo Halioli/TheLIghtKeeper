@@ -41,6 +41,7 @@ public class PlayerMiner : PlayerBase
     public delegate void PlayPlayerSound();
     public static event PlayPlayerSound playerMinesEvent;
     public static event PlayPlayerSound pickaxeNotStrongEnoughEvent;
+    public static event PlayPlayerSound playerMinesNothingEvent;
 
     private void Start()
     {
@@ -55,6 +56,11 @@ public class PlayerMiner : PlayerBase
         {
             if (miningAnOre)
                 SetOreToMine(maxColl.GetComponent<Ore>());
+            else
+            {
+                //if (playerMinesNothingEvent != null) playerMinesNothingEvent();
+            }
+
 
             StartMining();
         }
@@ -188,7 +194,11 @@ public class PlayerMiner : PlayerBase
     private void Mine()
     {
         if (!miningAnOre || oreToMine == null)
+        {
+            if (playerMinesNothingEvent != null) playerMinesNothingEvent();
             return;
+        }
+
 
         MineOre(pickaxe.damageValue);
     }

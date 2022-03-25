@@ -49,7 +49,6 @@ public class OreVein : InteractStation
     public override void StationFunction()
     {
         if (activated) return;
-        activated = true;
 
         popUp.ShowMessage();
         if (playerInventory.InventoryContainsItem(autoMiner))
@@ -65,6 +64,8 @@ public class OreVein : InteractStation
         else
         {
             popUp.ChangeMessageText(messagesToShow[1]);
+
+            InvokeOnNotEnoughMaterials();
         }
     }
 }

@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class TutorialMessages : MonoBehaviour
 {
-    public delegate void OpenChatBox(string mssg);
+    public delegate void OpenChatBox(string[] mssg, int eventIndex = -1);
     public static event OpenChatBox OnNewMessage;
 
-    [TextArea(5, 20)] public string mssg;
+    [SerializeField] private int eventIndex = -1;
+
+    [TextArea(5, 20)] public string[] mssgs;
+
+    public static bool tutorialOpened;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -19,9 +23,11 @@ public class TutorialMessages : MonoBehaviour
 
     protected virtual void SendMessage()
     {
+        tutorialOpened = true;
+
         // Send Action
         if (OnNewMessage != null)
-            OnNewMessage(mssg);
+            OnNewMessage(mssgs, eventIndex);
 
         DisableSelf();
     }

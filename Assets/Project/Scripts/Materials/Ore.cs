@@ -26,7 +26,6 @@ public class Ore : MonoBehaviour
     public static event OreGetsMinedAction playerBreaksOreEvent;
 
 
-
     private void Start()
     {
         breakState = OreState.WHOLE;
@@ -75,7 +74,6 @@ public class Ore : MonoBehaviour
 
         UpdateCurrentSprite();
         StartCoroutine("PlayBreakParticles");
-
     }
 
     protected virtual void DamageTakeAnimation()
@@ -108,7 +106,7 @@ public class Ore : MonoBehaviour
         currentSprite = spriteList[currentSpriteIndex];
     }
 
-    protected void DropMineralItem()
+    protected virtual void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsRandom();
