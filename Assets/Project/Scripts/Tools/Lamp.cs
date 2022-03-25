@@ -43,7 +43,7 @@ public class Lamp : MonoBehaviour
     private float flickCooldown = START_FLICK_COOLDOWN;
     private float lowLightflickCooldown = 0.75f;
     private const float SECONDS_HIGH_FREQUENCY_FLICK = 10f;
-
+    private float lampTimeParticles;
     System.Random rg;
 
 
@@ -52,6 +52,7 @@ public class Lamp : MonoBehaviour
     private readonly float normalLightTimeMultiplier = 1f;
     private float intenseLightTimeMultiplier = 3f;
 
+    public ParticleSystem lightRechargedParticleSystem;
 
 
     public delegate void PlayLanternSound();
@@ -72,6 +73,7 @@ public class Lamp : MonoBehaviour
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
         timeMultiplier = normalLightTimeMultiplier;
+        lampTimeParticles = 2f;
     }
 
     private void Start()
@@ -81,6 +83,8 @@ public class Lamp : MonoBehaviour
         circleLight.SetDistance(2f);
         coneLight.SetDistance(lightDistance);
         coneLight.SetAngle(lightAngle);
+
+        lightRechargedParticleSystem.Stop();
     }
 
     private void OnEnable()
@@ -160,6 +164,8 @@ public class Lamp : MonoBehaviour
         if (lampTime + time > maxLampTime)
         {
             FullyRefillLampTime();
+            StartCoroutine("RechargeLamptTimeParticles");
+
         }
         else
         {
@@ -403,6 +409,14 @@ public class Lamp : MonoBehaviour
         }
 
         //DeactivateConeLight();
+    }
+
+    IEnumerator RechargeLamptTimeParticles()
+    {
+        lightRechargedParticleSystem.Play();
+        yield return new WaitForSeconds(lampTimeParticles);
+        lightRechargedParticleSystem.Stop();
+
     }
 
 
