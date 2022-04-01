@@ -73,7 +73,7 @@ public class Lamp : MonoBehaviour
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
         timeMultiplier = normalLightTimeMultiplier;
-        lampTimeParticles = 2f;
+        lampTimeParticles = 1f;
     }
 
     private void Start()
@@ -157,6 +157,8 @@ public class Lamp : MonoBehaviour
     public void FullyRefillLampTime()
     {
         lampTime = maxLampTime;
+        StartCoroutine("RechargeLampTimeParticles");
+
     }
 
     public void RefillLampTime(float time)
@@ -164,14 +166,13 @@ public class Lamp : MonoBehaviour
         if (lampTime + time > maxLampTime)
         {
             FullyRefillLampTime();
-            StartCoroutine("RechargeLamptTimeParticles");
-
         }
         else
         {
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
+        StartCoroutine("RechargeLampTimeParticles");
 
         if (!turnedOn && !playerInLight) ActivateLampLight();
     }
@@ -411,12 +412,11 @@ public class Lamp : MonoBehaviour
         //DeactivateConeLight();
     }
 
-    IEnumerator RechargeLamptTimeParticles()
+    IEnumerator RechargeLampTimeParticles()
     {
         lightRechargedParticleSystem.Play();
         yield return new WaitForSeconds(lampTimeParticles);
         lightRechargedParticleSystem.Stop();
-
     }
 
 
