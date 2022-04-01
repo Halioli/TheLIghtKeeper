@@ -13,6 +13,13 @@ public class HotbarInventory : Inventory
 
     [SerializeField] InventoryData playerInventoryData;
 
+
+    public delegate void HotbarInventoryUse();
+    public static event HotbarInventoryUse OnInventoryItemDrop;
+
+
+
+
     private void OnEnable()
     {
         OnItemMove += SetInventroyMenuSelectedSlotIndex;
@@ -75,6 +82,23 @@ public class HotbarInventory : Inventory
     {
         hotbarInventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
     }
+
+
+    public void DropSelectedItem()
+    {
+        if (!inventory[indexOfSelectedInventorySlot].StackIsEmpty())
+        {
+            ItemGameObject itemGameObject = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform).GetComponent<ItemGameObject>();
+            itemGameObject.DropsRandom(true, 1.5f, 20f);
+            itemGameObject.MakeNotPickupableForDuration(2f);
+
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+            SetInventroyMenuSelectedSlotIndex();
+
+            if (OnInventoryItemDrop != null) OnInventoryItemDrop();
+        }
+    }
+
 
 
     // Modifier Methods

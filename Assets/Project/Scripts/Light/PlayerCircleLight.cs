@@ -45,4 +45,13 @@ public class PlayerCircleLight : CircleLight
     }
 
 
+
+    protected override bool ExpandCorrectionCheck()
+    {
+        if (PlayerLightChecker.playerInLight) return false;
+
+        return base.ExpandCorrectionCheck();
+    }
+
+
 }

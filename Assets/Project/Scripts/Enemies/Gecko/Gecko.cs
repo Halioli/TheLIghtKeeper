@@ -13,7 +13,6 @@ public class Gecko : MonoBehaviour
     private Vector2 geckoPos;
     private float speeddModifier;
     private bool coroutineAllowed;
-    private float xAngle, yAngle, zAngle;
 
     private Animator geckoAnimator;
 
@@ -45,10 +44,10 @@ public class Gecko : MonoBehaviour
         coroutineAllowed = false;
         touched = true;
 
-        Vector2 p0 = routes[routeNumber].GetChild(0).position;
-        Vector2 p1 = routes[routeNumber].GetChild(1).position;
-        Vector2 p2 = routes[routeNumber].GetChild(2).position;
-        Vector2 p3 = routes[routeNumber].GetChild(3).position;
+        Vector3 p0 = routes[routeNumber].GetChild(0).position;
+        Vector3 p1 = routes[routeNumber].GetChild(1).position;
+        Vector3 p2 = routes[routeNumber].GetChild(2).position;
+        Vector3 p3 = routes[routeNumber].GetChild(3).position;
 
         while(tParam < 1)
         {
@@ -60,7 +59,7 @@ public class Gecko : MonoBehaviour
                 Mathf.Pow(tParam, 3) * p3;
 
             transform.position = geckoPos;
-            //transform.Rotate(xAngle, yAngle, zAngle);
+            
             yield return new WaitForEndOfFrame();
         }
         geckoAnimator.SetBool("running", false);
@@ -68,6 +67,7 @@ public class Gecko : MonoBehaviour
         routeToGo += 1;
         if (routeToGo > routes.Length - 1)
             routeToGo = 0;
+
 
     }
 
@@ -80,5 +80,4 @@ public class Gecko : MonoBehaviour
             //geckoAnimator.SetBool("running", true);
         }
     }
-
 }

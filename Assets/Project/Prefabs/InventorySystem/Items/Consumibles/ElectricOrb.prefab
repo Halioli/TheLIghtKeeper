@@ -59,7 +59,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859072525634567739}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -285,6 +285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b609c2651d940144954983652ee4ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lerpTime: 1
+  lerpDistance: 0.3
+  halfLerpDistance: 0.15
 --- !u!95 &55023409475852100
 Animator:
   serializedVersion: 3

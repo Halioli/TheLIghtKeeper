@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
+
 
 public class WorldMark : MonoBehaviour
 {
@@ -15,10 +18,10 @@ public class WorldMark : MonoBehaviour
     }
 
 
-    void Update()
-    {
-        transform.RotateAroundLocal(Vector3.forward, rotationSpeed * Time.deltaTime);
-    }
+    //void Update()
+    //{
+    //    transform.RotateAroundLocal(Vector3.forward, rotationSpeed * Time.deltaTime);
+    //}
 
     private void OnEnable()
     {
@@ -33,6 +36,9 @@ public class WorldMark : MonoBehaviour
     public void AppearAtPosition(Vector2 position)
     {
         transform.position = position;
+
+        //transform.DOComplete();
+        //transform.DOPunchScale(Vector2.one, fadeTime, 1);
         StartCoroutine(FadeIn());
     }
 
