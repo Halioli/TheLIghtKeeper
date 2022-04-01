@@ -102,8 +102,8 @@ public class EnemyScaredState : EnemyState
         while (!fadeLerp.isMaxPrecise)
         {
             fadeLerp.Update(Time.deltaTime);
-            fadeColor.a = fadeLerp.Value;
-            //spriteRenderer.material.color = fadeColor;
+            fadeColor.a = fadeLerp.Inverse;
+            spriteRenderer.color = fadeColor;
             yield return null;
         }
 

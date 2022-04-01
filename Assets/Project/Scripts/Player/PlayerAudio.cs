@@ -16,8 +16,7 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] AudioClip normalWalkingSound;
     [SerializeField] AudioClip grassWalkingSound;
 
-    [SerializeField] AudioClip attackAudioSound;
-    [SerializeField] AudioClip missAttackAudioSound;
+    [SerializeField] AudioClip missMineAudioSound;
     [SerializeField] AudioClip mineErrorAudioSource;
     [SerializeField] AudioClip mineAudioSound;
     [SerializeField] AudioClip mineBreakAudioSound;
@@ -45,15 +44,14 @@ public class PlayerAudio : MonoBehaviour
         LandscapeInteractor.OnGrassExit += SetNormalWalkingSound;
 
         // ItemPickUp sound
-        PlayerInventory.playerPicksUpItemEvent += PlayItemPickUpSound;
-
-        // Attack sound
-        PlayerCombat.playerAttackEvent += PlayAttackSound;
+        ItemPickUp.playerPicksUpItemEvent += PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop += PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent += PlayReceiveDamageSound;
 
         // Mine sound
+        PlayerMiner.playerMinesNothingEvent += PlayMissMineSound;
         PlayerMiner.pickaxeNotStrongEnoughEvent += PlayMineErrorSound;
         Ore.playerMinesOreEvent += PlayMineOreSound;
         Ore.playerBreaksOreEvent += PlayMineOreBreakSound;
@@ -74,6 +72,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill += PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight += PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials += PlayMineErrorSound;
     }
 
 
@@ -86,15 +86,14 @@ public class PlayerAudio : MonoBehaviour
         LandscapeInteractor.OnGrassExit -= SetNormalWalkingSound;
 
         // ItemPickUp sound
-        PlayerInventory.playerPicksUpItemEvent -= PlayItemPickUpSound;
-
-        // Attack sound
-        PlayerCombat.playerAttackEvent -= PlayAttackSound;
+        ItemPickUp.playerPicksUpItemEvent -= PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop -= PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent -= PlayReceiveDamageSound;
 
         // Mine sound
+        PlayerMiner.playerMinesNothingEvent -= PlayMissMineSound;
         PlayerMiner.pickaxeNotStrongEnoughEvent -= PlayMineErrorSound;
         Ore.playerMinesOreEvent -= PlayMineOreSound;
         Ore.playerBreaksOreEvent -= PlayMineOreBreakSound;
@@ -115,6 +114,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill -= PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight -= PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials -= PlayMineErrorSound;
     }
 
 
@@ -145,25 +146,20 @@ public class PlayerAudio : MonoBehaviour
 
 
     // ItemPickUp sound
-    public void PlayItemPickUpSound()
+    private void PlayItemPickUpSound()
     {
+        itemPickUpAudioSource.pitch = 1f;
+        itemPickUpAudioSource.Play();
+    }
+
+    private void PlayItemDroppedSound()
+    {
+        itemPickUpAudioSource.pitch = 0.75f;
         itemPickUpAudioSource.Play();
     }
 
 
-    // Attack sound
-    public void PlayAttackSound()
-    {
-        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
-        attackAndMineAudioSource.clip = attackAudioSound;
-        attackAndMineAudioSource.Play();
-    }
-    public void PlayMissAttackSound()
-    {
-        attackAndMineAudioSource.clip = missAttackAudioSound;
-        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
-        attackAndMineAudioSource.Play();
-    }
+
 
     // ReceiveDamage sound
     public void PlayReceiveDamageSound()
@@ -174,6 +170,13 @@ public class PlayerAudio : MonoBehaviour
 
 
     // Mine sound
+
+    public void PlayMissMineSound()
+    {
+        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
+        attackAndMineAudioSource.clip = missMineAudioSound;
+        attackAndMineAudioSource.Play();
+    }
 
     private void PlayMineErrorSound()
     {

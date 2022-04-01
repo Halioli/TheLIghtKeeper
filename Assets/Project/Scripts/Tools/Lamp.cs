@@ -19,15 +19,17 @@ public class Lamp : MonoBehaviour
 
     private const int MAX_TIME_LEVELS = 3;
     private int timeLevel = 0;
-    public float lampTime { get; private set; }
+    public float lampTime;
     private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
 
-    private bool coneIsActive = false;
+    public bool coneIsActive = false;
+    public bool intenseCircleIsActive = false;
 
     private float maxLampTime;
     private Animator playerAnimator;
 
     // Public Attributes
+    public bool playerInLight;
     public bool turnedOn;
     public bool active = false;
     public bool canRefill;
@@ -164,6 +166,8 @@ public class Lamp : MonoBehaviour
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
+
+        if (!turnedOn && !playerInLight) ActivateLampLight();
     }
 
     public void ConsumeSpecificLampTime(float time)
@@ -236,6 +240,7 @@ public class Lamp : MonoBehaviour
     public void ActivateCircleLight()
     {
         active = true;
+        intenseCircleIsActive = true;
 
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
         circleLight.Expand(LIGHT_INTENSITY_ON);
@@ -285,6 +290,7 @@ public class Lamp : MonoBehaviour
     public void DeactivateCircleLight()
     {
         active = false;
+        intenseCircleIsActive = false;
 
         circleLight.Shrink(LIGHT_INTENSITY_OFF);
     }
@@ -324,6 +330,7 @@ public class Lamp : MonoBehaviour
             return;
         }
         ++sourceLevel;
+        if (sourceLevel >= LIGHT_ANGLE_LVL.Length) sourceLevel = LIGHT_ANGLE_LVL.Length;
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
