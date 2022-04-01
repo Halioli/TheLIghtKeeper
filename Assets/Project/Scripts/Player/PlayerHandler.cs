@@ -6,13 +6,11 @@ public class PlayerHandler : PlayerBase
 {
     // Private Attributes
     private HealthSystem playerHealthSystem;
-    private Rigidbody2D playerRigidbody2D;
     private bool inCoroutine = false;
 
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
-    public Transform mainCameraTransform;
     public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
 
@@ -22,11 +20,13 @@ public class PlayerHandler : PlayerBase
     // Restore fades
     public delegate void RestoreFadesAction();
     public static event RestoreFadesAction OnRestoreFades;
+    // Tp player
+    public delegate void TeleportPlayerAction(Vector3 landingPos);
+    public static event TeleportPlayerAction OnTeleportPlayer;
 
     private void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
-        playerRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -50,8 +50,10 @@ public class PlayerHandler : PlayerBase
             {
                 // Teleport to desired position
                 SetPlayerNotInvulnerable();
-                playerRigidbody2D.transform.position = respawnPosition;
-                mainCameraTransform.position = respawnPosition;
+
+                if (OnTeleportPlayer != null)
+                    OnTeleportPlayer(respawnPosition);
+
                 playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
