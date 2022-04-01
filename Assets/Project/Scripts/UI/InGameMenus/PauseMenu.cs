@@ -12,6 +12,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject optionsMenu;
 
+    public delegate void PauseMenuAction();
+    public static event PauseMenuAction OnPaused;
     void Update()
     {
         if (PlayerInputs.instance.PlayerPressedPauseButton())
@@ -22,6 +24,7 @@ public class PauseMenu : MonoBehaviour
             } 
             else
             {
+                if(OnPaused != null) OnPaused();
                 Pause();
             }
         }

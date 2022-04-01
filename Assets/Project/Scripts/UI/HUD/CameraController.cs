@@ -27,8 +27,6 @@ public class CameraController : MonoBehaviour
     private Vector3 cameraOffset = Vector3.forward * 10f;
 
 
-
-
     void Start()
     {
         cam = Camera.main;
@@ -90,12 +88,15 @@ public class CameraController : MonoBehaviour
     {
         Torch.OnTorchStartActivation += SetPilarAsFollow;
         Torch.OnTorchEndActivation += SetPlayerAsFollow;
+        CinemachineShake.OnShakeStop += ResetTransform;
     }
 
     private void OnDisable()
     {
         Torch.OnTorchStartActivation -= SetPilarAsFollow;
         Torch.OnTorchEndActivation -= SetPlayerAsFollow;
+        CinemachineShake.OnShakeStop -= ResetTransform;
+
     }
 
 
@@ -115,6 +116,10 @@ public class CameraController : MonoBehaviour
         follower = Follower.PILAR;
     }
 
+    private void ResetTransform()
+    {
+        this.transform.rotation = Quaternion.identity;
+    }
 
 
 }
