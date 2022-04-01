@@ -1417,6 +1417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfLights: 0
   lamp: {fileID: 3747971618907990885}
+  lightEdgeChecker: {fileID: 0}
 --- !u!114 &3747971617821116006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1484,7 +1485,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1543562946031534957}
   hudHandler: {fileID: 0}
-  mainCameraTransform: {fileID: 0}
   respawnPosition: {x: 0, y: 0, z: 0}
   animationEnds: 0
 --- !u!114 &2105085851515632685
@@ -7223,6 +7223,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1889748036187033453, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1889748037255825169, guid: e020ecae65d41a640a124449bd2865c7, type: 3}
+      propertyPath: m_BlendStyleIndex
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4764591082063808555, guid: e020ecae65d41a640a124449bd2865c7, type: 3}

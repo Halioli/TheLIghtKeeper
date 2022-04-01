@@ -57,7 +57,7 @@ public class EnemyMonster : MonoBehaviour
         healthSystem.ReceiveDamage(damageValue);
         enemyAudio.PlayReceiveDamageAudio();
 
-        //StartCoroutine(HurtedFlashEffect());
+        StartCoroutine(HurtedFlashEffect());
     }
 
     public virtual void SetPlayer(GameObject playerGameObject)
@@ -108,14 +108,15 @@ public class EnemyMonster : MonoBehaviour
         transform.DOComplete();
 
         transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
+        yield return new WaitForSeconds(damagedTime / 2); // aux
 
-        spriteRenderer.color = transparent;
-        yield return new WaitForSeconds(damagedTime / 2);
+        //spriteRenderer.color = transparent;
+        //yield return new WaitForSeconds(damagedTime / 2);
 
-        spriteRenderer.color = normal;
-        yield return new WaitForSeconds(damagedTime / 2);
+        //spriteRenderer.color = normal;
+        //yield return new WaitForSeconds(damagedTime / 2);
         
-        spriteRenderer.color = normal;
+        //spriteRenderer.color = normal;
     }
 
 

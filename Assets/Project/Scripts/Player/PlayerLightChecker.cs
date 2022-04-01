@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class PlayerLightChecker : MonoBehaviour
 {
-    // Private Attributes
     public static bool playerInLight;
     private bool wasPlayerInDarknessNoLantern = false;
     public static bool playerInDarknessNoLantern;
     public int numberOfLights;
 
-    // Public Attributes
     public Lamp lamp;
+    [SerializeField] LightEdgeChecker lightEdgeChecker;
 
     public delegate void PlayerEntersLightAction();
     public static event PlayerEntersLightAction OnPlayerEntersLight;
@@ -83,21 +82,6 @@ public class PlayerLightChecker : MonoBehaviour
 
     }
 
-    //private void OnTriggerStay2D(Collider2D lightingCollider)
-    //{
-    //    if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
-    //    {
-    //        // Lamp turns off
-            
-    //        if (lightingCollider.gameObject.CompareTag("CoreLight"))
-    //        {
-    //            lamp.FullyRefillLampTime();
-    //        }
-
-    //        SetPlayerInLightToTrue();
-    //    }
-
-    //}
 
 
     // Method that checks if the player exits an area with light
