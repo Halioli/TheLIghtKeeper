@@ -29,7 +29,24 @@ public class Torch : InteractStation
 
     [SerializeField] AudioSource torchAudioSource;
 
-    // Start is called before the first frame update
+
+    public delegate void TorchPreAction(float duration);
+    public static event TorchPreAction OnTorchPreStartActivation;
+    public static event TorchPreAction OnTorchPreEndActivation;
+
+    public delegate void TorchAction();
+    public static event TorchAction OnTorchStartActivation;
+    public static event TorchAction OnTorchEndActivation;
+
+
+
+
+
+    void Awake()
+    {
+        SaveSystem.torches.Add(this);
+    }
+
     void Start()
     {
         smokeTorchParticles.Stop();
@@ -55,6 +72,8 @@ public class Torch : InteractStation
 
     private void Update()
     {
+        if (turnedOn) return;
+
         if (playerInsideTriggerArea)
         {
             popUpCanvasGroup.alpha = 1f;
@@ -78,15 +97,9 @@ public class Torch : InteractStation
             torchAudioSource.Stop();
         }
         DoPuzzle();
-        if (PuzzleChecker())
-        {
-            //Debug.Log("Puzzle Completed");
-            puzzleSystem.animator.SetBool("isCompleted", true);
-
-        }
 
     }
-    void SetTorchLightOff()
+    public void SetTorchLightOff()
     {
         smokeTorchParticles.Stop();
         torchLight.intensity = 1f;
@@ -99,7 +112,7 @@ public class Torch : InteractStation
         }
     }
 
-    void SetTorchLightOn()
+    public void SetTorchLightOn()
     {
         smokeTorchParticles.Play();
         torchLight.intensity = 1f;
@@ -152,6 +165,7 @@ public class Torch : InteractStation
         if (turnedOn && hasToBurn)
         {
             puzzleSystem.torchesOn += 1;
+            StartCoroutine(CameraTransitionToPilar());
         }
         else if (!turnedOn && hasToBurn)
         {
@@ -164,6 +178,7 @@ public class Torch : InteractStation
         else if (!turnedOn && !hasToBurn)
         {
             puzzleSystem.torchesOff += 1;
+            StartCoroutine(CameraTransitionToPilar());
         }
 
     }
@@ -190,4 +205,43 @@ public class Torch : InteractStation
     {
         desactivatedTorch.SetActive(true);
     }
+
+
+    IEnumerator CameraTransitionToPilar()
+    {
+        float pretime = 1.5f;
+        float time = 3f;
+
+        PlayerInputs.instance.canMove = false;
+        PlayerInputs.instance.isLanternPaused = true;
+
+        yield return new WaitForSeconds(1f);
+        
+        if (OnTorchPreStartActivation != null) OnTorchPreStartActivation(pretime);
+        yield return new WaitForSeconds(pretime/2f);
+
+        if (OnTorchStartActivation != null) OnTorchStartActivation();
+
+        yield return new WaitForSeconds(time);
+
+        if (PuzzleChecker())
+        {
+            //Debug.Log("Puzzle Completed");
+            puzzleSystem.animator.SetBool("isCompleted", true);
+        }
+
+        yield return new WaitForSeconds(time);
+
+
+        if (OnTorchPreEndActivation != null) OnTorchPreEndActivation(pretime);
+        yield return new WaitForSeconds(pretime);
+        
+
+        PlayerInputs.instance.canMove = true;
+        PlayerInputs.instance.isLanternPaused = false;
+        if (OnTorchEndActivation != null) OnTorchEndActivation();
+
+    }
+
+
 }

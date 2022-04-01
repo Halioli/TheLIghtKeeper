@@ -14,7 +14,6 @@ public class PlayerMovement : PlayerBase
 
     // Public attributes
     public float moveSpeed;
-    public ParticleSystem walkingParticleSystem;
     public Animator animator;
 
     // Events
@@ -25,7 +24,6 @@ public class PlayerMovement : PlayerBase
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        walkingParticleSystem.Play();
     }
 
     private void Update()

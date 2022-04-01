@@ -20,8 +20,7 @@ public abstract class Spawner : MonoBehaviour
         }
         else
         {
-            Spawn();
-            canSpawn = false;
+            canSpawn = !Spawn(); 
         }
     }
 
@@ -41,7 +40,7 @@ public abstract class Spawner : MonoBehaviour
     }
 
     // Each type of spawner needs to override Spawn();
-    protected virtual void Spawn() { }
+    protected virtual bool Spawn() { return false; }
 
 
 }
