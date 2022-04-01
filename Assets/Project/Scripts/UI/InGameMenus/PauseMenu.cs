@@ -91,6 +91,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ClickedMainMenuButton(int sceneIndex)
     {
+        gameIsPaused = false;
         loadingGroup.alpha = 1f;
         StartCoroutine(AsyncLoading(sceneIndex));
     }
