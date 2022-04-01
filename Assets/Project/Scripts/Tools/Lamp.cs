@@ -157,7 +157,7 @@ public class Lamp : MonoBehaviour
     public void FullyRefillLampTime()
     {
         lampTime = maxLampTime;
-        StartCoroutine("RechargeLampTimeParticles");
+        StartCoroutine("RechargeLamptTimeParticles");
 
     }
 
@@ -172,8 +172,7 @@ public class Lamp : MonoBehaviour
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
-        StartCoroutine("RechargeLampTimeParticles");
-
+        StartCoroutine("RechargeLamptTimeParticles");
         if (!turnedOn && !playerInLight) ActivateLampLight();
     }
 
