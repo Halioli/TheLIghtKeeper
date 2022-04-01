@@ -15,6 +15,7 @@ public class Ore : MonoBehaviour
     protected Sprite currentSprite;
 
     // Public Attributes
+    [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
@@ -24,6 +25,13 @@ public class Ore : MonoBehaviour
     public delegate void OreGetsMinedAction();
     public static event OreGetsMinedAction playerMinesOreEvent;
     public static event OreGetsMinedAction playerBreaksOreEvent;
+
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();    
+    }
+
 
 
     private void Start()
@@ -119,13 +127,11 @@ public class Ore : MonoBehaviour
 
     protected void UpdateCurrentSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = currentSprite;
+        spriteRenderer.sprite = currentSprite;
     }
 
     protected IEnumerator Disappear()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
         Color transparentColor = spriteRenderer.material.color;
         transparentColor.a = 0.0f;
 
