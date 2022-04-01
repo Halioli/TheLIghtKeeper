@@ -32,7 +32,7 @@ public class AmbientAudio : MonoBehaviour
 
     enum MusicFade { NORMAL, NONE, FADING_OUT, FADING_IN };
     MusicFade musicFade = MusicFade.NORMAL;
-    private const float minMusicVolume = 0f;
+    private const float minMusicVolume = 0.02f;
     private const float maxMusicVolume = 0.1f;
     private const float musicFadeOutDuration = 5f;
     private const float musicFadeInDuration = 2.5f;
