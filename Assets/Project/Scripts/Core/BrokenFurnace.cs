@@ -48,7 +48,7 @@ public class BrokenFurnace : InteractStation
         {
             popUp.ChangeMessageText("Materials added");
             playerInventory.SubstractNItemsFromInventory(coal, COAL_REPAIR_AMOUNT);
-
+            PlayerInputs.instance.canMove = false;
             StartCoroutine(StartFurnace());
         }
         else
