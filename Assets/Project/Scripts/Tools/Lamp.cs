@@ -156,6 +156,8 @@ public class Lamp : MonoBehaviour
 
     public void FullyRefillLampTime()
     {
+        if (LampTimeIsMax()) return;
+
         lampTime = maxLampTime;
         StartCoroutine("RechargeLampTimeParticles");
 
@@ -163,6 +165,8 @@ public class Lamp : MonoBehaviour
 
     public void RefillLampTime(float time)
     {
+        if (LampTimeIsMax()) return;
+
         if (lampTime + time > maxLampTime)
         {
             FullyRefillLampTime();
