@@ -11,6 +11,8 @@ public class Hotkeys : MonoBehaviour
     public GameObject ironMineral;
     public GameObject darkEssenceMineral;
     public GameObject luxuniteMineral;
+    public GameObject enrichedMetalMineral;
+    public GameObject electricOrbMineral;
 
     void Start()
     {
@@ -39,6 +41,16 @@ public class Hotkeys : MonoBehaviour
         {
             // Spawn 1 luxinite at the player's feet
             Instantiate(luxuniteMineral, transform);
+        }
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            // Spawn 1 enriched metal at the player's feet
+            Instantiate(enrichedMetalMineral, transform);
+        }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            // Spawn 1 electric orb at the player's feet
+            Instantiate(electricOrbMineral, transform);
         }
         else if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.KeypadPlus))
         {

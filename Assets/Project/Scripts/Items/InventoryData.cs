@@ -33,6 +33,8 @@ public class InventoryData : ScriptableObject
         if (firstTime)
         {
             firstTime = false;
+            itemsData.Clear();
+            itemAmountsData.Clear();
             return false;
         }
 

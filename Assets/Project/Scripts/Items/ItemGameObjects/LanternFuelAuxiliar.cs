@@ -9,6 +9,9 @@ public class LanternFuelAuxiliar : MonoBehaviour
     private float punchTime = 0.5f;
 
 
+    public delegate void LanternRefill(string description);
+    public static event LanternRefill OnLanternRefill;
+
     private void Awake()
     {
         Lamp playerLamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
@@ -19,6 +22,7 @@ public class LanternFuelAuxiliar : MonoBehaviour
         }
         StartCoroutine(Shake());
 
+        if (OnLanternRefill != null) OnLanternRefill("+"+ lampTimeToRefill.ToString());
     }
 
     IEnumerator Shake()

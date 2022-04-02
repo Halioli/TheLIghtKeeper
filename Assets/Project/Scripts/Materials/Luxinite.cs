@@ -65,4 +65,11 @@ public class Luxinite : Ore
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }
+
+    protected override void DropMineralItem()
+    {
+        ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
+        droppedMineralItem.DropsRandom(false);
+    }
+
 }

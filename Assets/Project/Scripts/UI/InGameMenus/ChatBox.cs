@@ -9,7 +9,9 @@ public class ChatBox : MonoBehaviour
 {
     private static float FADE_IN_TIME = 0.1f;
     private static float FADE_OUT_TIME = 0.1f;
-    private static float LETTER_DELAY = 0.05f;
+    private static float LETTER_DELAY = 0.035f;
+    private static float DOT_DELAY = 0.4f;
+    private static float COMMA_DELAY = 0.2f;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
@@ -17,12 +19,21 @@ public class ChatBox : MonoBehaviour
     private string currentMssgText = "";
     private List<string> textToShow;
 
+    private int eventIndex = -1;
+    private TutorialMessages.MessegeEventType eventType;
+    private int eventID;
+
     public delegate void ChatNextInput();
     public static event ChatNextInput OnChatNextInput;
+
+    public delegate void ChatEventAction(int eventID);
+    public static event ChatEventAction OnChatTutorialEvent;
+    public static event ChatEventAction OnChatCameraEvent;
+
     public delegate void FinishedChatMessage();
     public static event FinishedChatMessage OnFinishChatMessage;
     public bool allTextShown;
-    public int currentTextNumb = 0;
+    public int currentTextNum = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
     public Transform buttonTransoform;
@@ -36,13 +47,15 @@ public class ChatBox : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && chatOpen)
+        if (chatOpen && Input.GetKeyDown(KeyCode.Space))
         {
             if (OnChatNextInput != null)
                 OnChatNextInput();
 
             buttonTransoform.DOComplete();
             buttonTransoform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
+
+            mssgText.maxVisibleCharacters = fullMssgText.Length;
 
             NextText();
         }
@@ -60,15 +73,21 @@ public class ChatBox : MonoBehaviour
         MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(string[] mssg)
+    private void ShowChatBox(string[] mssg, TutorialMessages.ChatEventData chatEventData)
     {
         //ParseText(mssg);
         textToShow = new List<string>(mssg);
+        
+        this.eventIndex = chatEventData.eventIndex;
+        this.eventType = chatEventData.eventType;
+        this.eventID = chatEventData.eventID;
 
         // Set canvas group to 1
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
         NextText();
+
+        PlayerInputs.instance.isLanternPaused = true;
     }
 
     private void DisplayText()
@@ -82,19 +101,23 @@ public class ChatBox : MonoBehaviour
         if (!allTextShown)
         {
             StopCoroutine("ShowText");
-            mssgText.text = fullMssgText;
             allTextShown = true;
         }
         else
         {
-            if (textToShow.Count > currentTextNumb)
+            if (textToShow.Count > currentTextNum)
             {
                 allTextShown = false;
-                fullMssgText = textToShow[currentTextNumb];
+                fullMssgText = textToShow[currentTextNum];
 
                 DisplayText();
+                
+                if (currentTextNum == eventIndex)
+                {
+                    InvokeChatEvents();
+                }
 
-                currentTextNumb++;
+                currentTextNum++;
             }
             else
             {
@@ -107,16 +130,35 @@ public class ChatBox : MonoBehaviour
         }
     }
 
+
+    private void InvokeChatEvents()
+    {
+        switch (this.eventType)
+        {
+            case TutorialMessages.MessegeEventType.TUTORIAL:
+                if (OnChatTutorialEvent != null) OnChatTutorialEvent(eventID);
+                break;
+            case TutorialMessages.MessegeEventType.CAMERA:
+                if (OnChatCameraEvent != null) OnChatCameraEvent(eventID);
+                break;
+            default:
+                break;
+        }
+    }
+
+
     private void HideChat()
     {
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
+
+        PlayerInputs.instance.isLanternPaused = false;
     }
 
     private void ResetValues()
     {
         textToShow.Clear();
-        currentTextNumb = 0;
+        currentTextNum = 0;
         TutorialMessages.tutorialOpened = false;
         chatOpen = false;
         allTextShown = false;
@@ -164,14 +206,26 @@ public class ChatBox : MonoBehaviour
     IEnumerator ShowText()
     {
         allTextShown = false;
-        for (int i = 0; i < fullMssgText.Length + 1; i++)
+        mssgText.text = fullMssgText;
+        mssgText.maxVisibleCharacters = 0;
+        for (int i = 0; i < fullMssgText.Length; i++)
         {
-            currentMssgText = fullMssgText.Substring(0, i);
-            mssgText.text = currentMssgText;
-
+            mssgText.maxVisibleCharacters++;
             duckFace.transform.DOShakeRotation(LETTER_DELAY, 10, 10, 50);
-            
-            yield return new WaitForSeconds(LETTER_DELAY);
+
+            if (fullMssgText[i] == '.' || fullMssgText[i] == '!' || fullMssgText[i] == '?')
+            {
+                yield return new WaitForSeconds(DOT_DELAY);
+            }
+            else if (fullMssgText[i] == ',')
+            {
+                yield return new WaitForSeconds(COMMA_DELAY);
+            }
+            else
+            {
+                yield return new WaitForSeconds(LETTER_DELAY);
+            }
+            //yield return new WaitForSeconds(fullMssgText[i] == '.' ? DOT_DELAY : LETTER_DELAY);
         }
         allTextShown = true;
     }
