@@ -11,9 +11,12 @@ public class UpgradeButton : HoverButton
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] Image[] upgradeStatus;
     [SerializeField] GameObject[] requiredMaterials;
+    [SerializeField] GameObject attention;
+    [SerializeField] bool isAttentionActive = false;
 
     private int currentUpgradeStatus = 0;
     public bool canBeClicked = true;
+
 
 
     public void GetsClicked()
@@ -21,6 +24,11 @@ public class UpgradeButton : HoverButton
         if (canBeClicked)
         {
             transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
+            if (isAttentionActive)
+            {
+                isAttentionActive = false;
+                attention.SetActive(false);
+            }
         }
     }
 

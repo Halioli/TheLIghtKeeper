@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class Pickaxe : MonoBehaviour
 {
     private const int MAX_LEVELS = 3;

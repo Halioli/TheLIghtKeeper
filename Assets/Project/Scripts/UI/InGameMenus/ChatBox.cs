@@ -7,20 +7,36 @@ using DG.Tweening;
 
 public class ChatBox : MonoBehaviour
 {
-    private static float FADE_IN_TIME = 0.3f;
-    private static float FADE_OUT_TIME = 1.0f;
-    private static float WAIT_TIME = 2.0f;
-    private static float LETTER_DELAY = 0.05f;
-    private static int MAX_TEXT_LENGHT = 71;
+    private static float FADE_IN_TIME = 0.1f;
+    private static float FADE_OUT_TIME = 0.1f;
+    private static float LETTER_DELAY = 0.035f;
+    private static float DOT_DELAY = 0.4f;
+    private static float COMMA_DELAY = 0.2f;
 
     private CanvasGroup chatCanvasGroup;
     private bool chatOpen;
-    private bool allTextShown;
     private string fullMssgText;
     private string currentMssgText = "";
+    private List<string> textToShow;
 
+    private int eventIndex = -1;
+    private TutorialMessages.MessegeEventType eventType;
+    private int eventID;
+
+    public delegate void ChatNextInput();
+    public static event ChatNextInput OnChatNextInput;
+
+    public delegate void ChatEventAction(int eventID);
+    public static event ChatEventAction OnChatTutorialEvent;
+    public static event ChatEventAction OnChatCameraEvent;
+
+    public delegate void FinishedChatMessage();
+    public static event FinishedChatMessage OnFinishChatMessage;
+    public bool allTextShown;
+    public int currentTextNum = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
+    public Transform buttonTransoform;
 
     void Start()
     {
@@ -29,34 +45,121 @@ public class ChatBox : MonoBehaviour
         allTextShown = false;
     }
 
+    private void Update()
+    {
+        if (chatOpen && Input.GetKeyDown(KeyCode.Space))
+        {
+            if (OnChatNextInput != null)
+                OnChatNextInput();
+
+            buttonTransoform.DOComplete();
+            buttonTransoform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
+
+            mssgText.maxVisibleCharacters = fullMssgText.Length;
+
+            NextText();
+        }
+    }
+
     private void OnEnable()
     {
         TutorialMessages.OnNewMessage += ShowChatBox;
+        MessageItemToStorage.OnNewMessage += ShowChatBox;
     }
 
     private void OnDisable()
     {
         TutorialMessages.OnNewMessage -= ShowChatBox;
+        MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(string mssg)
+    private void ShowChatBox(string[] mssg, TutorialMessages.ChatEventData chatEventData)
     {
-        if (!chatOpen)
-        {
-            // Set canvas group to 1
-            StartCoroutine("CanvasFadeIn", chatCanvasGroup);
-        }
+        //ParseText(mssg);
+        textToShow = new List<string>(mssg);
+        
+        this.eventIndex = chatEventData.eventIndex;
+        this.eventType = chatEventData.eventType;
+        this.eventID = chatEventData.eventID;
 
+        // Set canvas group to 1
+        StartCoroutine("CanvasFadeIn", chatCanvasGroup);
+
+        NextText();
+
+        PlayerInputs.instance.isLanternPaused = true;
+    }
+
+    private void DisplayText()
+    {
         // Display text
-        fullMssgText = mssg;
         StartCoroutine("ShowText");
+    }
 
+    private void NextText()
+    {
+        if (!allTextShown)
+        {
+            StopCoroutine("ShowText");
+            allTextShown = true;
+        }
+        else
+        {
+            if (textToShow.Count > currentTextNum)
+            {
+                allTextShown = false;
+                fullMssgText = textToShow[currentTextNum];
+
+                DisplayText();
+                
+                if (currentTextNum == eventIndex)
+                {
+                    InvokeChatEvents();
+                }
+
+                currentTextNum++;
+            }
+            else
+            {
+                // Send Action
+                if (OnFinishChatMessage != null)
+                    OnFinishChatMessage();
+
+                HideChat();
+            }
+        }
+    }
+
+
+    private void InvokeChatEvents()
+    {
+        switch (this.eventType)
+        {
+            case TutorialMessages.MessegeEventType.TUTORIAL:
+                if (OnChatTutorialEvent != null) OnChatTutorialEvent(eventID);
+                break;
+            case TutorialMessages.MessegeEventType.CAMERA:
+                if (OnChatCameraEvent != null) OnChatCameraEvent(eventID);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void HideChat()
+    {
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
+
+        PlayerInputs.instance.isLanternPaused = false;
     }
 
     private void ResetValues()
     {
+        textToShow.Clear();
+        currentTextNum = 0;
+        TutorialMessages.tutorialOpened = false;
         chatOpen = false;
         allTextShown = false;
     }
@@ -88,8 +191,6 @@ public class ChatBox : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(WAIT_TIME);
-
         for (float t = 0f; t < FADE_OUT_TIME; t += Time.deltaTime)
         {
             float normalizedTime = t / FADE_OUT_TIME;
@@ -104,14 +205,27 @@ public class ChatBox : MonoBehaviour
 
     IEnumerator ShowText()
     {
-        for (int i = 0; i < fullMssgText.Length + 1; i++)
+        allTextShown = false;
+        mssgText.text = fullMssgText;
+        mssgText.maxVisibleCharacters = 0;
+        for (int i = 0; i < fullMssgText.Length; i++)
         {
-            currentMssgText = fullMssgText.Substring(0, i);
-            mssgText.text = currentMssgText;
-
+            mssgText.maxVisibleCharacters++;
             duckFace.transform.DOShakeRotation(LETTER_DELAY, 10, 10, 50);
-            
-            yield return new WaitForSeconds(LETTER_DELAY);
+
+            if (fullMssgText[i] == '.' || fullMssgText[i] == '!' || fullMssgText[i] == '?')
+            {
+                yield return new WaitForSeconds(DOT_DELAY);
+            }
+            else if (fullMssgText[i] == ',')
+            {
+                yield return new WaitForSeconds(COMMA_DELAY);
+            }
+            else
+            {
+                yield return new WaitForSeconds(LETTER_DELAY);
+            }
+            //yield return new WaitForSeconds(fullMssgText[i] == '.' ? DOT_DELAY : LETTER_DELAY);
         }
         allTextShown = true;
     }

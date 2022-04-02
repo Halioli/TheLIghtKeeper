@@ -4,20 +4,31 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private const float farDistance = 10f;
+
+    enum Follower { PLAYER, PILAR };
+    Follower follower = Follower.PLAYER;
+
     Vector2 viewPortSize;
     Camera cam;
 
     public float viewPortFactor;
 
     Vector3 targetPosition;
+    Vector3 followPosition;
     private Vector3 currentVelocity;
     public float followDuration;
     public float maximumFollowSpeed;
 
     public Transform player;
+    [SerializeField] Transform pilarTransform;
 
-    Vector2 distance;
+    private Vector2 distance;
+    private Vector3 cameraOffset = Vector3.forward * 10f;
+
+
+
+
     void Start()
     {
         cam = Camera.main;
@@ -41,8 +52,28 @@ public class CameraController : MonoBehaviour
             targetPosition.y = player.position.y - (viewPortSize.y / 2 * Mathf.Sign(distance.y));
         }
 
-        targetPosition = player.position - new Vector3(0, 0, 10);
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, followDuration, maximumFollowSpeed);
+
+        // Target right follow
+        if (follower == Follower.PLAYER)
+        {
+            targetPosition = player.position - cameraOffset;
+        }
+        else if (follower == Follower.PILAR)
+        {
+            targetPosition = pilarTransform.position - cameraOffset;
+        }
+
+        // Check if smooth or teleport follow
+        if (IsFarFromTarget())
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, followDuration, 400f);
+            //transform.position = new Vector3(targetPosition.x, targetPosition.y, -10);
+        }
+        else
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, followDuration, maximumFollowSpeed);
+        }
+
     }
 
     private void OnDrawGizmos()
@@ -53,4 +84,37 @@ public class CameraController : MonoBehaviour
 
         Gizmos.DrawCube(transform.position, viewPortSize);
     }
+
+
+    private void OnEnable()
+    {
+        Torch.OnTorchStartActivation += SetPilarAsFollow;
+        Torch.OnTorchEndActivation += SetPlayerAsFollow;
+    }
+
+    private void OnDisable()
+    {
+        Torch.OnTorchStartActivation -= SetPilarAsFollow;
+        Torch.OnTorchEndActivation -= SetPlayerAsFollow;
+    }
+
+
+    private bool IsFarFromTarget()
+    {
+        return Vector2.Distance(transform.position, targetPosition) >= farDistance;
+    }
+
+
+    public void SetPlayerAsFollow()
+    {
+        follower = Follower.PLAYER;
+    }
+
+    public void SetPilarAsFollow()
+    {
+        follower = Follower.PILAR;
+    }
+
+
+
 }

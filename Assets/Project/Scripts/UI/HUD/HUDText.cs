@@ -7,8 +7,7 @@ using DG.Tweening;
 
 public class HUDText : MonoBehaviour
 {
-    enum DisplayMessege { NONE, PICKAXE_TOO_WEAK, PICK_UP_FAIL};
-
+    enum DisplayMessege { NONE, PICKAXE_TOO_WEAK, PICK_UP_FAIL, LANTERN_RECHARGED, NOT_ENOUGH_ITEMS };
 
     private float FADE_TIME = 1.5f;
     private float FADE_OUT_TIME = 0.25f;
@@ -18,26 +17,41 @@ public class HUDText : MonoBehaviour
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] TextMeshProUGUI textMessege;
     [SerializeField] GameObject crossGameObject;
+    [SerializeField] GameObject exclamationGameObject;
+    [SerializeField] GameObject lightningGameObject;
 
 
     private void OnEnable()
     {
         PlayerMiner.pickaxeNotStrongEnoughEvent += DisplayMineErrorText;
         ItemPickUp.OnItemPickUpFail += DisplayItemPickUpError;
+
+        PlayerLightChecker.OnPlayerEntersCoreLight += DisplayLanternRecharged;
+
+        LanternFuelAuxiliar.OnLanternRefill += DisplayLanternRecharged;
+
+        InteractStation.OnNotEnoughMaterials += DisplayNotEnoughItems;
     }
 
     private void OnDisable()
     {
         PlayerMiner.pickaxeNotStrongEnoughEvent -= DisplayMineErrorText;
         ItemPickUp.OnItemPickUpFail -= DisplayItemPickUpError;
+
+        PlayerLightChecker.OnPlayerEntersCoreLight -= DisplayLanternRecharged;
+
+        LanternFuelAuxiliar.OnLanternRefill -= DisplayLanternRecharged;
+
+        InteractStation.OnNotEnoughMaterials -= DisplayNotEnoughItems;
     }
 
 
     private void DisplayMineErrorText()
     {
-        if (displayMessage != DisplayMessege.PICKAXE_TOO_WEAK)
-            textMessege.text = "Pickaxe too weak!";
+        if (displayMessage == DisplayMessege.PICKAXE_TOO_WEAK && canvasGroup.alpha != 0f)
+            return;
 
+        textMessege.text = "Pickaxe too weak!";
         displayMessage = DisplayMessege.PICKAXE_TOO_WEAK;
         DisplayMessageAndCross(FADE_TIME);
     }
@@ -45,20 +59,62 @@ public class HUDText : MonoBehaviour
 
     private void DisplayItemPickUpError(float duration)
     {
-        if (displayMessage != DisplayMessege.PICK_UP_FAIL)
-            textMessege.text = "No inventory space!";
+        if (displayMessage == DisplayMessege.PICK_UP_FAIL && canvasGroup.alpha != 0f)
+            return;
 
+        textMessege.text = "No inventory space!";
         displayMessage = DisplayMessege.PICK_UP_FAIL;
         DisplayMessageAndCross(duration);
     }
 
+    private void DisplayLanternRecharged()
+    {
+        if (displayMessage == DisplayMessege.LANTERN_RECHARGED && canvasGroup.alpha != 0f)
+            return;
+
+        textMessege.text = "Lantern charged up!";
+        displayMessage = DisplayMessege.LANTERN_RECHARGED;
+        DisplayMessageAndLightning(FADE_TIME);
+    }
+
+    private void DisplayLanternRecharged(string messege)
+    {
+        if (displayMessage == DisplayMessege.LANTERN_RECHARGED && canvasGroup.alpha != 0f)
+            return;
+
+        textMessege.text = messege;
+        displayMessage = DisplayMessege.LANTERN_RECHARGED;
+        DisplayMessageAndLightning(FADE_TIME);
+    }
+
+    private void DisplayNotEnoughItems()
+    {
+        if (displayMessage == DisplayMessege.NOT_ENOUGH_ITEMS && canvasGroup.alpha != 0f)
+            return;
+
+        textMessege.text = "Not enough items!";
+        displayMessage = DisplayMessege.NOT_ENOUGH_ITEMS;
+        DisplayMessageAndExclamation(FADE_TIME);
+    }
+
+
 
     private void DisplayMessageAndCross(float duration)
     {
-        if (canvasGroup.alpha != 0f) return;
-
         StartCoroutine(DisplayMessage(duration));
         StartCoroutine(StartCrossAppears(duration));
+    }
+
+    private void DisplayMessageAndExclamation(float duration)
+    {
+        StartCoroutine(DisplayMessage(duration));
+        StartCoroutine(StartExclamationAppears(duration));
+    }
+
+    private void DisplayMessageAndLightning(float duration)
+    {
+        StartCoroutine(DisplayMessage(duration));
+        StartCoroutine(StartLightningAppears(duration));
     }
 
     IEnumerator DisplayMessage(float duration)
@@ -81,10 +137,32 @@ public class HUDText : MonoBehaviour
 
     IEnumerator StartCrossAppears(float duration)
     {
+        exclamationGameObject.SetActive(false);
+        crossGameObject.SetActive(true);
+        lightningGameObject.SetActive(false);
+
         crossGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), duration, 5);
         yield return new WaitForSeconds(duration);
     }
 
+    IEnumerator StartExclamationAppears(float duration)
+    {
+        exclamationGameObject.SetActive(true);
+        crossGameObject.SetActive(false);
+        lightningGameObject.SetActive(false);
 
+        exclamationGameObject.transform.DOPunchPosition(new Vector2(0f, SHAKE_STRENGHT), duration);
+        yield return new WaitForSeconds(duration);
+    }
+
+    IEnumerator StartLightningAppears(float duration)
+    {
+        exclamationGameObject.SetActive(false);
+        crossGameObject.SetActive(false);
+        lightningGameObject.SetActive(true);
+
+        lightningGameObject.transform.DOPunchPosition(new Vector2(SHAKE_STRENGHT, 0f), duration);
+        yield return new WaitForSeconds(duration);
+    }
 
 }

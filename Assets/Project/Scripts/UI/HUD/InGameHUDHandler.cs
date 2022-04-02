@@ -21,8 +21,6 @@ public class InGameHUDHandler : MonoBehaviour
     private CanvasGroup healthGroup;
     private CanvasGroup lampGroup;
     private CanvasGroup clawStrikeGroup;
-    private CanvasGroup exclamationGroup;
-    private CanvasGroup crossGroup;
 
     // Public Attributes
     public HUDBar healthBar;
@@ -31,7 +29,6 @@ public class InGameHUDHandler : MonoBehaviour
     public GameObject healthBarGameObject;
     public GameObject lampBarGameObject;
     public GameObject clawStrikeGameObject;
-    public GameObject exclamationGameObject;
 
     public HealthSystem playerHealthSystem;
     public Lamp lamp;
@@ -56,9 +53,6 @@ public class InGameHUDHandler : MonoBehaviour
 
         // Initialize claw variables
         clawStrikeGroup = clawStrikeGameObject.GetComponent<CanvasGroup>();
-
-        // Initialize exclamation variables
-        exclamationGroup = exclamationGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
@@ -243,31 +237,5 @@ public class InGameHUDHandler : MonoBehaviour
         }
         clawStrikeGroup.alpha = fadeInStartVector.x;
     }
-
-    private void OnEnable()
-    {
-        //PlayerMiner.playerSucceessfulMineEvent += ExclamationAppears;
-    }
-
-    private void OnDisable()
-    {
-        //PlayerMiner.playerSucceessfulMineEvent -= ExclamationAppears;
-    }
-
-    private void ExclamationAppears()
-    {
-        StartCoroutine(StartExclamationAppears());
-    }
-
-    IEnumerator StartExclamationAppears()
-    {
-        exclamationGroup.alpha = 1f;
-
-        exclamationGameObject.transform.DOPunchPosition(new Vector2(0f, SHAKE_STRENGHT), FADE_TIME);
-        yield return new WaitForSeconds(FADE_TIME);
-
-        exclamationGroup.alpha = 0f;
-    }
-
 
 }

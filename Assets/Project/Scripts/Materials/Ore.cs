@@ -15,6 +15,7 @@ public class Ore : MonoBehaviour
     protected Sprite currentSprite;
 
     // Public Attributes
+    [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
@@ -24,6 +25,12 @@ public class Ore : MonoBehaviour
     public delegate void OreGetsMinedAction();
     public static event OreGetsMinedAction playerMinesOreEvent;
     public static event OreGetsMinedAction playerBreaksOreEvent;
+
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();    
+    }
 
 
 
@@ -75,7 +82,6 @@ public class Ore : MonoBehaviour
 
         UpdateCurrentSprite();
         StartCoroutine("PlayBreakParticles");
-
     }
 
     protected virtual void DamageTakeAnimation()
@@ -108,7 +114,7 @@ public class Ore : MonoBehaviour
         currentSprite = spriteList[currentSpriteIndex];
     }
 
-    protected void DropMineralItem()
+    protected virtual void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsRandom();
@@ -121,13 +127,11 @@ public class Ore : MonoBehaviour
 
     protected void UpdateCurrentSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = currentSprite;
+        spriteRenderer.sprite = currentSprite;
     }
 
     protected IEnumerator Disappear()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
         Color transparentColor = spriteRenderer.material.color;
         transparentColor.a = 0.0f;
 

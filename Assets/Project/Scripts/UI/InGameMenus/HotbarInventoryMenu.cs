@@ -5,6 +5,21 @@ using UnityEngine;
 public class HotbarInventoryMenu : InventoryMenu
 {
 
+    private void OnEnable()
+    {
+        ItemPickUp.OnItemPickUpSuccess += UpdateSelectedSlot;
+    }
+
+    private void OnDisable()
+    {
+        ItemPickUp.OnItemPickUpSuccess -= UpdateSelectedSlot;
+    }
+
+
+    private void UpdateSelectedSlot(int itemID)
+    {
+        ResetSelectedInventorySlot(lastSelectedInventorySlot);
+    }
 
     protected override void ResetSelectedInventorySlot(int newLastSelectedInventorySlot)
     {
