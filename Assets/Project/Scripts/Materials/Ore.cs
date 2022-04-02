@@ -16,6 +16,7 @@ public class Ore : MonoBehaviour
 
     // Public Attributes
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] protected Transform spriteTransform;
     [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
@@ -25,12 +26,6 @@ public class Ore : MonoBehaviour
     public delegate void OreGetsMinedAction();
     public static event OreGetsMinedAction playerMinesOreEvent;
     public static event OreGetsMinedAction playerBreaksOreEvent;
-
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();    
-    }
 
 
 
@@ -86,7 +81,7 @@ public class Ore : MonoBehaviour
 
     protected virtual void DamageTakeAnimation()
     {
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+        spriteTransform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
     }
 
     protected virtual void OnDamageTake()
