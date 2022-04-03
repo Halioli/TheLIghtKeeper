@@ -5,13 +5,16 @@ using UnityEngine;
 public class LightFisure : InteractStation
 {
     // Public Attributes
-    public Item lightGenerator;
-    public GameObject lightGeneratorGameObject;
-    public PopUp popUp;
+    [SerializeField] Item lightGenerator;
+    [SerializeField] GameObject lightGeneratorGameObject;
+    [SerializeField] GameObject coneLightGameObject;
+    [SerializeField] ConeLight coneLight;
+    [SerializeField] PopUp popUp;
 
     // Private Attributes
     private string[] messagesToShow = { "", "No <b>Light Generator</b> found" };
     private bool activated = false;
+    private bool inCoroutine = false;
 
     private void Start()
     {
@@ -28,6 +31,11 @@ public class LightFisure : InteractStation
         else
         {
             PopUpDisappears();
+        }
+
+        if (!activated && !inCoroutine)
+        {
+            StartCoroutine(LightFisureFlicker());
         }
     }
 
@@ -57,7 +65,8 @@ public class LightFisure : InteractStation
             popUp.ChangeMessageText(messagesToShow[0]);
             lightGeneratorGameObject.SetActive(true);
 
-            //lightGeneratorGameObject.GetComponent<AutoMiner>().GetsPlacedDown(materialVein);
+            StopCoroutine(LightFisureFlicker());
+            coneLightGameObject.SetActive(false);
             popUp.gameObject.SetActive(false);
         }
         else
@@ -66,5 +75,16 @@ public class LightFisure : InteractStation
 
             InvokeOnNotEnoughMaterials();
         }
+    }
+
+    private IEnumerator LightFisureFlicker()
+    {
+        inCoroutine = true;
+
+        coneLight.SetIntensity(Random.Range(0.8f, 1.0f));
+
+        yield return new WaitForSeconds(0.1f);
+
+        inCoroutine = false;
     }
 }
