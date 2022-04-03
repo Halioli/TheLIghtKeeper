@@ -89,6 +89,16 @@ public class InGameHUDHandler : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        PlayerCombat.OnReceivesDamage += DoReceiveDamageFadeAndShake;
+    }
+
+    private void OnDisable()
+    {
+        PlayerCombat.OnReceivesDamage -= DoReceiveDamageFadeAndShake;
+    }
+
     private void UpdateMaxLampValue()
     {
         lampBar.SetMaxValue((int)lamp.GetMaxLampTime());
@@ -133,9 +143,9 @@ public class InGameHUDHandler : MonoBehaviour
         bar.SetValue(value);
     }
 
-    public void DoRecieveDamageFadeAndShake()
+    public void DoReceiveDamageFadeAndShake()
     {
-        StartCoroutine(RecieveDamageFadeAndShake());
+        StartCoroutine(ReceiveDamageFadeAndShake());
     }
 
     IEnumerator CanvasFadeOut(CanvasGroup canvasGroup)
@@ -208,7 +218,7 @@ public class InGameHUDHandler : MonoBehaviour
         healthBarGameObject.transform.localPosition = startingPos;
     }
 
-    IEnumerator RecieveDamageFadeAndShake()
+    IEnumerator ReceiveDamageFadeAndShake()
     {
         Vector2 fadeInStartVector = new Vector2(0f, 0f);
         Vector2 fadeInEndVector = new Vector2(1f, 1f);
