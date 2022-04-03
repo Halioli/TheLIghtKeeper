@@ -12,7 +12,7 @@ public class Lamp : MonoBehaviour
 
     private const int MAX_SOURCE_LEVELS = 6;
     private int sourceLevel = 0;
-    private float[] LIGHT_ANGLE_LVL = { 40f, 50f, 60f, 70f, 80f, 90f };
+    private float[] LIGHT_ANGLE_LVL = { 50f, 60f, 70f, 80f, 90f };
     private float[] LIGHT_DISTANCE_LVL = { 10f, 12.5f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
@@ -339,7 +339,6 @@ public class Lamp : MonoBehaviour
         {
             return;
         }
-        ++sourceLevel;
         if (sourceLevel >= LIGHT_ANGLE_LVL.Length) sourceLevel = LIGHT_ANGLE_LVL.Length;
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
@@ -347,6 +346,8 @@ public class Lamp : MonoBehaviour
 
         coneLight.SetDistance(lightDistance);   
         coneLight.SetAngle(lightAngle);
+
+        ++sourceLevel;
     }
 
     private void UpgradeLampTime()
