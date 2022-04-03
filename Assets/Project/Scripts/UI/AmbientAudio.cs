@@ -22,6 +22,9 @@ public class AmbientAudio : MonoBehaviour
     AudioReverbPreset reverbInDarknessWithLantern = AudioReverbPreset.Hallway;
     AudioReverbPreset reverbInDarknessWithoutLantern = AudioReverbPreset.StoneCorridor;
 
+    [SerializeField] AudioSource torchPilarAudioSource;
+
+
     private float musicVolume = 0.1f;
     private bool finishedTransition = false;
     private bool interior = false;
@@ -29,7 +32,7 @@ public class AmbientAudio : MonoBehaviour
 
     enum MusicFade { NORMAL, NONE, FADING_OUT, FADING_IN };
     MusicFade musicFade = MusicFade.NORMAL;
-    private const float minMusicVolume = 0f;
+    private const float minMusicVolume = 0.02f;
     private const float maxMusicVolume = 0.1f;
     private const float musicFadeOutDuration = 5f;
     private const float musicFadeInDuration = 2.5f;
@@ -67,6 +70,8 @@ public class AmbientAudio : MonoBehaviour
         //PlayerLightChecker.OnPlayerEntersLight += PlayAmbientSounds;
         //DarknessSystem.OnPlayerEntersLight += PlayAmbientSounds;
         //PlayerLightChecker.OnPlayerInDarknessNoLantern += StopAmbientSounds;
+
+        Torch.OnTorchStartActivation += TorchPilarIsActivatedSound;
     }
 
     private void OnDisable()
@@ -88,6 +93,8 @@ public class AmbientAudio : MonoBehaviour
         //PlayerLightChecker.OnPlayerEntersLight -= PlayAmbientSounds;
         //DarknessSystem.OnPlayerEntersLight -= PlayAmbientSounds;
         //PlayerLightChecker.OnPlayerInDarknessNoLantern -= StopAmbientSounds;
+
+        Torch.OnTorchStartActivation -= TorchPilarIsActivatedSound;
     }
 
 
@@ -296,5 +303,11 @@ public class AmbientAudio : MonoBehaviour
     }
 
 
+
+    // Torches and  Pilar
+    private void TorchPilarIsActivatedSound()
+    {
+        torchPilarAudioSource.Play();
+    }
 
 }

@@ -6,7 +6,6 @@ public class PlayerHandler : PlayerBase
 {
     // Private Attributes
     private HealthSystem playerHealthSystem;
-    private Rigidbody2D playerRigidbody2D;
     private bool inCoroutine = false;
 
     // Public Attributes
@@ -21,24 +20,24 @@ public class PlayerHandler : PlayerBase
     // Restore fades
     public delegate void RestoreFadesAction();
     public static event RestoreFadesAction OnRestoreFades;
+    // Tp player
+    public delegate void TeleportPlayerAction(Vector3 landingPos);
+    public static event TeleportPlayerAction OnTeleportPlayer;
 
     private void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
-        playerRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
         if (playerHealthSystem.IsDead())
         {
-            Debug.Log("player is dead");
-
             //Start corroutine and play animation
             if (!animationEnds)
             {
                 playerStates.SetCurrentPlayerState(PlayerState.DEAD);
-                gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+                SetPlayerInvulnerable();
 
                 // Send Action
                 if (OnPlayerDeath != null) 
@@ -50,8 +49,11 @@ public class PlayerHandler : PlayerBase
             else
             {
                 // Teleport to desired position
-                gameObject.layer = LayerMask.NameToLayer("Player");
-                playerRigidbody2D.transform.position = respawnPosition;
+                SetPlayerNotInvulnerable();
+
+                if (OnTeleportPlayer != null)
+                    OnTeleportPlayer(respawnPosition);
+
                 playerHealthSystem.RestoreHealthToMaxHealth();
                 animationEnds = false;
             }
@@ -62,6 +64,20 @@ public class PlayerHandler : PlayerBase
             // Pause game
         }
     }
+
+    private void OnEnable()
+    {
+        Torch.OnTorchStartActivation += SetPlayerInvulnerable;
+        Torch.OnTorchEndActivation += SetPlayerNotInvulnerable;
+    }
+
+    private void OnDisable()
+    {
+        Torch.OnTorchStartActivation -= SetPlayerInvulnerable;
+        Torch.OnTorchEndActivation -= SetPlayerNotInvulnerable;
+    }
+
+
 
     public void DoFadeToBlack()
     {
@@ -100,4 +116,17 @@ public class PlayerHandler : PlayerBase
         PlayerInputs.instance.canMove = true;
         inCoroutine = false;
     }
+
+
+    private void SetPlayerInvulnerable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Invulnerable"); // Enemies layer can't collide with Default layer
+    }
+
+    private void SetPlayerNotInvulnerable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
+
 }
