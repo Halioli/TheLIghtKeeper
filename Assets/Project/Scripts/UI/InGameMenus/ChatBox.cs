@@ -20,16 +20,23 @@ public class ChatBox : MonoBehaviour
     private List<string> textToShow;
 
     private int eventIndex = -1;
+    private TutorialMessages.MessegeEventType eventType;
+    private int eventID;
 
     public delegate void ChatNextInput();
     public static event ChatNextInput OnChatNextInput;
-    public static event ChatNextInput OnChatEvent;
+
+    public delegate void ChatEventAction(int eventID);
+    public static event ChatEventAction OnChatTutorialEvent;
+    public static event ChatEventAction OnChatCameraEvent;
+
     public delegate void FinishedChatMessage();
     public static event FinishedChatMessage OnFinishChatMessage;
     public bool allTextShown;
     public int currentTextNum = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
+    public GameObject astronautFace;
     public Transform buttonTransoform;
 
     void Start()
@@ -41,7 +48,7 @@ public class ChatBox : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && chatOpen)
+        if (chatOpen && Input.GetKeyDown(KeyCode.Space))
         {
             if (OnChatNextInput != null)
                 OnChatNextInput();
@@ -67,16 +74,21 @@ public class ChatBox : MonoBehaviour
         MessageItemToStorage.OnNewMessage -= ShowChatBox;
     }
 
-    private void ShowChatBox(string[] mssg, int eventIndex)
+    private void ShowChatBox(string[] mssg, TutorialMessages.ChatEventData chatEventData)
     {
         //ParseText(mssg);
         textToShow = new List<string>(mssg);
-        this.eventIndex = eventIndex;
+        
+        this.eventIndex = chatEventData.eventIndex;
+        this.eventType = chatEventData.eventType;
+        this.eventID = chatEventData.eventID;
 
         // Set canvas group to 1
         StartCoroutine("CanvasFadeIn", chatCanvasGroup);
 
         NextText();
+
+        PlayerInputs.instance.isLanternPaused = true;
     }
 
     private void DisplayText()
@@ -103,7 +115,7 @@ public class ChatBox : MonoBehaviour
                 
                 if (currentTextNum == eventIndex)
                 {
-                    if (OnChatEvent != null) OnChatEvent();
+                    InvokeChatEvents();
                 }
 
                 currentTextNum++;
@@ -119,10 +131,29 @@ public class ChatBox : MonoBehaviour
         }
     }
 
+
+    private void InvokeChatEvents()
+    {
+        switch (this.eventType)
+        {
+            case TutorialMessages.MessegeEventType.TUTORIAL:
+                if (OnChatTutorialEvent != null) OnChatTutorialEvent(eventID);
+                break;
+            case TutorialMessages.MessegeEventType.CAMERA:
+                if (OnChatCameraEvent != null) OnChatCameraEvent(eventID);
+                break;
+            default:
+                break;
+        }
+    }
+
+
     private void HideChat()
     {
         // Set canvas group to 0
         StartCoroutine("CanvasFadeOut", chatCanvasGroup);
+
+        PlayerInputs.instance.isLanternPaused = false;
     }
 
     private void ResetValues()

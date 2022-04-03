@@ -16,12 +16,15 @@ public class FogSystem : MonoBehaviour
     public GameObject skullEnemy;
     [SerializeField] private HUDHandler hudHandler;
 
+    // Tp player
+    public delegate void TeleportPlayerAction(Vector3 landingPos);
+    public static event TeleportPlayerAction OnTeleportPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         skullEnemy.SetActive(false);
-        respawnPosition = new Vector3(110,-16,0);
     }
 
     // Update is called once per frame
@@ -92,7 +95,8 @@ public class FogSystem : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        player.transform.position = respawnPosition;
+        if (OnTeleportPlayer != null)
+            OnTeleportPlayer(respawnPosition);
 
         hudHandler.RestoreFades();
 

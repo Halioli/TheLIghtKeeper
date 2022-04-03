@@ -12,7 +12,7 @@ public class Lamp : MonoBehaviour
 
     private const int MAX_SOURCE_LEVELS = 6;
     private int sourceLevel = 0;
-    private float[] LIGHT_ANGLE_LVL = { 40f, 50f, 60f, 70f, 80f, 90f };
+    private float[] LIGHT_ANGLE_LVL = { 50f, 60f, 70f, 80f, 90f };
     private float[] LIGHT_DISTANCE_LVL = { 10f, 12.5f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
@@ -43,7 +43,7 @@ public class Lamp : MonoBehaviour
     private float flickCooldown = START_FLICK_COOLDOWN;
     private float lowLightflickCooldown = 0.75f;
     private const float SECONDS_HIGH_FREQUENCY_FLICK = 10f;
-
+    private float lampTimeParticles;
     System.Random rg;
 
 
@@ -52,6 +52,7 @@ public class Lamp : MonoBehaviour
     private readonly float normalLightTimeMultiplier = 1f;
     private float intenseLightTimeMultiplier = 3f;
 
+    public ParticleSystem lightRechargedParticleSystem;
 
 
     public delegate void PlayLanternSound();
@@ -72,6 +73,7 @@ public class Lamp : MonoBehaviour
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
         timeMultiplier = normalLightTimeMultiplier;
+        lampTimeParticles = 1f;
     }
 
     private void Start()
@@ -81,6 +83,8 @@ public class Lamp : MonoBehaviour
         circleLight.SetDistance(2f);
         coneLight.SetDistance(lightDistance);
         coneLight.SetAngle(lightAngle);
+
+        lightRechargedParticleSystem.Stop();
     }
 
     private void OnEnable()
@@ -152,11 +156,17 @@ public class Lamp : MonoBehaviour
 
     public void FullyRefillLampTime()
     {
+        if (LampTimeIsMax()) return;
+
         lampTime = maxLampTime;
+        StartCoroutine("RechargeLampTimeParticles");
+
     }
 
     public void RefillLampTime(float time)
     {
+        if (LampTimeIsMax()) return;
+
         if (lampTime + time > maxLampTime)
         {
             FullyRefillLampTime();
@@ -166,7 +176,7 @@ public class Lamp : MonoBehaviour
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
-
+        StartCoroutine("RechargeLampTimeParticles");
         if (!turnedOn && !playerInLight) ActivateLampLight();
     }
 
@@ -329,13 +339,15 @@ public class Lamp : MonoBehaviour
         {
             return;
         }
-        ++sourceLevel;
+        if (sourceLevel >= LIGHT_ANGLE_LVL.Length) sourceLevel = LIGHT_ANGLE_LVL.Length;
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
         coneLight.SetDistance(lightDistance);   
         coneLight.SetAngle(lightAngle);
+
+        ++sourceLevel;
     }
 
     private void UpgradeLampTime()
@@ -402,6 +414,13 @@ public class Lamp : MonoBehaviour
         }
 
         //DeactivateConeLight();
+    }
+
+    IEnumerator RechargeLampTimeParticles()
+    {
+        lightRechargedParticleSystem.Play();
+        yield return new WaitForSeconds(lampTimeParticles);
+        lightRechargedParticleSystem.Stop();
     }
 
 

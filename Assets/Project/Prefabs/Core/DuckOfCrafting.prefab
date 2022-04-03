@@ -15124,6 +15124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebd20e8438335e4d80f01cd6f94831f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventIndex: -1
+  eventType: 0
+  eventID: -1
   mssgs:
   - I put the items you crafted in the Storage, since you had no inventory space.
 --- !u!1 &8759467107526528893
@@ -15166,6 +15169,58 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2334290291206200895}
     m_Modifications:
+    - target: {fileID: 1692973995387636294, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692973995387636294, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692973995387636294, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692973995387636294, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418415040773485701, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609663063422525485, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609663063422525485, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609663063422525485, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609663063422525485, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707404893438119465, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707404893438119465, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707404893438119465, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707404893438119465, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7277926938709538488, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -15240,7 +15295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9176756100015220764, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
