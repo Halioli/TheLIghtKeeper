@@ -36,6 +36,7 @@ public class ChatBox : MonoBehaviour
     public int currentTextNum = 0;
     public TextMeshProUGUI mssgText;
     public GameObject duckFace;
+    public GameObject astronautFace;
     public Transform buttonTransoform;
 
     void Start()
