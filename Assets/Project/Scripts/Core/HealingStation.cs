@@ -14,6 +14,9 @@ public class HealingStation : MonoBehaviour
 
     [SerializeField] AudioSource healAudioSource;
 
+    public delegate void PlayerHealedByHealingStation();
+    public static event PlayerHealedByHealingStation OnHealedByHealingStation;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +34,6 @@ public class HealingStation : MonoBehaviour
         {
             playerInside = true;
             RestorePlayerHealth();
-
             healAudioSource.Play();
         }
 
@@ -53,7 +55,8 @@ public class HealingStation : MonoBehaviour
         if (playerHealthSystem.GetHealth() < playerHealthSystem.maxHealth)
         {
             ShowPlayerHealedMessage();
-            playerHealthSystem.RestoreHealthToMaxHealth();
+            if (OnHealedByHealingStation != null)
+                OnHealedByHealingStation();
             animator.SetBool("isHealed", true);
         }
         else
