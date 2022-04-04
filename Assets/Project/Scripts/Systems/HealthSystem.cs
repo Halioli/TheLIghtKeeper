@@ -12,6 +12,8 @@ public class HealthSystem : MonoBehaviour
     // Public Attributes
     public int maxHealth;
 
+    public delegate void HealingPlayerAction();
+    public static event HealingPlayerAction OnPlayerHeal;
 
     void Awake()
     {
@@ -41,10 +43,12 @@ public class HealthSystem : MonoBehaviour
             if ((health + healthValueToAdd) <= maxHealth)
             {
                 health += healthValueToAdd;
+                if (OnPlayerHeal != null) OnPlayerHeal();
             }
             else
             {
                 RestoreHealthToMaxHealth();
+                if (OnPlayerHeal != null) OnPlayerHeal();
             }
         }
     }
