@@ -195,6 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventIndex: -1
+  eventType: 0
+  eventID: -1
   mssgs:
   - An ore vein seems to be near you; an autominer could be set up there.
 --- !u!1 &3049072469121385945
@@ -436,8 +438,8 @@ RectTransform:
   m_Children:
   - {fileID: 8618018226160357548}
   - {fileID: 7576809624928319225}
-  m_Father: {fileID: 8437401420857818944}
-  m_RootOrder: 2
+  m_Father: {fileID: 7620130183703900186}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -762,3 +764,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7768114d157d6240abba463007e6e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &7620130183703900186 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3727417999959650978, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
+  m_PrefabInstance: {fileID: 6519618979988423352}
+  m_PrefabAsset: {fileID: 0}

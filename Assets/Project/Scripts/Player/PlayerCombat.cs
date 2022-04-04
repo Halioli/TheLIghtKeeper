@@ -36,7 +36,8 @@ public class PlayerCombat : PlayerBase
     public static event PlayerAttackSound playerMissesAttackEvent;
     public static event PlayerAttackSound playerReceivesDamageEvent;
 
-
+    public delegate void PlayerReceivesDamage();
+    public static event PlayerReceivesDamage OnReceivesDamage;
 
     private void Start()
     {
@@ -101,8 +102,12 @@ public class PlayerCombat : PlayerBase
         else
         {
             StartCoroutine(Invulnerability());
-            inGameHUD.DoRecieveDamageFadeAndShake();
-            hudHandler.ShowRecieveDamageFades();
+
+            if(OnReceivesDamage != null)
+                OnReceivesDamage();
+            
+            //inGameHUD.DoReceiveDamageFadeAndShake();
+            //hudHandler.ShowRecieveDamageFades();
         }
 
         healthSystem.ReceiveDamage(damageValue);
