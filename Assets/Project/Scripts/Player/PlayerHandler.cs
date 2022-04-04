@@ -73,14 +73,12 @@ public class PlayerHandler : PlayerBase
     {
         Torch.OnTorchStartActivation += SetPlayerInvulnerable;
         Torch.OnTorchEndActivation += SetPlayerNotInvulnerable;
-        HealthSystem.OnPlayerHeal += PlayHealingParticles;
     }
 
     private void OnDisable()
     {
         Torch.OnTorchStartActivation -= SetPlayerInvulnerable;
         Torch.OnTorchEndActivation -= SetPlayerNotInvulnerable;
-        HealthSystem.OnPlayerHeal -= PlayHealingParticles;
     }
 
 
