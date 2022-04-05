@@ -14,6 +14,9 @@ public class Hotkeys : MonoBehaviour
     public GameObject enrichedMetalMineral;
     public GameObject electricOrbMineral;
 
+    public delegate void PlayerHealed(int healthToAdd);
+    public static event PlayerHealed OnHealed;
+
     void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
@@ -55,7 +58,8 @@ public class Hotkeys : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             // +5 health
-            playerHealthSystem.ReceiveHealth(5);
+            if (OnHealed != null) OnHealed(5);
+            //playerHealthSystem.ReceiveHealth(5);
         }
         else if (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.KeypadMinus))
         {
