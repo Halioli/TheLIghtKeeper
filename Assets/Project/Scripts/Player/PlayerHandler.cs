@@ -13,6 +13,7 @@ public class PlayerHandler : PlayerBase
     public HUDHandler hudHandler;
     public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
+    public ParticleSystem healingParticles;
 
     // Start fades
     public delegate void PlayerHandlerAction();
@@ -24,9 +25,11 @@ public class PlayerHandler : PlayerBase
     public delegate void TeleportPlayerAction(Vector3 landingPos);
     public static event TeleportPlayerAction OnTeleportPlayer;
 
+
     private void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
+        healingParticles.Stop();
     }
 
     void Update()
@@ -55,6 +58,7 @@ public class PlayerHandler : PlayerBase
                     OnTeleportPlayer(respawnPosition);
 
                 playerHealthSystem.RestoreHealthToMaxHealth();
+
                 animationEnds = false;
             }
         }
@@ -128,5 +132,15 @@ public class PlayerHandler : PlayerBase
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
+    private void PlayHealingParticles()
+    {
+        StartCoroutine("HealingParticles");
+    }
 
+    IEnumerator HealingParticles()
+    {
+        healingParticles.Play();
+        yield return new WaitForSeconds(1f);
+        healingParticles.Stop();
+    }
 }
