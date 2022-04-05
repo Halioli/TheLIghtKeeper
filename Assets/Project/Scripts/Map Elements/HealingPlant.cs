@@ -16,7 +16,7 @@ public class HealingPlant : InteractStation
 
     public GameObject interactText;
     public GameObject healingFlower;
-
+    public ParticleSystem healingPlantParticles;
     // Audio
     [SerializeField] AudioSource healingDroneAudioSource;
     [SerializeField] AudioSource popAndRestartAudioSource;
@@ -49,7 +49,7 @@ public class HealingPlant : InteractStation
 
         if (!hasBeenUsed && !inCoroutine)
         {
-            StartCoroutine(ElectricPlantFlicker());
+            StartCoroutine(HealingPlantFlicker());
         }
     }
 
@@ -57,7 +57,7 @@ public class HealingPlant : InteractStation
     {
         if (!hasBeenUsed)
         {
-            TurnOffElectricPlant();
+            TurnOffHealingPlant();
         }
     }
 
@@ -68,12 +68,12 @@ public class HealingPlant : InteractStation
             timeStart -= Time.deltaTime;
             if (timeStart <= 0.0f)
             {
-                TurnOnElectricPlant();
+                TurnOnHealingPlant();
             }
         }
     }
 
-    private void TurnOffElectricPlant()
+    private void TurnOffHealingPlant()
     {
         transform.DOPunchScale(new Vector3(0.4f, -0.4f, 0f), 0.4f, 1);
         plantAnimator.SetBool("used", true);
@@ -83,23 +83,25 @@ public class HealingPlant : InteractStation
         GameObject gameObject = Instantiate(healingFlower, transform);
         gameObject.GetComponent<ItemGameObject>().DropsRandom(true, 1.5f);
 
+        StartCoroutine(HealingPlantParticles());
+
         plantLight.intensity = 0.5f;
-        plantLight.pointLightOuterRadius = 1.21f;
+        plantLight.pointLightOuterRadius = 0.7f;
         plantLight.pointLightInnerRadius = 0.20f;
 
         interactText.SetActive(false);
-        StopCoroutine(ElectricPlantFlicker());
+        StopCoroutine(HealingPlantFlicker());
 
         StopElectricDroneSound();
         PlayPopOffSound();
     }
 
-    private void TurnOnElectricPlant()
+    private void TurnOnHealingPlant()
     {
         hasBeenUsed = false;
         plantLight.intensity = 1f;
-        plantLight.pointLightOuterRadius = 2f;
-        plantLight.pointLightInnerRadius = 0.66f;
+        plantLight.pointLightOuterRadius = 1.5f;
+        plantLight.pointLightInnerRadius = 0.7f;
         plantAnimator.SetBool("used", false);
 
         if (playerInsideTriggerArea) interactText.SetActive(true);
@@ -129,7 +131,7 @@ public class HealingPlant : InteractStation
         popAndRestartAudioSource.Play();
     }
 
-    private IEnumerator ElectricPlantFlicker()
+    private IEnumerator HealingPlantFlicker()
     {
         inCoroutine = true;
 
@@ -138,5 +140,12 @@ public class HealingPlant : InteractStation
         yield return new WaitForSeconds(0.1f);
 
         inCoroutine = false;
+    }
+
+    IEnumerator HealingPlantParticles()
+    {
+        healingPlantParticles.Play();
+        yield return new WaitForSeconds(0.5f);
+        healingPlantParticles.Stop();
     }
 }
