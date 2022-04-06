@@ -16,6 +16,7 @@ public class ElectricPlant : InteractStation
 
     public GameObject interactText;
     public GameObject electricOrb;
+    public ParticleSystem electricPlantParticles;
 
     // Audio
     [SerializeField] AudioSource electricDroneAudioSource;
@@ -80,6 +81,7 @@ public class ElectricPlant : InteractStation
         timeStart = cooldown;
         hasBeenUsed = true;
 
+        StartCoroutine(PlayElectricPlantParticles());
         GameObject gameObject = Instantiate(electricOrb, transform);
         gameObject.GetComponent<ItemGameObject>().DropsRandom(true, 1.5f) ;
 
@@ -138,5 +140,12 @@ public class ElectricPlant : InteractStation
         yield return new WaitForSeconds(0.1f);
 
         inCoroutine = false;
+    }
+
+    private IEnumerator PlayElectricPlantParticles()
+    {
+        electricPlantParticles.Play();
+        yield return new WaitForSeconds(1f);
+        electricPlantParticles.Stop();
     }
 }
