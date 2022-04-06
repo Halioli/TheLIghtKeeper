@@ -153,8 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coneLight: {fileID: 698198206}
-  sparkLight: {fileID: 0}
-  sparkParticles: {fileID: 0}
+  sparkParticles: {fileID: 5391454532186011445}
 --- !u!1 &2447099115645692994
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +667,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.15
+      scalar: 0.7
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5278,7 +5277,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 6
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
