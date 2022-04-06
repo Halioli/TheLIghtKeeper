@@ -11,6 +11,7 @@ public class BrokenFurnace : InteractStation
 
     public Item coal;
     public HUDHandler hud;
+    public ParticleSystem furnaceParticles;
 
     public delegate void BrokenFurnaceAction();
     public static event BrokenFurnaceAction OnTutorialFinish;
@@ -49,6 +50,7 @@ public class BrokenFurnace : InteractStation
             popUp.ChangeMessageText("Materials added");
             playerInventory.SubstractNItemsFromInventory(coal, COAL_REPAIR_AMOUNT);
             PlayerInputs.instance.canMove = false;
+            StartCoroutine(FurnaceParticles());
             StartCoroutine(StartFurnace());
         }
         else
@@ -87,5 +89,12 @@ public class BrokenFurnace : InteractStation
 
         // Load Scene
         SceneManager.LoadSceneAsync("Spaceship", LoadSceneMode.Single);
+    }
+
+    IEnumerator FurnaceParticles()
+    {
+        furnaceParticles.Play();
+        yield return new WaitForSeconds(1f);
+        furnaceParticles.Stop();
     }
 }
