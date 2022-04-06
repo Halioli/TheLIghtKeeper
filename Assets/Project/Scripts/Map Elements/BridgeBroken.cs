@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BridgeBroken : InteractStation
 {
+
+    public ParticleSystem[] bridgeParticleSytems;
+
     private const int IRON_REPAIR_AMOUNT = 12;
     private const int METAL_REPAIR_AMOUNT = 1;
 
@@ -13,9 +16,11 @@ public class BridgeBroken : InteractStation
     [SerializeField] Item ironMaterial;
     [SerializeField] Item enrichedMetalMaterial;
 
+    bool finishedConstruct;
     private void Start()
     {
         constuctionPopUp = GetComponentInChildren<ConstuctionPopUp>();
+
     }
 
     private void Update()
@@ -47,7 +52,9 @@ public class BridgeBroken : InteractStation
             playerInventory.SubstractNItemsFromInventory(enrichedMetalMaterial, METAL_REPAIR_AMOUNT);
 
             constuctionPopUp.SetAllValue(0);
-            bridgeManager.BridgeConstructed();
+
+            StartCoroutine(BridgeParticleSystem());
+
         }
         else
         {
@@ -68,5 +75,20 @@ public class BridgeBroken : InteractStation
     {
         constuctionPopUp.HideAll();
         constuctionPopUp.ChangeMessageText("Press E to interact");
+    }
+
+    private IEnumerator BridgeParticleSystem()
+    {
+        foreach (ParticleSystem particles in bridgeParticleSytems)
+        {
+            particles.Play();
+        }
+        bridgeManager.audioSource.Play();
+        yield return new WaitForSeconds(2.5f);
+        foreach (ParticleSystem particles in bridgeParticleSytems)
+        {
+            particles.Stop();
+        }
+        bridgeManager.BridgeConstructed();
     }
 }
