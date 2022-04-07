@@ -88,7 +88,7 @@ MonoBehaviour:
   canBePickedUp: 1
   isPickedUpAlready: 0
   currentDespawnTimeInSeconds: 10
-  item: {fileID: 11400000, guid: 19243b6dedfed824a950393e2c90db8a, type: 2}
+  item: {fileID: 0}
   audioSource: {fileID: 6691670806311022163}
   itemIsDropped: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
   lanternFuelAuxiliar: {fileID: 7833393622724179523, guid: 9dae98ec3a48d034fb61d1c3cd49d8e9, type: 3}
@@ -267,7 +267,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.3809524, y: 0.3809524}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -287,7 +287,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerpTime: 1
   lerpDistance: 0.3
-  halfLerpDistance: 0.15
 --- !u!95 &55023409475852100
 Animator:
   serializedVersion: 3
