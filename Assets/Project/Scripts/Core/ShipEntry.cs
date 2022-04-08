@@ -24,6 +24,9 @@ public class ShipEntry : MonoBehaviour
 
     IEnumerator TeleportToShipInterior(GameObject gameObjectTeleported)
     {
+        PlayerInputs.instance.ignoreLights = true;
+
+
         if (OnEntry != null) 
             OnEntry();
 
@@ -37,6 +40,7 @@ public class ShipEntry : MonoBehaviour
         yield return new WaitForSeconds(1f);
         hudHandler.RestoreFades();
         PlayerInputs.instance.canMove = true;
+
         animator.SetBool("isHealed", false);
     }
 }
