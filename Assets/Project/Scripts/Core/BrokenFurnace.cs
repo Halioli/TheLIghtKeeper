@@ -92,7 +92,7 @@ public class BrokenFurnace : InteractStation
         yield return new WaitForSeconds(0.5f);
 
         furnaceLight.intensity = 0f;
-        spaceShipLights[0].intensity = 0f;
+        //spaceShipLights[0].intensity = 0f;
 
         for(int i = 1; i < spaceShipLights.Length; i++)
         {
