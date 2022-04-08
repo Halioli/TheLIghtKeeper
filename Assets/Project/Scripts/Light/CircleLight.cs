@@ -16,6 +16,18 @@ public class CircleLight : CustomLight
 
     private void Awake()
     {
+        Init();
+    }
+
+
+    private void Start()
+    {
+        SetColliderRadiusMatchLightOuterRadius();
+    }
+
+
+    protected override void Init() 
+    {
         collider = lightGameObject.GetComponent<CircleCollider2D>();
         circleLight = lightGameObject.GetComponent<Light2D>();
 
@@ -23,10 +35,6 @@ public class CircleLight : CustomLight
         intensity = circleLight.intensity;
     }
 
-    private void Start()
-    {
-        SetColliderRadiusMatchLightOuterRadius();
-    }
 
     public override void Expand(float endIntensity)
     {
@@ -57,7 +65,7 @@ public class CircleLight : CustomLight
             yield return null;
         }
 
-        collider.radius = circleLight.pointLightOuterRadius;
+        SetColliderRadiusMatchLightOuterRadius();
         lightState = LightState.NONE;
     }
 
@@ -110,6 +118,7 @@ public class CircleLight : CustomLight
             lightGameObject.SetActive(false);
         }
 
+        SetColliderRadiusMatchLightOuterRadius();
         lightState = LightState.NONE;
     }
 
@@ -179,7 +188,7 @@ public class CircleLight : CustomLight
     }
 
 
-    protected void SetColliderRadiusMatchLightOuterRadius()
+    protected virtual void SetColliderRadiusMatchLightOuterRadius()
     {
         collider.radius = circleLight.pointLightOuterRadius;
     }
