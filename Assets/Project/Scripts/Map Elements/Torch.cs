@@ -12,6 +12,7 @@ public class Torch : InteractStation
     public Light2D torchLight;
     public CanvasGroup popUpCanvasGroup;
     public CircleCollider2D lightRadius;
+    public CircleCollider2D lightInteriorRadius;
     public GameObject linkedRune;
     public GameObject desactivatedTorch;
 
@@ -55,7 +56,7 @@ public class Torch : InteractStation
             torchLight.pointLightOuterRadius = 0;
             torchLight.pointLightInnerRadius = 0;
             torchLight.intensity = turnedOffIntensity;
-            lightRadius.radius = 0.1f;
+            lightInteriorRadius.radius = lightRadius.radius = 0.1f;
         }
 
         popUpCanvasGroup.alpha = 0f;
@@ -136,7 +137,8 @@ public class Torch : InteractStation
             //DO STUFF HERE
             torchLight.pointLightOuterRadius = lightLerp.Value * outerRadiusOn;
             torchLight.pointLightInnerRadius = lightLerp.Value * innerRadiusOn;
-            lightRadius.radius = 2.8f;
+            lightRadius.radius = 3.0f;
+            lightInteriorRadius.radius = lightRadius.radius - 1.0f;
 
             //WAIT A FRAME
             yield return null;

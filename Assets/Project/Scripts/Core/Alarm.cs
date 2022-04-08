@@ -13,7 +13,7 @@ public class Alarm : MonoBehaviour
     private bool lightAtMin = true;
     private bool lightAtMax = false;
 
-    [SerializeField] ConeLight coneLight;
+    [SerializeField] CustomLight customLight;
 
     public ParticleSystem sparkParticles;
 
@@ -35,7 +35,7 @@ public class Alarm : MonoBehaviour
             lightAtMax = false;
         }
 
-        coneLight.SetIntensity(lightIntensity);
+        customLight.SetIntensity(lightIntensity);
 
     }
 
