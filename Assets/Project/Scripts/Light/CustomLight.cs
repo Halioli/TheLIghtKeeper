@@ -18,6 +18,8 @@ public class CustomLight : MonoBehaviour
     protected float lerpTransitionValue;
     public float intensity { protected set; get; }
 
+    protected virtual void Init() { }
+
     public virtual void Expand(float endIntensity) { }
     public virtual void Shrink(float endIntensity) { }
     public virtual void SetIntensity(float intensity) { }

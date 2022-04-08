@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Alarm : MonoBehaviour
 {
@@ -12,7 +13,14 @@ public class Alarm : MonoBehaviour
     private bool lightAtMin = true;
     private bool lightAtMax = false;
 
-    [SerializeField] ConeLight coneLight;
+    [SerializeField] CustomLight customLight;
+
+    public ParticleSystem sparkParticles;
+
+    public void Start()
+    {
+        sparkParticles.Play();
+    }
 
     void Update()
     {
@@ -27,7 +35,8 @@ public class Alarm : MonoBehaviour
             lightAtMax = false;
         }
 
-        coneLight.SetIntensity(lightIntensity);
+        customLight.SetIntensity(lightIntensity);
+
     }
 
     IEnumerator ChangeIntensityToMin()

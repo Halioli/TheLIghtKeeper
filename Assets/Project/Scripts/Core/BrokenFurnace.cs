@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class BrokenFurnace : InteractStation
 {
     private const int COAL_REPAIR_AMOUNT = 6;
     private PopUp popUp;
     private Animator furnaceAnimator;
+    private Light2D furnaceLight;
+    public Light2D[] spaceShipLights;
 
     public Item coal;
     public HUDHandler hud;
-
+    public ParticleSystem furnaceParticles;
+    
     public delegate void BrokenFurnaceAction();
     public static event BrokenFurnaceAction OnTutorialFinish;
 
@@ -22,6 +26,13 @@ public class BrokenFurnace : InteractStation
         furnaceAnimator = GetComponent<Animator>();
 
         furnaceAnimator.SetBool("isActivate", false);
+
+        furnaceLight = GetComponentInChildren<Light2D>();
+
+        for (int i = 1; i < spaceShipLights.Length; i++)
+        {
+            spaceShipLights[i].intensity = 0f;
+        }
     }
 
     private void Update()
@@ -49,6 +60,7 @@ public class BrokenFurnace : InteractStation
             popUp.ChangeMessageText("Materials added");
             playerInventory.SubstractNItemsFromInventory(coal, COAL_REPAIR_AMOUNT);
             PlayerInputs.instance.canMove = false;
+            StartCoroutine(FurnaceParticles());
             StartCoroutine(StartFurnace());
         }
         else
@@ -77,7 +89,18 @@ public class BrokenFurnace : InteractStation
         // Play animation
         furnaceAnimator.SetBool("isActivate", true);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
+
+        furnaceLight.intensity = 0f;
+        //spaceShipLights[0].intensity = 0f;
+
+        for(int i = 1; i < spaceShipLights.Length; i++)
+        {
+            spaceShipLights[i].intensity = 1f;
+            yield return new WaitForSeconds(1f);
+        }
+
+        yield return new WaitForSeconds(1f);
 
         // HUD fade to black
         hud.DoFadeToBlack();
@@ -87,5 +110,12 @@ public class BrokenFurnace : InteractStation
 
         // Load Scene
         SceneManager.LoadSceneAsync("Spaceship", LoadSceneMode.Single);
+    }
+
+    IEnumerator FurnaceParticles()
+    {
+        furnaceParticles.Play();
+        yield return new WaitForSeconds(1f);
+        furnaceParticles.Stop();
     }
 }
