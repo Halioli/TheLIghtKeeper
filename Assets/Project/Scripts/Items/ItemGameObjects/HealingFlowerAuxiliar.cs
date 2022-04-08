@@ -12,13 +12,17 @@ public class HealingFlowerAuxiliar : MonoBehaviour
     public delegate void HealthRefill(string description);
     public static event HealthRefill OnHealthRefill;
 
+    public delegate void HealedPlayer(int heal);
+    public static event HealedPlayer OnHealPlayer;
+    
     private void Awake()
     {
         HealthSystem playerHealthSystem = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<HealthSystem>();
 
         if (playerHealthSystem.GetMaxHealth() > playerHealthSystem.GetHealth())
         {
-            playerHealthSystem.ReceiveHealth(healthToRefill);
+            if (OnHealPlayer != null)
+                OnHealPlayer(healthToRefill);
         }
         StartCoroutine(Shake());
 
