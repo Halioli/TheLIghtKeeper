@@ -366,6 +366,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventIndex: -1
+  eventType: 0
+  eventID: -1
   mssgs:
   - It looks like some kind of unlit torch. It seems to be connected to something
     somewhere.
@@ -5423,7 +5425,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6768989583761024956}
   m_Father: {fileID: 5212719635502525702}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5634,6 +5637,7 @@ MonoBehaviour:
   torchLight: {fileID: 5212719634649964397}
   popUpCanvasGroup: {fileID: 344618113173781489}
   lightRadius: {fileID: 5212719634649964387}
+  lightInteriorRadius: {fileID: 7237115916408321399}
   linkedRune: {fileID: 0}
   desactivatedTorch: {fileID: 3229146023876200955}
   torchIntensity: 1
@@ -5758,3 +5762,50 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &8374318932476700863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6768989583761024956}
+  - component: {fileID: 7237115916408321399}
+  m_Layer: 6
+  m_Name: TorchInteriorLight
+  m_TagString: LightInterior
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6768989583761024956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8374318932476700863}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5212719634649964396}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &7237115916408321399
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8374318932476700863}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.1
