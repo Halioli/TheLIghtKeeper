@@ -15,6 +15,8 @@ public class Ore : MonoBehaviour
     protected Sprite currentSprite;
 
     // Public Attributes
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] protected Transform spriteTransform;
     [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
@@ -75,12 +77,11 @@ public class Ore : MonoBehaviour
 
         UpdateCurrentSprite();
         StartCoroutine("PlayBreakParticles");
-
     }
 
     protected virtual void DamageTakeAnimation()
     {
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+        spriteTransform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
     }
 
     protected virtual void OnDamageTake()
@@ -108,7 +109,7 @@ public class Ore : MonoBehaviour
         currentSprite = spriteList[currentSpriteIndex];
     }
 
-    protected void DropMineralItem()
+    protected virtual void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsRandom();
@@ -121,13 +122,11 @@ public class Ore : MonoBehaviour
 
     protected void UpdateCurrentSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = currentSprite;
+        spriteRenderer.sprite = currentSprite;
     }
 
     protected IEnumerator Disappear()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
         Color transparentColor = spriteRenderer.material.color;
         transparentColor.a = 0.0f;
 

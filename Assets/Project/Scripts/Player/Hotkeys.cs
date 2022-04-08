@@ -11,6 +11,11 @@ public class Hotkeys : MonoBehaviour
     public GameObject ironMineral;
     public GameObject darkEssenceMineral;
     public GameObject luxuniteMineral;
+    public GameObject enrichedMetalMineral;
+    public GameObject electricOrbMineral;
+
+    public delegate void PlayerHealed(int healthToAdd);
+    public static event PlayerHealed OnHealed;
 
     void Start()
     {
@@ -40,10 +45,21 @@ public class Hotkeys : MonoBehaviour
             // Spawn 1 luxinite at the player's feet
             Instantiate(luxuniteMineral, transform);
         }
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            // Spawn 1 enriched metal at the player's feet
+            Instantiate(enrichedMetalMineral, transform);
+        }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            // Spawn 1 electric orb at the player's feet
+            Instantiate(electricOrbMineral, transform);
+        }
         else if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             // +5 health
-            playerHealthSystem.ReceiveHealth(5);
+            if (OnHealed != null) OnHealed(5);
+            //playerHealthSystem.ReceiveHealth(5);
         }
         else if (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.KeypadMinus))
         {

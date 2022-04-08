@@ -13,10 +13,13 @@ public class PlayerInputs : MonoBehaviour
     public bool facingLeft = true;
     public bool canFlip = true;
     public bool canMove = true;
+    public bool canMoveLantern = true;
+    public bool isLanternPaused = false;
     public float playerReach = 3f;
 
     public bool canMine = true;
     public bool canAttack = true;
+    public bool canPause = true;
 
     public GameObject selectSpotGameObject;
 
@@ -35,7 +38,7 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public bool PlayerClickedMineButton()
     {
-        if (PauseMenu.gameIsPaused || !instance.canMine) { return false; }
+        if (PauseMenu.gameIsPaused || !instance.canMine || TutorialMessages.tutorialOpened) { return false; }
 
         return Input.GetButton("Fire1");
     }
@@ -78,6 +81,11 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button1);
     }
 
+    public bool PlayerPressedInteractExitButton()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
+    }
+
     public bool PlayerPressedUseButton()
     {
         if (PauseMenu.gameIsPaused) { return false; }
@@ -85,14 +93,23 @@ public class PlayerInputs : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button0);
     }
 
+    public bool PlayerPressedDropButton()
+    {
+        if (PauseMenu.gameIsPaused) { return false; }
+
+        return Input.GetKeyDown(KeyCode.X);
+    }
+
     public bool PlayerPressedPauseButton()
     {
-        return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        if (!canPause) return false;
+
+        return Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()
     {
-        if (canMove && !PauseMenu.gameIsPaused)
+        if (canMove && !PauseMenu.gameIsPaused && !TutorialMessages.tutorialOpened)
         {
             return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }

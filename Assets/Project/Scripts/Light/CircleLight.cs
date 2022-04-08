@@ -57,14 +57,21 @@ public class CircleLight : CustomLight
             yield return null;
         }
 
+        collider.radius = circleLight.pointLightOuterRadius;
         lightState = LightState.NONE;
+    }
+
+
+    protected virtual bool ExpandCorrectionCheck()
+    {
+        return lightState == LightState.NONE && circleLight.pointLightOuterRadius != outerRadius;
     }
 
     IEnumerator ExpandCorrection(float endIntensity)
     {
         yield return new WaitForSeconds(expandTime + 0.1f);
         
-        if (lightState == LightState.NONE && circleLight.pointLightOuterRadius != outerRadius)
+        if (ExpandCorrectionCheck())
         {
             Expand(endIntensity);
         }
@@ -102,6 +109,7 @@ public class CircleLight : CustomLight
         {
             lightGameObject.SetActive(false);
         }
+
         lightState = LightState.NONE;
     }
 

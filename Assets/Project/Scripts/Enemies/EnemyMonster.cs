@@ -27,10 +27,6 @@ public class EnemyMonster : MonoBehaviour
     [SerializeField] protected int dropRatePercent = 100;
     public ItemGameObject dropOnDeathItem;
 
-
-
-
-
     private void OnEnable()
     {
         DarknessSystem.OnPlayerNotInLight += OnPlayerNotInLight;
@@ -61,7 +57,7 @@ public class EnemyMonster : MonoBehaviour
         healthSystem.ReceiveDamage(damageValue);
         enemyAudio.PlayReceiveDamageAudio();
 
-        StartCoroutine(HurtedFlashEffect());
+        //StartCoroutine(HurtedFlashEffect());
     }
 
     public virtual void SetPlayer(GameObject playerGameObject)
@@ -113,7 +109,7 @@ public class EnemyMonster : MonoBehaviour
 
         transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
 
-        //spriteRenderer.color = transparent;
+        spriteRenderer.color = transparent;
         yield return new WaitForSeconds(damagedTime / 2);
 
         spriteRenderer.color = normal;
