@@ -15,13 +15,6 @@ public class Alarm : MonoBehaviour
 
     [SerializeField] CustomLight customLight;
 
-    public ParticleSystem sparkParticles;
-
-    public void Start()
-    {
-        sparkParticles.Play();
-    }
-
     void Update()
     {
         if (lightAtMin)

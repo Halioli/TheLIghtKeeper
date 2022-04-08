@@ -94,12 +94,16 @@ public class BrokenFurnace : InteractStation
         furnaceLight.intensity = 0f;
         //spaceShipLights[0].intensity = 0f;
 
-        for(int i = 1; i < spaceShipLights.Length; i++)
+        for(int i = 1; i < spaceShipLights.Length - 1; i++)
         {
             spaceShipLights[i].intensity = 1f;
             yield return new WaitForSeconds(1f);
         }
-
+        for (int i = 1; i < spaceShipLights.Length - 1; i++)
+        {
+            spaceShipLights[i].intensity = 0f;
+        }
+        spaceShipLights[3].intensity = 1f;
         yield return new WaitForSeconds(1f);
 
         // HUD fade to black
