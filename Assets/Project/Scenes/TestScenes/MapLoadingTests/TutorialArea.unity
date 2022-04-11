@@ -13609,6 +13609,10 @@ PrefabInstance:
       value: "If the Lantern runs out of battery, simply approach an Artificial Blue
         Light to recharge it.\r"
       objectReference: {fileID: 0}
+    - target: {fileID: 4238506372352113564, guid: c52ac9013442a2742965017a6dae5140, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7659041918544259833, guid: c52ac9013442a2742965017a6dae5140, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -13653,6 +13657,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7659041918544259834, guid: c52ac9013442a2742965017a6dae5140, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 9182143807747437625, guid: 34ceebf201734574095168cf160f0abe, type: 3}
     - target: {fileID: 7659041918544259835, guid: c52ac9013442a2742965017a6dae5140, type: 3}
       propertyPath: m_Name
       value: EscapePod
@@ -13664,6 +13672,30 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7659041918544259833, guid: c52ac9013442a2742965017a6dae5140, type: 3}
   m_PrefabInstance: {fileID: 139920634}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &139920636 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7659041918544259835, guid: c52ac9013442a2742965017a6dae5140, type: 3}
+  m_PrefabInstance: {fileID: 139920634}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &139920637
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139920636}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d9c1b72dcc2b474f9797b103765c179, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &145977179
 GameObject:
   m_ObjectHideFlags: 0
@@ -14946,6 +14978,30 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2561122500638044678, guid: 94e58a5759e93804389cd6c49ec29e1b, type: 3}
   m_PrefabInstance: {fileID: 476579890}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &494982560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9010058019660600183, guid: 8b5e89a1cf695b4489daf053c3292e19, type: 3}
+  m_PrefabInstance: {fileID: 1766893734}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &494982564
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494982560}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f03178e7da46fc644a44b9166ea969be, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &497752139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19671,6 +19727,26 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2334290291206200889, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.5625
+      objectReference: {fileID: 0}
+    - target: {fileID: 2334290291206200889, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.5625
+      objectReference: {fileID: 0}
+    - target: {fileID: 2334290291206200890, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1216230350722585453, guid: a11687a94580e0849bf69315adba0002, type: 3}
+    - target: {fileID: 2334290291206200891, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.5625
+      objectReference: {fileID: 0}
+    - target: {fileID: 2334290291206200891, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.5625
+      objectReference: {fileID: 0}
     - target: {fileID: 2334290291206200892, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
       propertyPath: m_Name
       value: DuckOfCrafting
@@ -19705,7 +19781,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2334290291206200895, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 106
+      value: 106.5
       objectReference: {fileID: 0}
     - target: {fileID: 2334290291206200895, guid: 4141c5c62e1016a45ad13e89cca09a03, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22060,6 +22136,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.000005722046
       objectReference: {fileID: 0}
+    - target: {fileID: 3553200407522515211, guid: 8b5e89a1cf695b4489daf053c3292e19, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -461148547724636790, guid: 30cf476b67f589942a7e04ae536b85a8, type: 3}
     - target: {fileID: 3800554100117537540, guid: 8b5e89a1cf695b4489daf053c3292e19, type: 3}
       propertyPath: m_fontSize
       value: 12
