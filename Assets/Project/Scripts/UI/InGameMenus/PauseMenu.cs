@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
     public CanvasGroup loadingGroup;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
+    public GameObject controllsMenu;
 
     public delegate void PauseMenuAction();
     public static event PauseMenuAction OnPaused;
@@ -92,6 +93,13 @@ public class PauseMenu : MonoBehaviour
     public void ClickedOptionsButton()
     {
         optionsMenu.SetActive(true);
+
+        pauseMenu.SetActive(false);
+    }
+
+    public void ClickedControllsButton()
+    {
+        controllsMenu.SetActive(true);
 
         pauseMenu.SetActive(false);
     }
