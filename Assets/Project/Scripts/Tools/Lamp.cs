@@ -12,7 +12,7 @@ public class Lamp : MonoBehaviour
 
     private const int MAX_SOURCE_LEVELS = 6;
     private int sourceLevel = 0;
-    private float[] LIGHT_ANGLE_LVL = { 40f, 50f, 60f, 70f, 80f, 90f };
+    private float[] LIGHT_ANGLE_LVL = { 50f, 60f, 70f, 80f, 90f };
     private float[] LIGHT_DISTANCE_LVL = { 10f, 12.5f, 15f, 20f, 25f };
     private float lightAngle;
     private float lightDistance;
@@ -43,7 +43,7 @@ public class Lamp : MonoBehaviour
     private float flickCooldown = START_FLICK_COOLDOWN;
     private float lowLightflickCooldown = 0.75f;
     private const float SECONDS_HIGH_FREQUENCY_FLICK = 10f;
-
+    private float lampTimeParticles;
     System.Random rg;
 
 
@@ -52,6 +52,7 @@ public class Lamp : MonoBehaviour
     private readonly float normalLightTimeMultiplier = 1f;
     private float intenseLightTimeMultiplier = 3f;
 
+    public ParticleSystem lightRechargedParticleSystem;
 
 
     public delegate void PlayLanternSound();
@@ -72,20 +73,23 @@ public class Lamp : MonoBehaviour
         lightDistance = LIGHT_DISTANCE_LVL[sourceLevel];
 
         timeMultiplier = normalLightTimeMultiplier;
+        lampTimeParticles = 1f;
     }
 
     private void Start()
     {
         playerAnimator = GetComponentInParent<Animator>();
 
-        circleLight.SetDistance(2f);
+        circleLight.SetDistance(3f);
         coneLight.SetDistance(lightDistance);
         coneLight.SetAngle(lightAngle);
+
+        lightRechargedParticleSystem.Stop();
     }
 
     private void OnEnable()
     {
-        DarknessSystem.OnPlayerEntersLight += DeactivateLampLight;
+        DarknessSystem.OnPlayerEntersLight += DeactivateConeLight; //DeactivateLampLight
 
         LanternSourceUpgrade.OnLanternSourceUpgrade += UpgradeLampSource;
         LanternTimeUpgrade.OnLanternTimeUpgrade += UpgradeLampTime;
@@ -96,7 +100,7 @@ public class Lamp : MonoBehaviour
 
     private void OnDisable()
     {
-        DarknessSystem.OnPlayerEntersLight -= DeactivateLampLight;
+        DarknessSystem.OnPlayerEntersLight -= DeactivateConeLight; //DeactivateLampLight
 
         LanternSourceUpgrade.OnLanternSourceUpgrade -= UpgradeLampSource;
         LanternTimeUpgrade.OnLanternTimeUpgrade -= UpgradeLampTime;
@@ -152,11 +156,17 @@ public class Lamp : MonoBehaviour
 
     public void FullyRefillLampTime()
     {
+        if (LampTimeIsMax()) return;
+
         lampTime = maxLampTime;
+        StartCoroutine("RechargeLampTimeParticles");
+
     }
 
     public void RefillLampTime(float time)
     {
+        if (LampTimeIsMax()) return;
+
         if (lampTime + time > maxLampTime)
         {
             FullyRefillLampTime();
@@ -166,8 +176,13 @@ public class Lamp : MonoBehaviour
             lampTime += time;
         }
         flickCooldown = START_FLICK_COOLDOWN;
+        StartCoroutine("RechargeLampTimeParticles");
 
-        if (!turnedOn && !playerInLight) ActivateLampLight();
+        if (!turnedOn && !playerInLight)
+        {
+            // ActivateLampLight(); // <<<<<<<<<<<<<<<<<<<<
+            ActivateConeLight(); // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        }
     }
 
     public void ConsumeSpecificLampTime(float time)
@@ -221,12 +236,15 @@ public class Lamp : MonoBehaviour
         if (!active)
             ActivateCircleLight();
 
-        StartCoroutine(LightFlicking());
+        // StartCoroutine("LightFlicking");
     }
 
 
     public void ActivateConeLight()
     {
+        turnedOn = true;
+        playerAnimator.SetBool("light", true);
+
         if (!coneIsActive && turnOnLanternDroneSoundEvent != null)
             turnOnLanternDroneSoundEvent();
 
@@ -234,27 +252,23 @@ public class Lamp : MonoBehaviour
 
         coneLight.SetIntensity(LIGHT_INTENSITY_ON);
         coneLight.Expand(LIGHT_INTENSITY_ON);
+
+        StartCoroutine("LightFlicking");
     }
 
 
     public void ActivateCircleLight()
     {
         active = true;
-        intenseCircleIsActive = true;
+        //intenseCircleIsActive = true;
+        intenseCircleIsActive = false;
 
         circleLight.SetIntensity(LIGHT_INTENSITY_ON);
         circleLight.Expand(LIGHT_INTENSITY_ON);
+
+        if (turnOnLanternEvent != null) turnOnLanternEvent();
     }
 
-    public void ActivateFadedCircleLight()
-    {
-        active = true;
-
-        circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
-        circleLight.Expand(LIGHT_INTENSITY_OFF);
-
-        if (turnOnLanternDroneSoundEvent != null) turnOnLanternDroneSoundEvent();
-    }
 
     public void DeactivateLampLight()
     {
@@ -275,12 +289,16 @@ public class Lamp : MonoBehaviour
 
     public void DeactivateConeLight()
     {
+        turnedOn = false;
+        playerAnimator.SetBool("light", false);
+
+
         if (coneIsActive && turnOffLanternDroneSoundEvent != null)
             turnOffLanternDroneSoundEvent();
 
         coneIsActive = false;
 
-        StopCoroutine(LightFlicking());
+        StopCoroutine("LightFlicking");
 
         //circleLight.SetIntensity(LIGHT_INTENSITY_OFF);
         coneLight.Shrink(LIGHT_INTENSITY_OFF);
@@ -288,11 +306,13 @@ public class Lamp : MonoBehaviour
     }
 
     public void DeactivateCircleLight()
-    {
+    {        
         active = false;
         intenseCircleIsActive = false;
 
         circleLight.Shrink(LIGHT_INTENSITY_OFF);
+
+        if (turnOffLanternEvent != null) turnOffLanternEvent();
     }
 
     public float GetLampTimeRemaining()
@@ -329,7 +349,6 @@ public class Lamp : MonoBehaviour
         {
             return;
         }
-        ++sourceLevel;
         if (sourceLevel >= LIGHT_ANGLE_LVL.Length) sourceLevel = LIGHT_ANGLE_LVL.Length;
 
         lightAngle = LIGHT_ANGLE_LVL[sourceLevel];
@@ -337,6 +356,8 @@ public class Lamp : MonoBehaviour
 
         coneLight.SetDistance(lightDistance);   
         coneLight.SetAngle(lightAngle);
+
+        ++sourceLevel;
     }
 
     private void UpgradeLampTime()
@@ -403,6 +424,13 @@ public class Lamp : MonoBehaviour
         }
 
         //DeactivateConeLight();
+    }
+
+    IEnumerator RechargeLampTimeParticles()
+    {
+        lightRechargedParticleSystem.Play();
+        yield return new WaitForSeconds(lampTimeParticles);
+        lightRechargedParticleSystem.Stop();
     }
 
 

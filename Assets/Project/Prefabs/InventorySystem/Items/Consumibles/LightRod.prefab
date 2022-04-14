@@ -86,6 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   permanentNotPickedUp: 0
   canBePickedUp: 1
+  isPickedUpAlready: 0
   currentDespawnTimeInSeconds: 30
   item: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
   audioSource: {fileID: 3848699864291273460}
@@ -112,7 +113,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -283,6 +284,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b609c2651d940144954983652ee4ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lerpTime: 1
+  lerpDistance: 0.3
+  halfLerpDistance: 0.15
 --- !u!1 &4559997263265239278
 GameObject:
   m_ObjectHideFlags: 0
