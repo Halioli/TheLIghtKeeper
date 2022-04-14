@@ -22,12 +22,17 @@ public class Ore : MonoBehaviour
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
 
+    public bool hasBeenMined;
 
     public delegate void OreGetsMinedAction();
     public static event OreGetsMinedAction playerMinesOreEvent;
     public static event OreGetsMinedAction playerBreaksOreEvent;
 
 
+    private void Awake()
+    {
+        SaveSystem.ores.Add(this);
+    }
 
     private void Start()
     {
