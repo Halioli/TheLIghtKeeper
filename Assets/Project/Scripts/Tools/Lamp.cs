@@ -61,6 +61,8 @@ public class Lamp : MonoBehaviour
     public static event PlayLanternSound turnOnLanternDroneSoundEvent;
     public static event PlayLanternSound turnOffLanternDroneSoundEvent;
 
+    public static event PlayLanternSound OnLanternTurnsOnInDarkness;
+
     private void Awake()
     {
         lampTime = maxLampTime = 20f;
@@ -182,6 +184,8 @@ public class Lamp : MonoBehaviour
         {
             // ActivateLampLight(); // <<<<<<<<<<<<<<<<<<<<
             ActivateConeLight(); // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+            if (OnLanternTurnsOnInDarkness != null) OnLanternTurnsOnInDarkness();
         }
     }
 
@@ -223,25 +227,28 @@ public class Lamp : MonoBehaviour
         }
     }
 
-    public void ActivateLampLight()
-    {
-        turnedOn = true;
-        playerAnimator.SetBool("light", true);
+    //public void ActivateLampLight()
+    //{
+    //    turnedOn = true;
+    //    playerAnimator.SetBool("light", true);
 
-        if (!active && turnOnLanternEvent != null)
-            turnOnLanternEvent();
+    //    if (!active && turnOnLanternEvent != null)
+    //        turnOnLanternEvent();
 
-        if (!coneIsActive)
-            ActivateConeLight();
-        if (!active)
-            ActivateCircleLight();
+    //    if (!coneIsActive)
+    //        ActivateConeLight();
+    //    if (!active)
+    //        ActivateCircleLight();
 
-        // StartCoroutine("LightFlicking");
-    }
+    //    // StartCoroutine("LightFlicking");
+    //}
 
 
     public void ActivateConeLight()
     {
+        if (!active) ActivateCircleLight();
+
+
         turnedOn = true;
         playerAnimator.SetBool("light", true);
 
@@ -270,20 +277,20 @@ public class Lamp : MonoBehaviour
     }
 
 
-    public void DeactivateLampLight()
-    {
-        if (turnedOn && turnOffLanternEvent != null)
-            turnOffLanternEvent();
+    //public void DeactivateLampLight()
+    //{
+    //    if (turnedOn && turnOffLanternEvent != null)
+    //        turnOffLanternEvent();
 
-        turnedOn = false;
-        playerAnimator.SetBool("light", false);
+    //    turnedOn = false;
+    //    playerAnimator.SetBool("light", false);
 
-        if (coneIsActive)
-            DeactivateConeLight();
+    //    if (coneIsActive)
+    //        DeactivateConeLight();
 
-        if (active)
-            DeactivateCircleLight();
-    }
+    //    if (active)
+    //        DeactivateCircleLight();
+    //}
 
 
 
@@ -306,7 +313,9 @@ public class Lamp : MonoBehaviour
     }
 
     public void DeactivateCircleLight()
-    {        
+    {
+        if (!active) return;
+
         active = false;
         intenseCircleIsActive = false;
 
