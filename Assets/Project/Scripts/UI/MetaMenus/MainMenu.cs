@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
     public GameObject optionsMenuGameObject;
     public GameObject creditsMenuGameObject;
 
+    [SerializeField] SaveSystem saveSystem;
     [SerializeField] GameObject playButtonGameObject;
     [SerializeField] GameObject continueButtonGameObject;
     [SerializeField] GameObject newGameButtonGameObject;
