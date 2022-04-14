@@ -18,10 +18,15 @@ public class Gecko : MonoBehaviour
 
     public bool playerIsNear;
     public bool touched;
-    // Start is called before the first frame update
+    public bool reachedEnd;
+    private bool isGetsTouchedStarted;
+
     void Start()
     {
+        coroutineAllowed = true;
         touched = false;
+        reachedEnd = false;
+        isGetsTouchedStarted = false;
         geckoAnimator = GetComponent<Animator>();
         routeToGo = 0;
         tParam = 0f;
@@ -29,10 +34,10 @@ public class Gecko : MonoBehaviour
         transform.position = routes[0].GetChild(0).position;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (coroutineAllowed && !touched)
+        if (coroutineAllowed && touched && !reachedEnd)
         {
             geckoAnimator.SetBool("running", true);
             StartCoroutine(GoByTheRoute(routeToGo));
@@ -42,7 +47,7 @@ public class Gecko : MonoBehaviour
     private IEnumerator GoByTheRoute(int routeNumber)
     {
         coroutineAllowed = false;
-        touched = true;
+        touched = false;
 
         Vector3 p0 = routes[routeNumber].GetChild(0).position;
         Vector3 p1 = routes[routeNumber].GetChild(1).position;
@@ -66,18 +71,40 @@ public class Gecko : MonoBehaviour
         tParam = 0f;
         routeToGo += 1;
         if (routeToGo > routes.Length - 1)
+        {
+            reachedEnd = true;
             routeToGo = 0;
+        }
 
-
+        coroutineAllowed = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Player"))
+    //    {
+    //        GetsTouched();
+    //    }
+    //}
+
+
+    public void GetsTouched()
     {
-        if (collision.CompareTag("Player"))
+        if (coroutineAllowed && !isGetsTouchedStarted)
         {
-            coroutineAllowed = true;
-            Debug.Log(touched);
-            //geckoAnimator.SetBool("running", true);
+            isGetsTouchedStarted = true;
+            StartCoroutine(StartGetsTouched());
         }
     }
+
+
+    IEnumerator StartGetsTouched()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        isGetsTouchedStarted = false;
+        touched = true;
+    }
+
+
 }
