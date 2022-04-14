@@ -11,6 +11,7 @@ public class GeckoEnemy : EnemyMonster
     private void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
+        attackSystem = GetComponent<AttackSystem>();
         enemyAudio = GetComponent<EnemyAudio>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
@@ -33,13 +34,27 @@ public class GeckoEnemy : EnemyMonster
         }
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerGameObject = other.gameObject;
+            DealDamageToPlayer();
+            PushPlayer();
+        }
+    }
+
+
 
     protected override void OnDeathStart()
     {
         isDyingAlready = true;
 
         geckoAnimator.SetBool("death", true);
+
+        enemyAudio.StopFootstepsAudio();
         enemyAudio.PlayDeathAudio();
+        enemyAudio.PlayScaredAudio();
     }
 
     protected override void OnDeathEnd()
