@@ -10,18 +10,20 @@ public class BrokenFurnace : InteractStation
     private PopUp popUp;
     private Animator furnaceAnimator;
     private Light2D furnaceLight;
-    public Light2D[] spaceShipLights;
+    private AudioSource audioSource;
 
+    public Light2D[] spaceShipLights;
     public Item coal;
     public HUDHandler hud;
     public ParticleSystem furnaceParticles;
-    
+    public PlayerInputs playerInputs;
+
     public delegate void BrokenFurnaceAction();
     public static event BrokenFurnaceAction OnTutorialFinish;
 
-
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         popUp = GetComponentInChildren<PopUp>();
         furnaceAnimator = GetComponent<Animator>();
 
@@ -86,6 +88,8 @@ public class BrokenFurnace : InteractStation
 
     IEnumerator StartFurnace()
     {
+        playerInputs.canMove = false;
+
         // Play animation
         furnaceAnimator.SetBool("isActivate", true);
 
@@ -97,6 +101,7 @@ public class BrokenFurnace : InteractStation
         for(int i = 1; i < spaceShipLights.Length - 1; i++)
         {
             spaceShipLights[i].intensity = 1f;
+            audioSource.Play();
             yield return new WaitForSeconds(1f);
         }
         for (int i = 1; i < spaceShipLights.Length - 1; i++)
@@ -104,6 +109,7 @@ public class BrokenFurnace : InteractStation
             spaceShipLights[i].intensity = 0f;
         }
         spaceShipLights[3].intensity = 1f;
+        audioSource.Play();
         yield return new WaitForSeconds(1f);
 
         // HUD fade to black
@@ -111,6 +117,8 @@ public class BrokenFurnace : InteractStation
         if (OnTutorialFinish != null) OnTutorialFinish();
 
         yield return new WaitForSeconds(2f);
+
+        playerInputs.canMove = true;
 
         // Load Scene
         SceneManager.LoadSceneAsync("Spaceship", LoadSceneMode.Single);
