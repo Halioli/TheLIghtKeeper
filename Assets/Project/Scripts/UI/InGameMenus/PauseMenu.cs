@@ -11,9 +11,14 @@ public class PauseMenu : MonoBehaviour
     public CanvasGroup loadingGroup;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
+    public GameObject controllsMenu;
 
     public delegate void PauseMenuAction();
     public static event PauseMenuAction OnPaused;
+
+    public delegate void ToggleCheatsAction(bool toggle);
+    public static event ToggleCheatsAction OnToggleCheats;
+
     void Update()
     {
         if (PlayerInputs.instance.PlayerPressedPauseButton())
@@ -92,6 +97,13 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
     }
 
+    public void ClickedControllsButton()
+    {
+        controllsMenu.SetActive(true);
+
+        pauseMenu.SetActive(false);
+    }
+
     public void ClickedMainMenuButton(int sceneIndex)
     {
         gameIsPaused = false;
@@ -102,6 +114,12 @@ public class PauseMenu : MonoBehaviour
     public void ClickedExitButton()
     {
         PlayerInputs.instance.QuitGame();
+    }
+
+    public void ToggleCheats(bool value)
+    {
+        if (OnToggleCheats != null)
+            OnToggleCheats(value);
     }
 
     IEnumerator AsyncLoading(int sceneIndex)
