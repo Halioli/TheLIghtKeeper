@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 public enum OreState { WHOLE, BROKEN };
-public enum Hardness { NORMAL, HARD };
+public enum Hardness { NORMAL, HARD, VERY_HARD };
 
 public class Ore : MonoBehaviour
 {
@@ -15,10 +15,19 @@ public class Ore : MonoBehaviour
     protected Sprite currentSprite;
 
     // Public Attributes
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] protected Transform spriteTransform;
     [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
+
+
+    public delegate void OreGetsMinedAction();
+    public static event OreGetsMinedAction playerMinesOreEvent;
+    public static event OreGetsMinedAction playerBreaksOreEvent;
+
+
 
     private void Start()
     {
@@ -40,7 +49,7 @@ public class Ore : MonoBehaviour
 
     public virtual void GetsMined(int damageAmount, int numberOfDrops)
     {
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+        DamageTakeAnimation();
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
         // Update ore Sprite
@@ -49,6 +58,7 @@ public class Ore : MonoBehaviour
         if (healthSystem.IsDead())
         {
             breakState = OreState.BROKEN;
+            OnDeathDamageTake();
 
             // Drop mineralItemToDrop
             numberOfDrops = Random.Range(1, numberOfDrops);
@@ -60,10 +70,30 @@ public class Ore : MonoBehaviour
             // Start disappear coroutine
             StartCoroutine("Disappear");
         }
+        else
+        {
+            OnDamageTake();
+        }
+
         UpdateCurrentSprite();
         StartCoroutine("PlayBreakParticles");
-
     }
+
+    protected virtual void DamageTakeAnimation()
+    {
+        spriteTransform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+    }
+
+    protected virtual void OnDamageTake()
+    {
+        if (playerMinesOreEvent != null) playerMinesOreEvent();
+    }
+
+    protected virtual void OnDeathDamageTake()
+    {
+        if (playerBreaksOreEvent != null) playerBreaksOreEvent();
+    }
+
 
     protected void ProgressNAmountOfSprites(int numberOfProgressions)
     {
@@ -79,7 +109,7 @@ public class Ore : MonoBehaviour
         currentSprite = spriteList[currentSpriteIndex];
     }
 
-    protected void DropMineralItem()
+    protected virtual void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsRandom();
@@ -92,13 +122,11 @@ public class Ore : MonoBehaviour
 
     protected void UpdateCurrentSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = currentSprite;
+        spriteRenderer.sprite = currentSprite;
     }
 
     protected IEnumerator Disappear()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
         Color transparentColor = spriteRenderer.material.color;
         transparentColor.a = 0.0f;
 

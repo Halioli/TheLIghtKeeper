@@ -22,7 +22,7 @@ public class BreakeableWall : Ore
 
     public override void GetsMined(int damageAmount, int numberOfDrops)
     {
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+        spriteTransform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
         // Damage the Ore
         healthSystem.ReceiveDamage(damageAmount);
         // Update ore Sprite
@@ -34,8 +34,25 @@ public class BreakeableWall : Ore
 
             // Start disappear coroutine
             StartCoroutine(Disappear());
+
+            OnDeathDamageTake();
+        }
+        else
+        {
+            OnDamageTake();
         }
         UpdateCurrentSprite();
         StartCoroutine(PlayBreakParticles());
     }
+
+    protected override void OnDamageTake()
+    {
+        base.OnDamageTake();
+    }
+
+    protected override void OnDeathDamageTake()
+    {
+        base.OnDeathDamageTake();
+    }
+
 }

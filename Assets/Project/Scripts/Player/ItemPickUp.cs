@@ -5,33 +5,60 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     private PlayerInventory playerInventory;
-    private CircleCollider2D itemPickUpCheckCollider;
+    [SerializeField] Collider2D itemPickUpCheckCollider;
+    [SerializeField] CircleCollider2D itemPickUpCollider;
+    ItemGameObject itemGameObject;
+
+
+    public delegate void PlayPlayerSound();
+    public static event PlayPlayerSound playerPicksUpItemEvent;
+    public delegate void ItemPickUpSuccessAction(int itemID);
+    public static event ItemPickUpSuccessAction OnItemPickUpSuccess;
+
+    bool isOnItemPickUpFailInvoked = false;
+    readonly float onItemPickUpFailDuration = 3f;
+    public delegate void ItemPickUpFailAction(float isOnItemPickUpFailDuration);
+    public static event ItemPickUpFailAction OnItemPickUpFail;
+
+
 
     private void Start()
     {
         playerInventory = GetComponentInParent<PlayerInventory>();
-        itemPickUpCheckCollider = GetComponent<CircleCollider2D>();
     }
 
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!collider.IsTouching(itemPickUpCheckCollider)) return;
-
         if (collider.gameObject.CompareTag("Item"))
         {
-            ItemGameObject itemGameObject = collider.GetComponent<ItemGameObject>();
-            
-            if (!itemGameObject.permanentNotPickedUp && playerInventory.inventory.ItemCanBeAdded(itemGameObject.item))
+            itemGameObject = collider.GetComponent<ItemGameObject>();
+
+            if (itemGameObject.isPickedUpAlready)
             {
-                itemGameObject.canBePickedUp = playerInventory.inventory.AddItemToInventory(itemGameObject.item);
+                if (collider.IsTouching(itemPickUpCollider))
+                {
+                    DestroyPickedUpItem();
+                }
+
             }
             else
             {
-                itemGameObject.SetSelfStatic();
-                itemGameObject.canBePickedUp = false;
+                if (collider.IsTouching(itemPickUpCheckCollider))
+                {
+                    if (!itemGameObject.permanentNotPickedUp && playerInventory.hotbarInventory.ItemCanBeAdded(itemGameObject.item))
+                    {
+                        ItemPickUpSuccess();
+                    }
+                    else
+                    {
+                        ItemPickUpFail();
+                    }
+                }
+
             }
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collider)
@@ -41,5 +68,52 @@ public class ItemPickUp : MonoBehaviour
             collider.GetComponent<ItemGameObject>().SetSelfDynamic();
         }
     }
+
+
+    private void ItemPickUpFail()
+    {
+        itemGameObject.SetSelfStatic();
+        itemGameObject.canBePickedUp = false;
+
+        if (Vector2.Distance(itemGameObject.transform.position, transform.position) > 1.5f) return;
+
+        if (!isOnItemPickUpFailInvoked) StartCoroutine(DoOnItemPickUpFail());
+    }
+
+    IEnumerator DoOnItemPickUpFail()
+    {
+        isOnItemPickUpFailInvoked = true;
+
+        if (OnItemPickUpFail != null) OnItemPickUpFail(onItemPickUpFailDuration);
+        
+        yield return new WaitForSeconds(onItemPickUpFailDuration);
+
+        isOnItemPickUpFailInvoked = false;
+    }
+
+
+
+    private void ItemPickUpSuccess()
+    {
+        //itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
+
+        //if (OnItemPickUpSuccess != null) OnItemPickUpSuccess(itemGameObject.item.ID);
+
+        itemGameObject.isPickedUpAlready = true;
+    }
+
+
+    private void DestroyPickedUpItem()
+    {
+        itemGameObject.canBePickedUp = playerInventory.hotbarInventory.AddItemToInventory(itemGameObject.item);
+
+        if (OnItemPickUpSuccess != null) OnItemPickUpSuccess(itemGameObject.item.ID);
+
+
+        Destroy(itemGameObject.gameObject);
+        if (playerPicksUpItemEvent != null) playerPicksUpItemEvent();
+    }
+
+
 
 }

@@ -5,21 +5,49 @@ using UnityEngine;
 public class PlayerLightChecker : MonoBehaviour
 {
     // Private Attributes
-    private bool playerInLight;
+    public static bool playerInLight;
+    private bool wasPlayerInDarknessNoLantern = false;
+    public static bool playerInDarknessNoLantern;
     public int numberOfLights;
 
     // Public Attributes
     public Lamp lamp;
 
+    public delegate void PlayerEntersLightAction();
+    public static event PlayerEntersLightAction OnPlayerEntersLight; // Invoked when player enters a "Light" or "CoreLight" tagged collider
+    public static event PlayerEntersLightAction OnPlayerEntersCoreLight; // Invoked when player "CoreLight" tagged collider
+    public static event PlayerEntersLightAction OnPlayerInDarknessNoLantern; // Invoked when player runs out of Lantern light while in the dark
+
+    // Invoked when player enters "LightInterior" tagged collider (already inside "Light" or "CoreLight" tagged collider)
+    public static event PlayerEntersLightAction OnPlayerEntersLightInterior; 
+    // Invoked when player exits "LightInterior" tagged collider and inside "Light" or "CoreLight" tagged collider
+    public static event PlayerEntersLightAction OnPlayerExitsLightInterior;
+
+
+
+
     private void Start()
     {
-        playerInLight = false;
         numberOfLights = 0;
     }
 
 
     private void Update()
     {
+        playerInLight = numberOfLights > 0;
+
+        playerInDarknessNoLantern = lamp.LampTimeExhausted() && !playerInLight;
+        if (playerInDarknessNoLantern && !wasPlayerInDarknessNoLantern)
+        {
+            wasPlayerInDarknessNoLantern = true;
+            if (OnPlayerInDarknessNoLantern != null) OnPlayerInDarknessNoLantern();
+        }
+        else if (!playerInDarknessNoLantern)
+        {
+            wasPlayerInDarknessNoLantern = false;
+        }
+
+
         if (numberOfLights == 0)// && !lamp.LampTimeExhausted())
         {
             lamp.UpdateLamp();
@@ -37,60 +65,76 @@ public class PlayerLightChecker : MonoBehaviour
     // Method that checks if the player enters an area with light
     private void OnTriggerEnter2D(Collider2D lightingCollider)
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
+
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
-            numberOfLights += 1;
+            ++numberOfLights;
+            
+            if (OnPlayerEntersLight != null) OnPlayerEntersLight();
 
             // Lamp turns off
             if (lamp.active)
-                lamp.DeactivateLampLight();
+            {
+                // lamp.DeactivateLampLight(); <<<<<<<<<<<<<<<<<<<<
+                lamp.DeactivateConeLight();
+            }
+                
 
             if (lightingCollider.gameObject.CompareTag("CoreLight"))
             {
-                lamp.FullyRefillLampTime();
+                if (!lamp.LampTimeIsMax())
+                {
+                    if (OnPlayerEntersCoreLight != null) OnPlayerEntersCoreLight();
+                    lamp.FullyRefillLampTime();
+                }
             }
 
             SetPlayerInLightToTrue();
         }
 
-    }
 
-    private void OnTriggerStay2D(Collider2D lightingCollider)
-    {
-        if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
+        if (lightingCollider.gameObject.CompareTag("LightInterior"))
         {
-            // Lamp turns off
-            
-            if (lightingCollider.gameObject.CompareTag("CoreLight"))
-            {
-                lamp.FullyRefillLampTime();
-            }
+            if (OnPlayerEntersLightInterior != null) OnPlayerEntersLightInterior();
 
-            SetPlayerInLightToTrue();
+            lamp.DeactivateCircleLight(); //>>>>>>>>>>>>>>>>>>
         }
 
     }
 
 
-    // Method that checks if the player exits an area with light
+
     private void OnTriggerExit2D(Collider2D lightingCollider)
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         if (lightingCollider.gameObject.CompareTag("Light") || lightingCollider.gameObject.CompareTag("CoreLight"))
         {
-            numberOfLights -= 1;
+            --numberOfLights;
             if (numberOfLights == 0)
             {
-                if (!lamp.LampTimeExhausted())
+                if (lamp.LampTimeExhausted())
                 {
-                    // Lamp turns on
-                    lamp.ActivateLampLight();
+                    SetPlayerInLightToFalse();
+                    // lamp.ActivateFadedCircleLight(); <<<<<<<<<<<<<<<<<<
                 }
                 else
                 {
-                    SetPlayerInLightToFalse();
-                    lamp.ActivateCircleLight();
+                    // Lamp turns on
+                    // lamp.ActivateLampLight(); <<<<<<<<<<<<<<<<<<
+                    lamp.ActivateConeLight(); // >>>>>>>>>>>>>>>>>>>>>>>
                 }
             }
+        }
+
+
+        if (lightingCollider.gameObject.CompareTag("LightInterior"))
+        {
+            if (OnPlayerExitsLightInterior != null) OnPlayerExitsLightInterior();
+
+            lamp.ActivateCircleLight(); //>>>>>>>>>>>>>>>>>>
         }
 
     }
@@ -100,8 +144,14 @@ public class PlayerLightChecker : MonoBehaviour
     public bool IsPlayerInLight() { return playerInLight; }
 
     // Method that sets playerInLight bool to true
-    public void SetPlayerInLightToTrue() { playerInLight = true; }
+    public void SetPlayerInLightToTrue() { 
+        playerInLight = true;
+        lamp.playerInLight = true;
+    }
 
     // Method that sets playerInLight bool to false
-    public void SetPlayerInLightToFalse() { playerInLight = false; }
+    public void SetPlayerInLightToFalse() { 
+        playerInLight = false;
+        lamp.playerInLight = false;
+    }
 }
