@@ -81,12 +81,12 @@ public class EnemyMonster : MonoBehaviour
         Destroy(gameObject);
     }
 
-    protected virtual void DropItem()
+    protected virtual void DropItem(bool willDespawn = true)
     {
         if (Random.Range(0, 100) > dropRatePercent) return;
 
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
-        item.DropsRandom();
+        item.DropsRandom(willDespawn);
     }
 
 
@@ -103,17 +103,17 @@ public class EnemyMonster : MonoBehaviour
         isGettingPushed = false;
     }
 
-    IEnumerator HurtedFlashEffect()
+    protected IEnumerator HurtedFlashEffect()
     {
-        transform.DOComplete();
+        //transform.DOComplete();
 
-        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
+        //transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
 
         spriteRenderer.color = transparent;
-        yield return new WaitForSeconds(damagedTime / 2);
+        yield return new WaitForSeconds(0.1f);
 
         spriteRenderer.color = normal;
-        yield return new WaitForSeconds(damagedTime / 2);
+        yield return new WaitForSeconds(0.1f);
         
         spriteRenderer.color = normal;
     }

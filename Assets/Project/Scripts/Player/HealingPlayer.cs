@@ -19,12 +19,15 @@ public class HealingPlayer : MonoBehaviour
     {
         HealingStation.OnHealedByHealingStation += PlayerHealedByStation;
         Hotkeys.OnHealed += PlayerHealed;
+        HealingFlowerAuxiliar.OnHealPlayer += PlayerHealed;
     }
 
     private void OnDisable()
     {
         HealingStation.OnHealedByHealingStation -= PlayerHealedByStation;
         Hotkeys.OnHealed -= PlayerHealed;
+        HealingFlowerAuxiliar.OnHealPlayer -= PlayerHealed;
+
     }
 
     private void PlayerHealedByStation()
