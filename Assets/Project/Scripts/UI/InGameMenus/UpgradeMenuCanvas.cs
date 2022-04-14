@@ -9,7 +9,6 @@ public class UpgradeMenuCanvas : MonoBehaviour
     [SerializeField] UpgradeButtonBranch[] upgradeButtonBranches;
     [SerializeField] UpgradesSystem upgradesSystem;
 
-
     public delegate void UpgradeMenuAction();
     public static event UpgradeMenuAction OnSubmenuEnter;
 
@@ -18,8 +17,6 @@ public class UpgradeMenuCanvas : MonoBehaviour
     {
         HideDisplay();
     }
-
-
 
     public void DisplayUpgrade(Upgrade upgrade, bool isCompleted)
     {
@@ -58,9 +55,6 @@ public class UpgradeMenuCanvas : MonoBehaviour
     {
         upgradesSystem.UpgradeBranchIsSelectedComplete(upgradeBranchIndex);
     }
-
-
-
 
     public void GoToSubmenu()
     {
