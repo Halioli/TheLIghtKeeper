@@ -20,6 +20,11 @@ public class LightDamageTaker : MonoBehaviour
 
     private void Awake()
     {
+        Init();
+    }
+
+    protected void Init()
+    {
         enemyMonster = GetComponent<EnemyMonster>();
         isInsideLight = false;
         isAlreadyTakingDamage = false;
@@ -29,6 +34,7 @@ public class LightDamageTaker : MonoBehaviour
 
         damageToTake = lightDamage;
     }
+
 
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
@@ -65,7 +71,7 @@ public class LightDamageTaker : MonoBehaviour
     }
 
 
-    private void StartTakeDamageWhileInsideLight() {
+    protected virtual void StartTakeDamageWhileInsideLight() {
         if (!isAlreadyTakingDamage)
         {
             StartCoroutine(TakeDamageWhileInsideLight());
@@ -80,12 +86,17 @@ public class LightDamageTaker : MonoBehaviour
 
         while (isInsideLight)
         {
-            enemyMonster.ReceiveDamage(damageToTake);
+            DoReceiveDamage();
             yield return new WaitForSeconds(damageTakeCooldown);
         }
         isAlreadyTakingDamage = false;
     }
 
+
+    protected virtual void DoReceiveDamage()
+    {
+        enemyMonster.ReceiveDamage(damageToTake);
+    }
 
 
 }
