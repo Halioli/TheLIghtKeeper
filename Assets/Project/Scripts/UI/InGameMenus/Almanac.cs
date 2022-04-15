@@ -25,10 +25,10 @@ public class Almanac : MonoBehaviour
         environmentMenu.SetActive(false);
     }
 
-    //private void Update()
-    //{
-        //CloseAlmanac();
-    //}
+    private void Update()
+    {
+        CloseAlmanac();
+    }
     public void ShowInfo(AlmanacScriptableObject item)
     {
         if (!item.hasFound)
