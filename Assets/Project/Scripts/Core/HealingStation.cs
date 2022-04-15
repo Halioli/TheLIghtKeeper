@@ -8,7 +8,7 @@ public class HealingStation : MonoBehaviour
     private bool playerInside;
     private GameObject player;
     private HealthSystem playerHealthSystem;
-    public TextMeshProUGUI maxHealthMessage;
+    public GameObject maxHealthMessage;
     public GameObject backgroundText;
     public Animator animator;
 
@@ -24,7 +24,7 @@ public class HealingStation : MonoBehaviour
         playerInside = false;
         player = GameObject.FindGameObjectWithTag("Player");
         playerHealthSystem = player.GetComponent<HealthSystem>();
-        maxHealthMessage.alpha = 0;
+        maxHealthMessage.SetActive(false);
         backgroundText.SetActive(false);
     }
 
@@ -45,7 +45,7 @@ public class HealingStation : MonoBehaviour
         {
             playerInside = false;
             RestorePlayerHealth();
-            maxHealthMessage.alpha = 0;
+            maxHealthMessage.SetActive(false);
             backgroundText.SetActive(false);
         }
     }
@@ -67,14 +67,15 @@ public class HealingStation : MonoBehaviour
 
     private void ShowMaxHealthMessage()
     {
-        maxHealthMessage.text = "Player at Max Health";
+        //maxHealthMessage.text = "Player at Max Health";
         backgroundText.SetActive(true);
-        maxHealthMessage.alpha = 100;
+        maxHealthMessage.SetActive(true);
     }
+
     private void ShowPlayerHealedMessage()
     {
-        maxHealthMessage.text = "Player Healed";
+        //maxHealthMessage.text = "Player Healed";
         backgroundText.SetActive(true);
-        maxHealthMessage.alpha = 100;
+        maxHealthMessage.SetActive(true);
     }
 }

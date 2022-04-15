@@ -7,6 +7,9 @@ public class Gecko : MonoBehaviour
     [SerializeField]
     private Transform[] routes;
 
+    [SerializeField] EnemyAudio enemyAudio;
+
+
     private int routeToGo;
 
     private float tParam;
@@ -54,7 +57,9 @@ public class Gecko : MonoBehaviour
         Vector3 p2 = routes[routeNumber].GetChild(2).position;
         Vector3 p3 = routes[routeNumber].GetChild(3).position;
 
-        while(tParam < 1)
+        enemyAudio.PlayFootstepsAudio();
+
+        while (tParam < 1)
         {
             tParam += Time.deltaTime * speeddModifier;
 
@@ -77,6 +82,8 @@ public class Gecko : MonoBehaviour
         }
 
         coroutineAllowed = true;
+
+        enemyAudio.StopFootstepsAudio();
     }
 
     //private void OnTriggerStay2D(Collider2D collision)

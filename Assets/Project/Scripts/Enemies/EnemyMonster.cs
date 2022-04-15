@@ -57,7 +57,7 @@ public class EnemyMonster : MonoBehaviour
         healthSystem.ReceiveDamage(damageValue);
         enemyAudio.PlayReceiveDamageAudio();
 
-        //StartCoroutine(HurtedFlashEffect());
+        StartCoroutine(HurtedFlashEffect());
     }
 
     public virtual void SetPlayer(GameObject playerGameObject)
@@ -68,6 +68,12 @@ public class EnemyMonster : MonoBehaviour
     protected virtual void DealDamageToPlayer()
     {
         playerGameObject.GetComponent<PlayerCombat>().ReceiveDamage(attackSystem.attackValue);
+    }
+
+    protected void PushPlayer()
+    {
+        Vector2 pushDiretion = playerGameObject.transform.position - transform.position;
+        playerGameObject.GetComponent<PlayerMovement>().GetsPushed(pushDiretion.normalized, attackSystem.pushValue);
     }
 
 

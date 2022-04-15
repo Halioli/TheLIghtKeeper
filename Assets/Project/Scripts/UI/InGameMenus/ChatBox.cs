@@ -22,6 +22,7 @@ public class ChatBox : MonoBehaviour
     private int eventIndex = -1;
     private TutorialMessages.MessegeEventType eventType;
     private int eventID;
+    private AudioSource audioSource;
 
     public delegate void ChatNextInput();
     public static event ChatNextInput OnChatNextInput;
@@ -41,6 +42,7 @@ public class ChatBox : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         chatCanvasGroup = GetComponent<CanvasGroup>();
         chatOpen = false;
         allTextShown = false;
@@ -139,9 +141,11 @@ public class ChatBox : MonoBehaviour
             case TutorialMessages.MessegeEventType.TUTORIAL:
                 if (OnChatTutorialEvent != null) OnChatTutorialEvent(eventID);
                 break;
+
             case TutorialMessages.MessegeEventType.CAMERA:
                 if (OnChatCameraEvent != null) OnChatCameraEvent(eventID);
                 break;
+
             default:
                 break;
         }
@@ -213,6 +217,8 @@ public class ChatBox : MonoBehaviour
         {
             mssgText.maxVisibleCharacters++;
             duckFace.transform.DOShakeRotation(LETTER_DELAY, 10, 10, 50);
+            audioSource.pitch = Random.Range(0f, 2f);
+            audioSource.Play();
 
             if (fullMssgText[i] == '.' || fullMssgText[i] == '!' || fullMssgText[i] == '?')
             {

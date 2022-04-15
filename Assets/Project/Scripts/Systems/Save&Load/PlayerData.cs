@@ -25,7 +25,11 @@ public class PlayerData
     public int[] inventoryItemID;
 
     public bool[] luxiniteMined;
-    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData, int sizeLuxinites)
+
+    public bool[] constructedBridges;
+
+    public bool[] oreMined;
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData, int sizeLuxinites, int sizeBridges, int sizeOres)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
@@ -60,6 +64,10 @@ public class PlayerData
             inventoryItemID[i] = inventoryPair.Key;
             i++;
         }
+
+        constructedBridges = new bool[sizeBridges];
+
+        oreMined = new bool[sizeOres];
     }
 
 }
