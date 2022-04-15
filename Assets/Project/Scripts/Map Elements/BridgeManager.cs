@@ -12,11 +12,24 @@ public class BridgeManager : MonoBehaviour
 
     private SpriteRenderer bridgeSpriteRenderer;
 
+    public bool constructed;
+
+    private void Awake()
+    {
+        SaveSystem.bridges.Add(this);
+    }
     private void Start()
     {
         bridgeSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void Update()
+    {
+        if(constructed)
+        {
+            BridgeConstructed();
+        }
+    }
     public void BridgeConstructed()
     {
         bridgeSpriteRenderer.sprite = bridgeSprite;

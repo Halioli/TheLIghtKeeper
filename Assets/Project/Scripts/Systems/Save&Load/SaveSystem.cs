@@ -8,6 +8,9 @@ public class SaveSystem : MonoBehaviour
     public static List<Teleporter> teleporters = new List<Teleporter>();
     public static List<Torch> torches = new List<Torch>();
     public static List<Luxinite> luxinites = new List<Luxinite>();
+    public static List<BridgeManager> bridges = new List<BridgeManager>();
+    public static List<Ore> ores = new List<Ore>();
+
 
     public static GameObject player;
     public static GameObject cam;
@@ -15,8 +18,6 @@ public class SaveSystem : MonoBehaviour
     public static Lamp playerLamp;
     public static GameObject furnace;
     public static Inventory playerInventory;
-
-    const string TP_COUNT_SUB = "/tp.count";
 
     void Start()
     {
@@ -40,7 +41,7 @@ public class SaveSystem : MonoBehaviour
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace, playerInventory.GetInventoryData(), luxinites.Count);
+        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace, playerInventory.GetInventoryData(), luxinites.Count, bridges.Count, ores.Count);
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -55,6 +56,16 @@ public class SaveSystem : MonoBehaviour
         for(int i = 0; i < luxinites.Count; i++)
         {
             data.luxiniteMined[i] = luxinites[i].hasBeenMined;
+        }
+
+        for (int i = 0; i < bridges.Count; i++)
+        {
+            data.constructedBridges[i] = bridges[i].constructed;
+        }
+
+        for (int i = 0; i < ores.Count; i++)
+        {
+            data.oreMined[i] = ores[i].hasBeenMined;
         }
 
         formatter.Serialize(stream, data);
@@ -106,6 +117,11 @@ public class SaveSystem : MonoBehaviour
                 teleporters[i].activated = playerData.enableTeleport[i];
             }
 
+            for (int i = 0; i < bridges.Count; i++)
+            {
+                bridges[i].constructed = playerData.constructedBridges[i];
+            }
+
             playerLamp.lampTime = playerData.lampTime;
             playerLamp.active = playerData.activeLamp;
             playerLamp.turnedOn = playerData.coneActiveLamp;
@@ -133,6 +149,17 @@ public class SaveSystem : MonoBehaviour
                     luxinites[i].gameObject.SetActive(false);
                 }
             }
+
+            for (int i = 0; i < luxinites.Count; i++)
+            {
+                ores[i].hasBeenMined = playerData.oreMined[i];
+
+                if (ores[i].hasBeenMined)
+                {
+                    ores[i].gameObject.SetActive(false);
+                }
+            }
+
 
             strm.Close();
             return playerData;
