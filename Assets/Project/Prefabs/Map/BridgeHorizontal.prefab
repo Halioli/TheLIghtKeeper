@@ -12417,8 +12417,10 @@ MonoBehaviour:
   - {fileID: 739386770090544219}
   - {fileID: 6129292000684434164}
   bridgeManager: {fileID: 8980250115562695839}
-  ironMaterial: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  enrichedMetalMaterial: {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
+  requiredAmount: 0c00000001000000
+  requiredMaterials:
+  - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
+  - {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
 --- !u!1 &8162340169813988672
 GameObject:
   m_ObjectHideFlags: 0
@@ -12600,6 +12602,7 @@ MonoBehaviour:
   rightBridgeGameObject: {fileID: 8162340169815014873}
   bridgeSprite: {fileID: 21300000, guid: c57496b3a71b61c49b4f18713b1faf28, type: 3}
   audioSource: {fileID: 1238887223779077527}
+  constructed: 0
 --- !u!82 &1238887223779077527
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12851,8 +12854,10 @@ MonoBehaviour:
   - {fileID: 739386770090544219}
   - {fileID: 6129292000684434164}
   bridgeManager: {fileID: 8980250115562695839}
-  ironMaterial: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  enrichedMetalMaterial: {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
+  requiredAmount: 0c00000001000000
+  requiredMaterials:
+  - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
+  - {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
 --- !u!1 &8439397179069265644
 GameObject:
   m_ObjectHideFlags: 0
