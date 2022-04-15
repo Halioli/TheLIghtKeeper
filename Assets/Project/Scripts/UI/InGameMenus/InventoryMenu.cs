@@ -76,11 +76,18 @@ public class InventoryMenu : MonoBehaviour
         SpriteRenderer sr;
         for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
-            sr = inventory.inventory[i].itemInStack.prefab.GetComponentInChildren<SpriteRenderer>();
-            itemCellsList[i].SetItemImage(sr.sprite);
-
             int amount = inventory.inventory[i].amountInStack;
-            itemCellsList[i].SetItemAmount(amount);
+            bool itemChanged = itemCellsList[i].GetItemAmount() != amount;
+
+            if (itemChanged)
+            {
+                sr = inventory.inventory[i].itemInStack.prefab.GetComponentInChildren<SpriteRenderer>();
+                itemCellsList[i].SetItemImage(sr.sprite);
+
+
+                itemCellsList[i].SetItemAmount(amount);
+            }
+
 
             if (!inventory.inventory[i].StackIsEmpty())
             {
