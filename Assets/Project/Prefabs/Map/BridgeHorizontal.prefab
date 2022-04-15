@@ -762,10 +762,10 @@ MonoBehaviour:
   messageCanvasGroup: {fileID: 1468376990952884082}
   interactionText: {fileID: 0}
   messageText: {fileID: 1259257233671763942}
-  firstItemQuantityText: {fileID: 1612290926828117331}
-  secondItemQuantityText: {fileID: 3049635460117208749}
-  firstItemQuantityValue: 12
-  secondItemQuantityValue: 1
+  itemQuantityText:
+  - {fileID: 1612290926828117331}
+  - {fileID: 3049635460117208749}
+  itemQuantityValue: 0c00000001000000
 --- !u!1 &2317090989701774777
 GameObject:
   m_ObjectHideFlags: 0
@@ -6959,10 +6959,10 @@ MonoBehaviour:
   messageCanvasGroup: {fileID: 7758352039869039716}
   interactionText: {fileID: 0}
   messageText: {fileID: 4211824146116980266}
-  firstItemQuantityText: {fileID: 8711076248390260152}
-  secondItemQuantityText: {fileID: 9196082256620540240}
-  firstItemQuantityValue: 12
-  secondItemQuantityValue: 1
+  itemQuantityText:
+  - {fileID: 8711076248390260152}
+  - {fileID: 9196082256620540240}
+  itemQuantityValue: 0c00000001000000
 --- !u!1 &5896773325952135003
 GameObject:
   m_ObjectHideFlags: 0
@@ -12417,8 +12417,10 @@ MonoBehaviour:
   - {fileID: 739386770090544219}
   - {fileID: 6129292000684434164}
   bridgeManager: {fileID: 8980250115562695839}
-  ironMaterial: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  enrichedMetalMaterial: {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
+  requiredAmount: 0c00000001000000
+  requiredMaterials:
+  - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
+  - {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
 --- !u!1 &8162340169813988672
 GameObject:
   m_ObjectHideFlags: 0
@@ -12600,6 +12602,7 @@ MonoBehaviour:
   rightBridgeGameObject: {fileID: 8162340169815014873}
   bridgeSprite: {fileID: 21300000, guid: c57496b3a71b61c49b4f18713b1faf28, type: 3}
   audioSource: {fileID: 1238887223779077527}
+  constructed: 0
 --- !u!82 &1238887223779077527
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12851,8 +12854,10 @@ MonoBehaviour:
   - {fileID: 739386770090544219}
   - {fileID: 6129292000684434164}
   bridgeManager: {fileID: 8980250115562695839}
-  ironMaterial: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  enrichedMetalMaterial: {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
+  requiredAmount: 0c00000001000000
+  requiredMaterials:
+  - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
+  - {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
 --- !u!1 &8439397179069265644
 GameObject:
   m_ObjectHideFlags: 0
