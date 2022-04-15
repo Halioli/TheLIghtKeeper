@@ -71,4 +71,38 @@ public class UpgradeMenuCanvas : MonoBehaviour
         if (OnSubmenuEnter != null) OnSubmenuEnter();
     }
 
+
+
+    // should be called on application close (or on memory save)
+    public int[] GetAllUpgardesLastActiveButtonIndex()
+    {
+        List<int> allLastActiveButtonIndex = new List<int>();
+
+        foreach (UpgradeButtonBranch upgradeButtonBranch in upgradeButtonBranches)
+        {
+            allLastActiveButtonIndex.Add(upgradeButtonBranch.GetLastActiveButtonIndex());
+        }   
+
+        return allLastActiveButtonIndex.ToArray();
+    }
+
+
+    // must be called on Awake()
+    public void FirstTimeSetAllLastCompletedButtonIndex()
+    {
+        for (int i = 0; i < upgradeButtonBranches.Length; ++i)
+        {
+            upgradeButtonBranches[i].SetLastCompletedButtonIndex(0);
+        }
+    }
+
+    public void SetAllLastCompletedButtonIndex(int[] allLastCompletedButtonIndex)
+    {
+        for (int i = 0; i < upgradeButtonBranches.Length; ++i)
+        {
+            upgradeButtonBranches[i].SetLastCompletedButtonIndex(allLastCompletedButtonIndex[i]);
+        }
+    }
+
+
 }

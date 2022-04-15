@@ -66,7 +66,7 @@ public class Ore : MonoBehaviour
             OnDeathDamageTake();
 
             // Drop mineralItemToDrop
-            numberOfDrops = Random.Range(1, numberOfDrops);
+            numberOfDrops = Random.Range(1, numberOfDrops+1);
             for (int i = 0; i < numberOfDrops; ++i)
             {
                 DropMineralItem();

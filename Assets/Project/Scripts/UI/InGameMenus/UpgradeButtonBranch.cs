@@ -17,14 +17,14 @@ public class UpgradeButtonBranch : MonoBehaviour
 
     private void Start()
     {
+        MAX.SetActive(false);
+
         InitButtons();
         InitCompletedButtons();
         
         InitConnections();
-
-
-        MAX.SetActive(false);
     }
+
 
 
     private void InitButtons()
@@ -76,6 +76,18 @@ public class UpgradeButtonBranch : MonoBehaviour
     }
 
 
+
+    // should be called on application close (or on memory save)
+    public int GetLastActiveButtonIndex()
+    {
+        return lastActiveButtonIndex;
+    }
+
+    // must be called on Awake()
+    public void SetLastCompletedButtonIndex(int lastCompletedButtonIndex)
+    {
+        this.lastCompletedButtonIndex = lastCompletedButtonIndex;
+    }
 
 
 }

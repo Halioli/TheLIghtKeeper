@@ -59,7 +59,7 @@ public class UpgradeButton : HoverButton
         ClickedAnimation();
     }
 
-    public void AlwaysProgressUpgradeSelected()
+    public virtual void AlwaysProgressUpgradeSelected()
     {
         upgradeMenuCanvas.AlwaysProgressUpgradeSelected(upgradeBranchIndex);
     }
