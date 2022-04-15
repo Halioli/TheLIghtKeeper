@@ -12,13 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3c75a27ef055f4cb0a1306d269dc2a, type: 3}
   m_Name: Pickaxe_Upgrade_3
   m_EditorClassIdentifier: 
-  upgradeDescription: +Chance extra drop
-  longDescription: 'Pickaxe - Tier 3/3:
-
-
-    Enhances the pickaxe''s precision,
-    unlocking a chance to get an extra drop when mining an ore.'
+  upgradeName: Pickaxe
+  upgradeDescription: (Tier 3/3)
+  longDescription: Enhances the Pickaxe's precission, unlocking the chance to get
+    an extra mineral drop when mining an ore.
   requiredItemsList:
   - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  - {fileID: 11400000, guid: 767674e6f1e8740438ddc58322974dd3, type: 2}
-  requiredAmountsList: 1400000001000000
+  - {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
+  requiredAmountsList: 1000000002000000

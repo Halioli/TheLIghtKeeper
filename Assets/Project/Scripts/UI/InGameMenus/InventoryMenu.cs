@@ -84,7 +84,8 @@ public class InventoryMenu : MonoBehaviour
 
             if (!inventory.inventory[i].StackIsEmpty())
             {
-                itemCellsList[i].GetComponent<HoverButton>().SetDescription(inventory.inventory[i].itemInStack.description);
+                itemCellsList[i].GetComponent<HoverButton>().SetDescription("<b>"+inventory.inventory[i].itemInStack.itemName+ ":</b>" + "\n\n" 
+                    + inventory.inventory[i].itemInStack.description);
             }
         }
     }

@@ -15,17 +15,24 @@ public class Ore : MonoBehaviour
     protected Sprite currentSprite;
 
     // Public Attributes
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] protected Transform spriteTransform;
     [SerializeField] public Hardness hardness;
     public List<Sprite> spriteList;
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
 
+    public bool hasBeenMined;
 
     public delegate void OreGetsMinedAction();
     public static event OreGetsMinedAction playerMinesOreEvent;
     public static event OreGetsMinedAction playerBreaksOreEvent;
 
 
+    private void Awake()
+    {
+        SaveSystem.ores.Add(this);
+    }
 
     private void Start()
     {
@@ -59,7 +66,7 @@ public class Ore : MonoBehaviour
             OnDeathDamageTake();
 
             // Drop mineralItemToDrop
-            numberOfDrops = Random.Range(1, numberOfDrops);
+            numberOfDrops = Random.Range(1, numberOfDrops+1);
             for (int i = 0; i < numberOfDrops; ++i)
             {
                 DropMineralItem();
@@ -79,7 +86,7 @@ public class Ore : MonoBehaviour
 
     protected virtual void DamageTakeAnimation()
     {
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
+        spriteTransform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
     }
 
     protected virtual void OnDamageTake()
@@ -107,7 +114,7 @@ public class Ore : MonoBehaviour
         currentSprite = spriteList[currentSpriteIndex];
     }
 
-    protected void DropMineralItem()
+    protected virtual void DropMineralItem()
     {
         ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
         droppedMineralItem.DropsRandom();
@@ -120,13 +127,11 @@ public class Ore : MonoBehaviour
 
     protected void UpdateCurrentSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = currentSprite;
+        spriteRenderer.sprite = currentSprite;
     }
 
     protected IEnumerator Disappear()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
         Color transparentColor = spriteRenderer.material.color;
         transparentColor.a = 0.0f;
 

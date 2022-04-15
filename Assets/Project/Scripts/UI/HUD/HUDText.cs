@@ -7,7 +7,7 @@ using DG.Tweening;
 
 public class HUDText : MonoBehaviour
 {
-    enum DisplayMessege { NONE, PICKAXE_TOO_WEAK, PICK_UP_FAIL, LANTERN_RECHARGED};
+    enum DisplayMessege { NONE, PICKAXE_TOO_WEAK, PICK_UP_FAIL, LANTERN_RECHARGED, NOT_ENOUGH_ITEMS };
 
     private float FADE_TIME = 1.5f;
     private float FADE_OUT_TIME = 0.25f;
@@ -27,6 +27,10 @@ public class HUDText : MonoBehaviour
         ItemPickUp.OnItemPickUpFail += DisplayItemPickUpError;
 
         PlayerLightChecker.OnPlayerEntersCoreLight += DisplayLanternRecharged;
+
+        LanternFuelAuxiliar.OnLanternRefill += DisplayLanternRecharged;
+
+        InteractStation.OnNotEnoughMaterials += DisplayNotEnoughItems;
     }
 
     private void OnDisable()
@@ -35,6 +39,10 @@ public class HUDText : MonoBehaviour
         ItemPickUp.OnItemPickUpFail -= DisplayItemPickUpError;
 
         PlayerLightChecker.OnPlayerEntersCoreLight -= DisplayLanternRecharged;
+
+        LanternFuelAuxiliar.OnLanternRefill -= DisplayLanternRecharged;
+
+        InteractStation.OnNotEnoughMaterials -= DisplayNotEnoughItems;
     }
 
 
@@ -69,6 +77,25 @@ public class HUDText : MonoBehaviour
         DisplayMessageAndLightning(FADE_TIME);
     }
 
+    private void DisplayLanternRecharged(string messege)
+    {
+        if (displayMessage == DisplayMessege.LANTERN_RECHARGED && canvasGroup.alpha != 0f)
+            return;
+
+        textMessege.text = messege;
+        displayMessage = DisplayMessege.LANTERN_RECHARGED;
+        DisplayMessageAndLightning(FADE_TIME);
+    }
+
+    private void DisplayNotEnoughItems()
+    {
+        if (displayMessage == DisplayMessege.NOT_ENOUGH_ITEMS && canvasGroup.alpha != 0f)
+            return;
+
+        textMessege.text = "Not enough items!";
+        displayMessage = DisplayMessege.NOT_ENOUGH_ITEMS;
+        DisplayMessageAndExclamation(FADE_TIME);
+    }
 
 
 

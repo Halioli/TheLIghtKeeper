@@ -7,10 +7,11 @@ public class DarknessSystem : MonoBehaviour
     public static DarknessSystem instance;
 
 
+
     // Private Attributes
     private PlayerLightChecker playerLightChecker;
     public bool playerInLight { get; private set; }
-    private List<GameObject> enemySpawners = new List<GameObject>();
+    [SerializeField] private List<GameObject> enemySpawners = new List<GameObject>();
 
     [SerializeField] int ENEMY_CAP = 4;
     private int numberOfAliveEnemies = 0;
@@ -22,8 +23,8 @@ public class DarknessSystem : MonoBehaviour
     private bool isDuringLightExitDelay = false;
 
     public delegate void PlayerEntersLightAction();
-    public static event PlayerEntersLightAction OnPlayerEntersLight;
-    public static event PlayerEntersLightAction OnPlayerNotInLight;
+    public static event PlayerEntersLightAction OnPlayerEntersLight; // Invoked when player enters a "Light" or "CoreLight" tagged collider
+    public static event PlayerEntersLightAction OnPlayerNotInLight; // Invoked when player exits a "Light" or "CoreLight" tagged collider
 
 
     private void Awake()
@@ -45,7 +46,7 @@ public class DarknessSystem : MonoBehaviour
         playerLightChecker = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLightChecker>();
         playerInLight = playerLightChecker.IsPlayerInLight();
 
-        enemySpawners = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemySpawner"));
+        //enemySpawners = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemySpawner"));
     }
 
     void Update()
@@ -90,7 +91,7 @@ public class DarknessSystem : MonoBehaviour
         //HostileEnemy.enemyDisappearsEvent += RemovingEnemy;
         EnemyDestroyState.OnEnemyDestroy += RemovingEnemy;
 
-        PlayerLightChecker.OnPlayerEntersLight += InvokeOnPlayerEntersLight;
+        PlayerLightChecker.OnPlayerEntersLight += InvokeOnPlayerEntersLight; 
     }
 
     void OnDisable()

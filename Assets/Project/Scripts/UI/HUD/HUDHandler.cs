@@ -21,6 +21,15 @@ public class HUDHandler : MonoBehaviour
         LiftOffButton.OnLiftOff += ShowEndGameMessage;
         LoadBaseScenes.OnKeepBlackFade += KeepBlackFade;
         LoadBaseScenes.OnFadeToNormal += DoFadeToNormal;
+        PlayerHandler.OnPlayerDeath += DoDeathImageFade;
+        PlayerHandler.OnRestoreFades += RestoreFades;
+        PlayerCombat.OnReceivesDamage += ShowReceiveDamageFades;
+
+        Torch.OnTorchPreStartActivation += FadeOutThenInSequence;
+        Torch.OnTorchPreEndActivation += FadeOutThenInSequence;
+
+        DarknessFaint.OnFaintEnd += DoFadeToBlack;
+        DarknessFaint.OnFaintEndRespawn += DoFadeToNormal;
     }
 
     private void OnDisable()
@@ -28,6 +37,15 @@ public class HUDHandler : MonoBehaviour
         LiftOffButton.OnLiftOff -= ShowEndGameMessage;
         LoadBaseScenes.OnKeepBlackFade -= KeepBlackFade;
         LoadBaseScenes.OnFadeToNormal -= DoFadeToNormal;
+        PlayerHandler.OnPlayerDeath -= DoDeathImageFade;
+        PlayerHandler.OnRestoreFades -= RestoreFades;
+        PlayerCombat.OnReceivesDamage += ShowReceiveDamageFades;
+
+        Torch.OnTorchPreStartActivation -= FadeOutThenInSequence;
+        Torch.OnTorchPreEndActivation -= FadeOutThenInSequence;
+
+        DarknessFaint.OnFaintEnd -= DoFadeToBlack;
+        DarknessFaint.OnFaintEndRespawn -= DoFadeToNormal;
     }
 
     private void KeepBlackFade()
@@ -43,10 +61,17 @@ public class HUDHandler : MonoBehaviour
     public void DoFadeToNormal()
     {
         StartCoroutine(CanvasFadeOut(fadeOutGroup, FADE_TIME));
+
+        Debug.Log("OnFaintEndRespawn receieved");
     }
 
     public void DoDeathImageFade()
     {
+        if (!deathImageGroup.gameObject.activeInHierarchy)
+        {
+            deathImageGroup.gameObject.SetActive(true);
+        }
+
         StartCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
     }
 
@@ -55,7 +80,7 @@ public class HUDHandler : MonoBehaviour
         StartCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
     }
 
-    public void ShowRecieveDamageFades()
+    public void ShowReceiveDamageFades()
     {
         StartCoroutine(RecieveDamageFadeInAndOut());
     }
@@ -65,9 +90,20 @@ public class HUDHandler : MonoBehaviour
         StopCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
         StopCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
 
-        deathImageGroup.alpha = 0f;
+        deathImageGroup.gameObject.SetActive(false);
+        //deathImageGroup.alpha = 0f;
         fadeOutGroup.alpha = 0f;
     }
+
+    private void FadeOutThenInSequence(float duration)
+    {
+        StartCoroutine(CanvasFadeOutThenIn(fadeOutGroup, duration/2f));
+    }
+    private void FadeInThenOutSequence(float duration)
+    {
+        StartCoroutine(CanvasFadeInThenOut(fadeOutGroup, duration / 2f));
+    }
+    
 
     IEnumerator CanvasFadeOut(CanvasGroup canvasGroup, float fadeTime)
     {
@@ -98,6 +134,70 @@ public class HUDHandler : MonoBehaviour
         }
         canvasGroup.alpha = endVector.x;
     }
+
+    IEnumerator CanvasFadeOutThenIn(CanvasGroup canvasGroup, float fadeTime)
+    {
+        Vector2 startVector = new Vector2(0f, 0f);
+        Vector2 endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = 1f;
+
+
+        yield return new WaitForSeconds(fadeTime);
+
+
+        startVector = new Vector2(1f, 1f);
+        endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+    }
+
+    IEnumerator CanvasFadeInThenOut(CanvasGroup canvasGroup, float fadeTime)
+    {
+
+        Vector2 startVector = new Vector2(1f, 1f);
+        Vector2 endVector = new Vector2(0f, 0f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+
+        yield return fadeTime;
+
+        startVector = new Vector2(0f, 0f);
+        endVector = new Vector2(1f, 1f);
+
+        for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+        {
+            float normalizedTime = t / fadeTime;
+
+            canvasGroup.alpha = Vector2.Lerp(startVector, endVector, normalizedTime).x;
+            yield return null;
+        }
+        canvasGroup.alpha = endVector.x;
+    }
+
+
+
 
     IEnumerator RecieveDamageFadeInAndOut()
     {
@@ -142,4 +242,8 @@ public class HUDHandler : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         SceneManager.LoadSceneAsync(0, LoadSceneMode.Single);
     }
+
+
+
+
 }

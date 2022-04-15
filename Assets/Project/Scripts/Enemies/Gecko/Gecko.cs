@@ -7,22 +7,29 @@ public class Gecko : MonoBehaviour
     [SerializeField]
     private Transform[] routes;
 
+    [SerializeField] EnemyAudio enemyAudio;
+
+
     private int routeToGo;
 
     private float tParam;
     private Vector2 geckoPos;
     private float speeddModifier;
     private bool coroutineAllowed;
-    private float xAngle, yAngle, zAngle;
 
     private Animator geckoAnimator;
 
     public bool playerIsNear;
     public bool touched;
-    // Start is called before the first frame update
+    public bool reachedEnd;
+    private bool isGetsTouchedStarted;
+
     void Start()
     {
+        coroutineAllowed = true;
         touched = false;
+        reachedEnd = false;
+        isGetsTouchedStarted = false;
         geckoAnimator = GetComponent<Animator>();
         routeToGo = 0;
         tParam = 0f;
@@ -30,10 +37,10 @@ public class Gecko : MonoBehaviour
         transform.position = routes[0].GetChild(0).position;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (coroutineAllowed && !touched)
+        if (coroutineAllowed && touched && !reachedEnd)
         {
             geckoAnimator.SetBool("running", true);
             StartCoroutine(GoByTheRoute(routeToGo));
@@ -43,14 +50,16 @@ public class Gecko : MonoBehaviour
     private IEnumerator GoByTheRoute(int routeNumber)
     {
         coroutineAllowed = false;
-        touched = true;
+        touched = false;
 
-        Vector2 p0 = routes[routeNumber].GetChild(0).position;
-        Vector2 p1 = routes[routeNumber].GetChild(1).position;
-        Vector2 p2 = routes[routeNumber].GetChild(2).position;
-        Vector2 p3 = routes[routeNumber].GetChild(3).position;
+        Vector3 p0 = routes[routeNumber].GetChild(0).position;
+        Vector3 p1 = routes[routeNumber].GetChild(1).position;
+        Vector3 p2 = routes[routeNumber].GetChild(2).position;
+        Vector3 p3 = routes[routeNumber].GetChild(3).position;
 
-        while(tParam < 1)
+        enemyAudio.PlayFootstepsAudio();
+
+        while (tParam < 1)
         {
             tParam += Time.deltaTime * speeddModifier;
 
@@ -60,25 +69,49 @@ public class Gecko : MonoBehaviour
                 Mathf.Pow(tParam, 3) * p3;
 
             transform.position = geckoPos;
-            //transform.Rotate(xAngle, yAngle, zAngle);
+            
             yield return new WaitForEndOfFrame();
         }
         geckoAnimator.SetBool("running", false);
         tParam = 0f;
         routeToGo += 1;
         if (routeToGo > routes.Length - 1)
+        {
+            reachedEnd = true;
             routeToGo = 0;
+        }
 
+        coroutineAllowed = true;
+
+        enemyAudio.StopFootstepsAudio();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Player"))
+    //    {
+    //        GetsTouched();
+    //    }
+    //}
+
+
+    public void GetsTouched()
     {
-        if (collision.CompareTag("Player"))
+        if (coroutineAllowed && !isGetsTouchedStarted)
         {
-            coroutineAllowed = true;
-            Debug.Log(touched);
-            //geckoAnimator.SetBool("running", true);
+            isGetsTouchedStarted = true;
+            StartCoroutine(StartGetsTouched());
         }
     }
+
+
+    IEnumerator StartGetsTouched()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        isGetsTouchedStarted = false;
+        touched = true;
+    }
+
 
 }
