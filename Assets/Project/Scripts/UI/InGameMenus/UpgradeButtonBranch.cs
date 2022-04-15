@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeButtonBranch : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class UpgradeButtonBranch : MonoBehaviour
     int lastActiveButtonIndex = 0;
     [SerializeField] int lastCompletedButtonIndex = 0;
     int lastConnectionIndex;
+
+
+    public delegate void UpgradeButtonAction(string upgradeName, Sprite upgradeSprite);
+
 
 
     private void Start()
@@ -89,5 +94,11 @@ public class UpgradeButtonBranch : MonoBehaviour
         this.lastCompletedButtonIndex = lastCompletedButtonIndex;
     }
 
+
+
+    public void GetUpgradeNameAndIcon(int upgradeIndex, out string upgradeName, out Image upgradeIcon)
+    {
+        upgradeButtons[upgradeIndex].GetNameAndIcon(out upgradeName, out upgradeIcon);
+    }
 
 }
