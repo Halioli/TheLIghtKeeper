@@ -12,6 +12,9 @@ public class PlayerTeleporter : MonoBehaviour
         PlayerHandler.OnTeleportPlayer += TeleportToPosition;
         FogSystem.OnTeleportPlayer += TeleportToPosition;
         TeleportSystem.OnTeleportPlayer += TeleportToPosition;
+
+        DarknessFaint.OnFaintTeleport += TeleportToPosition;
+
     }
 
     private void OnDisable()
@@ -19,11 +22,23 @@ public class PlayerTeleporter : MonoBehaviour
         PlayerHandler.OnTeleportPlayer -= TeleportToPosition;
         FogSystem.OnTeleportPlayer -= TeleportToPosition;
         TeleportSystem.OnTeleportPlayer -= TeleportToPosition;
+
+        DarknessFaint.OnFaintTeleport -= TeleportToPosition;
     }
 
     private void TeleportToPosition(Vector3 position)
     {
         playerTransform.position = position;
+
+        position.z = -10f;
         mainCameraTransform.position = position;
     }
+
+    private void TeleportToZero()
+    {
+        playerTransform.position = Vector3.zero;
+        mainCameraTransform.position = new Vector3(0, 0, -10);
+    }
+
+
 }
