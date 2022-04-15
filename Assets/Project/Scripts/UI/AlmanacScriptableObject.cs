@@ -11,4 +11,6 @@ public class AlmanacScriptableObject : ScriptableObject
     public string tag;
     [TextArea(5, 20)] public string description;
     public bool hasFound;
+
+    public Sprite sprite;
 }
