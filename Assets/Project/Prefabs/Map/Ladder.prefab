@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8400693690084621148}
   - component: {fileID: 8400693690084621139}
   - component: {fileID: 8400693690084621138}
-  - component: {fileID: 8400693690084621137}
+  - component: {fileID: 5471184098867224425}
   m_Layer: 0
   m_Name: Canvas_PopUp
   m_TagString: Untagged
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8400693690084621137
+--- !u!114 &5471184098867224425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,13 +111,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 8400693690084621143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7768114d157d6240abba463007e6e3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fe5fc14a084a2f42b4f9df3fa8ac3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionCanvasGroup: {fileID: 8400693690661861337}
   messageCanvasGroup: {fileID: 8400693691405856705}
   interactionText: {fileID: 0}
-  messageText: {fileID: 0}
+  messageText: {fileID: 8400693691599159147}
+  itemQuantityText:
+  - {fileID: 8400693691366617400}
+  itemQuantityValue: 01000000
 --- !u!1 &8400693690161491752
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,7 +590,7 @@ GameObject:
   - component: {fileID: 8400693690623324053}
   - component: {fileID: 8400693690623324052}
   - component: {fileID: 8400693690623324139}
-  - component: {fileID: 8400693690623324138}
+  - component: {fileID: 5095264948157265550}
   m_Layer: 0
   m_Name: Canvas_PopUp
   m_TagString: Untagged
@@ -677,7 +680,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8400693690623324138
+--- !u!114 &5095264948157265550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -686,13 +689,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 8400693690623324136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7768114d157d6240abba463007e6e3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fe5fc14a084a2f42b4f9df3fa8ac3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionCanvasGroup: {fileID: 8400693691577557710}
   messageCanvasGroup: {fileID: 8400693690381684103}
   interactionText: {fileID: 0}
-  messageText: {fileID: 0}
+  messageText: {fileID: 8400693691878806980}
+  itemQuantityText:
+  - {fileID: 8400693690161491754}
+  itemQuantityValue: 01000000
 --- !u!1 &8400693690639250063
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +745,7 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -7114,7 +7120,7 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
