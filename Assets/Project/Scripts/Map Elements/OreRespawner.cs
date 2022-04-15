@@ -7,6 +7,7 @@ public class OreRespawner : Spawner
     // Private Attributes
     private const float OVERLAP_CIRCLE_RADIUS = 1f;
 
+    private bool playerInArea = false;
     private Vector3 respawnPosition;
     private Quaternion respawnRotation;
     private Collider2D returnedCollider;
@@ -26,6 +27,22 @@ public class OreRespawner : Spawner
         Spawn();
     }
 
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Player"))
+        {
+            playerInArea = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Player"))
+        {
+            playerInArea = false;
+        }
+    }
+
     protected override bool Spawn()
     {
         Instantiate(oreToRespawn, respawnPosition, respawnRotation);
@@ -35,17 +52,19 @@ public class OreRespawner : Spawner
         return true;
     }
 
-    private void CheckIfCanSpawn()
+    private bool CheckIfCanSpawn()
     {
         returnedCollider = ReturnOverlapedColliders();
 
-        if (returnedCollider.CompareTag("Ore"))
+        if (returnedCollider.CompareTag("Ore") || playerInArea)
         {
             canSpawn = false;
+            return false;
         }
         else
         {
             canSpawn = true;
+            return true;
         }
     }
 
@@ -60,8 +79,7 @@ public class OreRespawner : Spawner
         {
             yield return new WaitForSeconds(spawnCooldown);
 
-            CheckIfCanSpawn();
-            if (canSpawn)
+            if (CheckIfCanSpawn())
             {
                 Spawn();
             }

@@ -8,7 +8,7 @@ public class PlayerInventory : MonoBehaviour
     private float mouseScrollDirection = 0f;
 
     // Public Attributes
-    public HotbarInventory hotbarInventory { get; private set; }
+    public HotbarInventory hotbarInventory;
 
 
     // Events
@@ -20,10 +20,6 @@ public class PlayerInventory : MonoBehaviour
     public static event InventoryAction OnInventoryClose;
 
 
-    private void Start()
-    {
-        hotbarInventory = GetComponentInChildren<HotbarInventory>();
-    }
 
     void Update()
     {
@@ -56,6 +52,10 @@ public class PlayerInventory : MonoBehaviour
         if (PlayerInputs.instance.PlayerPressedUseButton())
         {
             hotbarInventory.UseSelectedConsumibleItem();
+        }
+        else if (PlayerInputs.instance.PlayerPressedDropButton())
+        {
+            hotbarInventory.DropSelectedItem();
         }
     }
 

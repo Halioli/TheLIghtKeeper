@@ -26,6 +26,7 @@ public class ShipExit : MonoBehaviour
 
     IEnumerator TeleportToShipExterior(GameObject gameObjectTeleported)
     {
+        PlayerInputs.instance.ignoreLights = true;
         if (OnExit != null) OnExit();
 
         hudHandler.DoFadeToBlack();
@@ -38,5 +39,6 @@ public class ShipExit : MonoBehaviour
         yield return new WaitForSeconds(1f);
         hudHandler.RestoreFades();
         PlayerInputs.instance.canMove = true;
+        PlayerInputs.instance.ignoreLights = false;
     }
 }

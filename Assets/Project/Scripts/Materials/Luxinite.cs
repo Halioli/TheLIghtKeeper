@@ -13,6 +13,12 @@ public class Luxinite : Ore
     private float maxIntensity;
     private float time;
 
+    public bool hasBeenMined;
+
+    private void Awake()
+    {
+        SaveSystem.luxinites.Add(this);
+    }
     void Start()
     {
         breakState = OreState.WHOLE;
@@ -35,6 +41,11 @@ public class Luxinite : Ore
         StartCoroutine(FlashLightAppears());
 
         base.GetsMined(damageAmount, 1);
+
+        if(healthSystem.GetHealth() <= 0)
+        {
+            hasBeenMined = true;
+        }
     }
 
     IEnumerator FlashLightAppears()
@@ -54,4 +65,11 @@ public class Luxinite : Ore
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }
+
+    protected override void DropMineralItem()
+    {
+        ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
+        droppedMineralItem.DropsRandom(false);
+    }
+
 }

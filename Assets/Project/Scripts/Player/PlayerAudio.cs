@@ -45,6 +45,7 @@ public class PlayerAudio : MonoBehaviour
 
         // ItemPickUp sound
         ItemPickUp.playerPicksUpItemEvent += PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop += PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent += PlayReceiveDamageSound;
@@ -71,6 +72,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill += PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight += PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials += PlayMineErrorSound;
     }
 
 
@@ -84,6 +87,7 @@ public class PlayerAudio : MonoBehaviour
 
         // ItemPickUp sound
         ItemPickUp.playerPicksUpItemEvent -= PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop -= PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent -= PlayReceiveDamageSound;
@@ -110,6 +114,8 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
         LanternFuelGameObject.onLanternFuelRefill -= PlayRefillLanternSound;
         PlayerLightChecker.OnPlayerEntersCoreLight -= PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials -= PlayMineErrorSound;
     }
 
 
@@ -140,10 +146,18 @@ public class PlayerAudio : MonoBehaviour
 
 
     // ItemPickUp sound
-    public void PlayItemPickUpSound()
+    private void PlayItemPickUpSound()
     {
+        itemPickUpAudioSource.pitch = 1f;
         itemPickUpAudioSource.Play();
     }
+
+    private void PlayItemDroppedSound()
+    {
+        itemPickUpAudioSource.pitch = 0.75f;
+        itemPickUpAudioSource.Play();
+    }
+
 
 
 
@@ -235,29 +249,37 @@ public class PlayerAudio : MonoBehaviour
 
     private void PlayTurnOnLanternDroneSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternDroneOnOffAudioSource.clip = turnOnLanternDroneSound;
         lanternDroneOnOffAudioSource.Play();
     }
 
     private void PlayTurnOffLanternDroneSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternDroneOnOffAudioSource.clip = turnOffLanternDroneSound;
         lanternDroneOnOffAudioSource.Play();
     }
 
     private void PlayTurnOnLanternSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternOnOffAudioSource.clip = turnOnLanternSound;
         lanternOnOffAudioSource.pitch = 1f;
-        lanternOnOffAudioSource.volume = 1f;
+        lanternOnOffAudioSource.volume = 0.5f;
         lanternOnOffAudioSource.Play();
     }
 
     private void PlayTurnOffLanternSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternOnOffAudioSource.clip = turnOffLanternSound;
         lanternOnOffAudioSource.pitch = 1f;
-        lanternOnOffAudioSource.volume = 1f;
+        lanternOnOffAudioSource.volume = 0.5f;
         lanternOnOffAudioSource.Play();
     }
 
@@ -265,14 +287,17 @@ public class PlayerAudio : MonoBehaviour
     {
         lanternOnOffAudioSource.clip = refillLanternSound;
         lanternOnOffAudioSource.pitch = Random.Range(0.8f, 1.2f);
-        lanternOnOffAudioSource.volume = 0.25f;
+        lanternOnOffAudioSource.volume = 0.15f;
         lanternOnOffAudioSource.Play();
     }
 
     private void PlayFullLanternRechargeSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         attackAndMineAudioSource.clip = fullLanternRechargeSound;
         attackAndMineAudioSource.pitch = 1.7f;
+        lanternOnOffAudioSource.volume = 0.05f;
         attackAndMineAudioSource.Play();
     }
 

@@ -10,6 +10,8 @@ public class InteractStation : MonoBehaviour
     protected bool playerInsideTriggerArea;
     protected Inventory playerInventory;
 
+    private bool isCanvasOpen = false;
+
     // Action
     public delegate void InteractStationAction();
     public static event InteractStationAction OnInteractOpen;
@@ -18,6 +20,9 @@ public class InteractStation : MonoBehaviour
     public delegate void InteractStationDescriptionAction(string description);
     public static event InteractStationAction OnDescriptionOpen;
     public static event InteractStationDescriptionAction OnDescriptionSet;
+
+    public delegate void InteractStationRequiredItems();
+    public static event InteractStationRequiredItems OnNotEnoughMaterials;
 
 
     private void Awake()
@@ -49,6 +54,14 @@ public class InteractStation : MonoBehaviour
         if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
             StationFunction();
+            PlayerInputs.instance.canPause = !PlayerInputs.instance.canPause;
+            isCanvasOpen = !isCanvasOpen;
+        }
+        if (isCanvasOpen && PlayerInputs.instance.PlayerPressedInteractExitButton())
+        {
+            StationFunction();
+            PlayerInputs.instance.canPause = true;
+            isCanvasOpen = !isCanvasOpen;
         }
     }
 
@@ -84,6 +97,12 @@ public class InteractStation : MonoBehaviour
         {
             OnDescriptionOpen();
         }
+    }
+
+
+    protected void InvokeOnNotEnoughMaterials()
+    {
+        if (OnNotEnoughMaterials != null) OnNotEnoughMaterials();
     }
 
 }

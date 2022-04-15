@@ -11,17 +11,41 @@ public class HotbarInventory : Inventory
     private int[] extraSlotsOnUpgrade = { 1, 1, 2 };
     private float[] hotbarWidthOnUpgrade = { 674f, 798f, 1042f };
 
+    [SerializeField] InventoryData playerInventoryData;
+
+
+    public delegate void HotbarInventoryUse();
+    public static event HotbarInventoryUse OnInventoryItemDrop;
+
+
+
 
     private void OnEnable()
     {
         OnItemMove += SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting += SetInventroyMenuSelectedSlotIndex;
+        BrokenFurnace.OnTutorialFinish += SaveInventory;
     }
 
     private void OnDisable()
     {
         OnItemMove -= SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
+        BrokenFurnace.OnTutorialFinish -= SaveInventory;
+    }
+
+    public void SaveInventory()
+    {
+        playerInventoryData.SaveInventoryItems(inventory);
+    }
+
+    public override void InitInventory()
+    {
+        base.InitInventory();
+        playerInventoryData.LoadInventoryItems(this);
+
+        gotChanged = true;
+        inventoryIsEmpty = false;
     }
 
 
@@ -58,6 +82,23 @@ public class HotbarInventory : Inventory
     {
         hotbarInventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
     }
+
+
+    public void DropSelectedItem()
+    {
+        if (!inventory[indexOfSelectedInventorySlot].StackIsEmpty())
+        {
+            ItemGameObject itemGameObject = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform).GetComponent<ItemGameObject>();
+            itemGameObject.DropsRandom(true, 1.5f, 20f);
+            itemGameObject.MakeNotPickupableForDuration(2f);
+
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+            SetInventroyMenuSelectedSlotIndex();
+
+            if (OnInventoryItemDrop != null) OnInventoryItemDrop();
+        }
+    }
+
 
 
     // Modifier Methods

@@ -19,15 +19,16 @@ public class ShipEntry : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             StartCoroutine(TeleportToShipInterior(collision.gameObject));
-
-            // Add ship scene to current scene as to not lose anything
-            //SceneManager.LoadScene(2, LoadSceneMode.Additive);
         }
     }
 
     IEnumerator TeleportToShipInterior(GameObject gameObjectTeleported)
     {
-        if (OnEntry != null) OnEntry();
+        PlayerInputs.instance.ignoreLights = true;
+
+
+        if (OnEntry != null) 
+            OnEntry();
 
         hudHandler.DoFadeToBlack();
         PlayerInputs.instance.canMove = false;
@@ -39,6 +40,7 @@ public class ShipEntry : MonoBehaviour
         yield return new WaitForSeconds(1f);
         hudHandler.RestoreFades();
         PlayerInputs.instance.canMove = true;
+
         animator.SetBool("isHealed", false);
     }
 }
