@@ -10,16 +10,18 @@ public class UpgradeButtonBranch : MonoBehaviour
     [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
     [SerializeField] GameObject MAX;
 
-    [SerializeField] int lastActiveButtonIndex = 0;
+    int lastActiveButtonIndex = 0;
+    [SerializeField] int lastCompletedButtonIndex = 0;
     int lastConnectionIndex;
-
-    public bool upgradesAreCompleted = false;
 
 
     private void Start()
     {
         InitButtons();
+        InitCompletedButtons();
+        
         InitConnections();
+
 
         MAX.SetActive(false);
     }
@@ -27,21 +29,24 @@ public class UpgradeButtonBranch : MonoBehaviour
 
     private void InitButtons()
     {
+        // First, enable the next active upgrade and disable the following
         for (int i = 0; i < upgradeButtons.Length; ++i)
         {
             bool startsEnabled = i < lastActiveButtonIndex + 1;
             upgradeButtons[i].Init(startsEnabled, upgradeBranchIndex, i, upgradeMenuCanvas);
-            
-            if (upgradesAreCompleted)
-            {
-                //upgradeButtons[i].SetDone();
-                //upgradeConnection.ProgressOneStage();
-
-                //upgradeMenuCanvas.UpgradeSelectedComplete(upgradeBranchIndex);
-
-            }
         }
     }
+
+    private void InitCompletedButtons()
+    {
+        // Second, progress the upgrades that were completed
+        for (int i = 0; i < lastCompletedButtonIndex; ++i)
+        {
+            upgradeButtons[i].AlwaysProgressUpgradeSelected();
+        }
+    }
+
+
 
     private void InitConnections()
     {
@@ -54,7 +59,7 @@ public class UpgradeButtonBranch : MonoBehaviour
     public void ProgressOneStage()
     {
         upgradeButtons[lastActiveButtonIndex++].SetDone();
-
+        
         if (lastActiveButtonIndex < upgradeButtons.Length)
         {
             upgradeButtons[lastActiveButtonIndex].EnableButton();
@@ -65,7 +70,7 @@ public class UpgradeButtonBranch : MonoBehaviour
 
     }
 
-    public void Complete()
+    public void DisplayCompleteText()
     {
         MAX.SetActive(true);
     }
