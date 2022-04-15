@@ -130,7 +130,7 @@ public class PlayerLightChecker : MonoBehaviour
         }
 
 
-        if (lightingCollider.gameObject.CompareTag("LightInterior"))
+        if (lightingCollider.gameObject.CompareTag("LightInterior") && numberOfLights <= 1)
         {
             if (OnPlayerExitsLightInterior != null) OnPlayerExitsLightInterior();
 

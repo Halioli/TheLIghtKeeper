@@ -43,18 +43,26 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
             if (upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex))
             {
-                upgradeButtonBranches[upgradeBranchIndex].Complete();
+                upgradeButtonBranches[upgradeBranchIndex].DisplayCompleteText();
             }
         }
 
         return couldUpgrade;
     }
 
-
-    public void UpgradeSelectedComplete(int upgradeBranchIndex)
+    public void AlwaysProgressUpgradeSelected(int upgradeBranchIndex)
     {
-        upgradesSystem.UpgradeBranchIsSelectedComplete(upgradeBranchIndex);
+        upgradesSystem.AlwaysCompleteUpgradeBranchIsSelected(upgradeBranchIndex);
+
+        upgradeButtonBranches[upgradeBranchIndex].ProgressOneStage();
+
+        if (upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex))
+        {
+            upgradeButtonBranches[upgradeBranchIndex].DisplayCompleteText();
+        }
     }
+
+
 
     public void GoToSubmenu()
     {
@@ -62,5 +70,39 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
         if (OnSubmenuEnter != null) OnSubmenuEnter();
     }
+
+
+
+    // should be called on application close (or on memory save)
+    public int[] GetAllUpgardesLastActiveButtonIndex()
+    {
+        List<int> allLastActiveButtonIndex = new List<int>();
+
+        foreach (UpgradeButtonBranch upgradeButtonBranch in upgradeButtonBranches)
+        {
+            allLastActiveButtonIndex.Add(upgradeButtonBranch.GetLastActiveButtonIndex());
+        }   
+
+        return allLastActiveButtonIndex.ToArray();
+    }
+
+
+    // must be called on Awake()
+    public void FirstTimeSetAllLastCompletedButtonIndex()
+    {
+        for (int i = 0; i < upgradeButtonBranches.Length; ++i)
+        {
+            upgradeButtonBranches[i].SetLastCompletedButtonIndex(0);
+        }
+    }
+
+    public void SetAllLastCompletedButtonIndex(int[] allLastCompletedButtonIndex)
+    {
+        for (int i = 0; i < upgradeButtonBranches.Length; ++i)
+        {
+            upgradeButtonBranches[i].SetLastCompletedButtonIndex(allLastCompletedButtonIndex[i]);
+        }
+    }
+
 
 }
