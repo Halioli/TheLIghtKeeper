@@ -49,13 +49,16 @@ public class PlayerCombat : PlayerBase
         playerBlood.Stop();
     }
 
-    //void Update()
-    //{
-    //    if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
-    //    {
-    //        StartAttacking();
-    //    }
-    //}
+    private void OnEnable()
+    {
+        DarknessFaint.OnFaintEndRespawn += ReceiveFaintDamage;
+    }
+
+    private void OnDisable()
+    {
+        DarknessFaint.OnFaintEndRespawn -= ReceiveFaintDamage;
+    }
+
 
     private void StartAttacking()
     {
@@ -179,5 +182,18 @@ public class PlayerCombat : PlayerBase
         //    playerAttackEvent();
         //}
     }
+
+
+    private void ReceiveFaintDamage()
+    {
+        int faintDamage = 2;
+
+        if (healthSystem.health > faintDamage)
+        {
+            healthSystem.ReceiveDamage(faintDamage);
+        }
+
+    }
+
 
 }
