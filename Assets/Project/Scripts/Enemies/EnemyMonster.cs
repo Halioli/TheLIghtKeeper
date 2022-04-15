@@ -57,7 +57,7 @@ public class EnemyMonster : MonoBehaviour
         healthSystem.ReceiveDamage(damageValue);
         enemyAudio.PlayReceiveDamageAudio();
 
-        //StartCoroutine(HurtedFlashEffect());
+        StartCoroutine(HurtedFlashEffect());
     }
 
     public virtual void SetPlayer(GameObject playerGameObject)
