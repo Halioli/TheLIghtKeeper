@@ -54,11 +54,13 @@ public class UpgradesSystem : MonoBehaviour
         return false;
     }
 
-    public void UpgradeBranchIsSelectedComplete(int index)
+    public void AlwaysCompleteUpgradeBranchIsSelected(int index)
     {
         if (upgradeBranches[index].IsCompleted()) return;
 
         upgradeBranches[index].Upgrade();
+
+        if (OnUpgrade != null) OnUpgrade();
     }
 
 

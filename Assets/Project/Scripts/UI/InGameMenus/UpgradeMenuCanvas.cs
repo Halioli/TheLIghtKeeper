@@ -43,18 +43,26 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
             if (upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex))
             {
-                upgradeButtonBranches[upgradeBranchIndex].Complete();
+                upgradeButtonBranches[upgradeBranchIndex].DisplayCompleteText();
             }
         }
 
         return couldUpgrade;
     }
 
-
-    public void UpgradeSelectedComplete(int upgradeBranchIndex)
+    public void AlwaysProgressUpgradeSelected(int upgradeBranchIndex)
     {
-        upgradesSystem.UpgradeBranchIsSelectedComplete(upgradeBranchIndex);
+        upgradesSystem.AlwaysCompleteUpgradeBranchIsSelected(upgradeBranchIndex);
+
+        upgradeButtonBranches[upgradeBranchIndex].ProgressOneStage();
+
+        if (upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex))
+        {
+            upgradeButtonBranches[upgradeBranchIndex].DisplayCompleteText();
+        }
     }
+
+
 
     public void GoToSubmenu()
     {
