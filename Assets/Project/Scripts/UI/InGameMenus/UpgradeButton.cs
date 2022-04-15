@@ -101,4 +101,13 @@ public class UpgradeButton : HoverButton
     }
 
 
+
+    public void GetNameAndIcon(out string upgradeName, out Image upgradeIcon)
+    {
+        upgradeName = upgrade.upgradeName + " " + upgrade.upgradeDescription;
+        upgradeIcon = iconImage;
+    }
+
+
+
 }
