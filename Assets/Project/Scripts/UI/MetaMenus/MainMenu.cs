@@ -12,6 +12,21 @@ public class MainMenu : MonoBehaviour
     public GameObject optionsMenuGameObject;
     public GameObject creditsMenuGameObject;
 
+    [SerializeField] SaveSystem saveSystem;
+    [SerializeField] GameObject playButtonGameObject;
+    [SerializeField] GameObject continueButtonGameObject;
+    [SerializeField] GameObject newGameButtonGameObject;
+
+    private void Start()
+    {
+        //if (saveFileExists)
+        //{
+        //    playButtonGameObject.SetActive(false);
+        //    continueButtonGameObject.SetActive(true);
+        //    newGameButtonGameObject.SetActive(true);
+        //}
+    }
+
     public void PlayButtonClick(int sceneIndex)
     {
         StopRespawns();

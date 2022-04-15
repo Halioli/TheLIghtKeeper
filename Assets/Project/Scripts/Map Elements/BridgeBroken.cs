@@ -54,7 +54,7 @@ public class BridgeBroken : InteractStation
             constuctionPopUp.SetAllValue(0);
 
             StartCoroutine(BridgeParticleSystem());
-
+            bridgeManager.constructed = true;
         }
         else
         {

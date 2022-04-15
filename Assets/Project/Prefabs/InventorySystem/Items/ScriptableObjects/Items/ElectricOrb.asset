@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b69bf5647856226448733f6dfdba890c, type: 3}
+  m_Name: ElectricOrb
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1859072525634567739, guid: aa4847c0ecc101a4ca85c5fa862ae0f6, type: 3}
+  itemName: Electric Orb
+  description: Orb that recharges the lantern for 5 seconds. It can be used for crafting.
+  ID: 27
+  itemType: 2
+  isSpecial: 0
+  stackSize: 8
+  sprite: {fileID: 706636183127303518, guid: 4af8b747f53a40e4393cbd26bba8965f, type: 3}

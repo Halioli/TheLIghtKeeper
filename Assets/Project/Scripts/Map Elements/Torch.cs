@@ -23,6 +23,7 @@ public class Torch : InteractStation
     private const float innerRadiusOn = 1.8f;
     private const float outerRadiusOn = 3.3f;
     public bool turnedOn = false;
+    private bool inCoroutine = false;
 
     public Animator animTorch;
 
@@ -38,10 +39,6 @@ public class Torch : InteractStation
     public delegate void TorchAction();
     public static event TorchAction OnTorchStartActivation;
     public static event TorchAction OnTorchEndActivation;
-
-
-
-
 
     void Awake()
     {
@@ -73,6 +70,9 @@ public class Torch : InteractStation
 
     private void Update()
     {
+        if (turnedOn && !inCoroutine)
+            StartCoroutine(TorchFlicker());
+
         if (turnedOn) return;
 
         if (playerInsideTriggerArea)
@@ -85,6 +85,7 @@ public class Torch : InteractStation
             popUpCanvasGroup.alpha = 0f;
         }
     }
+
     public override void StationFunction()
     {
         if (!turnedOn)
@@ -100,6 +101,7 @@ public class Torch : InteractStation
         DoPuzzle();
 
     }
+
     public void SetTorchLightOff()
     {
         smokeTorchParticles.Stop();
@@ -203,11 +205,11 @@ public class Torch : InteractStation
     {
         desactivatedTorch.SetActive(false);
     }
+
     private void ActivateTorchSprite()
     {
         desactivatedTorch.SetActive(true);
     }
-
 
     IEnumerator CameraTransitionToPilar()
     {
@@ -245,5 +247,14 @@ public class Torch : InteractStation
 
     }
 
+    private IEnumerator TorchFlicker()
+    {
+        inCoroutine = true;
 
+        torchLight.intensity = Random.Range(0.8f, 1.0f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        inCoroutine = false;
+    }
 }
