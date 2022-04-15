@@ -36,7 +36,7 @@ public class UpgradeBranch : ScriptableObject
     public void Upgrade()
     {
         upgrades[currentUpgrade++].InvokeResultEvent();
-        
+
         if (currentUpgrade >= numberOfUpgrades)
         {
             branchCompleted = true;
