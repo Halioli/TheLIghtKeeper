@@ -61,8 +61,6 @@ public class HUDHandler : MonoBehaviour
     public void DoFadeToNormal()
     {
         StartCoroutine(CanvasFadeOut(fadeOutGroup, FADE_TIME));
-
-        Debug.Log("OnFaintEndRespawn receieved");
     }
 
     public void DoDeathImageFade()
