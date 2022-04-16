@@ -33,6 +33,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
     public void HideDisplay()
     {
+        upgradeUnlockedDisplayer.ForceDisplayStop();
         upgradeDisplayer.gameObject.SetActive(false);
     }
 
