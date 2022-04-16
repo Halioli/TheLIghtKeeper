@@ -4,24 +4,16 @@ using UnityEngine;
 
 public class FirstShipUpgradeMessage : TutorialMessages
 {
-    public delegate void FirstShipUpgradeDone();
-    public static event FirstShipUpgradeDone OnFirstShipUpgradeDone;
 
     private void Awake()
     {
-        GetComponent<Collider2D>().enabled = false;
+        DisableSelf();
     }
 
-    private void OnEnable()
-    {
-        FirstShipUpgradeMessage.OnFirstShipUpgradeDone += DisableSelf;
-        CoreUpgrade.OnCoreUpgrade += () => GetComponent<Collider2D>().enabled = true;
-    }
 
-    private void OnDisable()
+    public void EnableFirstShipUpgradeMessege()
     {
-        FirstShipUpgradeMessage.OnFirstShipUpgradeDone -= DisableSelf;
-        CoreUpgrade.OnCoreUpgrade -= () => GetComponent<Collider2D>().enabled = true;
+        EnableSelf();
     }
 
     protected override void SendMessage()

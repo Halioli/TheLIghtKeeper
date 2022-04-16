@@ -64,4 +64,9 @@ public class TutorialMessages : MonoBehaviour
     {
         GetComponent<Collider2D>().enabled = false;
     }
+
+    protected void EnableSelf()
+    {
+        GetComponent<Collider2D>().enabled = true;
+    }
 }
