@@ -35,7 +35,7 @@ public class ChainTutorialObjective : MonoBehaviour
         //tutorialObjectives[objectiveIndex].GetComponent<TutorialObjective>().InvokeOnObjectiveEnd();
         //Destroy(tutorialObjectives[objectiveIndex++]);
 
-
+        Debug.Log("objectiveIndex: " + objectiveIndex);
         if (objectiveIndex < tutorialObjectives.Length) 
             tutorialObjectives[objectiveIndex++].GetComponent<TutorialObjective>().InvokeOnObjectiveStart();
         else

@@ -15,6 +15,7 @@ public class ItemCell : HoverButton
     public TextMeshProUGUI itemAmount;
     public Button button;
 
+    private int ID = -1;
     private int amount = -1;
 
     public void InitItemCell(InventoryMenu inventoryMenu, int index)
@@ -28,10 +29,19 @@ public class ItemCell : HoverButton
         itemImage.sprite = sprite;
     }
 
+    public void SetItemID(int ID)
+    {
+        this.ID = ID;
+    }
 
     public int GetItemAmount()
     {
         return amount;
+    }
+
+    public bool HasChanged(int newAmount, int newID)
+    {
+        return amount != newAmount || ID != newID;
     }
 
 
