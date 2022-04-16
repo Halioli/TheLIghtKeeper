@@ -83,8 +83,7 @@ public class UpgradesStation : InteractStation
         upgradesCanvasGameObject.SetActive(true);
         PauseMenu.PauseMineAndAttack();
 
-        PlayerInputs.instance.canMine = false;
-        PlayerInputs.instance.canMove = false;
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
 
         DoOnInteractOpen();
         DoOnInteractDescriptionOpen();
@@ -99,8 +98,7 @@ public class UpgradesStation : InteractStation
         upgradesCanvasGameObject.SetActive(false);
         PauseMenu.ResumeMineAndAttack();
 
-        PlayerInputs.instance.canMine = true;
-        PlayerInputs.instance.canMove = true;
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
 
         DoOnInteractClose();
     }
