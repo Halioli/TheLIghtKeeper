@@ -18,7 +18,7 @@ public class TutorialObjectiveReceiver : MonoBehaviour
         TutorialObjective.OnObjectiveStart += SetNewObjective;
         TutorialObjective.OnObjectiveEnd += FinishObjective;
 
-        CoreUpgrade.OnCoreUpgrade += () => Destroy(gameObject);
+        //CoreUpgrade.OnCoreUpgrade += () => Destroy(gameObject);
     }
 
     private void OnDisable()
@@ -26,7 +26,7 @@ public class TutorialObjectiveReceiver : MonoBehaviour
         TutorialObjective.OnObjectiveStart -= SetNewObjective;
         TutorialObjective.OnObjectiveEnd -= FinishObjective;
 
-        CoreUpgrade.OnCoreUpgrade -= () => Destroy(gameObject);
+        //CoreUpgrade.OnCoreUpgrade -= () => Destroy(gameObject);
     }
 
     private void Awake()

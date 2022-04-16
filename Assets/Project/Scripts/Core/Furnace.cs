@@ -19,8 +19,7 @@ public class Furnace : InteractStation
     public ParticleSystem addCoalParticleSystem;
 
     //Core light 
-    public GameObject coreLight;
-    [SerializeField] ConeLight light;
+    [SerializeField] ConeLightCircleInteriorLight coneCoreLight;
     [SerializeField] FirstShipUpgradeMessage firstShipUpgradeMessage;
 
     // Private Attributes
@@ -74,9 +73,12 @@ public class Furnace : InteractStation
 
 
         currentColliderRadius = START_UPGRADE_LIGHT_DISTANCE;
-        light.SetDistance(currentColliderRadius);
-        light.Expand(1f);
+        coneCoreLight.SetDistance(currentColliderRadius);
+        coneCoreLight.Expand(1f);
+
     }
+
+
 
     void Update()
     {
@@ -285,8 +287,8 @@ public class Furnace : InteractStation
         currentColliderRadius = UPGRADE_LIGHT_DISTANCE[lightLevel];
 
 
-        light.SetDistance(currentColliderRadius);
-        light.ExtraExpand(400, 400, 0.8f);
+        coneCoreLight.SetDistance(currentColliderRadius);
+        coneCoreLight.ExtraExpand(400, 400, 0.8f);
 
         if (!couroutineStartedAddCoal)
         {
