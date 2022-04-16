@@ -92,13 +92,6 @@ public class ShadowSpider : EnemyMonster
     }
 
 
-    private void PushPlayer()
-    {
-        Vector2 pushDiretion = playerGameObject.transform.position - transform.position;
-        playerGameObject.GetComponent<PlayerMovement>().GetsPushed(pushDiretion.normalized, attackSystem.pushValue);
-    }
-
-
     public override void ReceiveDamage(int damageValue)
     {
         base.ReceiveDamage(damageValue);

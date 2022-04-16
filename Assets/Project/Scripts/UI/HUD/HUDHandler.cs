@@ -23,9 +23,13 @@ public class HUDHandler : MonoBehaviour
         LoadBaseScenes.OnFadeToNormal += DoFadeToNormal;
         PlayerHandler.OnPlayerDeath += DoDeathImageFade;
         PlayerHandler.OnRestoreFades += RestoreFades;
+        PlayerCombat.OnReceivesDamage += ShowReceiveDamageFades;
 
         Torch.OnTorchPreStartActivation += FadeOutThenInSequence;
         Torch.OnTorchPreEndActivation += FadeOutThenInSequence;
+
+        DarknessFaint.OnFaintEnd += DoFadeToBlack;
+        DarknessFaint.OnFaintEndRespawn += DoFadeToNormal;
     }
 
     private void OnDisable()
@@ -35,9 +39,13 @@ public class HUDHandler : MonoBehaviour
         LoadBaseScenes.OnFadeToNormal -= DoFadeToNormal;
         PlayerHandler.OnPlayerDeath -= DoDeathImageFade;
         PlayerHandler.OnRestoreFades -= RestoreFades;
+        PlayerCombat.OnReceivesDamage += ShowReceiveDamageFades;
 
         Torch.OnTorchPreStartActivation -= FadeOutThenInSequence;
         Torch.OnTorchPreEndActivation -= FadeOutThenInSequence;
+
+        DarknessFaint.OnFaintEnd -= DoFadeToBlack;
+        DarknessFaint.OnFaintEndRespawn -= DoFadeToNormal;
     }
 
     private void KeepBlackFade()
@@ -53,6 +61,8 @@ public class HUDHandler : MonoBehaviour
     public void DoFadeToNormal()
     {
         StartCoroutine(CanvasFadeOut(fadeOutGroup, FADE_TIME));
+
+        Debug.Log("OnFaintEndRespawn receieved");
     }
 
     public void DoDeathImageFade()
@@ -70,7 +80,7 @@ public class HUDHandler : MonoBehaviour
         StartCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
     }
 
-    public void ShowRecieveDamageFades()
+    public void ShowReceiveDamageFades()
     {
         StartCoroutine(RecieveDamageFadeInAndOut());
     }

@@ -8,11 +8,13 @@ public class PlayerDeathItemDropper : ItemDropper
     private void OnEnable()
     {
         PlayerHandler.OnPlayerDeath += DropItems;
+        DarknessFaint.OnFaintEnd += DropItems;
     }
 
     private void OnDisable()
     {
         PlayerHandler.OnPlayerDeath -= DropItems;
+        DarknessFaint.OnFaintEnd -= DropItems;
     }
 
 }

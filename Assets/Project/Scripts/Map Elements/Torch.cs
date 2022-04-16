@@ -12,6 +12,7 @@ public class Torch : InteractStation
     public Light2D torchLight;
     public CanvasGroup popUpCanvasGroup;
     public CircleCollider2D lightRadius;
+    public CircleCollider2D lightInteriorRadius;
     public GameObject linkedRune;
     public GameObject desactivatedTorch;
 
@@ -22,6 +23,7 @@ public class Torch : InteractStation
     private const float innerRadiusOn = 1.8f;
     private const float outerRadiusOn = 3.3f;
     public bool turnedOn = false;
+    private bool inCoroutine = false;
 
     public Animator animTorch;
 
@@ -38,10 +40,6 @@ public class Torch : InteractStation
     public static event TorchAction OnTorchStartActivation;
     public static event TorchAction OnTorchEndActivation;
 
-
-
-
-
     void Awake()
     {
         SaveSystem.torches.Add(this);
@@ -55,7 +53,7 @@ public class Torch : InteractStation
             torchLight.pointLightOuterRadius = 0;
             torchLight.pointLightInnerRadius = 0;
             torchLight.intensity = turnedOffIntensity;
-            lightRadius.radius = 0.1f;
+            lightInteriorRadius.radius = lightRadius.radius = 0.1f;
         }
 
         popUpCanvasGroup.alpha = 0f;
@@ -72,6 +70,14 @@ public class Torch : InteractStation
 
     private void Update()
     {
+        if (turnedOn && !inCoroutine)
+            StartCoroutine(TorchFlicker());
+
+        if (turnedOn && popUpCanvasGroup.alpha > 0)
+        {
+            popUpCanvasGroup.alpha = 0;
+        }
+
         if (turnedOn) return;
 
         if (playerInsideTriggerArea)
@@ -84,6 +90,7 @@ public class Torch : InteractStation
             popUpCanvasGroup.alpha = 0f;
         }
     }
+
     public override void StationFunction()
     {
         if (!turnedOn)
@@ -99,6 +106,7 @@ public class Torch : InteractStation
         DoPuzzle();
 
     }
+
     public void SetTorchLightOff()
     {
         smokeTorchParticles.Stop();
@@ -136,7 +144,8 @@ public class Torch : InteractStation
             //DO STUFF HERE
             torchLight.pointLightOuterRadius = lightLerp.Value * outerRadiusOn;
             torchLight.pointLightInnerRadius = lightLerp.Value * innerRadiusOn;
-            lightRadius.radius = 2.8f;
+            lightRadius.radius = 3.0f;
+            lightInteriorRadius.radius = lightRadius.radius - 1.0f;
 
             //WAIT A FRAME
             yield return null;
@@ -201,11 +210,11 @@ public class Torch : InteractStation
     {
         desactivatedTorch.SetActive(false);
     }
+
     private void ActivateTorchSprite()
     {
         desactivatedTorch.SetActive(true);
     }
-
 
     IEnumerator CameraTransitionToPilar()
     {
@@ -243,5 +252,14 @@ public class Torch : InteractStation
 
     }
 
+    private IEnumerator TorchFlicker()
+    {
+        inCoroutine = true;
 
+        torchLight.intensity = Random.Range(0.8f, 1.0f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        inCoroutine = false;
+    }
 }

@@ -6,9 +6,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class ConeLight : CustomLight
 {
-    private BoxCollider2D collider;
-    private PolygonCollider2D collider2;
-    private Light2D coneLight;
+    private PolygonCollider2D collider;
+    protected Light2D coneLight;
 
     [SerializeField] private float startDistance = 4f;
     private const float DISTANCE_DIFFERENCE = 1f;
@@ -18,20 +17,26 @@ public class ConeLight : CustomLight
 
     private void Awake()
     {
-        collider = lightGameObject.GetComponent<BoxCollider2D>();
-        collider2 = lightGameObject.GetComponent<PolygonCollider2D>();
-        coneLight = lightGameObject.GetComponent<Light2D>();
-
-        SetDistance(startDistance);
-        SetAngle(lightAngle);
-
-        intensity = coneLight.intensity;
+        Init();
     }
 
 
     private void Start()
     {
         SetColliderFitLightOuterRadius();
+    }
+
+
+
+    protected override void Init()
+    {
+        collider = lightGameObject.GetComponent<PolygonCollider2D>();
+        coneLight = lightGameObject.GetComponent<Light2D>();
+
+        SetDistance(startDistance);
+        SetAngle(lightAngle);
+
+        intensity = coneLight.intensity;
     }
 
 
@@ -255,12 +260,12 @@ public class ConeLight : CustomLight
     }
 
 
-    private void SetColliderFitLightOuterRadius()
+    protected virtual void SetColliderFitLightOuterRadius()
     {
         float sizeY = coneLight.pointLightOuterRadius;
         float sixeX = Mathf.Sin(coneLight.pointLightOuterAngle) * sizeY;
 
-        collider2.points = new[] { new Vector2(sixeX / 2, sizeY), new Vector2(-sixeX / 2, sizeY), Vector2.zero };
+        collider.points = new[] { new Vector2(sixeX / 2, sizeY), new Vector2(-sixeX / 2, sizeY), Vector2.zero };
     }
 
 

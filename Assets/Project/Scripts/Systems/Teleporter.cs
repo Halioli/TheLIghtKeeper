@@ -8,7 +8,6 @@ public class Teleporter : InteractStation
     // Private Attributes
     private Vector2 spawnPosition;
     private Animator animator;
-    private string[] messagesToShow = { "Press E to interact", "No dark essence found", "Dark essence consumed" };
 
     // Public Attributes
     //Station
@@ -82,7 +81,6 @@ public class Teleporter : InteractStation
     private void PopUpDisappears()
     {
         popUp.HideAll();
-        mssgText.text = messagesToShow[0];
     }
 
     public override void StationFunction()
@@ -95,7 +93,6 @@ public class Teleporter : InteractStation
 
             inventory.SubstractItemFromInventory(darkEssence);
             popUp.GetComponent<PopUp>().ShowMessage();
-            mssgText.text = messagesToShow[2];
 
             PlayerInputs.instance.canMove = false;
             animator.SetBool("isActivated", true);
@@ -105,7 +102,6 @@ public class Teleporter : InteractStation
         else if (!activated && !inventory.InventoryContainsItem(darkEssence))
         {
             popUp.GetComponent<PopUp>().ShowMessage();
-            mssgText.text = messagesToShow[1];
 
             InvokeOnNotEnoughMaterials();
         }
@@ -137,7 +133,6 @@ public class Teleporter : InteractStation
         activated = true;
         PlayerInputs.instance.canMove = true;
         popUp.GetComponent<PopUp>().HideMessage();
-        mssgText.text = messagesToShow[0];
 
         if (OnActivation != null)
             OnActivation(teleportName);

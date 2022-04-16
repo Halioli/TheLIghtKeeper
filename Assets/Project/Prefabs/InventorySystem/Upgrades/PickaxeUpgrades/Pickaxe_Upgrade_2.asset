@@ -12,13 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3c75a27ef055f4cb0a1306d269dc2a, type: 3}
   m_Name: Pickaxe_Upgrade_2
   m_EditorClassIdentifier: 
-  upgradeDescription: +Damage +Break metal
-  longDescription: 'Pickaxe - Tier 2/3:
-
-
-    Enhances the pickaxe''s hardness and
-    power, allowing to break metal chunks while dealing more damage.'
+  upgradeName: Pickaxe
+  upgradeDescription: (Tier 2/3)
+  longDescription: Enhances the Pickaxe's hardness and power, allowing to break Metal
+    Chunks while dealing more damage.
   requiredItemsList:
-  - {fileID: 11400000, guid: 3ad1a6f564b80f743a80f5b6a541cd25, type: 2}
   - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  requiredAmountsList: 0400000008000000
+  - {fileID: 11400000, guid: 3ad1a6f564b80f743a80f5b6a541cd25, type: 2}
+  requiredAmountsList: 0800000004000000

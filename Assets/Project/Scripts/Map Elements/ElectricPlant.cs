@@ -9,13 +9,14 @@ public class ElectricPlant : InteractStation
     private Light2D plantLight;
     private Animator plantAnimator;
     private SpriteRenderer spritePlant;
-    public GameObject interactText;
-
-    public GameObject electricOrb;
-
     private bool hasBeenUsed = false;
     private float timeStart = 0;
     [SerializeField] private float cooldown;
+    private bool inCoroutine = false;
+
+    public GameObject interactText;
+    public GameObject electricOrb;
+    public ParticleSystem electricPlantParticles;
 
     // Audio
     [SerializeField] AudioSource electricDroneAudioSource;
@@ -32,7 +33,6 @@ public class ElectricPlant : InteractStation
         spritePlant.color = new Color(255, 255, 255, 255);
         plantAnimator.SetBool("used", false);
         plantLight = GetComponentInChildren<Light2D>();
-        
     }
 
     void Update()
@@ -47,6 +47,11 @@ public class ElectricPlant : InteractStation
             interactText.SetActive(false);
         }
         CountDown();
+
+        if (!hasBeenUsed && !inCoroutine)
+        {
+            StartCoroutine(ElectricPlantFlicker());
+        }
     }
 
     public override void StationFunction()
@@ -76,6 +81,7 @@ public class ElectricPlant : InteractStation
         timeStart = cooldown;
         hasBeenUsed = true;
 
+        StartCoroutine(PlayElectricPlantParticles());
         GameObject gameObject = Instantiate(electricOrb, transform);
         gameObject.GetComponent<ItemGameObject>().DropsRandom(true, 1.5f) ;
 
@@ -84,6 +90,7 @@ public class ElectricPlant : InteractStation
         plantLight.pointLightInnerRadius = 0.20f;
 
         interactText.SetActive(false);
+        StopCoroutine(ElectricPlantFlicker());
 
         StopElectricDroneSound();
         PlayPopOffSound();
@@ -124,6 +131,21 @@ public class ElectricPlant : InteractStation
         popAndRechargeAudioSource.Play();
     }
 
+    private IEnumerator ElectricPlantFlicker()
+    {
+        inCoroutine = true;
 
+        plantLight.intensity = Random.Range(0.8f, 1.0f);
 
+        yield return new WaitForSeconds(0.1f);
+
+        inCoroutine = false;
+    }
+
+    private IEnumerator PlayElectricPlantParticles()
+    {
+        electricPlantParticles.Play();
+        yield return new WaitForSeconds(1f);
+        electricPlantParticles.Stop();
+    }
 }

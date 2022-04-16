@@ -6,15 +6,14 @@ public class PlayerHandler : PlayerBase
 {
     // Private Attributes
     private HealthSystem playerHealthSystem;
-    private Rigidbody2D playerRigidbody2D;
     private bool inCoroutine = false;
 
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
-    public Transform mainCameraTransform;
     public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
+    public ParticleSystem healingParticles;
 
     // Start fades
     public delegate void PlayerHandlerAction();
@@ -22,11 +21,15 @@ public class PlayerHandler : PlayerBase
     // Restore fades
     public delegate void RestoreFadesAction();
     public static event RestoreFadesAction OnRestoreFades;
+    // Tp player
+    public delegate void TeleportPlayerAction(Vector3 landingPos);
+    public static event TeleportPlayerAction OnTeleportPlayer;
+
 
     private void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
-        playerRigidbody2D = GetComponent<Rigidbody2D>();
+        healingParticles.Stop();
     }
 
     void Update()
@@ -50,9 +53,12 @@ public class PlayerHandler : PlayerBase
             {
                 // Teleport to desired position
                 SetPlayerNotInvulnerable();
-                playerRigidbody2D.transform.position = respawnPosition;
-                mainCameraTransform.position = respawnPosition;
+
+                if (OnTeleportPlayer != null)
+                    OnTeleportPlayer(respawnPosition);
+
                 playerHealthSystem.RestoreHealthToMaxHealth();
+
                 animationEnds = false;
             }
         }
@@ -126,5 +132,15 @@ public class PlayerHandler : PlayerBase
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
+    private void PlayHealingParticles()
+    {
+        StartCoroutine("HealingParticles");
+    }
 
+    IEnumerator HealingParticles()
+    {
+        healingParticles.Play();
+        yield return new WaitForSeconds(1f);
+        healingParticles.Stop();
+    }
 }

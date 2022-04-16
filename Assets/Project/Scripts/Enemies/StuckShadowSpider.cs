@@ -11,7 +11,7 @@ public class StuckShadowSpider : ShadowSpider
         base.ReceiveDamage(damageValue);
     }
 
-    protected override void DropItem()
+    protected override void DropItem(bool willDespawn = false)
     {
         return;
     }

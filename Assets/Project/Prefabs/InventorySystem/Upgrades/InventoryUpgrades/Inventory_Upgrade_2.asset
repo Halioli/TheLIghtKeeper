@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74422323b40b3c14eab88890bf313e31, type: 3}
   m_Name: Inventory_Upgrade_2
   m_EditorClassIdentifier: 
-  upgradeDescription: +1 slot
-  longDescription: 'Inventory - Tier 2/3:
-
-
-    Unlock 1 extra inventory slot.'
+  upgradeName: Inventory
+  upgradeDescription: (Tier 2/3)
+  longDescription: Unlocks 2 extra inventory slots.
   requiredItemsList:
   - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
   - {fileID: 11400000, guid: 1e5a53f83cfb0d7479b96ca93f2b54b6, type: 2}
-  requiredAmountsList: 0c00000002000000
+  requiredAmountsList: 0c00000001000000

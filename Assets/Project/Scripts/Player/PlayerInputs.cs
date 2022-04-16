@@ -21,6 +21,8 @@ public class PlayerInputs : MonoBehaviour
     public bool canAttack = true;
     public bool canPause = true;
 
+    public bool ignoreLights = false;
+
     public GameObject selectSpotGameObject;
 
     private void Awake()

@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ambientCanPlay: 1
   musicCanPlay: 1
-  randomChance: 2
+  randomChance: 5
   ambientCooldown: 10
   ambientAudioSource: {fileID: 2819909919347767358}
   ambientAudioClips:
@@ -67,6 +67,8 @@ MonoBehaviour:
   teleportMusic: {fileID: 8300000, guid: f9ba60e7492dcda4fa9ed732bb0e5c9b, type: 3}
   audioReverbZone: {fileID: 3617139476372382575}
   torchPilarAudioSource: {fileID: 8309116200316707959}
+  heartBeatsClip: {fileID: 8300000, guid: d9a91c4abd942de4984e628776fe97e6, type: 3}
+  faintWindClip: {fileID: 8300000, guid: 66d65e243566fa047977da2fdcc37824, type: 3}
 --- !u!82 &2819909919347767358
 AudioSource:
   m_ObjectHideFlags: 0
@@ -93,7 +95,7 @@ AudioSource:
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -189,7 +191,7 @@ AudioSource:
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -309,7 +311,7 @@ AudioSource:
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:

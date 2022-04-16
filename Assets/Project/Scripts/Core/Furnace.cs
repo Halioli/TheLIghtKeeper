@@ -20,8 +20,8 @@ public class Furnace : InteractStation
 
     //Core light 
     public GameObject coreLight;
-    public int lightLevel = 0;
     [SerializeField] ConeLight light;
+    [SerializeField] FirstShipUpgradeMessage firstShipUpgradeMessage;
 
     // Private Attributes
     private enum FurnaceEvents { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
@@ -29,9 +29,9 @@ public class Furnace : InteractStation
     private const int MAX_FUEL_AMOUNT = 150;
     private const int STARTING_FUEL_AMOUNT = 50;
     private const int LOW_FUEL_AMOUNT = 30;
-    [SerializeField] private const int MAX_CORE_LEVEL = 4;
+    [SerializeField] private const int MAX_CORE_LEVEL = 5;
     private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f;
-    private const float UPGRADE_LIGHT_DISTANCE = 5f;
+    
 
     //Fuel variables
     private int currentFuel = STARTING_FUEL_AMOUNT;
@@ -42,8 +42,11 @@ public class Furnace : InteractStation
     private bool couroutineStartedConsumeCoal = false;
 
     //Scalation variables
-    private float currentColliderRadius = 10f;
-    private CircleCollider2D coreLightCollider;
+    public int lightLevel = 0;
+    private float[] UPGRADE_LIGHT_DISTANCE = { 15f, 20f, 25f, 30f, 35f };
+    private float START_UPGRADE_LIGHT_DISTANCE = 10f;
+    private float currentColliderRadius;
+    //[SerializeField] private CircleCollider2D coreLightCollider;
     //private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
 
     private float fuelDurationInSeconds = 2.5f;
@@ -58,16 +61,20 @@ public class Furnace : InteractStation
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
     // Methods
-    private void Start()
+    private void Awake()
     {
         furnaceEvents = FurnaceEvents.CALM;
-        coreLightCollider = coreLight.GetComponent<CircleCollider2D>();
+        //coreLightCollider = coreLight.GetComponent<CircleCollider2D>();
         popUp = popUpGameObject.GetComponent<PopUp>();
         addCoalParticleSystem.Stop();
         popUp.ChangeMessageText("");
 
         popUp.HideAll();
         popUpGameObject.SetActive(false);
+
+
+        currentColliderRadius = START_UPGRADE_LIGHT_DISTANCE;
+        light.SetDistance(currentColliderRadius);
         light.Expand(1f);
     }
 
@@ -198,7 +205,7 @@ public class Furnace : InteractStation
 
     private bool CheckIfMaxCoreLevel()
     {
-        return lightLevel >= 3;//MAX_CORE_LEVEL;
+        return lightLevel >= MAX_CORE_LEVEL;
     }
 
     //private void SwitchFurnaceEvents()
@@ -269,31 +276,40 @@ public class Furnace : InteractStation
     // Public Methods
     public override void UpgradeFunction()
     {
-        if(lightLevel < MAX_CORE_LEVEL)
+        if (lightLevel >= MAX_CORE_LEVEL) return;
+
+
+        //popUp.ChangeMessageText("Luxinite Added");
+        //coreLightCollider.radius = currentColliderRadius;
+
+        currentColliderRadius = UPGRADE_LIGHT_DISTANCE[lightLevel];
+
+
+        light.SetDistance(currentColliderRadius);
+        light.ExtraExpand(400, 400, 0.8f);
+
+        if (!couroutineStartedAddCoal)
         {
-            currentColliderRadius += UPGRADE_LIGHT_DISTANCE;
-
-            popUp.ChangeMessageText("Luxinite Added");
-            coreLightCollider.radius = currentColliderRadius;
-            ++lightLevel;
-
-            light.ExtraExpand(400, 400, 0.8f);
-            light.SetDistance(currentColliderRadius);
-
-            if (!couroutineStartedAddCoal)
-            {
-                StartCoroutine(UsingYieldAddCoal(1));
-            }
+            StartCoroutine(UsingYieldAddCoal(1));
         }
-        else
-        {
-            lightLevel = MAX_CORE_LEVEL;
 
+
+        ++lightLevel;
+
+
+
+        if (lightLevel == 1)
+        {
+            firstShipUpgradeMessage.EnableFirstShipUpgradeMessege();
+        }
+        else if (lightLevel == MAX_CORE_LEVEL)
+        {
             if (!liftOffButtonGameObject.activeInHierarchy)
             {
                 liftOffButtonGameObject.SetActive(true);
             }
         }
+
     }
 
     public void StartEvent(int eventID)

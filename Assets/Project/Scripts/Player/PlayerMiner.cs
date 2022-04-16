@@ -46,6 +46,9 @@ public class PlayerMiner : PlayerBase
     private void Start()
     {
         animator = GetComponent<Animator>();
+
+        // SHITY WORKAROUND
+        //animator.SetBool("isMining", true);
     }
 
     void Update()
