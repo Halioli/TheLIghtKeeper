@@ -108,6 +108,7 @@ Transform:
   - {fileID: 2323532057406886988}
   - {fileID: 2323532057042889831}
   - {fileID: 1599780148142656438}
+  - {fileID: 1845224093779778904}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -179,8 +180,9 @@ MonoBehaviour:
   popUpGameObject: {fileID: 8719592956402217885}
   addCoalParticleSystem: {fileID: 2323532057042889833}
   coreLight: {fileID: 2323532057406886989}
-  lightLevel: 0
   light: {fileID: 0}
+  firstShipUpgradeMessage: {fileID: 3964624873518657652}
+  lightLevel: 0
 --- !u!61 &2323532056043903549
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5262,6 +5264,74 @@ CircleCollider2D:
   m_Offset: {x: -6.5, y: 0}
   serializedVersion: 2
   m_Radius: 14.5
+--- !u!1 &4445980803913171655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1845224093779778904}
+  - component: {fileID: 6338557095775244635}
+  - component: {fileID: 3964624873518657652}
+  m_Layer: 0
+  m_Name: FirstShipUpgradeMssg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1845224093779778904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4445980803913171655}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -10.703553, y: -3.7727203, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2323532056043903547}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &6338557095775244635
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4445980803913171655}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 3.6
+--- !u!114 &3964624873518657652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4445980803913171655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9435268699853749a0572833d97b51d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventIndex: 0
+  eventType: 1
+  eventID: -1
+  mssgs:
+  - "Good job commander! \nI've done a full diagnostic on the ship. I can fix it,
+    but it will take a lot of power."
+  - You'll have to find <b>4 more Luxinites</b> if we want to get out of here.
+  - New crafts are available! Come here to check them out.
 --- !u!1001 &10404048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5351,11 +5421,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9133201526527734124, guid: d95da88540d2d6e44a0c4c40c581b24a, type: 3}
       propertyPath: position.x
-      value: 0
+      value: 7.703553
       objectReference: {fileID: 0}
     - target: {fileID: 9133201526527734124, guid: d95da88540d2d6e44a0c4c40c581b24a, type: 3}
       propertyPath: position.y
-      value: 5
+      value: 304.7727
       objectReference: {fileID: 0}
     - target: {fileID: 9133201526527734124, guid: d95da88540d2d6e44a0c4c40c581b24a, type: 3}
       propertyPath: SortingOrder
