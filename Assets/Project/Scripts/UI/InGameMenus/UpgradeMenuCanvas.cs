@@ -1,110 +1,125 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class UpgradeMenuCanvas : MonoBehaviour
 {
-    [SerializeField] UpgradeButton[] upgradeButtons;
-    public UpgradesSystem upgradesSystem;
+    [SerializeField] UpgradeDisplayer upgradeDisplayer;
+    [SerializeField] UpgradeUnlockedDisplayer upgradeUnlockedDisplayer;
+
+    [SerializeField] UpgradeButtonBranch[] upgradeButtonBranches;
+    [SerializeField] UpgradesSystem upgradesSystem;
+    
+
+    public delegate void UpgradeMenuAction();
+    public static event UpgradeMenuAction OnSubmenuEnter;
 
 
-    private void OnEnable()
+    private void Start()
     {
-        UpgradesStation.OnInteractOpen += SetButtonsCanBeClicked;
+        HideDisplay();
     }
 
-    private void OnDisable()
+    public void DisplayUpgrade(Upgrade upgrade, bool isCompleted)
     {
-        UpgradesStation.OnInteractOpen -= SetButtonsCanBeClicked;
+        upgradeDisplayer.gameObject.SetActive(true);
+
+        upgradeDisplayer.SetUpgradeNameAndDescription(upgrade.upgradeName, upgrade.upgradeDescription, upgrade.longDescription);
+        upgradeDisplayer.SetRequiredMaterials(upgrade.requiredItemsList, upgrade.requiredAmountsList);
+
+        upgradeDisplayer.DisplayIsCompletedText(isCompleted);
     }
 
-
-    public void Init()
+    public void HideDisplay()
     {
-        int j = 0;
+        upgradeDisplayer.gameObject.SetActive(false);
+    }
 
-        for (int i = 0; i < upgradesSystem.upgradeBranches.Count; ++i)
+    public bool UpgradeSelected(int upgradeBranchIndex, int upgradeIndex)
+    {
+        bool couldUpgrade = upgradesSystem.UpgradeBranchIsSelected(upgradeBranchIndex);
+
+        if (couldUpgrade)
         {
-            upgradesSystem.upgradeBranches[i].Init(i);
+            upgradeButtonBranches[upgradeBranchIndex].ProgressOneStage();
 
-            Upgrade upgrade = upgradesSystem.upgradeBranches[i].GetCurrentUpgrade();
-            Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
-            string[] amounts = new string[upgrade.requiredItems.Count];
-            j = 0;
-
-            foreach (KeyValuePair<Item, int> requiredItemPair in upgrade.requiredItems)
+            bool isMaxCompleted = upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex);
+            if (isMaxCompleted)
             {
-                sprites[j] = requiredItemPair.Key.sprite;
-                amounts[j] = requiredItemPair.Value.ToString();
-                ++j;
+                upgradeButtonBranches[upgradeBranchIndex].DisplayCompleteText();
             }
-            upgradeButtons[i].InitUpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
-            upgradeButtons[i].GetComponent<HoverButton>().SetDescription(upgradesSystem.upgradeBranches[i].GetCurrentUpgrade().longDescription); 
 
+
+            DisplayUnlockedUpgardeBanner(upgradeIndex, isMaxCompleted, upgradeBranchIndex);
         }
+
+        return couldUpgrade;
     }
 
-    public void UpgradeBranchIsSelected(int index)
+    public void AlwaysProgressUpgradeSelected(int upgradeBranchIndex)
     {
-        if (!upgradeButtons[index].canBeClicked)
+        upgradesSystem.AlwaysCompleteUpgradeBranchIsSelected(upgradeBranchIndex);
+
+        upgradeButtonBranches[upgradeBranchIndex].ProgressOneStage();
+
+        if (upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex))
         {
-            upgradesSystem.DoOnUpgardeFail();
-            return;
+            upgradeButtonBranches[upgradeBranchIndex].DisplayCompleteText();
         }
-
-        upgradesSystem.UpgradeBranchIsSelected(index);
-
-
-        upgradesSystem.UpdatePlayerInventoryData();
-        SetButtonsCanBeClicked();
-        UpdateUpgradeButton(index);
     }
 
-    private void UpdateUpgradeButton(int index)
+
+
+    public void GoToSubmenu()
     {
-        if (upgradesSystem.upgradeBranches[index].IsCompleted())
-        {
-            upgradeButtons[index].canBeClicked = false;
-            upgradeButtons[index].DisableButton();
-            return;
-        }
+        HideDisplay();
 
-        Upgrade upgrade = upgradesSystem.upgradeBranches[index].GetCurrentUpgrade();
-        Sprite[] sprites = new Sprite[upgrade.requiredItems.Count];
-        string[] amounts = new string[upgrade.requiredItems.Count];
-        int j = 0;
-
-        foreach (KeyValuePair<Item, int> requiredItemPair in upgrade.requiredItems)
-        {
-            sprites[j] = requiredItemPair.Key.sprite;
-            amounts[j] = requiredItemPair.Value.ToString();
-            ++j;
-        }
-
-        upgradeButtons[index].UpdateButtonElements(upgrade.upgradeDescription, sprites, amounts);
-        upgradeButtons[index].GetComponent<HoverButton>().SetDescription(upgradesSystem.upgradeBranches[index].GetCurrentUpgrade().longDescription);
-
+        if (OnSubmenuEnter != null) OnSubmenuEnter();
     }
 
 
-    void SetButtonsCanBeClicked()
+
+    // should be called on application close (or on memory save)
+    public int[] GetAllUpgardesLastActiveButtonIndex()
     {
-        for (int i=0; i < upgradeButtons.Length; ++i)
+        List<int> allLastActiveButtonIndex = new List<int>();
+
+        foreach (UpgradeButtonBranch upgradeButtonBranch in upgradeButtonBranches)
         {
-            SetButtonCanBeClicked(i);
-        }
+            allLastActiveButtonIndex.Add(upgradeButtonBranch.GetLastActiveButtonIndex());
+        }   
+
+        return allLastActiveButtonIndex.ToArray();
     }
 
-    void SetButtonCanBeClicked(int index)
+
+    // must be called on Awake()
+    public void FirstTimeSetAllLastCompletedButtonIndex()
     {
-        if (upgradesSystem.upgradeBranches[index].IsCompleted())
+        for (int i = 0; i < upgradeButtonBranches.Length; ++i)
         {
-            upgradeButtons[index].GetComponent<HoverButton>().SetDescription("Upgrade branch completed.");
-            return;
+            upgradeButtonBranches[i].SetLastCompletedButtonIndex(0);
         }
-
-        bool canBeClicked = upgradesSystem.PlayerHasEnoughItemsToUpgrade(upgradesSystem.upgradeBranches[index].GetCurrentUpgrade());
-        upgradeButtons[index].StartClickCooldown(canBeClicked);
     }
+
+    public void SetAllLastCompletedButtonIndex(int[] allLastCompletedButtonIndex)
+    {
+        for (int i = 0; i < upgradeButtonBranches.Length; ++i)
+        {
+            upgradeButtonBranches[i].SetLastCompletedButtonIndex(allLastCompletedButtonIndex[i]);
+        }
+    }
+
+
+
+    private void DisplayUnlockedUpgardeBanner(int upgradeIndex, bool isMaxCompleted, int upgradeBranchIndex)
+    {
+        string upgradeName;
+        Image upgradeIcon;
+        upgradeButtonBranches[upgradeBranchIndex].GetUpgradeNameAndIcon(upgradeIndex, out upgradeName, out upgradeIcon);
+        upgradeUnlockedDisplayer.DisplayUpgradeBanner(isMaxCompleted, upgradeName, upgradeIcon);
+    }
+
 
 }

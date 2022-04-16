@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class LanternFuelGameObject : ItemGameObject
 {
-    private Lamp playerLamp;
-    private float lampTimeToRefill = 5f;
+    [SerializeField] GameObject lanternFuelAuxiliar;
 
     public delegate void LanternFuelSound();
     public static event LanternFuelSound onLanternFuelRefill;
-
 
 
     private void FunctionalitySound()
@@ -20,15 +19,9 @@ public class LanternFuelGameObject : ItemGameObject
 
     public override void DoFunctionality()
     {
-        canBePickedUp = false;
-        playerLamp = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Lamp>();
-
-        if (playerLamp.CanRefill())
-        {
-            FunctionalitySound();
-            playerLamp.RefillLampTime(lampTimeToRefill);
-        }
-
-        Destroy(gameObject);
+        Instantiate(lanternFuelAuxiliar, PlayerInputs.instance.transform);
+        FunctionalitySound();
     }
+
+
 }

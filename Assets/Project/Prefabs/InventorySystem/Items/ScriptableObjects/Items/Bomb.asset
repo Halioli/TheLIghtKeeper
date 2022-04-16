@@ -14,12 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5284852591263328306, guid: 10654c109a43f384087f9b6fc3410d72, type: 3}
   itemName: Bomb
-  description: 'Bomb:
-
-
-    Produces a small explosion on impact damaging and mining
-    everything in its area.'
+  description: Creates a delayed explosion that damages ores and beings.
   ID: 22
   itemType: 2
+  isSpecial: 0
   stackSize: 8
   sprite: {fileID: 21300000, guid: dfac07542c7205e49a1f2ac0e3bbb9fc, type: 3}

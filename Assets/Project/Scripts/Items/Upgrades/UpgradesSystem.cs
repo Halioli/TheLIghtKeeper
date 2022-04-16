@@ -9,16 +9,17 @@ public class UpgradesSystem : MonoBehaviour
     Inventory playerInventory;
     [SerializeField] public List<UpgradeBranch> upgradeBranches;
 
-
     // Events
     public delegate void UpgardeAction();
     public static event UpgardeAction OnUpgrade;
     public static event UpgardeAction OnUpgradeFail;
 
 
-    private void Start()
+
+    private void Awake()
     {
         playerInventoryItems = new Dictionary<Item, int>();
+
 
         for (int i = 0; i < upgradeBranches.Count; ++i)
         {
@@ -31,11 +32,12 @@ public class UpgradesSystem : MonoBehaviour
         this.playerInventory = playerInventory;
     }
 
-    public void UpgradeBranchIsSelected(int index)
+    public bool UpgradeBranchIsSelected(int index)
     {
-        if (upgradeBranches[index].IsCompleted()) return;
+        if (upgradeBranches[index].IsCompleted()) return false;
 
         UpdatePlayerInventoryData();
+
         if (PlayerHasEnoughItemsToUpgrade(upgradeBranches[index].GetCurrentUpgrade()))
         {
             RemoveUpgradeRequiredItems(upgradeBranches[index].GetCurrentUpgrade());
@@ -43,13 +45,27 @@ public class UpgradesSystem : MonoBehaviour
             upgradeBranches[index].Upgrade();
 
             if (OnUpgrade != null) OnUpgrade();
+
+            return true;
         }
-        else
-        {
-            if (OnUpgradeFail != null) OnUpgradeFail();
-        }
-        UpdatePlayerInventoryData();
+
+
+        if (OnUpgradeFail != null) OnUpgradeFail();
+        
+        return false;
     }
+
+    public void AlwaysCompleteUpgradeBranchIsSelected(int index)
+    {
+        if (upgradeBranches[index].IsCompleted()) return;
+
+
+        upgradeBranches[index].Upgrade();
+        //if (OnUpgrade != null) OnUpgrade();
+    }
+
+
+
 
     public void UpdatePlayerInventoryData()
     {
@@ -93,5 +109,12 @@ public class UpgradesSystem : MonoBehaviour
     {
         if (OnUpgradeFail != null) OnUpgradeFail();
     }
+
+
+    public bool UpgradeBranchIsCompleted(int upgradeBranchIndex)
+    {
+        return upgradeBranches[upgradeBranchIndex].IsCompleted();
+    }
+
 
 }

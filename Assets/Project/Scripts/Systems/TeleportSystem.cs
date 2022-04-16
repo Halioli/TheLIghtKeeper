@@ -10,6 +10,10 @@ public class TeleportSystem : MonoBehaviour
     public int currentTeleportInUse = 0;
     public List<Teleporter> teleports;
 
+    // Tp player
+    public delegate void TeleportPlayerAction(Vector3 landingPos);
+    public static event TeleportPlayerAction OnTeleportPlayer;
+
     private void Start()
     {
         teleportIdentifier = new Dictionary<string, int>();
@@ -45,7 +49,11 @@ public class TeleportSystem : MonoBehaviour
 
     private void TeleportPlayerToNewPosition(int teleportIndex)
     {
-        playerGameObject.transform.position = teleports[teleportIndex].GetComponent<Teleporter>().teleportTransformPosition;
+        //playerGameObject.transform.position = teleports[teleportIndex].GetComponent<Teleporter>().teleportTransformPosition;
+        if (OnTeleportPlayer != null)
+        {
+            OnTeleportPlayer(teleports[teleportIndex].GetComponent<Teleporter>().teleportTransformPosition);
+        }
 
         PlayerInputs.instance.canMove = true;
     }

@@ -13,7 +13,6 @@ public class CraftingStation : InteractStation
     public GameObject interactText;
     public GameObject backgroundText;
     public GameObject craftingCanvasGameObject;
-    public GameObject playerHUDGameObject;
 
     public ParticleSystem[] craftingParticles;
 
@@ -109,11 +108,11 @@ public class CraftingStation : InteractStation
 
         isOpen = true;
 
-        playerHUDGameObject.SetActive(false);
         craftingCanvasGameObject.SetActive(true);
         craftingMenu.ShowRecepies();
 
-        PauseMenu.gameIsPaused = true;
+        PlayerInputs.instance.canMine = false;
+        //PauseMenu.gameIsPaused = true;
     }
 
     private void CloseCraftingInventory()
@@ -122,10 +121,10 @@ public class CraftingStation : InteractStation
 
         isOpen = false;
 
-        playerHUDGameObject.SetActive(true);
         craftingCanvasGameObject.SetActive(false);
 
-        PauseMenu.gameIsPaused = false;
+        PlayerInputs.instance.canMine = true;
+        //PauseMenu.gameIsPaused = false;
     }
 
 }

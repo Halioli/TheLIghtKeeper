@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class Pickaxe : MonoBehaviour
 {
     private const int MAX_LEVELS = 3;
     private int currentLevel = 0;
-    private int[] damageValueIncrement = { 0, 1, 0 };
-    private Hardness[] hardnessIncrement = { Hardness.HARD, Hardness.HARD, Hardness.HARD };
-    private int[] extraDropIncrement = { 0, 0, 1};
+    private int[] damageValueLvl = { 1, 2, 2 };
+    private Hardness[] hardnessLvl = { Hardness.HARD, Hardness.VERY_HARD, Hardness.VERY_HARD };
+    private int[] extraDropLvl = { 1, 1, 2};
 
     public int damageValue { get; private set; }
     public int criticalDamageValue { get; private set; }
@@ -18,7 +16,7 @@ public class Pickaxe : MonoBehaviour
     public int extraDrop { get; private set; }
 
 
-    private void Start()
+    private void Awake()
     {
         damageValue = 1;
         criticalDamageValue = damageValue + 1;
@@ -42,10 +40,10 @@ public class Pickaxe : MonoBehaviour
         if (currentLevel >= MAX_LEVELS)
             return;
 
-        damageValue += damageValueIncrement[currentLevel];
-        criticalDamageValue += damageValueIncrement[currentLevel];
-        hardness = hardnessIncrement[currentLevel];
-        extraDrop += extraDropIncrement[currentLevel];
+        damageValue = damageValueLvl[currentLevel];
+        criticalDamageValue = damageValueLvl[currentLevel];
+        hardness = hardnessLvl[currentLevel];
+        extraDrop = extraDropLvl[currentLevel];
 
         ++currentLevel;
     }

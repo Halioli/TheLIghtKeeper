@@ -10,26 +10,60 @@ public class CinemachineShake : MonoBehaviour
     private float shakeTimer;
     private float shakeTimerTotal;    
     private float startingIntensity;
+    //private CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
 
     //Public Atributes
     public static CinemachineShake Instance { get; private set; }
+    //[SerializeField] CinemachineVirtualCamera cinemachineVirtual;
+
+    [SerializeField] private CinemachineVirtualCamera vcam = null;
+    [System.NonSerialized] private CinemachineBasicMultiChannelPerlin noiseComp = null;
+
+    public delegate void CinemachineShakeAction();
+    public static event CinemachineShakeAction OnShakeStop;
 
     private void Awake()
     {
+        noiseComp = vcam.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+        if (noiseComp == null)
+            Debug.LogError("No MultiChannelPerlin on the virtual camera.", this);
+        else
+            Debug.Log($"Noise Component: {noiseComp}");
+
         Instance = this;
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
+
+        //cinemachineBasicMultiChannelPerlin =
+        //    cinemachineVirtual.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
+
+    private void OnEnable()
+    {
+        PauseMenu.OnPaused += ForceStopShakeCamera;
+
+    }
+
+    private void OnDisable()
+    {
+        PauseMenu.OnPaused -= ForceStopShakeCamera;
+    }
+
 
     public void ShakeCamera(float intensity, float time)
     {
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         startingIntensity = intensity;
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = intensity;
+        noiseComp.m_AmplitudeGain = intensity;
         shakeTimer = time;
         shakeTimerTotal = time;
     }
+
+    public void ForceStopShakeCamera()
+    {
+        shakeTimer = Time.deltaTime;
+        if(OnShakeStop != null) OnShakeStop();
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -37,11 +71,15 @@ public class CinemachineShake : MonoBehaviour
         if(shakeTimer > 0)
         {
             shakeTimer -= Time.deltaTime;
-            CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
-                cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            //CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
+            //    cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
-            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 
+            noiseComp.m_AmplitudeGain = 
                 Mathf.Lerp(startingIntensity, 0f, 1 - (shakeTimer / shakeTimerTotal));
+        }
+        else
+        {
+            ForceStopShakeCamera();
         }
     }
 }
