@@ -176,7 +176,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 271418067792035714}
-  - {fileID: 7256697225250868673}
+  - {fileID: 837817086376472869}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -707,18 +707,6 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!225 &8772656539230928560
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7256697225250868685}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &7299499711710348909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,17 +1189,13 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!1001 &178954584643535245
+--- !u!1001 &7885723377301192041
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 271418066703302015}
     m_Modifications:
-    - target: {fileID: 7408194417659928839, guid: 4256c2d072521c44896499a53eb82fec, type: 3}
-      propertyPath: canvasGroup
-      value: 
-      objectReference: {fileID: 8772656539230928560}
     - target: {fileID: 7408194418961747008, guid: 4256c2d072521c44896499a53eb82fec, type: 3}
       propertyPath: m_Name
       value: Canvas_TutorialObjectives
@@ -1300,16 +1284,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7408194418802646477, guid: 4256c2d072521c44896499a53eb82fec, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4256c2d072521c44896499a53eb82fec, type: 3}
---- !u!1 &7256697225250868685 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7408194418961747008, guid: 4256c2d072521c44896499a53eb82fec, type: 3}
-  m_PrefabInstance: {fileID: 178954584643535245}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &7256697225250868673 stripped
+--- !u!224 &837817086376472869 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7408194418961747020, guid: 4256c2d072521c44896499a53eb82fec, type: 3}
-  m_PrefabInstance: {fileID: 178954584643535245}
+  m_PrefabInstance: {fileID: 7885723377301192041}
   m_PrefabAsset: {fileID: 0}

@@ -300,7 +300,6 @@ public class Furnace : InteractStation
 
         if (lightLevel == 1)
         {
-            Debug.Log("FURNACE_EnableFirstShipUpgradeMessege");
             firstShipUpgradeMessage.EnableFirstShipUpgradeMessege();
         }
         else if (lightLevel == MAX_CORE_LEVEL)
