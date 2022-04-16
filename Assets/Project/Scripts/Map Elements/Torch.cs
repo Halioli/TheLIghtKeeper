@@ -73,6 +73,11 @@ public class Torch : InteractStation
         if (turnedOn && !inCoroutine)
             StartCoroutine(TorchFlicker());
 
+        if (turnedOn && popUpCanvasGroup.alpha > 0)
+        {
+            popUpCanvasGroup.alpha = 0;
+        }
+
         if (turnedOn) return;
 
         if (playerInsideTriggerArea)
