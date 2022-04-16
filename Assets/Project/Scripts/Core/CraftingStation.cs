@@ -9,12 +9,21 @@ public class CraftingStation : InteractStation
     private bool isOpen = false;
     [SerializeField] CraftingMenu craftingMenu;
 
+    bool itemsWereSentToStorage = false;
+
+
     // Public Attributes
     public GameObject interactText;
     public GameObject backgroundText;
     public GameObject craftingCanvasGameObject;
 
     public ParticleSystem[] craftingParticles;
+
+
+    public delegate void ItemSentToStorageMessegeAction();
+    public static event ItemSentToStorageMessegeAction OnItemSentToStorage;
+
+
 
     private void Start()
     {
@@ -46,11 +55,19 @@ public class CraftingStation : InteractStation
     private void OnEnable()
     {
         CraftingSystem.OnCrafting += PlayCraftingParticles;
+        CraftingSystem.OnItemSentToStorage += () => itemsWereSentToStorage = true;
+
+        CraftingStationAuxiliar.OnMenuOpen += OpenCraftingInventory;
+        CraftingStationAuxiliar.OnMenuClose += CloseCraftingInventory;
     }
 
     private void OnDisable()
     {
         CraftingSystem.OnCrafting -= PlayCraftingParticles;
+        CraftingSystem.OnItemSentToStorage -= () => itemsWereSentToStorage = true;
+
+        CraftingStationAuxiliar.OnMenuOpen -= OpenCraftingInventory;
+        CraftingStationAuxiliar.OnMenuClose -= CloseCraftingInventory;
     }
 
     //From InteractStation script
@@ -125,6 +142,13 @@ public class CraftingStation : InteractStation
 
         PlayerInputs.instance.canMine = true;
         //PauseMenu.gameIsPaused = false;
+
+
+        if (itemsWereSentToStorage)
+        {
+            itemsWereSentToStorage = false;
+            if (OnItemSentToStorage != null) OnItemSentToStorage();
+        }
     }
 
 }

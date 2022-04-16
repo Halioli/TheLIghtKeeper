@@ -47,7 +47,7 @@ public class BrokenFurnace : InteractStation
         }
         else
         {
-            //PopUpDisappears();
+            PopUpDisappears();
             popUp.ChangeMessageText("Press E to interact");
         }
     }
@@ -103,7 +103,7 @@ public class BrokenFurnace : InteractStation
             audioSource.Play();
             yield return new WaitForSeconds(1f);
         }
-        for (int i = 1; i < spaceShipLights.Length - 1; i++)
+        for (int i = 0; i < spaceShipLights.Length - 1; i++)
         {
             spaceShipLights[i].intensity = 0f;
         }
