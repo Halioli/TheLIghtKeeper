@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class MessageItemToStorage : TutorialMessages
 {
+    private void Awake()
+    {
+        DisableSelf();
+    }
+
     private void OnEnable()
     {
-        CraftingSystem.OnItemSentToStorage += SendMessage;
+        CraftingStation.OnItemSentToStorage += SendMessage;
     }
 
     private void OnDisable()
     {
-        CraftingSystem.OnItemSentToStorage -= SendMessage;
+        CraftingStation.OnItemSentToStorage -= SendMessage;
     }
 
     //protected override void SendMessage()
