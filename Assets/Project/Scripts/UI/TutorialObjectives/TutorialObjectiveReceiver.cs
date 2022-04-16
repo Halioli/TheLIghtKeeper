@@ -17,12 +17,16 @@ public class TutorialObjectiveReceiver : MonoBehaviour
     {
         TutorialObjective.OnObjectiveStart += SetNewObjective;
         TutorialObjective.OnObjectiveEnd += FinishObjective;
+
+        CoreUpgrade.OnCoreUpgrade += () => Destroy(gameObject);
     }
 
     private void OnDisable()
     {
         TutorialObjective.OnObjectiveStart -= SetNewObjective;
         TutorialObjective.OnObjectiveEnd -= FinishObjective;
+
+        CoreUpgrade.OnCoreUpgrade -= () => Destroy(gameObject);
     }
 
     private void Awake()

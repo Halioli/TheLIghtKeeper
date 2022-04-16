@@ -13,7 +13,6 @@ public class FirstShipUpgradeMessage : TutorialMessages
 
     public void EnableFirstShipUpgradeMessege()
     {
-        Debug.Log("MESSAGE_EnableFirstShipUpgradeMessege");
         EnableSelf();
     }
 
