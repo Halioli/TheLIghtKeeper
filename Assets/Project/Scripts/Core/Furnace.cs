@@ -272,7 +272,7 @@ public class Furnace : InteractStation
     {
         if(lightLevel < MAX_CORE_LEVEL)
         {
-            popUp.ChangeMessageText("Luxinite Added");
+            //popUp.ChangeMessageText("Luxinite Added");
             //coreLightCollider.radius = currentColliderRadius;
 
             currentColliderRadius = UPGRADE_LIGHT_DISTANCE[++lightLevel];

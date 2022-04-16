@@ -12,6 +12,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject optionsMenu;
     public GameObject controllsMenu;
+    public GameObject almanacMenu;
 
     public delegate void PauseMenuAction();
     public static event PauseMenuAction OnPaused;
@@ -103,7 +104,12 @@ public class PauseMenu : MonoBehaviour
 
         pauseMenu.SetActive(false);
     }
+    public void ClickedAlmanacButton()
+    {
+        almanacMenu.SetActive(true);
 
+        pauseMenu.SetActive(false);
+    }
     public void ClickedMainMenuButton(int sceneIndex)
     {
         gameIsPaused = false;
