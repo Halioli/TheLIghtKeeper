@@ -34,7 +34,7 @@ public class PlayerInputs : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     // Methods
