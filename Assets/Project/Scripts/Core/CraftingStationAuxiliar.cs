@@ -2,26 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CraftingStation : InteractStation
+public class CraftingStationAuxiliar : InteractStation
 {
     //Private Atributes
     private float particleTime;
     private bool isOpen = false;
-    [SerializeField] CraftingMenu craftingMenu;
-
-    bool itemsWereSentToStorage = false;
-
 
     // Public Attributes
     public GameObject interactText;
     public GameObject backgroundText;
-    public GameObject craftingCanvasGameObject;
 
     public ParticleSystem[] craftingParticles;
 
 
-    public delegate void ItemSentToStorageMessegeAction();
-    public static event ItemSentToStorageMessegeAction OnItemSentToStorage;
+    public delegate void CraftingStationAuxiliarAction();
+    public static event CraftingStationAuxiliarAction OnMenuOpen;
+    public static event CraftingStationAuxiliarAction OnMenuClose;
 
 
 
@@ -34,6 +30,7 @@ public class CraftingStation : InteractStation
 
         particleTime = 1.89f;
     }
+
     void Update()
     {
         // If player enters the trigger area the interactionText will appears
@@ -45,29 +42,18 @@ public class CraftingStation : InteractStation
         else
         {
             PopUpDisappears();
-            if (craftingCanvasGameObject.activeInHierarchy)
-            {
-                CloseCraftingInventory();
-            }
+            if (OnMenuClose != null) OnMenuClose();
         }
     }
 
     private void OnEnable()
     {
         CraftingSystem.OnCrafting += PlayCraftingParticles;
-        CraftingSystem.OnItemSentToStorage += () => itemsWereSentToStorage = true;
-
-        CraftingStationAuxiliar.OnMenuOpen += OpenCraftingInventory;
-        CraftingStationAuxiliar.OnMenuClose += CloseCraftingInventory;
     }
 
     private void OnDisable()
     {
         CraftingSystem.OnCrafting -= PlayCraftingParticles;
-        CraftingSystem.OnItemSentToStorage -= () => itemsWereSentToStorage = true;
-
-        CraftingStationAuxiliar.OnMenuOpen -= OpenCraftingInventory;
-        CraftingStationAuxiliar.OnMenuClose -= CloseCraftingInventory;
     }
 
     //From InteractStation script
@@ -75,11 +61,11 @@ public class CraftingStation : InteractStation
     {
         if (isOpen)
         {
-            CloseCraftingInventory();
+            if (OnMenuClose != null) OnMenuClose();
         }
         else
         {
-            OpenCraftingInventory();
+            if (OnMenuOpen != null) OnMenuOpen();
         }
     }
 
@@ -118,37 +104,5 @@ public class CraftingStation : InteractStation
     }
 
 
-    private void OpenCraftingInventory()
-    {
-        DoOnInteractOpen();
-        DoOnInteractDescriptionOpen();
-
-        isOpen = true;
-
-        craftingCanvasGameObject.SetActive(true);
-        craftingMenu.ShowRecepies();
-
-        PlayerInputs.instance.canMine = false;
-        //PauseMenu.gameIsPaused = true;
-    }
-
-    private void CloseCraftingInventory()
-    {
-        DoOnInteractClose();
-
-        isOpen = false;
-
-        craftingCanvasGameObject.SetActive(false);
-
-        PlayerInputs.instance.canMine = true;
-        //PauseMenu.gameIsPaused = false;
-
-
-        if (itemsWereSentToStorage)
-        {
-            itemsWereSentToStorage = false;
-            if (OnItemSentToStorage != null) OnItemSentToStorage();
-        }
-    }
 
 }
