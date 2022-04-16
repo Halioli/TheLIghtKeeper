@@ -84,6 +84,7 @@ public class UpgradesStation : InteractStation
         PauseMenu.PauseMineAndAttack();
 
         PlayerInputs.instance.canMine = false;
+        PlayerInputs.instance.canMove = false;
 
         DoOnInteractOpen();
         DoOnInteractDescriptionOpen();
@@ -99,6 +100,7 @@ public class UpgradesStation : InteractStation
         PauseMenu.ResumeMineAndAttack();
 
         PlayerInputs.instance.canMine = true;
+        PlayerInputs.instance.canMove = true;
 
         DoOnInteractClose();
     }
