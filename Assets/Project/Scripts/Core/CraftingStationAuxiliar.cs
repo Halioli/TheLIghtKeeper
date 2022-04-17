@@ -41,8 +41,12 @@ public class CraftingStationAuxiliar : InteractStation
         }
         else
         {
-            PopUpDisappears();
-            if (OnMenuClose != null) OnMenuClose();
+            if (isOpen)
+            {
+                PopUpDisappears();
+                if (OnMenuClose != null) OnMenuClose();
+            }
+
         }
     }
 
@@ -67,6 +71,8 @@ public class CraftingStationAuxiliar : InteractStation
         {
             if (OnMenuOpen != null) OnMenuOpen();
         }
+
+        isOpen = !isOpen;
     }
 
     //Interactive pop up disappears
