@@ -106,11 +106,12 @@ public class FogSystem : MonoBehaviour
         //PlayerInputs.instance.canMove = false;
         skullEnemy.SetActive(false);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         if (OnTeleportPlayer != null)
             OnTeleportPlayer(respawnPosition);
 
+        yield return new WaitForSeconds(1.5f);
         hudHandler.RestoreFades();
 
         if (OnPlayerCaughtEnd != null)
