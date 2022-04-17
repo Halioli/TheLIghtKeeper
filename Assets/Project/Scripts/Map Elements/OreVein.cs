@@ -11,6 +11,7 @@ public class OreVein : InteractStation
     public GameObject autoMinerGameObject;
     public PopUp popUp;
     public ParticleSystem[] veinParticlesSystems;
+    public GameObject itemCellGameObject;
 
     // Private Attributes
     private string[] messagesToShow = { "", "No Auto-Miner found" };
@@ -55,6 +56,7 @@ public class OreVein : InteractStation
         if (playerInventory.InventoryContainsItem(autoMiner))
         {
             activated = true;
+            itemCellGameObject.SetActive(false);
 
             playerInventory.SubstractItemFromInventory(autoMiner);
             popUp.ChangeMessageText(messagesToShow[0]);
