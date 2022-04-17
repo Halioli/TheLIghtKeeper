@@ -18,6 +18,7 @@ public class SaveSystem : MonoBehaviour
     public static Lamp playerLamp;
     public static GameObject furnace;
     public static Inventory playerInventory;
+    public UpgradeMenuCanvas upgradeMenuCanvas;
 
     public static bool firstTime;
 
@@ -49,9 +50,9 @@ public class SaveSystem : MonoBehaviour
         SavePlayerData(player, cam, furnace);
     }
 
-    public static void SavePlayerData(GameObject player, GameObject camera, GameObject furnace)
+    public void SavePlayerData(GameObject player, GameObject camera, GameObject furnace)
     {
-        upgradesLevels = UpgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
+        upgradesLevels = upgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
 
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "player.dat";
@@ -193,7 +194,7 @@ public class SaveSystem : MonoBehaviour
         }
     }
 
-    public static PlayerData LoadPlayerOnAwake()
+    public PlayerData LoadPlayerOnAwake()
     {
         string path = Application.persistentDataPath + "player.dat";
         if (File.Exists(path))
@@ -204,7 +205,7 @@ public class SaveSystem : MonoBehaviour
 
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
 
-            UpgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades); 
+            upgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades);
 
             strm.Close();
             return playerData;
