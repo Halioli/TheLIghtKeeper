@@ -32,6 +32,9 @@ public class LiftOffButton : InteractStation
     //From InteractStation script
     public override void StationFunction()
     {
+        CinemachineShake.Instance.ShakeCamera(3f, 3f);
+        PlayerInputs.instance.canMove = false;
+
         if (OnLiftOff != null)
             OnLiftOff();
     }

@@ -27,6 +27,7 @@ public class AmbientAudio : MonoBehaviour
     [SerializeField] AudioClip heartBeatsClip;
     [SerializeField] AudioClip faintWindClip;
 
+    [SerializeField] AudioClip liftOffEngine;
 
     private float musicVolume = 0.1f;
     private bool finishedTransition = false;
@@ -84,6 +85,8 @@ public class AmbientAudio : MonoBehaviour
 
         FogSystem.OnPlayerCaughtStart += PlayFaintWindSound;
         FogSystem.OnPlayerCaughtEnd += StopFaintSounds;
+
+        LiftOffButton.OnLiftOff += PlayLiftOffEngineSound;
     }
 
     private void OnDisable()
@@ -116,6 +119,8 @@ public class AmbientAudio : MonoBehaviour
         
         FogSystem.OnPlayerCaughtStart -= PlayFaintWindSound;
         FogSystem.OnPlayerCaughtEnd -= StopFaintSounds;
+
+        LiftOffButton.OnLiftOff -= PlayLiftOffEngineSound;
     }
 
 
@@ -357,4 +362,11 @@ public class AmbientAudio : MonoBehaviour
         PlayAmbientSounds();
     }
 
+    // Liftoff
+    private void PlayLiftOffEngineSound()
+    {
+        ambientAudioSource.volume = 1f;
+        ambientAudioSource.clip = liftOffEngine;
+        ambientAudioSource.Play();
+    }
 }

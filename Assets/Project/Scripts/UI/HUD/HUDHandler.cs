@@ -241,8 +241,4 @@ public class HUDHandler : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         SceneManager.LoadSceneAsync(0, LoadSceneMode.Single);
     }
-
-
-
-
 }
