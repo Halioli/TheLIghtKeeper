@@ -332,7 +332,7 @@ public class AmbientAudio : MonoBehaviour
     {
         StopAmbientSounds();
 
-        ambientAudioSource.volume = 0.5f;
+        ambientAudioSource.volume = 1f;
         ambientAudioSource.clip = heartBeatsClip;
         ambientAudioSource.Play();
     }

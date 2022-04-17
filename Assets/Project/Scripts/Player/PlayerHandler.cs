@@ -112,6 +112,8 @@ public class PlayerHandler : PlayerBase
         {
             yield return null;
         }
+
+        yield return new WaitForSeconds(2f);
         RestoreHUD();
 
         animator.SetBool("isDead", false);

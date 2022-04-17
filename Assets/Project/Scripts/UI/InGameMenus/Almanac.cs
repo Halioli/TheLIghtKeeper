@@ -16,6 +16,7 @@ public class Almanac : MonoBehaviour
 
     public GameObject[] submenus;
     public GameObject environmentMenu;
+    public GameObject previousMenuGameObject;
     public Image almanacImage;
 
     private void Start()
@@ -25,10 +26,10 @@ public class Almanac : MonoBehaviour
         environmentMenu.SetActive(false);
     }
 
-    //private void Update()
-    //{
-        //CloseAlmanac();
-    //}
+    private void Update()
+    {
+        CloseAlmanac();
+    }
     public void ShowInfo(AlmanacScriptableObject item)
     {
         if (!item.hasFound)
@@ -46,8 +47,10 @@ public class Almanac : MonoBehaviour
                 switch (item.ID)
                 {
                     case 1:
-                    case 2:
                         ChangeToNormalAnimator();
+                        break;
+                    case 2:
+                        ChangeToGeckoAnimator();
                         break;
                     case 3:
                         ChangeToSkullAnimator();
@@ -73,6 +76,7 @@ public class Almanac : MonoBehaviour
         almanacScalator[1].SetActive(true);
         almanacScalator[2].SetActive(false);
         almanacScalator[3].SetActive(false);
+        almanacScalator[4].SetActive(false);
     } 
     
     private void ChangeToEmptyAnimator()
@@ -81,6 +85,7 @@ public class Almanac : MonoBehaviour
         almanacScalator[1].SetActive(false);
         almanacScalator[2].SetActive(false);
         almanacScalator[3].SetActive(false);
+        almanacScalator[4].SetActive(false);
     }
 
     private void ChangeToNormalAnimator()
@@ -89,6 +94,7 @@ public class Almanac : MonoBehaviour
         almanacScalator[1].SetActive(false);
         almanacScalator[2].SetActive(true);
         almanacScalator[3].SetActive(false);
+        almanacScalator[4].SetActive(false);
 
     }
     private void ChangeToSpiderAndPlantsAnimator()
@@ -97,20 +103,31 @@ public class Almanac : MonoBehaviour
         almanacScalator[1].SetActive(false);
         almanacScalator[2].SetActive(false);
         almanacScalator[3].SetActive(false);
+        almanacScalator[4].SetActive(false);
     }
     private void ChangeToMaterialsImages()
     {
         almanacScalator[0].SetActive(false);
         almanacScalator[1].SetActive(false);
         almanacScalator[2].SetActive(false);
-        almanacScalator[3].SetActive(true);
+        almanacScalator[3].SetActive(false);
+        almanacScalator[4].SetActive(true);
     }
 
+    private void ChangeToGeckoAnimator()
+    {
+        almanacScalator[0].SetActive(false);
+        almanacScalator[1].SetActive(false);
+        almanacScalator[2].SetActive(false);
+        almanacScalator[3].SetActive(true);
+        almanacScalator[4].SetActive(false);
+    }
     private void ChangeIdAnimator(AlmanacScriptableObject item)
     {
         almanacAnimator[0].SetInteger("Id", item.ID);
         almanacAnimator[1].SetInteger("Id", item.ID);
         almanacAnimator[2].SetInteger("Id", item.ID);
+        almanacAnimator[3].SetInteger("Id", item.ID);
     }
 
     private void SetItemToEmptyID()
@@ -118,12 +135,13 @@ public class Almanac : MonoBehaviour
         almanacAnimator[0].SetInteger("Id", emptyAnimId);
         almanacAnimator[1].SetInteger("Id", emptyAnimId);
         almanacAnimator[2].SetInteger("Id", emptyAnimId);
+        almanacAnimator[3].SetInteger("Id", emptyAnimId);
     }
 
     private void SetUndiscoveredInfo()
     {
-        almanacNameText.text = "?";
-        almanacTagText.text = "?";
+        almanacNameText.text = "????";
+        almanacTagText.text = "???????";
         almanacDescriptionText.text = "?";
     }
 
@@ -152,6 +170,14 @@ public class Almanac : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
+
+    public void PressedBackButton()
+    {
+        previousMenuGameObject.SetActive(true);
+
+        gameObject.SetActive(false);
+    }
+
     //public void SubmenuMaterialsActive()
     //{
     //    submenus[0].SetActive(false);

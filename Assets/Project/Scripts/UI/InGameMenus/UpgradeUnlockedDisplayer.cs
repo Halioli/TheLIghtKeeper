@@ -32,7 +32,7 @@ public class UpgradeUnlockedDisplayer : MonoBehaviour
 
 
 
-        if (canvasGroup.alpha != 0.0f) StopCoroutine("Display");
+        ForceDisplayStop();
 
         StartCoroutine("Display");
     }
@@ -69,5 +69,11 @@ public class UpgradeUnlockedDisplayer : MonoBehaviour
         }
     }
 
+
+    public void ForceDisplayStop()
+    {
+        if (canvasGroup.alpha != 0.0f) StopCoroutine("Display");
+        canvasGroup.alpha = 0.0f;
+    }
 
 }
