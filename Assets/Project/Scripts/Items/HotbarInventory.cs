@@ -89,7 +89,8 @@ public class HotbarInventory : Inventory
         if (!inventory[indexOfSelectedInventorySlot].StackIsEmpty())
         {
             ItemGameObject itemGameObject = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform).GetComponent<ItemGameObject>();
-            itemGameObject.DropsRandom(true, 1.5f, 20f);
+
+            itemGameObject.DropsRandom(!itemGameObject.item.isSpecial, 1.5f, 20f);
             itemGameObject.MakeNotPickupableForDuration(2f);
 
             SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);

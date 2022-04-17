@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0351f39765d356e418c1b83f181fc23c, type: 3}
-  m_Name: Recepie_6
+  m_Name: Recepie_MedicKit
   m_EditorClassIdentifier: 
-  recepieName: Recepie_6
-  recepieGameObjectPrefab: {fileID: 6602127595919208033, guid: e833f9c4d8183044fa55f8cfd48e3c7b, type: 3}
+  recepieName: Medic Kit
   requiredItemsList:
-  - {fileID: 11400000, guid: 3ad1a6f564b80f743a80f5b6a541cd25, type: 2}
+  - {fileID: 11400000, guid: 6b30abf709ee05041996cf597618c794, type: 2}
   - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  requiredAmountsList: 0600000006000000
-  resultingItemUnit: {fileID: 11400000, guid: cb935454c465e614ba4575b3acf7a541, type: 2}
-  resultingAmountUnit: 6
+  requiredAmountsList: 0200000002000000
+  resultingItemUnit: {fileID: 11400000, guid: 074b91560a972c440a308e2952e0e568, type: 2}
+  resultingAmountUnit: 1

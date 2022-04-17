@@ -12,6 +12,19 @@ public class AttentionUpgradeButton : UpgradeButton
     {
         base.UpgradeSelected();
 
+        CleanAttentions();
+    }
+
+    public override void AlwaysProgressUpgradeSelected()
+    {
+        base.AlwaysProgressUpgradeSelected();
+
+        CleanAttentions();
+    }
+
+
+    private void CleanAttentions()
+    {
         if (isCompleted && isAttentionActive)
         {
             isAttentionActive = false;
@@ -20,7 +33,9 @@ public class AttentionUpgradeButton : UpgradeButton
             {
                 Destroy(attention);
             }
-            
+
         }
     }
+
+
 }
