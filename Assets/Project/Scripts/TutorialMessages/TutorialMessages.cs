@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class TutorialMessages : MonoBehaviour
 {
-
     public enum MessegeEventType { NONE, TUTORIAL, CAMERA };
-
     
     public struct ChatEventData
     {
@@ -15,7 +13,6 @@ public class TutorialMessages : MonoBehaviour
             this.eventIndex = eventIndex;
             this.eventType = eventType;
             this.eventID = eventID;
-
         }
 
         public int eventIndex;
@@ -23,18 +20,12 @@ public class TutorialMessages : MonoBehaviour
         public int eventID;
     }
 
-
-
     public delegate void OpenChatBox(string[] mssg, ChatEventData chatEventData);
     public static event OpenChatBox OnNewMessage;
 
     [SerializeField] private int eventIndex = -1;
     [SerializeField] private MessegeEventType eventType = MessegeEventType.NONE;
     [SerializeField] private int eventID = -1;
-    //[SerializeField] private int[] eventIndex;
-    //[SerializeField] private MessegeEventType[] eventType;
-    //[SerializeField] private int[] eventID;
-    //[SerializeField] MessegeData[] messeges;
 
     [TextArea(5, 20)] public string[] mssgs;
 
@@ -62,11 +53,17 @@ public class TutorialMessages : MonoBehaviour
 
     protected void DisableSelf()
     {
-        GetComponent<Collider2D>().enabled = false;
+        if (GetComponent<Collider2D>() != null)
+        {
+            GetComponent<Collider2D>().enabled = false;
+        }
     }
 
     protected void EnableSelf()
     {
-        GetComponent<Collider2D>().enabled = true;
+        if (GetComponent<Collider2D>() != null)
+        {
+            GetComponent<Collider2D>().enabled = true;
+        }
     }
 }
