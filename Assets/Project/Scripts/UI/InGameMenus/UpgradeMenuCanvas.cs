@@ -8,7 +8,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
     [SerializeField] UpgradeDisplayer upgradeDisplayer;
     [SerializeField] UpgradeUnlockedDisplayer upgradeUnlockedDisplayer;
 
-    [SerializeField] static UpgradeButtonBranch[] upgradeButtonBranches;
+    [SerializeField] UpgradeButtonBranch[] upgradeButtonBranches;
     [SerializeField] UpgradesSystem upgradesSystem;
     
 
@@ -82,7 +82,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
 
     // should be called on application close (or on memory save)
-    public static int[] GetAllUpgardesLastActiveButtonIndex()
+    public int[] GetAllUpgardesLastActiveButtonIndex()
     {
         List<int> allLastActiveButtonIndex = new List<int>();
 
@@ -96,7 +96,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
 
     // must be called on Awake()
-    public static void FirstTimeSetAllLastCompletedButtonIndex()
+    public void FirstTimeSetAllLastCompletedButtonIndex()
     {
         for (int i = 0; i < upgradeButtonBranches.Length; ++i)
         {
@@ -104,7 +104,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
         }
     }
 
-    public static void SetAllLastCompletedButtonIndex(int[] allLastCompletedButtonIndex)
+    public void SetAllLastCompletedButtonIndex(int[] allLastCompletedButtonIndex)
     {
         for (int i = 0; i < upgradeButtonBranches.Length; ++i)
         {
