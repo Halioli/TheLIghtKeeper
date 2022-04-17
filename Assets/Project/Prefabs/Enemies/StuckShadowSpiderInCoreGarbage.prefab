@@ -19629,9 +19629,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   garbageTransforms:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5836114365259491745}
+  - {fileID: 3893941681463630628}
+  - {fileID: 5625835236896110713}
   audioSource: {fileID: 3184300763413784748}
   audioSource2: {fileID: 3184300763413784721}
 --- !u!82 &3184300763413784748
@@ -30170,6 +30170,10 @@ PrefabInstance:
       propertyPath: MinDistance
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4959887533964604516, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: garbage
+      value: 
+      objectReference: {fileID: 3184300763413784749}
     - target: {fileID: 5871286883061293718, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
       propertyPath: playerGameObject
       value: 
