@@ -78,7 +78,7 @@ public class StorageStation : InteractStation
         playerInventory.SetOtherInventory(this.inventory);
         this.inventory.SetOtherInventory(playerInventory);
 
-        PauseMenu.gameIsPaused = true;
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
 
     private void CloseStorageInventory()
@@ -91,7 +91,7 @@ public class StorageStation : InteractStation
         playerInventory.SetOtherInventory(null);
         this.inventory.SetOtherInventory(null);
 
-        PauseMenu.gameIsPaused = false;
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
     }
 
 

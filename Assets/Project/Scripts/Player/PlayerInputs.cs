@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -34,10 +34,34 @@ public class PlayerInputs : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     // Methods
+    public void SetInGameMenuOpenInputs()
+    {
+        canMine = false;
+        canAttack = false;
+        canPause = false;
+        canMoveLantern = false;
+    }
+
+    public void SetInGameMenuCloseInputs()
+    {
+        canMine = true;
+        canAttack = true;
+        //canPause = true;
+        StartCoroutine(lateCanPause(true));
+        canMoveLantern = true;
+    }
+
+    IEnumerator lateCanPause(bool canPause)
+    {
+        yield return null;
+        this.canPause = canPause;
+    }
+
+
     public bool PlayerClickedMineButton()
     {
         if (PauseMenu.gameIsPaused || !instance.canMine || TutorialMessages.tutorialOpened) { return false; }
@@ -80,7 +104,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedInteractButton()
     {
-        return Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button1);
+        return !PauseMenu.gameIsPaused && Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button1);
     }
 
     public bool PlayerPressedInteractExitButton()
@@ -104,9 +128,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedPauseButton()
     {
-        if (!canPause) return false;
-
-        return Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        return canPause && Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()
