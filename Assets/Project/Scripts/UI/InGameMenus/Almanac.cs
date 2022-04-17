@@ -16,6 +16,7 @@ public class Almanac : MonoBehaviour
 
     public GameObject[] submenus;
     public GameObject environmentMenu;
+    public GameObject previousMenuGameObject;
     public Image almanacImage;
 
     private void Start()
@@ -152,6 +153,14 @@ public class Almanac : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
+
+    public void PressedBackButton()
+    {
+        previousMenuGameObject.SetActive(true);
+
+        gameObject.SetActive(false);
+    }
+
     //public void SubmenuMaterialsActive()
     //{
     //    submenus[0].SetActive(false);
