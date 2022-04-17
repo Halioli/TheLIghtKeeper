@@ -9,10 +9,11 @@ public class CraftingStationAuxiliar : InteractStation
     private bool isOpen = false;
 
     // Public Attributes
-    public GameObject interactText;
-    public GameObject backgroundText;
+    public GameObject canvasCrafting;
 
     public ParticleSystem[] craftingParticles;
+
+    public bool isUsingThisAuxiliar = false;
 
 
     public delegate void CraftingStationAuxiliarAction();
@@ -41,7 +42,7 @@ public class CraftingStationAuxiliar : InteractStation
         }
         else
         {
-            if (isOpen)
+            if (!isOpen && isUsingThisAuxiliar)
             {
                 PopUpDisappears();
                 if (OnMenuClose != null) OnMenuClose();
@@ -65,10 +66,12 @@ public class CraftingStationAuxiliar : InteractStation
     {
         if (isOpen)
         {
+            isUsingThisAuxiliar = false;
             if (OnMenuClose != null) OnMenuClose();
         }
         else
         {
+            isUsingThisAuxiliar = true;
             if (OnMenuOpen != null) OnMenuOpen();
         }
 
@@ -78,15 +81,13 @@ public class CraftingStationAuxiliar : InteractStation
     //Interactive pop up disappears
     private void PopUpAppears()
     {
-        interactText.SetActive(true);
-        backgroundText.SetActive(true);
+        canvasCrafting.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
-        interactText.SetActive(false);
-        backgroundText.SetActive(false);
+        canvasCrafting.SetActive(false);
     }
 
     private void PlayCraftingParticles()
