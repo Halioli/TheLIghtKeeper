@@ -81,6 +81,9 @@ public class AmbientAudio : MonoBehaviour
         DarknessFaint.OnHeartBeatsStart += PlayHeartBeatsSound;
         DarknessFaint.OnFaintEnd += PlayFaintWindSound;
         DarknessFaint.OnFaintStop += StopFaintSounds;
+
+        FogSystem.OnPlayerCaughtStart += PlayFaintWindSound;
+        FogSystem.OnPlayerCaughtEnd += StopFaintSounds;
     }
 
     private void OnDisable()
@@ -109,7 +112,10 @@ public class AmbientAudio : MonoBehaviour
 
         DarknessFaint.OnHeartBeatsStart -= PlayHeartBeatsSound;
         DarknessFaint.OnFaintEnd -= PlayFaintWindSound;
-        DarknessFaint.OnFaintStop -= StopFaintSounds;
+        DarknessFaint.OnFaintStop -= StopFaintSounds; 
+        
+        FogSystem.OnPlayerCaughtStart -= PlayFaintWindSound;
+        FogSystem.OnPlayerCaughtEnd -= StopFaintSounds;
     }
 
 
