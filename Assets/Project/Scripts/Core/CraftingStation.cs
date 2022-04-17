@@ -11,6 +11,7 @@ public class CraftingStation : InteractStation
 
     bool itemsWereSentToStorage = false;
 
+    bool isUsingAuxiliar = false;
 
     // Public Attributes
     public GameObject interactText;
@@ -36,6 +37,8 @@ public class CraftingStation : InteractStation
     }
     void Update()
     {
+        if (isUsingAuxiliar) return;
+
         // If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
         {
@@ -57,8 +60,8 @@ public class CraftingStation : InteractStation
         CraftingSystem.OnCrafting += PlayCraftingParticles;
         CraftingSystem.OnItemSentToStorage += () => itemsWereSentToStorage = true;
 
-        CraftingStationAuxiliar.OnMenuOpen += OpenCraftingInventory;
-        CraftingStationAuxiliar.OnMenuClose += CloseCraftingInventory;
+        CraftingStationAuxiliar.OnMenuOpen += AuxiliarOpenCraftingInventory;
+        CraftingStationAuxiliar.OnMenuClose += AuxiliarCloseCraftingInventory;
     }
 
     private void OnDisable()
@@ -66,8 +69,8 @@ public class CraftingStation : InteractStation
         CraftingSystem.OnCrafting -= PlayCraftingParticles;
         CraftingSystem.OnItemSentToStorage -= () => itemsWereSentToStorage = true;
 
-        CraftingStationAuxiliar.OnMenuOpen -= OpenCraftingInventory;
-        CraftingStationAuxiliar.OnMenuClose -= CloseCraftingInventory;
+        CraftingStationAuxiliar.OnMenuOpen -= AuxiliarOpenCraftingInventory;
+        CraftingStationAuxiliar.OnMenuClose -= AuxiliarCloseCraftingInventory;
     }
 
     //From InteractStation script
@@ -128,8 +131,7 @@ public class CraftingStation : InteractStation
         craftingCanvasGameObject.SetActive(true);
         craftingMenu.ShowRecepies();
 
-        PlayerInputs.instance.canMine = false;
-        //PauseMenu.gameIsPaused = true;
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
 
     private void CloseCraftingInventory()
@@ -140,8 +142,7 @@ public class CraftingStation : InteractStation
 
         craftingCanvasGameObject.SetActive(false);
 
-        PlayerInputs.instance.canMine = true;
-        //PauseMenu.gameIsPaused = false;
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
 
 
         if (itemsWereSentToStorage)
@@ -150,5 +151,22 @@ public class CraftingStation : InteractStation
             if (OnItemSentToStorage != null) OnItemSentToStorage();
         }
     }
+
+
+    private void AuxiliarOpenCraftingInventory()
+    {
+        isUsingAuxiliar = true;
+
+        OpenCraftingInventory();
+    }
+
+    private void AuxiliarCloseCraftingInventory()
+    {
+        if (playerInsideTriggerArea) return;
+
+        isUsingAuxiliar = false;
+        //CloseCraftingInventory();
+    }
+
 
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Hotkeys : MonoBehaviour
 {
     private HealthSystem playerHealthSystem;
+    private PlayerCombat playerCombat;
     private Lamp playerLamp;
     private bool canUseCheats = false;
 
@@ -14,12 +15,14 @@ public class Hotkeys : MonoBehaviour
     public GameObject luxuniteMineral;
     public GameObject enrichedMetalMineral;
     public GameObject electricOrbMineral;
+    public GameObject healingFlowerMineral;
 
     public delegate void PlayerHealed(int healthToAdd);
     public static event PlayerHealed OnHealed;
 
     void Start()
     {
+        playerCombat = GetComponent<PlayerCombat>();
         playerHealthSystem = GetComponent<HealthSystem>();
         playerLamp = GetComponentInChildren<Lamp>();
     }
@@ -58,16 +61,21 @@ public class Hotkeys : MonoBehaviour
                 // Spawn 1 electric orb at the player's feet
                 Instantiate(electricOrbMineral, transform);
             }
+            else if (Input.GetKeyDown(KeyCode.N))
+            {
+                // Spawn 1 electric orb at the player's feet
+                Instantiate(healingFlowerMineral, transform);
+            }
             else if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.KeypadPlus))
             {
                 // +5 health
-                if (OnHealed != null) OnHealed(5);
-                //playerHealthSystem.ReceiveHealth(5);
+                if (OnHealed != null) 
+                    OnHealed(5);
             }
             else if (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.KeypadMinus))
             {
                 // -5 health
-                playerHealthSystem.ReceiveDamage(5);
+                playerCombat.ReceiveDamage(5);
             }
             else if (Input.GetKeyDown(KeyCode.Period))
             {
