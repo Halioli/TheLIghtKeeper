@@ -19,6 +19,16 @@ public class SaveSystem : MonoBehaviour
     public static GameObject furnace;
     public static Inventory playerInventory;
 
+    public static bool firstTime;
+
+    private void Awake()
+    {
+        firstTime = PlayerPrefs.GetInt("FirstTime") == 1;
+        if(!firstTime)
+        {
+            LoadPlayerOnAwake();
+        }
+    }
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -27,7 +37,11 @@ public class SaveSystem : MonoBehaviour
         playerLamp = player.GetComponentInChildren<Lamp>();
         furnace = GameObject.FindGameObjectWithTag("Furnace");
         playerInventory = player.GetComponentInChildren<Inventory>();
-        LoadPlayerOnStart();
+
+        if (!firstTime)
+        {
+            LoadPlayerOnStart();
+        }
     }
 
     private void OnApplicationQuit()
@@ -37,12 +51,14 @@ public class SaveSystem : MonoBehaviour
 
     public static void SavePlayerData(GameObject player, GameObject camera, GameObject furnace)
     {
+        upgradesLevels = UpgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
+
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace, 
-                                playerInventory.GetInventoryData(), luxinites.Count, bridges.Count, ores.Count);
+                                playerInventory.GetInventoryData(), luxinites.Count, bridges.Count, ores.Count, upgradesLevels.Length);
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -67,7 +83,12 @@ public class SaveSystem : MonoBehaviour
         for (int i = 0; i < ores.Count; i++)
         {
             data.oreMined[i] = ores[i].hasBeenMined;
-        } 
+        }
+
+        for (int i = 0; i < upgradesLevels.Length; i++)
+        {
+            data.upgrades[i] = upgradesLevels[i];
+        }
 
         formatter.Serialize(stream, data);
         stream.Close();
@@ -183,7 +204,7 @@ public class SaveSystem : MonoBehaviour
 
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
 
-
+            UpgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades); 
 
             strm.Close();
             return playerData;
@@ -193,12 +214,6 @@ public class SaveSystem : MonoBehaviour
             Debug.Log("Save file not exists " + path);
             return null;
         }
-    }
-
-
-    public static void SetPlayerData(PlayerData playerData)
-    {
-
     }
 }
 

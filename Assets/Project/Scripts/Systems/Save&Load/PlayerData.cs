@@ -31,7 +31,7 @@ public class PlayerData
     public bool[] oreMined;
 
     public int[] upgrades;
-    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData, int sizeLuxinites, int sizeBridges, int sizeOres)
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData, int sizeLuxinites, int sizeBridges, int sizeOres, int sizeUpgrades)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
