@@ -126,7 +126,7 @@ public class PlayerCombat : PlayerBase
     IEnumerator Invulnerability()
     {
         isInvulnerable = true;
-        gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+        //gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         Color original = spriteRenderer.color;
@@ -144,7 +144,7 @@ public class PlayerCombat : PlayerBase
         spriteRenderer.color = original;
         currentInvulnerabilityTime = INVULNERABILITY_TIME;
         isInvulnerable = false;
-        gameObject.layer = LayerMask.NameToLayer("Player");
+        //gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
     private void FlipPlayerSpriteFacingWhereToAttack()

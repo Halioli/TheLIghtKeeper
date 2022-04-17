@@ -10,7 +10,7 @@ public class CraftingMenu : MonoBehaviour
 
     // Private Attribute
     private Inventory playerInventory;
-    private CraftingSystem craftingSystem;
+    [SerializeField] private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
     private RectTransform craftingListRectTransform;
     private bool updatedCraftingMenu;
@@ -27,7 +27,6 @@ public class CraftingMenu : MonoBehaviour
     private void Start()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-        craftingSystem = GameObject.FindGameObjectWithTag("CraftingStation").GetComponent<CraftingSystem>();
         recepieButtonsGameObjects = new List<GameObject>();
         craftingListRectTransform = craftingList.GetComponent<RectTransform>();
         updatedCraftingMenu = false;

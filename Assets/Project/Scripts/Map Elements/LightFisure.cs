@@ -1,15 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
+
 
 public class LightFisure : InteractStation
 {
     // Public Attributes
     [SerializeField] Item lightGenerator;
     [SerializeField] GameObject lightGeneratorGameObject;
-    [SerializeField] GameObject coneLightGameObject;
-    [SerializeField] ConeLight coneLight;
+    [SerializeField] GameObject auxiliarCraftingStation;
+
+    [SerializeField] ConeLightCircleInteriorLight coneLight;  
+    [SerializeField] CircleCollider2D coneLightCollider1;
+    [SerializeField] CircleCollider2D coneLightCollider2;
+
     [SerializeField] PopUp popUp;
+
+    [SerializeField] Transform spriteTransform;
+    [SerializeField] Transform craftingSpriteTransform;
+    [SerializeField] AudioSource audioSource;
+
 
     // Private Attributes
     private string[] messagesToShow = { "", "No <b>Light Generator</b> found" };
@@ -19,6 +31,10 @@ public class LightFisure : InteractStation
     private void Start()
     {
         lightGeneratorGameObject.SetActive(activated);
+        auxiliarCraftingStation.SetActive(activated);
+
+        coneLightCollider1.enabled = false;
+        coneLightCollider2.enabled = false;
     }
 
     void Update()
@@ -63,15 +79,24 @@ public class LightFisure : InteractStation
 
             playerInventory.SubstractItemFromInventory(lightGenerator);
             popUp.ChangeMessageText(messagesToShow[0]);
-            lightGeneratorGameObject.SetActive(true);
+            lightGeneratorGameObject.SetActive(activated);
+            auxiliarCraftingStation.SetActive(activated);
+            
+            coneLight.SetDistance(10f);
+            coneLight.ExtraExpand(400, 400, 1.0f);
+            coneLightCollider1.enabled = true;
+            coneLightCollider2.enabled = true;
 
             StopCoroutine(LightFisureFlicker());
-            coneLightGameObject.SetActive(false);
+            //coneLightGameObject.SetActive(false);
             popUp.gameObject.SetActive(false);
+
+            PlacedAnimation();
+            PlayPlacedSound();
         }
         else
         {
-            popUp.ChangeMessageText(messagesToShow[1]);
+            //popUp.ChangeMessageText(messagesToShow[1]);
 
             InvokeOnNotEnoughMaterials();
         }
@@ -81,10 +106,29 @@ public class LightFisure : InteractStation
     {
         inCoroutine = true;
 
-        coneLight.SetIntensity(Random.Range(0.8f, 1.0f));
+        coneLight.SetIntensity(Random.Range(0.2f, 0.3f));
 
         yield return new WaitForSeconds(0.1f);
 
         inCoroutine = false;
     }
+
+
+
+    private void PlacedAnimation()
+    {
+        spriteTransform.DOPunchScale(new Vector3(0.1f, 0.4f), 0.5f, 10, 10);
+        craftingSpriteTransform.DOPunchScale(new Vector3(0.1f, 0.4f), 0.5f, 10, 10);
+    }
+
+    private void PlayPlacedSound()
+    {
+        //audioSource.clip = placeSound;
+        audioSource.pitch = Random.Range(0.8f, 1.3f);
+        audioSource.Play();
+    }
+
+
+
+
 }
