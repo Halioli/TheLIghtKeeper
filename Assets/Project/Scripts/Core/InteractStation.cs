@@ -54,13 +54,11 @@ public class InteractStation : MonoBehaviour
         if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
             StationFunction();
-            PlayerInputs.instance.canPause = !PlayerInputs.instance.canPause;
             isCanvasOpen = !isCanvasOpen;
         }
         if (isCanvasOpen && PlayerInputs.instance.PlayerPressedInteractExitButton())
         {
             StationFunction();
-            PlayerInputs.instance.canPause = true;
             isCanvasOpen = !isCanvasOpen;
         }
     }

@@ -77,14 +77,15 @@ public class InventoryMenu : MonoBehaviour
         for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
             int amount = inventory.inventory[i].amountInStack;
-            bool itemChanged = itemCellsList[i].GetItemAmount() != amount;
+            int ID = inventory.inventory[i].itemInStack.ID;
+
+            bool itemChanged = itemCellsList[i].HasChanged(amount, ID);
 
             if (itemChanged)
             {
                 sr = inventory.inventory[i].itemInStack.prefab.GetComponentInChildren<SpriteRenderer>();
                 itemCellsList[i].SetItemImage(sr.sprite);
-
-
+                itemCellsList[i].SetItemID(ID);
                 itemCellsList[i].SetItemAmount(amount);
             }
 

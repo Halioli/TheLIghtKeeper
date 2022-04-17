@@ -35,14 +35,14 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
-        if (gameIsPaused)
-        {
-            PauseGame();
-        }
-        else
-        {
-            Resume();
-        }
+        //if (gameIsPaused)
+        //{
+        //    PauseGame();
+        //}
+        //else
+        //{
+        //    Resume();
+        //}
     }
 
     private void Resume()

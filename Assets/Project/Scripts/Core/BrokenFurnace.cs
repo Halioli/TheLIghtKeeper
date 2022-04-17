@@ -30,7 +30,7 @@ public class BrokenFurnace : InteractStation
 
         furnaceLight = GetComponentInChildren<Light2D>();
 
-        for (int i = 1; i < spaceShipLights.Length; i++)
+        for (int i = 1; i < spaceShipLights.Length; ++i)
         {
             spaceShipLights[i].intensity = 0f;
         }
@@ -94,7 +94,8 @@ public class BrokenFurnace : InteractStation
 
         yield return new WaitForSeconds(0.5f);
 
-        furnaceLight.intensity = 0f;
+        //furnaceLight.intensity = 0.5f;
+        //furnaceLight.gameObject.SetActive(false);
         //spaceShipLights[0].intensity = 0f;
 
         for(int i = 1; i < spaceShipLights.Length - 1; i++)
@@ -103,11 +104,13 @@ public class BrokenFurnace : InteractStation
             audioSource.Play();
             yield return new WaitForSeconds(1f);
         }
-        for (int i = 1; i < spaceShipLights.Length - 1; i++)
+        for (int i = 0; i < spaceShipLights.Length - 1; i++)
         {
-            spaceShipLights[i].intensity = 0f;
+            //spaceShipLights[i].intensity = 0f;
+            spaceShipLights[i].gameObject.SetActive(false);
         }
-        spaceShipLights[3].intensity = 1f;
+        spaceShipLights[spaceShipLights.Length - 1].intensity = 1f;
+        audioSource.volume = 0.3f;
         audioSource.Play();
         yield return new WaitForSeconds(1f);
 

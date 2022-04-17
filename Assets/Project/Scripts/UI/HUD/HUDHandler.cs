@@ -39,7 +39,7 @@ public class HUDHandler : MonoBehaviour
         LoadBaseScenes.OnFadeToNormal -= DoFadeToNormal;
         PlayerHandler.OnPlayerDeath -= DoDeathImageFade;
         PlayerHandler.OnRestoreFades -= RestoreFades;
-        PlayerCombat.OnReceivesDamage += ShowReceiveDamageFades;
+        PlayerCombat.OnReceivesDamage -= ShowReceiveDamageFades;
 
         Torch.OnTorchPreStartActivation -= FadeOutThenInSequence;
         Torch.OnTorchPreEndActivation -= FadeOutThenInSequence;
@@ -61,8 +61,6 @@ public class HUDHandler : MonoBehaviour
     public void DoFadeToNormal()
     {
         StartCoroutine(CanvasFadeOut(fadeOutGroup, FADE_TIME));
-
-        Debug.Log("OnFaintEndRespawn receieved");
     }
 
     public void DoDeathImageFade()
@@ -90,9 +88,10 @@ public class HUDHandler : MonoBehaviour
         StopCoroutine(CanvasFadeIn(deathImageGroup, DEATH_FADE_TIME));
         StopCoroutine(CanvasFadeIn(fadeOutGroup, FADE_TIME));
 
+        DoFadeToNormal();
+
         deathImageGroup.gameObject.SetActive(false);
         //deathImageGroup.alpha = 0f;
-        fadeOutGroup.alpha = 0f;
     }
 
     private void FadeOutThenInSequence(float duration)
