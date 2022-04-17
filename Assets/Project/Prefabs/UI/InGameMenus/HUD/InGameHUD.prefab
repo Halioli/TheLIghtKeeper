@@ -580,7 +580,6 @@ GameObject:
   - component: {fileID: 7822036454896612403}
   - component: {fileID: 2730123641802879700}
   - component: {fileID: 8121229639596606140}
-  - component: {fileID: 4851247839101016413}
   m_Layer: 0
   m_Name: TutorialTooltipsMessege
   m_TagString: Untagged
@@ -656,22 +655,6 @@ MonoBehaviour:
   mssgs:
   - "Sorry Commander, you're carrying too many items. If you want to add more, you
     must leave some. \n(Press X to drop items)"
---- !u!58 &4851247839101016413
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3361400012277752326}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.0001
 --- !u!1 &3424040047297746345
 GameObject:
   m_ObjectHideFlags: 0
