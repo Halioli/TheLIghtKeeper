@@ -29,6 +29,8 @@ public class PlayerData
     public bool[] constructedBridges;
 
     public bool[] oreMined;
+
+    public int[] upgrades;
     public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData, int sizeLuxinites, int sizeBridges, int sizeOres)
     {
         playerPos = new float[3];
@@ -68,6 +70,8 @@ public class PlayerData
         constructedBridges = new bool[sizeBridges];
 
         oreMined = new bool[sizeOres];
+
+        upgrades = new int[sizeUpgrades];
     }
 
 }
