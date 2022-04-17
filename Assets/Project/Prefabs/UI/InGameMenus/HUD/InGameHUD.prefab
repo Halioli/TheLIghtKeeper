@@ -579,6 +579,8 @@ GameObject:
   - component: {fileID: 8361483887583000432}
   - component: {fileID: 7822036454896612403}
   - component: {fileID: 2730123641802879700}
+  - component: {fileID: 8121229639596606140}
+  - component: {fileID: 4851247839101016413}
   m_Layer: 0
   m_Name: TutorialTooltipsMessege
   m_TagString: Untagged
@@ -636,6 +638,40 @@ MonoBehaviour:
   textMessege: {fileID: 9025511219897586106}
   leftClickGameObject: {fileID: 5710173629631814112}
   rightClickGameObject: {fileID: 2587045305037042103}
+--- !u!114 &8121229639596606140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361400012277752326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 954212f77ed152e47b12193602593d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventIndex: -1
+  eventType: 1
+  eventID: -1
+  mssgs:
+  - "Sorry Commander, you're carrying too many items. If you want to add more, you
+    must leave some. \n(Press X to drop items)"
+--- !u!58 &4851247839101016413
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361400012277752326}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.0001
 --- !u!1 &3424040047297746345
 GameObject:
   m_ObjectHideFlags: 0
