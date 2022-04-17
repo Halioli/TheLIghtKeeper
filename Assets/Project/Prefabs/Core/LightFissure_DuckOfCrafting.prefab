@@ -10137,7 +10137,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.1}
+  m_Offset: {x: 0, y: -0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -10148,7 +10148,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.5, y: 0.2}
   m_EdgeRadius: 0
 --- !u!95 &6291985831335912650
 Animator:
@@ -10208,8 +10208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 6291985831335912651}
-  interactText: {fileID: 3464490360184181068}
-  backgroundText: {fileID: 6225091537367305464}
+  canvasCrafting: {fileID: 6291985829397788156}
   craftingParticles:
   - {fileID: 6115813181297494226}
   - {fileID: 3725162253822529971}
