@@ -12,19 +12,20 @@ public class MainMenu : MonoBehaviour
     public GameObject optionsMenuGameObject;
     public GameObject creditsMenuGameObject;
 
-    [SerializeField] SaveSystem saveSystem;
-    [SerializeField] GameObject playButtonGameObject;
     [SerializeField] GameObject continueButtonGameObject;
     [SerializeField] GameObject newGameButtonGameObject;
 
-    private void Start()
+    private void Awake()
     {
-        //if (saveFileExists)
-        //{
-        //    playButtonGameObject.SetActive(false);
-        //    continueButtonGameObject.SetActive(true);
-        //    newGameButtonGameObject.SetActive(true);
-        //}
+        InitFirstTime();
+        if(IsFirstTime())
+        {
+            continueButtonGameObject.SetActive(false);
+        }
+        else
+        {
+            continueButtonGameObject.SetActive(true);
+        }
     }
 
     public void PlayButtonClick(int sceneIndex)
@@ -66,6 +67,29 @@ public class MainMenu : MonoBehaviour
         {
             mainMenuEnemies[i].SetActive(true);
         }
+    }
+
+    public bool IsFirstTime()
+    {
+        return PlayerPrefs.GetInt("FirstTime") == 1;
+    }
+
+    private void InitFirstTime()
+    {
+        if (!PlayerPrefs.HasKey("FirstTime"))
+        {
+            PlayerPrefs.SetInt("FirstTime", 1);
+        }
+    }
+
+    public void SetFirstTimeTrue()
+    {
+        PlayerPrefs.SetInt("FirstTime", 1);      
+    }
+
+    public void NewGame()
+    {
+        SetFirstTimeTrue();
     }
 
     IEnumerator AsyncLoading(int sceneIndex)
