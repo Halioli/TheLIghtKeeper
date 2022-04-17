@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class UpgradeMenuCanvas : MonoBehaviour
 {
     [SerializeField] UpgradeDisplayer upgradeDisplayer;
+    [SerializeField] UpgradeUnlockedDisplayer upgradeUnlockedDisplayer;
 
     [SerializeField] UpgradeButtonBranch[] upgradeButtonBranches;
     [SerializeField] UpgradesSystem upgradesSystem;
+    
 
     public delegate void UpgradeMenuAction();
     public static event UpgradeMenuAction OnSubmenuEnter;
@@ -30,6 +33,7 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
     public void HideDisplay()
     {
+        upgradeUnlockedDisplayer.ForceDisplayStop();
         upgradeDisplayer.gameObject.SetActive(false);
     }
 
@@ -41,10 +45,14 @@ public class UpgradeMenuCanvas : MonoBehaviour
         {
             upgradeButtonBranches[upgradeBranchIndex].ProgressOneStage();
 
-            if (upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex))
+            bool isMaxCompleted = upgradesSystem.UpgradeBranchIsCompleted(upgradeBranchIndex);
+            if (isMaxCompleted)
             {
                 upgradeButtonBranches[upgradeBranchIndex].DisplayCompleteText();
             }
+
+
+            DisplayUnlockedUpgardeBanner(upgradeIndex, isMaxCompleted, upgradeBranchIndex);
         }
 
         return couldUpgrade;
@@ -102,6 +110,16 @@ public class UpgradeMenuCanvas : MonoBehaviour
         {
             upgradeButtonBranches[i].SetLastCompletedButtonIndex(allLastCompletedButtonIndex[i]);
         }
+    }
+
+
+
+    private void DisplayUnlockedUpgardeBanner(int upgradeIndex, bool isMaxCompleted, int upgradeBranchIndex)
+    {
+        string upgradeName;
+        Image upgradeIcon;
+        upgradeButtonBranches[upgradeBranchIndex].GetUpgradeNameAndIcon(upgradeIndex, out upgradeName, out upgradeIcon);
+        upgradeUnlockedDisplayer.DisplayUpgradeBanner(isMaxCompleted, upgradeName, upgradeIcon);
     }
 
 

@@ -6,36 +6,30 @@ using TMPro;
 
 public class ConstuctionPopUp : PopUp
 {
-    public TextMeshProUGUI firstItemQuantityText;
-    public TextMeshProUGUI secondItemQuantityText;
+    public TextMeshProUGUI[] itemQuantityText;
 
-    public int firstItemQuantityValue;
-    public int secondItemQuantityValue;
+    public int[] itemQuantityValue;
 
     private void Start()
     {
-        firstItemQuantityText.text = firstItemQuantityValue.ToString();
-        secondItemQuantityText.text = secondItemQuantityValue.ToString();
+        for (int i = 0; i < itemQuantityText.Length; i++)
+        {
+            itemQuantityText[i].text = itemQuantityValue[i].ToString();
+        }
     }
 
-    public void SetFirstQuantityValue (int newValue)
+    public void SetSpecificQuantityValue (int itemId, int newValue)
     {
-        firstItemQuantityValue = newValue;
-        firstItemQuantityText.text = firstItemQuantityValue.ToString();
-    }
-
-    public void SetSecondQuantityValue (int newValue)
-    {
-        secondItemQuantityValue = newValue;
-        secondItemQuantityText.text = secondItemQuantityValue.ToString();
+        itemQuantityValue[itemId] = newValue;
+        itemQuantityText[itemId].text = itemQuantityValue[itemId].ToString();
     }
 
     public void SetAllValue (int newValue)
     {
-        firstItemQuantityValue = newValue;
-        firstItemQuantityText.text = firstItemQuantityValue.ToString();
-
-        secondItemQuantityValue = newValue;
-        secondItemQuantityText.text = secondItemQuantityValue.ToString();
+        for (int i = 0; i < itemQuantityText.Length; i++)
+        {
+            itemQuantityValue[i] = newValue;
+            itemQuantityText[i].text = itemQuantityValue[i].ToString();
+        }
     }
 }

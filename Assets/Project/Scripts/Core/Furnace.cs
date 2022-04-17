@@ -19,8 +19,8 @@ public class Furnace : InteractStation
     public ParticleSystem addCoalParticleSystem;
 
     //Core light 
-    public GameObject coreLight;
-    [SerializeField] ConeLight light;
+    [SerializeField] ConeLightCircleInteriorLight coneCoreLight;
+    [SerializeField] FirstShipUpgradeMessage firstShipUpgradeMessage;
 
     // Private Attributes
     private enum FurnaceEvents { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
@@ -28,7 +28,7 @@ public class Furnace : InteractStation
     private const int MAX_FUEL_AMOUNT = 150;
     private const int STARTING_FUEL_AMOUNT = 50;
     private const int LOW_FUEL_AMOUNT = 30;
-    [SerializeField] private const int MAX_CORE_LEVEL = 4;
+    [SerializeField] private const int MAX_CORE_LEVEL = 5;
     private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f;
     
 
@@ -42,8 +42,9 @@ public class Furnace : InteractStation
 
     //Scalation variables
     public int lightLevel = 0;
-    private float[] UPGRADE_LIGHT_DISTANCE = { 10f, 15f, 20f, 25f, 30f, 35f };
-    private float currentColliderRadius = 10f;
+    private float[] UPGRADE_LIGHT_DISTANCE = { 15f, 20f, 25f, 30f, 35f };
+    private float START_UPGRADE_LIGHT_DISTANCE = 10f;
+    private float currentColliderRadius;
     //[SerializeField] private CircleCollider2D coreLightCollider;
     //private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
 
@@ -59,7 +60,7 @@ public class Furnace : InteractStation
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
     // Methods
-    private void Start()
+    private void Awake()
     {
         furnaceEvents = FurnaceEvents.CALM;
         //coreLightCollider = coreLight.GetComponent<CircleCollider2D>();
@@ -69,8 +70,15 @@ public class Furnace : InteractStation
 
         popUp.HideAll();
         popUpGameObject.SetActive(false);
-        light.Expand(1f);
+
+
+        currentColliderRadius = START_UPGRADE_LIGHT_DISTANCE;
+        coneCoreLight.SetDistance(currentColliderRadius);
+        coneCoreLight.Expand(1f);
+
     }
+
+
 
     void Update()
     {
@@ -270,31 +278,40 @@ public class Furnace : InteractStation
     // Public Methods
     public override void UpgradeFunction()
     {
-        if(lightLevel < MAX_CORE_LEVEL)
+        if (lightLevel >= MAX_CORE_LEVEL) return;
+
+
+        //popUp.ChangeMessageText("Luxinite Added");
+        //coreLightCollider.radius = currentColliderRadius;
+
+        currentColliderRadius = UPGRADE_LIGHT_DISTANCE[lightLevel];
+
+
+        coneCoreLight.SetDistance(currentColliderRadius);
+        coneCoreLight.ExtraExpand(400, 400, 0.8f);
+
+        if (!couroutineStartedAddCoal)
         {
-            popUp.ChangeMessageText("Luxinite Added");
-            //coreLightCollider.radius = currentColliderRadius;
-
-            currentColliderRadius = UPGRADE_LIGHT_DISTANCE[++lightLevel];
-
-
-            light.ExtraExpand(400, 400, 0.8f);
-            light.SetDistance(currentColliderRadius);
-
-            if (!couroutineStartedAddCoal)
-            {
-                StartCoroutine(UsingYieldAddCoal(1));
-            }
+            StartCoroutine(UsingYieldAddCoal(1));
         }
-        else
-        {
-            lightLevel = MAX_CORE_LEVEL;
 
+
+        ++lightLevel;
+
+
+
+        if (lightLevel == 1)
+        {
+            firstShipUpgradeMessage.EnableFirstShipUpgradeMessege();
+        }
+        else if (lightLevel == MAX_CORE_LEVEL)
+        {
             if (!liftOffButtonGameObject.activeInHierarchy)
             {
                 liftOffButtonGameObject.SetActive(true);
             }
         }
+
     }
 
     public void StartEvent(int eventID)
