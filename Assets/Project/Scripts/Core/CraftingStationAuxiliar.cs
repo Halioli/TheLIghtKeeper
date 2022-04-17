@@ -42,13 +42,17 @@ public class CraftingStationAuxiliar : InteractStation
         }
         else
         {
-            if (!isOpen && isUsingThisAuxiliar)
+            if (!isOpen)
             {
                 PopUpDisappears();
-                if (OnMenuClose != null) OnMenuClose();
-            }
 
+                if (isUsingThisAuxiliar)
+                {
+                    if (OnMenuClose != null) OnMenuClose();
+                }  
+            }
         }
+
     }
 
     private void OnEnable()
