@@ -5,7 +5,14 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class LightPlants : MonoBehaviour
 {
+    private const float MAX_INTENSITY = 1f;
+    private const float MIN_INTENSITY = 0.6f;
+
+    private float duration;
+    private bool lightAtMin = true;
+    private bool lightAtMax = false;
     private Animator plantAnimator;
+    
     public CircleCollider2D lightTrigger;
     public Light2D lightPlant;
     public ParticleSystem lightPlantParticles;
@@ -18,6 +25,21 @@ public class LightPlants : MonoBehaviour
     void Start()
     {
         plantAnimator = GetComponent<Animator>();
+        duration = Random.Range(1.5f, 2.5f);
+    }
+
+    private void Update()
+    {
+        if (lightAtMin)
+        {
+            StartCoroutine(ChangeIntensityToMax());
+            lightAtMin = false;
+        }
+        else if (lightAtMax)
+        {
+            StartCoroutine(ChangeIntensityToMin());
+            lightAtMax = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -58,5 +80,31 @@ public class LightPlants : MonoBehaviour
         lightPlantParticles.Play();
         yield return new WaitForSeconds(0.3f);
         lightPlantParticles.Stop();
+    }
+
+    IEnumerator ChangeIntensityToMin()
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            lightPlant.intensity = Mathf.Lerp(MAX_INTENSITY, MIN_INTENSITY, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        lightPlant.intensity = MIN_INTENSITY;
+        lightAtMin = true;
+    }
+
+    IEnumerator ChangeIntensityToMax()
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            lightPlant.intensity = Mathf.Lerp(MIN_INTENSITY, MAX_INTENSITY, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        lightPlant.intensity = MAX_INTENSITY;
+        lightAtMax = true;
     }
 }

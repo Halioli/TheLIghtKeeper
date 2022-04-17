@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class BridgeBroken : InteractStation
 {
-    private const int IRON_REPAIR_AMOUNT = 12;
-    private const int METAL_REPAIR_AMOUNT = 1;
-
     private ConstuctionPopUp constuctionPopUp;
 
-    [SerializeField] BridgeManager bridgeManager;
-    [SerializeField] Item ironMaterial;
-    [SerializeField] Item enrichedMetalMaterial;
+    public ParticleSystem[] bridgeParticleSytems;
 
+    [SerializeField] BridgeManager bridgeManager;
+    [SerializeField] int[] requiredAmount;
+    [SerializeField] Item[] requiredMaterials;
+
+    bool finishedConstruct;
     private void Start()
     {
         constuctionPopUp = GetComponentInChildren<ConstuctionPopUp>();
+
     }
 
     private void Update()
@@ -36,24 +37,62 @@ public class BridgeBroken : InteractStation
     // From InteractStation script
     public override void StationFunction()
     {
-        // Check if player has enough items
-        bool hasEnoughIron = playerInventory.InventoryContainsItemAndAmount(ironMaterial, IRON_REPAIR_AMOUNT);
-        bool hasEnoughMetal = playerInventory.InventoryContainsItemAndAmount(enrichedMetalMaterial, METAL_REPAIR_AMOUNT);
-
-        if (hasEnoughIron && hasEnoughMetal)
+        if (HasRequiredMaterials())
         {
             constuctionPopUp.ChangeMessageText("Materials added");
-            playerInventory.SubstractNItemsFromInventory(ironMaterial, IRON_REPAIR_AMOUNT);
-            playerInventory.SubstractNItemsFromInventory(enrichedMetalMaterial, METAL_REPAIR_AMOUNT);
+            RemoveItemsFromInventory();
 
             constuctionPopUp.SetAllValue(0);
-            bridgeManager.BridgeConstructed();
+
+            StartCoroutine(BridgeParticleSystem());
         }
         else
         {
             constuctionPopUp.ChangeMessageText("Not enough materials");
 
             InvokeOnNotEnoughMaterials();            
+        }
+    }
+
+    private bool HasRequiredMaterials()
+    {
+        bool hasEnough = false;
+
+        if (requiredMaterials.Length == 0)
+        {
+            hasEnough = true;
+        }
+        else
+        {
+            for (int i = 0; i < requiredMaterials.Length; i++)
+            {
+                if (playerInventory.InventoryContainsItemAndAmount(requiredMaterials[i], requiredAmount[i]))
+                {
+                    hasEnough = true;
+                }
+                else
+                {
+                    hasEnough = false;
+                    i = requiredMaterials.Length;
+                }
+            }
+        }
+
+        return hasEnough;
+    }
+
+    private void RemoveItemsFromInventory()
+    {
+        if (requiredMaterials.Length == 0)
+        {
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < requiredMaterials.Length; i++)
+            {
+                playerInventory.SubstractNItemsFromInventory(requiredMaterials[i], requiredAmount[i]);
+            }
         }
     }
 
@@ -68,5 +107,22 @@ public class BridgeBroken : InteractStation
     {
         constuctionPopUp.HideAll();
         constuctionPopUp.ChangeMessageText("Press E to interact");
+    }
+
+    private IEnumerator BridgeParticleSystem()
+    {
+        foreach (ParticleSystem particles in bridgeParticleSytems)
+        {
+            particles.Play();
+        }
+        bridgeManager.audioSource.Play();
+        yield return new WaitForSeconds(2.5f);
+
+        foreach (ParticleSystem particles in bridgeParticleSytems)
+        {
+            particles.Stop();
+        }
+        bridgeManager.BridgeConstructed();
+        bridgeManager.constructed = true;
     }
 }

@@ -579,6 +579,7 @@ GameObject:
   - component: {fileID: 8361483887583000432}
   - component: {fileID: 7822036454896612403}
   - component: {fileID: 2730123641802879700}
+  - component: {fileID: 8121229639596606140}
   m_Layer: 0
   m_Name: TutorialTooltipsMessege
   m_TagString: Untagged
@@ -636,6 +637,24 @@ MonoBehaviour:
   textMessege: {fileID: 9025511219897586106}
   leftClickGameObject: {fileID: 5710173629631814112}
   rightClickGameObject: {fileID: 2587045305037042103}
+--- !u!114 &8121229639596606140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361400012277752326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 954212f77ed152e47b12193602593d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventIndex: -1
+  eventType: 1
+  eventID: -1
+  mssgs:
+  - "Sorry Commander, you're carrying too many items. If you want to add more, you
+    must leave some. \n(Press X to drop items)"
 --- !u!1 &3424040047297746345
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,7 +716,7 @@ GameObject:
   - component: {fileID: 3601792721207594617}
   - component: {fileID: 3601792721207594616}
   m_Layer: 0
-  m_Name: BackImage
+  m_Name: WhiteImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -744,7 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 0.47058824}
+  m_Color: {r: 0.70980394, g: 0.70980394, b: 0.70980394, a: 0.7058824}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -889,7 +908,7 @@ GameObject:
   - component: {fileID: 3601792721261218939}
   - component: {fileID: 3601792721261218938}
   m_Layer: 0
-  m_Name: BackImage
+  m_Name: WhiteImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -936,7 +955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 0.47058824}
+  m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 0.7058824}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

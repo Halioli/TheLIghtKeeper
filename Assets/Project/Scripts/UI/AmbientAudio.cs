@@ -24,6 +24,10 @@ public class AmbientAudio : MonoBehaviour
 
     [SerializeField] AudioSource torchPilarAudioSource;
 
+    [SerializeField] AudioClip heartBeatsClip;
+    [SerializeField] AudioClip faintWindClip;
+
+    [SerializeField] AudioClip liftOffEngine;
 
     private float musicVolume = 0.1f;
     private bool finishedTransition = false;
@@ -32,7 +36,7 @@ public class AmbientAudio : MonoBehaviour
 
     enum MusicFade { NORMAL, NONE, FADING_OUT, FADING_IN };
     MusicFade musicFade = MusicFade.NORMAL;
-    private const float minMusicVolume = 0f;
+    private const float minMusicVolume = 0.02f;
     private const float maxMusicVolume = 0.1f;
     private const float musicFadeOutDuration = 5f;
     private const float musicFadeInDuration = 2.5f;
@@ -55,6 +59,8 @@ public class AmbientAudio : MonoBehaviour
     {
         ShipEntry.OnEntry += TransitionToInterior;
         ShipExit.OnExit += TransitionToExterior;
+        ShipEntry.OnEntry += StopAmbientSounds;
+        ShipExit.OnExit += PlayAmbientSounds;
 
         Teleporter.OnMenuEnter += TransitionToTeleportMenu;
         Teleporter.OnMenuExit += TransitionToExterior;
@@ -72,12 +78,23 @@ public class AmbientAudio : MonoBehaviour
         //PlayerLightChecker.OnPlayerInDarknessNoLantern += StopAmbientSounds;
 
         Torch.OnTorchStartActivation += TorchPilarIsActivatedSound;
+
+        DarknessFaint.OnHeartBeatsStart += PlayHeartBeatsSound;
+        DarknessFaint.OnFaintEnd += PlayFaintWindSound;
+        DarknessFaint.OnFaintStop += StopFaintSounds;
+
+        FogSystem.OnPlayerCaughtStart += PlayFaintWindSound;
+        FogSystem.OnPlayerCaughtEnd += StopFaintSounds;
+
+        LiftOffButton.OnLiftOff += PlayLiftOffEngineSound;
     }
 
     private void OnDisable()
     {
         ShipEntry.OnEntry -= TransitionToInterior;
         ShipExit.OnExit -= TransitionToExterior;
+        ShipEntry.OnEntry -= StopAmbientSounds;
+        ShipExit.OnExit -= PlayAmbientSounds;
 
         Teleporter.OnMenuEnter -= TransitionToTeleportMenu;
         Teleporter.OnMenuExit -= TransitionToExterior;
@@ -95,6 +112,15 @@ public class AmbientAudio : MonoBehaviour
         //PlayerLightChecker.OnPlayerInDarknessNoLantern -= StopAmbientSounds;
 
         Torch.OnTorchStartActivation -= TorchPilarIsActivatedSound;
+
+        DarknessFaint.OnHeartBeatsStart -= PlayHeartBeatsSound;
+        DarknessFaint.OnFaintEnd -= PlayFaintWindSound;
+        DarknessFaint.OnFaintStop -= StopFaintSounds; 
+        
+        FogSystem.OnPlayerCaughtStart -= PlayFaintWindSound;
+        FogSystem.OnPlayerCaughtEnd -= StopFaintSounds;
+
+        LiftOffButton.OnLiftOff -= PlayLiftOffEngineSound;
     }
 
 
@@ -117,11 +143,12 @@ public class AmbientAudio : MonoBehaviour
 
     IEnumerator AmbientSounds()
     {
+        ambientAudioSource.volume = 0.1f;
         while (ambientCanPlay)
         {
             yield return new WaitForSeconds(ambientCooldown);
 
-            if (Random.Range(0, randomChance) == 0)
+            if (ambientCanPlay && Random.Range(0, randomChance) == 0)
             {
                 ambientAudioSource.clip = ambientAudioClips[Random.Range(0, ambientAudioClips.Length)];
                 ambientAudioSource.Play();
@@ -249,7 +276,7 @@ public class AmbientAudio : MonoBehaviour
         {
             fadeOutInterpolator.Update(Time.deltaTime);
             musicVolume = fadeOutInterpolator.Inverse * maxMusicVolume;
-            musicAudioSource.volume = musicVolume;
+            if (musicVolume > minMusicVolume) musicAudioSource.volume = musicVolume;
             yield return null;
         }
 
@@ -277,7 +304,7 @@ public class AmbientAudio : MonoBehaviour
         {
             fadeOutInterpolator.Update(Time.deltaTime);
             musicVolume = fadeOutInterpolator.Value * maxMusicVolume;
-            musicAudioSource.volume = musicVolume;
+            if (musicVolume < maxMusicVolume) musicAudioSource.volume = musicVolume;
             yield return null;
         }
 
@@ -310,4 +337,36 @@ public class AmbientAudio : MonoBehaviour
         torchPilarAudioSource.Play();
     }
 
+
+    // Faint
+    private void PlayHeartBeatsSound()
+    {
+        StopAmbientSounds();
+
+        ambientAudioSource.volume = 1f;
+        ambientAudioSource.clip = heartBeatsClip;
+        ambientAudioSource.Play();
+    }
+
+    private void PlayFaintWindSound()
+    {
+        ambientAudioSource.volume = 1f;
+        ambientAudioSource.clip = faintWindClip;
+        ambientAudioSource.Play();
+    }
+
+    private void StopFaintSounds()
+    {
+        ambientAudioSource.Stop();
+
+        PlayAmbientSounds();
+    }
+
+    // Liftoff
+    private void PlayLiftOffEngineSound()
+    {
+        ambientAudioSource.volume = 1f;
+        ambientAudioSource.clip = liftOffEngine;
+        ambientAudioSource.Play();
+    }
 }

@@ -6,20 +6,22 @@ public class UpgradesStation : InteractStation
 {
     public GameObject interactText;
     public GameObject backgroundText;
+    
     public GameObject upgradesCanvasGameObject;
+    private UpgradeMenuCanvas upgradeMenuCanvas;
+
     public GameObject hudGameObject;
     public UpgradesSystem upgradesSystem;
 
     private bool isOpen = false;
-    private UpgradeMenuCanvas upgradeMenuCanvas;
 
     void Start()
     {
         upgradesSystem = GetComponent<UpgradesSystem>();
         upgradesSystem.Init(playerInventory);
         upgradeMenuCanvas = upgradesCanvasGameObject.GetComponent<UpgradeMenuCanvas>();
-        InitUpgradesMenu();
-        CloseStorageInventory();
+        //InitUpgradesMenu();
+        CloseUpgradesMenu();
         backgroundText.SetActive(false);
     }
 
@@ -35,7 +37,7 @@ public class UpgradesStation : InteractStation
             PopUpDisappears();
             if (upgradesCanvasGameObject.activeInHierarchy)
             {
-                CloseStorageInventory();
+                CloseUpgradesMenu();
             }
         }
     }
@@ -45,18 +47,18 @@ public class UpgradesStation : InteractStation
         // Open menu
         if (!upgradesCanvasGameObject.activeInHierarchy)
         {
-            OpenStorageInventory();
+            OpenUpgradesMenu();
         }
         else
         {
-            CloseStorageInventory();
+            CloseUpgradesMenu();
         }
     }
 
-    private void InitUpgradesMenu()
-    {
-        upgradeMenuCanvas.Init();
-    }
+    //private void InitUpgradesMenu()
+    //{
+    //    upgradeMenuCanvas.Init();
+    //}
 
     //Interactive pop up disappears
     private void PopUpAppears()
@@ -73,7 +75,7 @@ public class UpgradesStation : InteractStation
     }
 
 
-    private void OpenStorageInventory()
+    private void OpenUpgradesMenu()
     {
         isOpen = true;
 
@@ -81,16 +83,22 @@ public class UpgradesStation : InteractStation
         upgradesCanvasGameObject.SetActive(true);
         PauseMenu.PauseMineAndAttack();
 
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
+
         DoOnInteractOpen();
         DoOnInteractDescriptionOpen();
+
+        upgradeMenuCanvas.HideDisplay();
     }
 
-    private void CloseStorageInventory()
+    private void CloseUpgradesMenu()
     {
         isOpen = false;
         hudGameObject.SetActive(true);
         upgradesCanvasGameObject.SetActive(false);
         PauseMenu.ResumeMineAndAttack();
+
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
 
         DoOnInteractClose();
     }

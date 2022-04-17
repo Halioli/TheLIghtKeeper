@@ -11,6 +11,14 @@ public class PauseMenu : MonoBehaviour
     public CanvasGroup loadingGroup;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
+    public GameObject controllsMenu;
+    public GameObject almanacMenu;
+
+    public delegate void PauseMenuAction();
+    public static event PauseMenuAction OnPaused;
+
+    public delegate void ToggleCheatsAction(bool toggle);
+    public static event ToggleCheatsAction OnToggleCheats;
 
     void Update()
     {
@@ -22,18 +30,19 @@ public class PauseMenu : MonoBehaviour
             } 
             else
             {
+                if(OnPaused != null) OnPaused();
                 Pause();
             }
         }
 
-        if (gameIsPaused)
-        {
-            PauseGame();
-        }
-        else
-        {
-            Resume();
-        }
+        //if (gameIsPaused)
+        //{
+        //    PauseGame();
+        //}
+        //else
+        //{
+        //    Resume();
+        //}
     }
 
     private void Resume()
@@ -89,8 +98,21 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
     }
 
+    public void ClickedControllsButton()
+    {
+        controllsMenu.SetActive(true);
+
+        pauseMenu.SetActive(false);
+    }
+    public void ClickedAlmanacButton()
+    {
+        almanacMenu.SetActive(true);
+
+        pauseMenu.SetActive(false);
+    }
     public void ClickedMainMenuButton(int sceneIndex)
     {
+        gameIsPaused = false;
         loadingGroup.alpha = 1f;
         StartCoroutine(AsyncLoading(sceneIndex));
     }
@@ -98,6 +120,12 @@ public class PauseMenu : MonoBehaviour
     public void ClickedExitButton()
     {
         PlayerInputs.instance.QuitGame();
+    }
+
+    public void ToggleCheats(bool value)
+    {
+        if (OnToggleCheats != null)
+            OnToggleCheats(value);
     }
 
     IEnumerator AsyncLoading(int sceneIndex)

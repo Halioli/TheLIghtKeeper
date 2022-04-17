@@ -19,6 +19,9 @@ public class CinemachineShake : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera vcam = null;
     [System.NonSerialized] private CinemachineBasicMultiChannelPerlin noiseComp = null;
 
+    public delegate void CinemachineShakeAction();
+    public static event CinemachineShakeAction OnShakeStop;
+
     private void Awake()
     {
         noiseComp = vcam.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
@@ -34,6 +37,17 @@ public class CinemachineShake : MonoBehaviour
         //    cinemachineVirtual.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
+    private void OnEnable()
+    {
+        PauseMenu.OnPaused += ForceStopShakeCamera;
+
+    }
+
+    private void OnDisable()
+    {
+        PauseMenu.OnPaused -= ForceStopShakeCamera;
+    }
+
 
     public void ShakeCamera(float intensity, float time)
     {
@@ -47,6 +61,7 @@ public class CinemachineShake : MonoBehaviour
     public void ForceStopShakeCamera()
     {
         shakeTimer = Time.deltaTime;
+        if(OnShakeStop != null) OnShakeStop();
     }
 
 
@@ -61,6 +76,10 @@ public class CinemachineShake : MonoBehaviour
 
             noiseComp.m_AmplitudeGain = 
                 Mathf.Lerp(startingIntensity, 0f, 1 - (shakeTimer / shakeTimerTotal));
+        }
+        else
+        {
+            ForceStopShakeCamera();
         }
     }
 }

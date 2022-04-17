@@ -140,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBeforeExplode: 1.5
   timeBeforeDetonation: 1.25
+  hardness: 0
   light: {fileID: 3887412345079390549}
   audioSource: {fileID: 5891813700500917588}
   bombUseSound: {fileID: 8300000, guid: 2d5f1ac81cf348f46b344e312208fca9, type: 3}
@@ -167,7 +168,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

@@ -4,24 +4,32 @@ using UnityEngine;
 
 public class FogSystem : MonoBehaviour
 {
-    public PlayerLightChecker playerLightChecker;
     private GameObject player;
 
     private bool playerInFog = false;
-    public float timer;
     private bool hasFaded = false;
+    [SerializeField] private HUDHandler hudHandler;
 
+    public PlayerLightChecker playerLightChecker;
+    public float timer;
     public Vector3 respawnPosition;
 
     public GameObject skullEnemy;
-    [SerializeField] private HUDHandler hudHandler;
+    [SerializeField] AudioSource fogAreaAudioSource;
+
+    // Tp player
+    public delegate void TeleportPlayerAction(Vector3 landingPos);
+    public static event TeleportPlayerAction OnTeleportPlayer;
+
+    public delegate void PlayerCaughtAction();
+    public static event PlayerCaughtAction OnPlayerCaughtStart;
+    public static event PlayerCaughtAction OnPlayerCaughtEnd;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         skullEnemy.SetActive(false);
-        respawnPosition = new Vector3(110,-16,0);
     }
 
     // Update is called once per frame
@@ -30,6 +38,7 @@ public class FogSystem : MonoBehaviour
         
         if (playerInFog)
         {
+            fogAreaAudioSource.Play();
             skullEnemy.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 0);
             player.GetComponentInChildren<Lamp>().lampTime = 0;
             if (!playerLightChecker.IsPlayerInLight())
@@ -37,7 +46,7 @@ public class FogSystem : MonoBehaviour
                 timer -= Time.deltaTime;
                 if (timer > 0f)
                 {
-                    Debug.Log(timer);
+                    //Debug.Log(timer);
                     skullEnemy.SetActive(true);
                     PlayerInputs.instance.canMove = false;
                 }
@@ -56,6 +65,10 @@ public class FogSystem : MonoBehaviour
                 skullEnemy.SetActive(false);
             }
         }
+        else if (!playerInFog && fogAreaAudioSource.isPlaying)
+        {
+            fogAreaAudioSource.Stop();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -63,7 +76,7 @@ public class FogSystem : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             playerInFog = true;
-            Debug.Log("PlayerIn");
+            //Debug.Log("PlayerIn");
         }
     }
 
@@ -72,7 +85,7 @@ public class FogSystem : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {  
             playerInFog = false;
-            Debug.Log("PlayerOut");
+            //Debug.Log("PlayerOut");
             ResetTimer();
             skullEnemy.SetActive(false);
         }
@@ -87,14 +100,22 @@ public class FogSystem : MonoBehaviour
         hasFaded = true;
         hudHandler.DoFadeToBlack();
 
+        if (OnPlayerCaughtStart != null)
+            OnPlayerCaughtStart();
+
         //PlayerInputs.instance.canMove = false;
         skullEnemy.SetActive(false);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
-        player.transform.position = respawnPosition;
+        if (OnTeleportPlayer != null)
+            OnTeleportPlayer(respawnPosition);
 
+        yield return new WaitForSeconds(1.5f);
         hudHandler.RestoreFades();
+
+        if (OnPlayerCaughtEnd != null)
+            OnPlayerCaughtEnd();
 
         PlayerInputs.instance.canMove = true;
         hasFaded = false;

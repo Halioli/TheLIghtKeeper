@@ -10,20 +10,22 @@ public class ChainTutorialObjective : MonoBehaviour
 
     private void OnEnable()
     {
-        ChatBox.OnChatEvent += ProgressObjective;
+        ChatBox.OnChatTutorialEvent += ProgressObjective;
         PickaxeUpgrade.OnPickaxeUpgrade += SkipPickaxeUpgradeObjective;
     }
 
     private void OnDisable()
     {
-        ChatBox.OnChatEvent -= ProgressObjective;
+        ChatBox.OnChatTutorialEvent -= ProgressObjective;
         PickaxeUpgrade.OnPickaxeUpgrade -= SkipPickaxeUpgradeObjective;
     }
 
 
 
-    private void ProgressObjective()
+    private void ProgressObjective(int eventID)
     {
+        // use eventID
+
         if (objectiveIndex == 0)
         {
             tutorialObjectives[objectiveIndex++].GetComponent<TutorialObjective>().InvokeOnObjectiveStart();
@@ -32,7 +34,6 @@ public class ChainTutorialObjective : MonoBehaviour
 
         //tutorialObjectives[objectiveIndex].GetComponent<TutorialObjective>().InvokeOnObjectiveEnd();
         //Destroy(tutorialObjectives[objectiveIndex++]);
-
 
         if (objectiveIndex < tutorialObjectives.Length) 
             tutorialObjectives[objectiveIndex++].GetComponent<TutorialObjective>().InvokeOnObjectiveStart();
