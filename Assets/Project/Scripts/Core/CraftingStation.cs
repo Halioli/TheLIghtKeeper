@@ -128,8 +128,7 @@ public class CraftingStation : InteractStation
         craftingCanvasGameObject.SetActive(true);
         craftingMenu.ShowRecepies();
 
-        PlayerInputs.instance.canMine = false;
-        //PauseMenu.gameIsPaused = true;
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
 
     private void CloseCraftingInventory()
@@ -140,8 +139,7 @@ public class CraftingStation : InteractStation
 
         craftingCanvasGameObject.SetActive(false);
 
-        PlayerInputs.instance.canMine = true;
-        //PauseMenu.gameIsPaused = false;
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
 
 
         if (itemsWereSentToStorage)

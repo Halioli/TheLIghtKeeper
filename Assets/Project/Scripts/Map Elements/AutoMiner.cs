@@ -92,7 +92,7 @@ public class AutoMiner : InteractStation
         playerInventory.SetOtherInventory(this.inventory);
         this.inventory.SetOtherInventory(playerInventory);
 
-        PauseMenu.PauseMineAndAttack();
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
 
     private void CloseInventory()
@@ -105,7 +105,8 @@ public class AutoMiner : InteractStation
         playerInventory.SetOtherInventory(null);
         this.inventory.SetOtherInventory(null);
 
-        PauseMenu.ResumeMineAndAttack();
+        //PauseMenu.ResumeMineAndAttack();
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
     }
 
     public void GetsPlacedDown(Item itemToMine)
