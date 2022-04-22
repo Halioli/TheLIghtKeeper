@@ -263,7 +263,7 @@ public class AmbientAudio : MonoBehaviour
         if (musicFade == MusicFade.FADING_OUT || musicFade == MusicFade.NONE) return;
         else if (musicFade == MusicFade.FADING_IN) StopCoroutine("MusicFadeIn");
 
-        StartCoroutine("MusicFadeOut");
+        //StartCoroutine("MusicFadeOut");
     }
 
     IEnumerator MusicFadeOut()
@@ -291,7 +291,7 @@ public class AmbientAudio : MonoBehaviour
         if (musicFade == MusicFade.FADING_IN || musicFade == MusicFade.NORMAL) return;
         else if (musicFade == MusicFade.FADING_OUT) StopCoroutine("MusicFadeOut");
 
-        StartCoroutine("MusicFadeIn");
+        //StartCoroutine("MusicFadeIn");
     }
 
     IEnumerator MusicFadeIn()
