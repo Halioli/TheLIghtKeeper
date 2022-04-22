@@ -49,6 +49,11 @@ public class SaveSystem : MonoBehaviour
         SavePlayerData(player, cam);
     }
 
+    private void SaveKeyEvent()
+    {
+       
+    }
+
     public void SavePlayerData(GameObject player, GameObject camera)
     {
         //upgradesLevels = upgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
@@ -114,6 +119,7 @@ public class SaveSystem : MonoBehaviour
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
 
             playerHealthSystem.health = playerData.health;
+
             Vector3 position;
             position.x = playerData.playerPos[0];
             position.y = playerData.playerPos[1];
@@ -125,19 +131,19 @@ public class SaveSystem : MonoBehaviour
             position.z = playerData.cameraPos[2];
             cam.transform.position = position;
 
-            for (int i = 0; i < torches.Count; i++)
-            {
-                torches[i].turnedOn = playerData.torchTurnedOn[i];
+            //for (int i = 0; i < torches.Count; i++)
+            //{
+            //    torches[i].turnedOn = playerData.torchTurnedOn[i];
 
-                if (playerData.torchTurnedOn[i])
-                {
-                    torches[i].SetTorchLightOn();
-                }
-                //    //else
-                //    //{
-                //    //    torches[i].SetTorchLightOff();
-                //    //}
-            }
+            //    if (playerData.torchTurnedOn[i])
+            //    {
+            //        torches[i].SetTorchLightOn();
+            //    }
+            //    //    //else
+            //    //    //{
+            //    //    //    torches[i].SetTorchLightOff();
+            //    //    //}
+            //}
 
             for (int i = 0; i < teleporters.Count; i++)
             {
@@ -214,6 +220,9 @@ public class SaveSystem : MonoBehaviour
 
             //upgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades);
 
+           
+
+            Debug.Log(player.transform.position.x);
             strm.Close();
             return playerData;
         }
