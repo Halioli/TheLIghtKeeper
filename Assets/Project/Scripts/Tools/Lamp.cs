@@ -87,6 +87,15 @@ public class Lamp : MonoBehaviour
         coneLight.SetAngle(lightAngle);
 
         lightRechargedParticleSystem.Stop();
+
+        if(active)
+        {
+            ActivateCircleLight();
+        }
+        if(turnedOn)
+        {
+            ActivateConeLight();
+        }
     }
 
     private void OnEnable()

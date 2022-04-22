@@ -12,8 +12,8 @@ public class SaveSystem : MonoBehaviour
     public static List<Ore> ores = new List<Ore>();
     public static int[] upgradesLevels;
 
-    public static GameObject player;
-    public static GameObject cam;
+    public GameObject player;
+    public GameObject cam;
     public static HealthSystem playerHealthSystem;
     public static Lamp playerLamp;
     public static GameObject furnace;
@@ -32,11 +32,10 @@ public class SaveSystem : MonoBehaviour
     }
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        cam = GameObject.FindGameObjectWithTag("MainCamera");
+        //player = GameObject.FindGameObjectWithTag("Player");
+        //cam = GameObject.FindGameObjectWithTag("MainCamera");
         playerHealthSystem = player.GetComponent<HealthSystem>();
         playerLamp = player.GetComponentInChildren<Lamp>();
-        furnace = GameObject.FindGameObjectWithTag("Furnace");
         playerInventory = player.GetComponentInChildren<Inventory>();
 
         if (!firstTime)
@@ -47,19 +46,18 @@ public class SaveSystem : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        SavePlayerData(player, cam, furnace);
+        SavePlayerData(player, cam);
     }
 
-    public void SavePlayerData(GameObject player, GameObject camera, GameObject furnace)
+    public void SavePlayerData(GameObject player, GameObject camera)
     {
-        upgradesLevels = upgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
+        //upgradesLevels = upgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
 
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, furnace, 
-                                playerInventory.GetInventoryData(), luxinites.Count, bridges.Count, ores.Count, upgradesLevels.Length);
+        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, playerInventory.GetInventoryData());
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -71,32 +69,40 @@ public class SaveSystem : MonoBehaviour
             data.enableTeleport[i] = teleporters[i].activated;
         }
 
-        for(int i = 0; i < luxinites.Count; i++)
-        {
-            data.luxiniteMined[i] = luxinites[i].hasBeenMined;
-        }
+        //for(int i = 0; i < luxinites.Count; i++)
+        //{
+        //    data.luxiniteMined[i] = luxinites[i].hasBeenMined;
+        //    if(luxinites[i].hasBeenMined)
+        //    {
+        //        Debug.Log("Luxinite Mined");
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Luxinites Not Mined");
+        //    }
+        //}
 
-        for (int i = 0; i < bridges.Count; i++)
-        {
-            data.constructedBridges[i] = bridges[i].constructed;
-        }
+        //for (int i = 0; i < bridges.Count; i++)
+        //{
+        //    data.constructedBridges[i] = bridges[i].constructed;
+        //}
 
-        for (int i = 0; i < ores.Count; i++)
-        {
-            data.oreMined[i] = ores[i].hasBeenMined;
-        }
+        //for (int i = 0; i < ores.Count; i++)
+        //{
+        //    data.oreMined[i] = ores[i].hasBeenMined;
+        //}
 
-        for (int i = 0; i < upgradesLevels.Length; i++)
-        {
-            data.upgrades[i] = upgradesLevels[i];
-        }
+        //for (int i = 0; i < upgradesLevels.Length; i++)
+        //{
+        //    data.upgrades[i] = upgradesLevels[i];
+        //}
 
         formatter.Serialize(stream, data);
         stream.Close();
         Debug.Log("Saved " + data.lampTime);
     }
 
-    public static PlayerData LoadPlayerOnStart()
+    public PlayerData LoadPlayerOnStart()
     {
         string path = Application.persistentDataPath + "player.dat";
         if (File.Exists(path))
@@ -127,23 +133,21 @@ public class SaveSystem : MonoBehaviour
                 {
                     torches[i].SetTorchLightOn();
                 }
-                //else
-                //{
-                //    torches[i].SetTorchLightOff();
-                //}
+                //    //else
+                //    //{
+                //    //    torches[i].SetTorchLightOff();
+                //    //}
             }
-
-            furnace.GetComponent<Furnace>().lightLevel = playerData.furnaceLevel;
 
             for (int i = 0; i < teleporters.Count; i++)
             {
                 teleporters[i].activated = playerData.enableTeleport[i];
             }
 
-            for (int i = 0; i < bridges.Count; i++)
-            {
-                bridges[i].constructed = playerData.constructedBridges[i];
-            }
+            //for (int i = 0; i < bridges.Count; i++)
+            //{
+            //    bridges[i].constructed = playerData.constructedBridges[i];
+            //}
 
             playerLamp.lampTime = playerData.lampTime;
             playerLamp.active = playerData.activeLamp;
@@ -157,31 +161,34 @@ public class SaveSystem : MonoBehaviour
             {
                 playerLamp.ActivateCircleLight();
             }
-
-            for(int i = 0; i < playerData.inventoryItemID.Length; i++)
+            for (int i = 0; i < playerData.inventoryItemID.Length; i++)
             {
                 playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
             }
 
-            for(int i = 0; i < luxinites.Count; i++)
-            {
-                luxinites[i].hasBeenMined = playerData.luxiniteMined[i];
+            //for (int i = 0; i < luxinites.Count; i++)
+            //{
+            //    luxinites[i].hasBeenMined = playerData.luxiniteMined[i];
+            //    if (luxinites[i].hasBeenMined)
+            //    {
+            //        Debug.Log("mined");
+            //        luxinites[i].gameObject.SetActive(false);
+            //    }
+            //    else
+            //    {
+            //        Debug.Log(" not mined");
+            //    }
+            //}
 
-                if (luxinites[i].hasBeenMined)
-                {
-                    luxinites[i].gameObject.SetActive(false);
-                }
-            }
+            //for (int i = 0; i < ores.Count; i++)
+            //{
+            //    ores[i].hasBeenMined = playerData.oreMined[i];
 
-            for (int i = 0; i < luxinites.Count; i++)
-            {
-                ores[i].hasBeenMined = playerData.oreMined[i];
-
-                if (ores[i].hasBeenMined)
-                {
-                    ores[i].gameObject.SetActive(false);
-                }
-            }
+            //    if (ores[i].hasBeenMined)
+            //    {
+            //        ores[i].gameObject.SetActive(false);
+            //    }
+            //}
 
             strm.Close();
             return playerData;
@@ -205,7 +212,7 @@ public class SaveSystem : MonoBehaviour
 
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
 
-            upgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades);
+            //upgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades);
 
             strm.Close();
             return playerData;
