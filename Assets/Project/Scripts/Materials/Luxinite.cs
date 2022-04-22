@@ -13,7 +13,6 @@ public class Luxinite : Ore
     private float maxIntensity;
     private float time;
 
-    public bool hasBeenMined;
 
     private void Awake()
     {
