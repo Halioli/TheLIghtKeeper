@@ -23,6 +23,8 @@ public class PlayerInputs : MonoBehaviour
 
     public bool ignoreLights = false;
 
+    public bool isInGameMenu = false;
+
     public GameObject selectSpotGameObject;
 
     private void Awake()
@@ -40,6 +42,8 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public void SetInGameMenuOpenInputs()
     {
+        isInGameMenu = true;
+        
         canMine = false;
         canAttack = false;
         canPause = false;
@@ -48,6 +52,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void SetInGameMenuCloseInputs()
     {
+        isInGameMenu = false;
+
         canMine = true;
         canAttack = true;
         //canPause = true;
