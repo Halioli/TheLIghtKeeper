@@ -45,7 +45,6 @@ public class BridgeBroken : InteractStation
             constuctionPopUp.SetAllValue(0);
 
             StartCoroutine(BridgeParticleSystem());
-            bridgeManager.constructed = true;
         }
         else
         {
@@ -118,10 +117,12 @@ public class BridgeBroken : InteractStation
         }
         bridgeManager.audioSource.Play();
         yield return new WaitForSeconds(2.5f);
+
         foreach (ParticleSystem particles in bridgeParticleSytems)
         {
             particles.Stop();
         }
         bridgeManager.BridgeConstructed();
+        bridgeManager.constructed = true;
     }
 }

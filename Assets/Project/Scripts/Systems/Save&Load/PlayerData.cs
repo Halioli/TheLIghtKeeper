@@ -19,8 +19,6 @@ public class PlayerData
 
     public float[] cameraPos;
 
-    public int furnaceLevel;
-
     public int[] inventoryItemQuantity;
     public int[] inventoryItemID;
 
@@ -31,7 +29,7 @@ public class PlayerData
     public bool[] oreMined;
 
     public int[] upgrades;
-    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, GameObject furnace, Dictionary<int,int> inventoryData, int sizeLuxinites, int sizeBridges, int sizeOres, int sizeUpgrades)
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, Dictionary<int,int> inventoryData)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
@@ -52,9 +50,7 @@ public class PlayerData
         enableTeleport = new bool[sizeTeleports];
         torchTurnedOn = new bool[sizeTorch];
 
-        furnaceLevel = furnace.GetComponent<Furnace>().lightLevel;
-
-        luxiniteMined = new bool[sizeLuxinites];
+        //luxiniteMined = new bool[sizeLuxinites];
 
         inventoryItemQuantity = new int[inventoryData.Count];
         inventoryItemID = new int[inventoryData.Count];
@@ -67,11 +63,11 @@ public class PlayerData
             i++;
         }
 
-        constructedBridges = new bool[sizeBridges];
+        //constructedBridges = new bool[sizeBridges];
 
-        oreMined = new bool[sizeOres];
+        //oreMined = new bool[sizeOres];
 
-        upgrades = new int[sizeUpgrades];
+        //upgrades = new int[sizeUpgrades];
     }
 
 }
