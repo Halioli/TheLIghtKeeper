@@ -20,7 +20,7 @@ public class Lamp : MonoBehaviour
     private const int MAX_TIME_LEVELS = 3;
     private int timeLevel = 0;
     public float lampTime;
-    private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
+    private float[] LAMP_TIME_LVL = { 10f, 15f, 20f };
 
     public bool coneIsActive = false;
     public bool intenseCircleIsActive = false;
@@ -87,6 +87,15 @@ public class Lamp : MonoBehaviour
         coneLight.SetAngle(lightAngle);
 
         lightRechargedParticleSystem.Stop();
+
+        if(active)
+        {
+            ActivateCircleLight();
+        }
+        if(turnedOn)
+        {
+            ActivateConeLight();
+        }
     }
 
     private void OnEnable()
