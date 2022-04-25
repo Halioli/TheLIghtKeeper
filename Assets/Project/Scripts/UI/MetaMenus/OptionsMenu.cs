@@ -22,6 +22,7 @@ public class OptionsMenu : MonoBehaviour
     private Resolution[] resolutions;
     private MainMenu mainMenu;
     private bool inMainMenu;
+    private Color[] textColor = { new Color(0.0f, 0.0f, 0.0f), new Color(0.0f, 0.0f, 0.0f) };
 
     private void Start()
     {
