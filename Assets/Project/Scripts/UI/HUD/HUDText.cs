@@ -13,6 +13,7 @@ public class HUDText : MonoBehaviour
     private float FADE_OUT_TIME = 0.25f;
     private const float SHAKE_STRENGHT = 0.2f;
     private DisplayMessege displayMessage = DisplayMessege.NONE;
+    private bool firstTime = true;
 
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] TextMeshProUGUI textMessege;
@@ -20,6 +21,8 @@ public class HUDText : MonoBehaviour
     [SerializeField] GameObject exclamationGameObject;
     [SerializeField] GameObject lightningGameObject;
 
+    public delegate void InventoryFull();
+    public static event InventoryFull OnInventoryFull;
 
     private void OnEnable()
     {
@@ -65,6 +68,15 @@ public class HUDText : MonoBehaviour
         textMessege.text = "No inventory space!";
         displayMessage = DisplayMessege.PICK_UP_FAIL;
         DisplayMessageAndCross(duration);
+
+
+        if (firstTime)
+        {
+            if (OnInventoryFull != null)
+                OnInventoryFull();
+
+            firstTime = false;
+        }
     }
 
     private void DisplayLanternRecharged()

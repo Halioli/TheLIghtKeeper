@@ -14,8 +14,7 @@ public class UpgradesSystem : MonoBehaviour
     public static event UpgardeAction OnUpgrade;
     public static event UpgardeAction OnUpgradeFail;
 
-
-    private void Start()
+    private void Awake()
     {
         playerInventoryItems = new Dictionary<Item, int>();
 
@@ -54,15 +53,14 @@ public class UpgradesSystem : MonoBehaviour
         return false;
     }
 
-    public void UpgradeBranchIsSelectedComplete(int index)
+    public void AlwaysCompleteUpgradeBranchIsSelected(int index)
     {
         if (upgradeBranches[index].IsCompleted()) return;
 
+
         upgradeBranches[index].Upgrade();
+        //if (OnUpgrade != null) OnUpgrade();
     }
-
-
-
 
     public void UpdatePlayerInventoryData()
     {

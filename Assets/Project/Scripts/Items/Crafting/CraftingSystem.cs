@@ -34,9 +34,9 @@ public class CraftingSystem : MonoBehaviour
     public static event ItemSentToStorageAction OnItemSentToStorage;
 
 
-    void Start()
+    void Awake()
     {
-        currentLevel = 1;
+        currentLevel = 0;
         InitAllRecepies();
 
         availableRecepies = new List<Recepie>();
@@ -78,7 +78,7 @@ public class CraftingSystem : MonoBehaviour
 
     private void AddAvailableRecepies()
     {
-        foreach (Recepie recepie in recepiesLvl[currentLevel - 1].recepies)
+        foreach (Recepie recepie in recepiesLvl[currentLevel].recepies)
         {
             availableRecepies.Add(recepie);
         }
@@ -86,11 +86,9 @@ public class CraftingSystem : MonoBehaviour
     
     public void LevelUp()
     {
-        if (currentLevel < MAX_LEVEL)
-        {
-            ++currentLevel;
-            AddAvailableRecepies();
-        }
+        if (++currentLevel >= MAX_LEVEL) return;
+
+        AddAvailableRecepies();
     }
 
     private void UpdatePlayerInventoryData()

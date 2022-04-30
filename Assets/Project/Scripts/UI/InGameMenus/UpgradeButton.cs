@@ -59,6 +59,12 @@ public class UpgradeButton : HoverButton
         ClickedAnimation();
     }
 
+    public virtual void AlwaysProgressUpgradeSelected()
+    {
+        upgradeMenuCanvas.AlwaysProgressUpgradeSelected(upgradeBranchIndex);
+    }
+
+
 
 
     public void DisableButton()
@@ -93,6 +99,15 @@ public class UpgradeButton : HoverButton
 
         isCompleted = true;
     }
+
+
+
+    public void GetNameAndIcon(out string upgradeName, out Image upgradeIcon)
+    {
+        upgradeName = upgrade.upgradeName + " " + upgrade.upgradeDescription;
+        upgradeIcon = iconImage;
+    }
+
 
 
 }

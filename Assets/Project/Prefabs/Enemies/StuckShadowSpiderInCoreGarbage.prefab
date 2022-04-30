@@ -4923,6 +4923,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventIndex: -1
+  eventType: 0
+  eventID: -1
   mssgs:
   - The asteroid has life forms that appear to be aggressive. They react very badly
     to light. If you light them up, you can kill them.
@@ -19627,9 +19629,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   garbageTransforms:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5836114365259491745}
+  - {fileID: 3893941681463630628}
+  - {fileID: 5625835236896110713}
   audioSource: {fileID: 3184300763413784748}
   audioSource2: {fileID: 3184300763413784721}
 --- !u!82 &3184300763413784748
@@ -19652,8 +19654,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 4
-  MaxDistance: 10.1
+  MinDistance: 0.8
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -19748,8 +19750,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 4
-  MaxDistance: 10.1
+  MinDistance: 0.8
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -19954,6 +19956,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4688e625cba7f43924b0f1387115e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  spriteTransform: {fileID: 0}
   hardness: 2
   spriteList:
   - {fileID: -7482350933226251498, guid: 250aa0fb288b0f34990c81c9561c3a60, type: 3}
@@ -19963,6 +19967,7 @@ MonoBehaviour:
   - {fileID: 7593626184748392740, guid: 250aa0fb288b0f34990c81c9561c3a60, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
   oreParticleSystem: []
+  hasBeenMined: 0
 --- !u!114 &3893941681463630627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20116,6 +20121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4688e625cba7f43924b0f1387115e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  spriteTransform: {fileID: 0}
   hardness: 2
   spriteList:
   - {fileID: 3286209853322809080, guid: cee18eaf3b53d884b8b0c8ebae80a593, type: 3}
@@ -20124,6 +20131,7 @@ MonoBehaviour:
   - {fileID: -9183036345152552500, guid: cee18eaf3b53d884b8b0c8ebae80a593, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
   oreParticleSystem: []
+  hasBeenMined: 0
 --- !u!114 &5625835236896110718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20277,6 +20285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4688e625cba7f43924b0f1387115e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  spriteTransform: {fileID: 0}
   hardness: 2
   spriteList:
   - {fileID: 5411391179415432664, guid: 2863d780668fd3b4ab86c9692b027d71, type: 3}
@@ -20286,6 +20296,7 @@ MonoBehaviour:
   - {fileID: -5173250694769030277, guid: 2863d780668fd3b4ab86c9692b027d71, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
   oreParticleSystem: []
+  hasBeenMined: 0
 --- !u!114 &5836114365259491750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30079,6 +30090,30 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3892944969756627857, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892944969756627857, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: MaxDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892944969756627857, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: MinDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892944969756627860, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892944969756627860, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: MaxDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892944969756627863, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3892944969756627869, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -30123,6 +30158,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4497624712305610149, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497624712305610149, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: MaxDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497624712305610149, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: MinDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959887533964604516, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
+      propertyPath: garbage
+      value: 
+      objectReference: {fileID: 3184300763413784749}
     - target: {fileID: 5871286883061293718, guid: 3fb80b0d07d2ee0478e48b5bbc5bc825, type: 3}
       propertyPath: playerGameObject
       value: 

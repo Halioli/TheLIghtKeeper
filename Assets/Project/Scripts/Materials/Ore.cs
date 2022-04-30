@@ -22,12 +22,17 @@ public class Ore : MonoBehaviour
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
 
+    public bool hasBeenMined;
 
     public delegate void OreGetsMinedAction();
     public static event OreGetsMinedAction playerMinesOreEvent;
     public static event OreGetsMinedAction playerBreaksOreEvent;
 
 
+    private void Awake()
+    {
+        SaveSystem.ores.Add(this);
+    }
 
     private void Start()
     {
@@ -57,11 +62,12 @@ public class Ore : MonoBehaviour
 
         if (healthSystem.IsDead())
         {
+            hasBeenMined = true;
             breakState = OreState.BROKEN;
             OnDeathDamageTake();
 
             // Drop mineralItemToDrop
-            numberOfDrops = Random.Range(1, numberOfDrops);
+            numberOfDrops = Random.Range(1, numberOfDrops+1);
             for (int i = 0; i < numberOfDrops; ++i)
             {
                 DropMineralItem();

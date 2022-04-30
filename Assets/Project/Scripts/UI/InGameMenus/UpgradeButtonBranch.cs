@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeButtonBranch : MonoBehaviour
 {
@@ -10,38 +11,47 @@ public class UpgradeButtonBranch : MonoBehaviour
     [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
     [SerializeField] GameObject MAX;
 
-    [SerializeField] int lastActiveButtonIndex = 0;
+    int lastActiveButtonIndex = 0;
+    [SerializeField] int lastCompletedButtonIndex = 0;
     int lastConnectionIndex;
 
-    public bool upgradesAreCompleted = false;
+
+    public delegate void UpgradeButtonAction(string upgradeName, Sprite upgradeSprite);
+
 
 
     private void Start()
     {
-        InitButtons();
-        InitConnections();
-
         MAX.SetActive(false);
+
+        InitButtons();
+        InitCompletedButtons();
+        
+        InitConnections();
     }
+
 
 
     private void InitButtons()
     {
+        // First, enable the next active upgrade and disable the following
         for (int i = 0; i < upgradeButtons.Length; ++i)
         {
             bool startsEnabled = i < lastActiveButtonIndex + 1;
             upgradeButtons[i].Init(startsEnabled, upgradeBranchIndex, i, upgradeMenuCanvas);
-            
-            if (upgradesAreCompleted)
-            {
-                //upgradeButtons[i].SetDone();
-                //upgradeConnection.ProgressOneStage();
-
-                //upgradeMenuCanvas.UpgradeSelectedComplete(upgradeBranchIndex);
-
-            }
         }
     }
+
+    private void InitCompletedButtons()
+    {
+        // Second, progress the upgrades that were completed
+        for (int i = 0; i < lastCompletedButtonIndex; ++i)
+        {
+            upgradeButtons[i].AlwaysProgressUpgradeSelected();
+        }
+    }
+
+
 
     private void InitConnections()
     {
@@ -54,7 +64,7 @@ public class UpgradeButtonBranch : MonoBehaviour
     public void ProgressOneStage()
     {
         upgradeButtons[lastActiveButtonIndex++].SetDone();
-
+        
         if (lastActiveButtonIndex < upgradeButtons.Length)
         {
             upgradeButtons[lastActiveButtonIndex].EnableButton();
@@ -65,12 +75,30 @@ public class UpgradeButtonBranch : MonoBehaviour
 
     }
 
-    public void Complete()
+    public void DisplayCompleteText()
     {
         MAX.SetActive(true);
     }
 
 
 
+    // should be called on application close (or on memory save)
+    public int GetLastActiveButtonIndex()
+    {
+        return lastActiveButtonIndex;
+    }
+
+    // must be called on Awake()
+    public void SetLastCompletedButtonIndex(int lastCompletedButtonIndex)
+    {
+        this.lastCompletedButtonIndex = lastCompletedButtonIndex;
+    }
+
+
+
+    public void GetUpgradeNameAndIcon(int upgradeIndex, out string upgradeName, out Image upgradeIcon)
+    {
+        upgradeButtons[upgradeIndex].GetNameAndIcon(out upgradeName, out upgradeIcon);
+    }
 
 }
