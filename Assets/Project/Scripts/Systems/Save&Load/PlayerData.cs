@@ -28,8 +28,10 @@ public class PlayerData
 
     public bool[] oreMined;
 
+    public bool[] geckosDead;
+
     public int[] upgrades;
-    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, Dictionary<int,int> inventoryData)
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, int sizeLuxinites, int sizeOres, int sizeBridges, int sizeUpgrades, Dictionary<int, int> inventoryData, int sizeGeckos)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
@@ -50,24 +52,26 @@ public class PlayerData
         enableTeleport = new bool[sizeTeleports];
         torchTurnedOn = new bool[sizeTorch];
 
-        //luxiniteMined = new bool[sizeLuxinites];
+        luxiniteMined = new bool[sizeLuxinites];
 
         inventoryItemQuantity = new int[inventoryData.Count];
         inventoryItemID = new int[inventoryData.Count];
-        
+
         int i = 0;
-        foreach(KeyValuePair<int,int> inventoryPair in inventoryData)
+        foreach (KeyValuePair<int, int> inventoryPair in inventoryData)
         {
             inventoryItemQuantity[i] = inventoryPair.Value;
             inventoryItemID[i] = inventoryPair.Key;
             i++;
         }
 
-        //constructedBridges = new bool[sizeBridges];
+        constructedBridges = new bool[sizeBridges];
 
-        //oreMined = new bool[sizeOres];
+        oreMined = new bool[sizeOres];
 
-        //upgrades = new int[sizeUpgrades];
+        geckosDead = new bool[sizeGeckos];
+
+        upgrades = new int[sizeUpgrades];
     }
 
 }

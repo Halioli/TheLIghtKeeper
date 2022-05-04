@@ -9,7 +9,6 @@ public class Gecko : MonoBehaviour
 
     [SerializeField] EnemyAudio enemyAudio;
 
-
     private int routeToGo;
 
     private float tParam;
@@ -18,12 +17,19 @@ public class Gecko : MonoBehaviour
     private bool coroutineAllowed;
 
     private Animator geckoAnimator;
+    private HealthSystem geckoHealthSystem;
 
     public bool playerIsNear;
     public bool touched;
     public bool reachedEnd;
     private bool isGetsTouchedStarted;
 
+    public bool geckoDead;
+
+    private void Awake()
+    {
+        SaveSystem.geckos.Add(this);
+    }
     void Start()
     {
         coroutineAllowed = true;
@@ -35,6 +41,7 @@ public class Gecko : MonoBehaviour
         tParam = 0f;
         speeddModifier = 0.5f;
         transform.position = routes[0].GetChild(0).position;
+        geckoHealthSystem = GetComponent<HealthSystem>();
     }
 
 
@@ -44,6 +51,16 @@ public class Gecko : MonoBehaviour
         {
             geckoAnimator.SetBool("running", true);
             StartCoroutine(GoByTheRoute(routeToGo));
+        }
+
+        if(geckoHealthSystem.health == 0)
+        {
+            geckoDead = true;
+        }
+
+        if(geckoDead)
+        {
+            gameObject.SetActive(false);
         }
     }
 
