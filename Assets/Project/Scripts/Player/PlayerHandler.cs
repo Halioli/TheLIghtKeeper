@@ -6,18 +6,30 @@ public class PlayerHandler : PlayerBase
 {
     // Private Attributes
     private HealthSystem playerHealthSystem;
-    private Rigidbody2D playerRigidbody2D;
+    private bool inCoroutine = false;
 
     // Public Attributes
     public Animator animator;
     public HUDHandler hudHandler;
-
+    public Vector3 respawnPosition = Vector3.zero;
     public bool animationEnds = false;
+    public ParticleSystem healingParticles;
+
+    // Start fades
+    public delegate void PlayerHandlerAction();
+    public static event PlayerHandlerAction OnPlayerDeath;
+    // Restore fades
+    public delegate void RestoreFadesAction();
+    public static event RestoreFadesAction OnRestoreFades;
+    // Tp player
+    public delegate void TeleportPlayerAction(Vector3 landingPos);
+    public static event TeleportPlayerAction OnTeleportPlayer;
+
 
     private void Start()
     {
         playerHealthSystem = GetComponent<HealthSystem>();
-        playerRigidbody2D = GetComponent<Rigidbody2D>();
+        healingParticles.Stop();
     }
 
     void Update()
@@ -28,15 +40,25 @@ public class PlayerHandler : PlayerBase
             if (!animationEnds)
             {
                 playerStates.SetCurrentPlayerState(PlayerState.DEAD);
-                gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
-                StartCoroutine("DeathAnimation");
+                SetPlayerInvulnerable();
+
+                // Send Action
+                if (OnPlayerDeath != null) 
+                    OnPlayerDeath();
+
+                if (!inCoroutine)
+                    StartCoroutine(DeathAnimation());
             }
             else
             {
-                // Teleport to starting position (0, 0)
-                gameObject.layer = LayerMask.NameToLayer("Player");
-                playerRigidbody2D.transform.position = Vector3.zero;
+                // Teleport to desired position
+                SetPlayerNotInvulnerable();
+
+                if (OnTeleportPlayer != null)
+                    OnTeleportPlayer(respawnPosition);
+
                 playerHealthSystem.RestoreHealthToMaxHealth();
+
                 animationEnds = false;
             }
         }
@@ -47,10 +69,19 @@ public class PlayerHandler : PlayerBase
         }
     }
 
-    public void DoDeathImageFade()
+    private void OnEnable()
     {
-        hudHandler.DoDeathImageFade();
+        Torch.OnTorchStartActivation += SetPlayerInvulnerable;
+        Torch.OnTorchEndActivation += SetPlayerNotInvulnerable;
     }
+
+    private void OnDisable()
+    {
+        Torch.OnTorchStartActivation -= SetPlayerInvulnerable;
+        Torch.OnTorchEndActivation -= SetPlayerNotInvulnerable;
+    }
+
+
 
     public void DoFadeToBlack()
     {
@@ -59,7 +90,10 @@ public class PlayerHandler : PlayerBase
 
     public void RestoreHUD()
     {
-        hudHandler.RestoreFades();
+        //hudHandler.RestoreFades();
+
+        if (OnRestoreFades != null)
+            OnRestoreFades();
     }
 
     public void DeathAnimationFinished()
@@ -69,10 +103,46 @@ public class PlayerHandler : PlayerBase
 
     IEnumerator DeathAnimation()
     {
+        inCoroutine = true;
+
+        PlayerInputs.instance.canMove = false;
         animator.SetBool("isDead", true);
-        while (!animationEnds) { yield return null; }
+
+        while (!animationEnds)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(2f);
+        RestoreHUD();
 
         animator.SetBool("isDead", false);
         playerStates.SetCurrentPlayerState(PlayerState.FREE);
+
+        PlayerInputs.instance.canMove = true;
+        inCoroutine = false;
+    }
+
+
+    private void SetPlayerInvulnerable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Invulnerable"); // Enemies layer can't collide with Default layer
+    }
+
+    private void SetPlayerNotInvulnerable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
+    private void PlayHealingParticles()
+    {
+        StartCoroutine("HealingParticles");
+    }
+
+    IEnumerator HealingParticles()
+    {
+        healingParticles.Play();
+        yield return new WaitForSeconds(1f);
+        healingParticles.Stop();
     }
 }

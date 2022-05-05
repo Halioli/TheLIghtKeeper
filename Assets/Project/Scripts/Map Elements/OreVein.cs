@@ -9,16 +9,17 @@ public class OreVein : InteractStation
     public Item materialVein;
     public Item autoMiner;
     public GameObject autoMinerGameObject;
-    public GameObject interactText;
-    public TextMeshProUGUI mssgText;
+    public PopUp popUp;
+    public ParticleSystem[] veinParticlesSystems;
+    public GameObject itemCellGameObject;
 
     // Private Attributes
-    private string[] messagesToShow = { "", "No auto-miner found" };
+    private string[] messagesToShow = { "", "No Auto-Miner found" };
     private bool activated = false;
 
     private void Start()
     {
-        
+        autoMinerGameObject.SetActive(activated);
     }
 
     void Update()
@@ -37,37 +38,51 @@ public class OreVein : InteractStation
     // Interactive pop up disappears
     private void PopUpAppears()
     {
-        interactText.SetActive(true);
+        popUp.ShowInteraction();
     }
 
     // Interactive pop up disappears
     private void PopUpDisappears()
     {
-        interactText.SetActive(false);
-        mssgText.text = messagesToShow[0];
+        popUp.HideAll();
+        popUp.ChangeMessageText(messagesToShow[0]);
     }
 
     public override void StationFunction()
     {
-        if (!activated && playerInventory.InventoryContainsItem(autoMiner))
+        if (activated) return;
+
+        popUp.ShowMessage();
+        if (playerInventory.InventoryContainsItem(autoMiner))
         {
+            activated = true;
+            itemCellGameObject.SetActive(false);
+
             playerInventory.SubstractItemFromInventory(autoMiner);
-            mssgText.text = messagesToShow[2];
-        }
-        else if (!activated && !playerInventory.InventoryContainsItem(autoMiner))
-        {
+            popUp.ChangeMessageText(messagesToShow[0]);
+            StartCoroutine(VeinParticleSystem());
             autoMinerGameObject.SetActive(true);
 
-            //if (!canvasTeleportSelection.activeInHierarchy)
-            //{
-            //    canvasTeleportSelection.SetActive(true);
-            //    PauseMenu.gameIsPaused = true;
-            //}
-            //else
-            //{
-            //    canvasTeleportSelection.SetActive(false);
-            //    PauseMenu.gameIsPaused = false;
-            //}
+            autoMinerGameObject.GetComponent<AutoMiner>().GetsPlacedDown(materialVein);
+        }
+        else
+        {
+            popUp.ChangeMessageText(messagesToShow[1]);
+
+            InvokeOnNotEnoughMaterials();
+        }
+    }
+
+    private IEnumerator VeinParticleSystem()
+    {
+        foreach (ParticleSystem system in veinParticlesSystems)
+        {
+            system.Play();
+        }
+        yield return new WaitForSeconds(1f);
+        foreach (ParticleSystem system in veinParticlesSystems)
+        {
+            system.Stop();
         }
     }
 }

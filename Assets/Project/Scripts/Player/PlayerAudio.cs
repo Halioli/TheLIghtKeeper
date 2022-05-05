@@ -13,19 +13,25 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] AudioSource lanternDroneOnOffAudioSource;
     [SerializeField] AudioSource lanternOnOffAudioSource;
 
-    [SerializeField] AudioClip attackAudioSound;
-    [SerializeField] AudioClip missAttackAudioSound;
+    [SerializeField] AudioClip normalWalkingSound;
+    [SerializeField] AudioClip grassWalkingSound;
+
+    [SerializeField] AudioClip missMineAudioSound;
+    [SerializeField] AudioClip mineErrorAudioSource;
     [SerializeField] AudioClip mineAudioSound;
     [SerializeField] AudioClip mineBreakAudioSound;
+    [SerializeField] AudioClip mineMetalAudioSound;
 
-    [SerializeField] AudioClip miningBuildUpSound;
-    [SerializeField] AudioClip successCriticalMiningSound;
-    [SerializeField] AudioClip failCriticalMiningSound;
+    //[SerializeField] AudioClip miningBuildUpSound;
+    //[SerializeField] AudioClip successCriticalMiningSound;
+    //[SerializeField] AudioClip failCriticalMiningSound;
 
     [SerializeField] AudioClip turnOnLanternSound;
     [SerializeField] AudioClip turnOffLanternSound;
     [SerializeField] AudioClip turnOnLanternDroneSound;
     [SerializeField] AudioClip turnOffLanternDroneSound;
+    [SerializeField] AudioClip refillLanternSound;
+    [SerializeField] AudioClip fullLanternRechargeSound;
 
 
 
@@ -34,24 +40,28 @@ public class PlayerAudio : MonoBehaviour
         // Walking sound
         PlayerMovement.playPlayerWalkingSoundEvent += PlayWalkingSound;
         PlayerMovement.pausePlayerWalkingSoundEvent += StopWalkingSound;
+        LandscapeInteractor.OnGrassEnter += SetGrassWalkingSound;
+        LandscapeInteractor.OnGrassExit += SetNormalWalkingSound;
 
         // ItemPickUp sound
-        PlayerInventory.playerPicksUpItemEvent += PlayItemPickUpSound;
-
-        // Attack sound
-        PlayerCombat.playerAttackEvent += PlayAttackSound;
+        ItemPickUp.playerPicksUpItemEvent += PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop += PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent += PlayReceiveDamageSound;
 
         // Mine sound
-        PlayerMiner.playerMineEvent += PlayMineSound;
-        PlayerMiner.playerBreaksOreEvent += PlayMineBreakSound;
+        PlayerMiner.playerMinesNothingEvent += PlayMissMineSound;
+        PlayerMiner.pickaxeNotStrongEnoughEvent += PlayMineErrorSound;
+        Ore.playerMinesOreEvent += PlayMineOreSound;
+        Ore.playerBreaksOreEvent += PlayMineOreBreakSound;
+        MetalPart.playerMinesMetalPartEvent += PlayMineMetalSound;
+        MetalPart.playerBreaksMetalPartEvent += PlayMineMetalBreakSound;
 
         // MineBuildUp sound
-        PlayerMiner.playerMinesEvent += PlayMineBuildUpSound;
-        PlayerMiner.playerSucceessfulMineEvent += PlaySuccessfulMineSound;
-        PlayerMiner.playerFailMineEvent += PlayFailMineSound;
+        //PlayerMiner.playerMinesEvent += PlayMineBuildUpSound;
+        //PlayerMiner.playerSucceessfulMineEvent += PlaySuccessfulMineSound;
+        //PlayerMiner.playerFailMineEvent += PlayFailMineSound;
 
         // Lantern sound
         Lamp.turnOnLanternEvent += PlayLanternDroneSound;
@@ -60,6 +70,10 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternDroneSoundEvent += PlayTurnOffLanternDroneSound;
         Lamp.turnOnLanternEvent += PlayTurnOnLanternSound;
         Lamp.turnOffLanternEvent += PlayTurnOffLanternSound;
+        LanternFuelGameObject.onLanternFuelRefill += PlayRefillLanternSound;
+        PlayerLightChecker.OnPlayerEntersCoreLight += PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials += PlayMineErrorSound;
     }
 
 
@@ -68,24 +82,28 @@ public class PlayerAudio : MonoBehaviour
         // Walking sound
         PlayerMovement.playPlayerWalkingSoundEvent -= PlayWalkingSound;
         PlayerMovement.pausePlayerWalkingSoundEvent -= StopWalkingSound;
+        LandscapeInteractor.OnGrassEnter -= SetGrassWalkingSound;
+        LandscapeInteractor.OnGrassExit -= SetNormalWalkingSound;
 
         // ItemPickUp sound
-        PlayerInventory.playerPicksUpItemEvent -= PlayItemPickUpSound;
-
-        // Attack sound
-        PlayerCombat.playerAttackEvent -= PlayAttackSound;
+        ItemPickUp.playerPicksUpItemEvent -= PlayItemPickUpSound;
+        HotbarInventory.OnInventoryItemDrop -= PlayItemDroppedSound;
 
         // ReceiveDamage sound
         PlayerCombat.playerReceivesDamageEvent -= PlayReceiveDamageSound;
 
         // Mine sound
-        PlayerMiner.playerMineEvent -= PlayMineSound;
-        PlayerMiner.playerBreaksOreEvent -= PlayMineBreakSound;
+        PlayerMiner.playerMinesNothingEvent -= PlayMissMineSound;
+        PlayerMiner.pickaxeNotStrongEnoughEvent -= PlayMineErrorSound;
+        Ore.playerMinesOreEvent -= PlayMineOreSound;
+        Ore.playerBreaksOreEvent -= PlayMineOreBreakSound;
+        MetalPart.playerMinesMetalPartEvent -= PlayMineMetalSound;
+        MetalPart.playerBreaksMetalPartEvent -= PlayMineMetalBreakSound;
 
         // MineBuildUp sound
-        PlayerMiner.playerMinesEvent -= PlayMineBuildUpSound;
-        PlayerMiner.playerSucceessfulMineEvent -= PlaySuccessfulMineSound;
-        PlayerMiner.playerFailMineEvent -= PlayFailMineSound;
+        //PlayerMiner.playerMinesEvent -= PlayMineBuildUpSound;
+        //PlayerMiner.playerSucceessfulMineEvent -= PlaySuccessfulMineSound;
+        //PlayerMiner.playerFailMineEvent -= PlayFailMineSound;
 
         // Lantern sound
         Lamp.turnOnLanternEvent -= PlayLanternDroneSound;
@@ -94,6 +112,10 @@ public class PlayerAudio : MonoBehaviour
         Lamp.turnOffLanternDroneSoundEvent -= PlayTurnOffLanternDroneSound;
         Lamp.turnOnLanternEvent -= PlayTurnOnLanternSound;
         Lamp.turnOffLanternEvent -= PlayTurnOffLanternSound;
+        LanternFuelGameObject.onLanternFuelRefill -= PlayRefillLanternSound;
+        PlayerLightChecker.OnPlayerEntersCoreLight -= PlayFullLanternRechargeSound;
+
+        InteractStation.OnNotEnoughMaterials -= PlayMineErrorSound;
     }
 
 
@@ -109,27 +131,35 @@ public class PlayerAudio : MonoBehaviour
         walkingAudioSource.Stop();
     }
 
+    private void SetNormalWalkingSound()
+    {
+        walkingAudioSource.clip = normalWalkingSound;
+        walkingAudioSource.Play();
+    }
+
+    private void SetGrassWalkingSound()
+    {
+        walkingAudioSource.clip = grassWalkingSound;
+        walkingAudioSource.Play();
+    }
+
+
 
     // ItemPickUp sound
-    public void PlayItemPickUpSound()
+    private void PlayItemPickUpSound()
     {
+        itemPickUpAudioSource.pitch = 1f;
+        itemPickUpAudioSource.Play();
+    }
+
+    private void PlayItemDroppedSound()
+    {
+        itemPickUpAudioSource.pitch = 0.75f;
         itemPickUpAudioSource.Play();
     }
 
 
-    // Attack sound
-    public void PlayAttackSound()
-    {
-        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
-        attackAndMineAudioSource.clip = attackAudioSound;
-        attackAndMineAudioSource.Play();
-    }
-    public void PlayMissAttackSound()
-    {
-        attackAndMineAudioSource.clip = missAttackAudioSound;
-        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
-        attackAndMineAudioSource.Play();
-    }
+
 
     // ReceiveDamage sound
     public void PlayReceiveDamageSound()
@@ -140,41 +170,70 @@ public class PlayerAudio : MonoBehaviour
 
 
     // Mine sound
-    public void PlayMineSound()
+
+    public void PlayMissMineSound()
+    {
+        attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.3f);
+        attackAndMineAudioSource.clip = missMineAudioSound;
+        attackAndMineAudioSource.Play();
+    }
+
+    private void PlayMineErrorSound()
+    {
+        attackAndMineAudioSource.clip = mineErrorAudioSource;
+        attackAndMineAudioSource.pitch = 0.55f;
+        attackAndMineAudioSource.Play();
+    }
+
+    private void PlayMineOreSound()
     {
         attackAndMineAudioSource.clip = mineAudioSound;
         attackAndMineAudioSource.pitch = Random.Range(0.3f, 0.5f);
         attackAndMineAudioSource.Play();
     }
 
-    public void PlayMineBreakSound()
+    private void PlayMineOreBreakSound()
     {
         attackAndMineAudioSource.clip = mineBreakAudioSound;
         attackAndMineAudioSource.pitch = Random.Range(0.8f, 1.2f);
         attackAndMineAudioSource.Play();
     }
 
+    private void PlayMineMetalSound()
+    {
+        attackAndMineAudioSource.clip = mineMetalAudioSound;
+        attackAndMineAudioSource.pitch = Random.Range(0.6f, 0.8f);
+        attackAndMineAudioSource.Play();
+    }
+
+    private void PlayMineMetalBreakSound()
+    {
+        attackAndMineAudioSource.clip = mineMetalAudioSound;
+        attackAndMineAudioSource.pitch = 1.3f;
+        attackAndMineAudioSource.Play();
+    }
+
     // MineBuildUp sound
-    public void PlayMineBuildUpSound()
-    {
-        mineBuildUpAudioSource.clip = miningBuildUpSound;
-        mineBuildUpAudioSource.pitch = 0.7f;
-        mineBuildUpAudioSource.Play();
-    }
+    //public void PlayMineBuildUpSound()
+    //{
+    //    mineBuildUpAudioSource.clip = miningBuildUpSound;
+    //    mineBuildUpAudioSource.pitch = 0.7f;
+    //    mineBuildUpAudioSource.Play();
+    //}
 
-    public void PlaySuccessfulMineSound()
-    {
-        mineBuildUpAudioSource.clip = successCriticalMiningSound;
-        mineBuildUpAudioSource.pitch = 1f;
-        mineBuildUpAudioSource.Play();
-    }
+    //public void PlaySuccessfulMineSound()
+    //{
+    //    mineBuildUpAudioSource.clip = successCriticalMiningSound;
+    //    mineBuildUpAudioSource.pitch = 1f;
+    //    mineBuildUpAudioSource.Play();
+    //}
 
-    public void PlayFailMineSound()
-    {
-        mineBuildUpAudioSource.clip = failCriticalMiningSound;
-        mineBuildUpAudioSource.pitch = 1.2f;
-        mineBuildUpAudioSource.Play();
-    }
+    //public void PlayFailMineSound()
+    //{
+    //    mineBuildUpAudioSource.clip = failCriticalMiningSound;
+    //    mineBuildUpAudioSource.pitch = 1.2f;
+    //    mineBuildUpAudioSource.Play();
+    //}
 
 
     // Lantern sound
@@ -190,28 +249,57 @@ public class PlayerAudio : MonoBehaviour
 
     private void PlayTurnOnLanternDroneSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternDroneOnOffAudioSource.clip = turnOnLanternDroneSound;
         lanternDroneOnOffAudioSource.Play();
     }
 
     private void PlayTurnOffLanternDroneSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternDroneOnOffAudioSource.clip = turnOffLanternDroneSound;
         lanternDroneOnOffAudioSource.Play();
     }
 
     private void PlayTurnOnLanternSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternOnOffAudioSource.clip = turnOnLanternSound;
+        lanternOnOffAudioSource.pitch = 1f;
+        lanternOnOffAudioSource.volume = 0.5f;
         lanternOnOffAudioSource.Play();
     }
 
     private void PlayTurnOffLanternSound()
     {
+        if (PlayerInputs.instance.ignoreLights) return;
+
         lanternOnOffAudioSource.clip = turnOffLanternSound;
+        lanternOnOffAudioSource.pitch = 1f;
+        lanternOnOffAudioSource.volume = 0.5f;
         lanternOnOffAudioSource.Play();
     }
 
+    private void PlayRefillLanternSound()
+    {
+        lanternOnOffAudioSource.clip = refillLanternSound;
+        lanternOnOffAudioSource.pitch = Random.Range(0.8f, 1.2f);
+        lanternOnOffAudioSource.volume = 0.15f;
+        lanternOnOffAudioSource.Play();
+    }
+
+    private void PlayFullLanternRechargeSound()
+    {
+        if (PlayerInputs.instance.ignoreLights) return;
+
+        attackAndMineAudioSource.clip = fullLanternRechargeSound;
+        attackAndMineAudioSource.pitch = 1.7f;
+        lanternOnOffAudioSource.volume = 0.05f;
+        attackAndMineAudioSource.Play();
+    }
 
 
 }

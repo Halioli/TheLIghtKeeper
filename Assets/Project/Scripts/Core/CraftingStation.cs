@@ -9,12 +9,22 @@ public class CraftingStation : InteractStation
     private bool isOpen = false;
     [SerializeField] CraftingMenu craftingMenu;
 
+    bool itemsWereSentToStorage = false;
+
+    bool isUsingAuxiliar = false;
+
     // Public Attributes
     public GameObject interactText;
+    public GameObject backgroundText;
     public GameObject craftingCanvasGameObject;
-    public GameObject playerHUDGameObject;
 
     public ParticleSystem[] craftingParticles;
+
+
+    public delegate void ItemSentToStorageMessegeAction();
+    public static event ItemSentToStorageMessegeAction OnItemSentToStorage;
+
+
 
     private void Start()
     {
@@ -27,6 +37,8 @@ public class CraftingStation : InteractStation
     }
     void Update()
     {
+        if (isUsingAuxiliar) return;
+
         // If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
         {
@@ -46,11 +58,19 @@ public class CraftingStation : InteractStation
     private void OnEnable()
     {
         CraftingSystem.OnCrafting += PlayCraftingParticles;
+        CraftingSystem.OnItemSentToStorage += () => itemsWereSentToStorage = true;
+
+        CraftingStationAuxiliar.OnMenuOpen += AuxiliarOpenCraftingInventory;
+        CraftingStationAuxiliar.OnMenuClose += AuxiliarCloseCraftingInventory;
     }
 
     private void OnDisable()
     {
         CraftingSystem.OnCrafting -= PlayCraftingParticles;
+        CraftingSystem.OnItemSentToStorage -= () => itemsWereSentToStorage = true;
+
+        CraftingStationAuxiliar.OnMenuOpen -= AuxiliarOpenCraftingInventory;
+        CraftingStationAuxiliar.OnMenuClose -= AuxiliarCloseCraftingInventory;
     }
 
     //From InteractStation script
@@ -70,12 +90,14 @@ public class CraftingStation : InteractStation
     private void PopUpAppears()
     {
         interactText.SetActive(true);
+        backgroundText.SetActive(true);
     }
 
     //Interactive pop up disappears
     private void PopUpDisappears()
     {
         interactText.SetActive(false);
+        backgroundText.SetActive(false);
     }
 
     private void PlayCraftingParticles()
@@ -102,14 +124,14 @@ public class CraftingStation : InteractStation
     private void OpenCraftingInventory()
     {
         DoOnInteractOpen();
+        DoOnInteractDescriptionOpen();
 
         isOpen = true;
 
-        playerHUDGameObject.SetActive(false);
         craftingCanvasGameObject.SetActive(true);
         craftingMenu.ShowRecepies();
 
-        PauseMenu.gameIsPaused = true;
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
 
     private void CloseCraftingInventory()
@@ -118,10 +140,33 @@ public class CraftingStation : InteractStation
 
         isOpen = false;
 
-        playerHUDGameObject.SetActive(true);
         craftingCanvasGameObject.SetActive(false);
 
-        PauseMenu.gameIsPaused = false;
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
+
+
+        if (itemsWereSentToStorage)
+        {
+            itemsWereSentToStorage = false;
+            if (OnItemSentToStorage != null) OnItemSentToStorage();
+        }
     }
+
+
+    private void AuxiliarOpenCraftingInventory()
+    {
+        isUsingAuxiliar = true;
+
+        OpenCraftingInventory();
+    }
+
+    private void AuxiliarCloseCraftingInventory()
+    {
+        if (playerInsideTriggerArea) return;
+
+        isUsingAuxiliar = false;
+        //CloseCraftingInventory();
+    }
+
 
 }

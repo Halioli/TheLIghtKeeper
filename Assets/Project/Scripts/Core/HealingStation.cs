@@ -8,15 +8,24 @@ public class HealingStation : MonoBehaviour
     private bool playerInside;
     private GameObject player;
     private HealthSystem playerHealthSystem;
-    public TextMeshProUGUI maxHealthMessage;
+    public GameObject maxHealthMessage;
+    public GameObject backgroundText;
+    public Animator animator;
+
+    [SerializeField] AudioSource healAudioSource;
+
+    public delegate void PlayerHealedByHealingStation();
+    public static event PlayerHealedByHealingStation OnHealedByHealingStation;
+
 
     // Start is called before the first frame update
     void Start()
     {
         playerInside = false;
-        player = GameObject.Find("LightScenePlayer");
+        player = GameObject.FindGameObjectWithTag("Player");
         playerHealthSystem = player.GetComponent<HealthSystem>();
-        maxHealthMessage.alpha = 0;
+        maxHealthMessage.SetActive(false);
+        backgroundText.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,7 +34,7 @@ public class HealingStation : MonoBehaviour
         {
             playerInside = true;
             RestorePlayerHealth();
-            Debug.Log(playerInside);
+            healAudioSource.Play();
         }
 
     }
@@ -35,9 +44,9 @@ public class HealingStation : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInside = false;
-            Debug.Log(playerInside);
             RestorePlayerHealth();
-            maxHealthMessage.alpha = 0;
+            maxHealthMessage.SetActive(false);
+            backgroundText.SetActive(false);
         }
     }
 
@@ -46,7 +55,9 @@ public class HealingStation : MonoBehaviour
         if (playerHealthSystem.GetHealth() < playerHealthSystem.maxHealth)
         {
             ShowPlayerHealedMessage();
-            playerHealthSystem.RestoreHealthToMaxHealth();
+            if (OnHealedByHealingStation != null)
+                OnHealedByHealingStation();
+            animator.SetBool("isHealed", true);
         }
         else
         {
@@ -56,12 +67,15 @@ public class HealingStation : MonoBehaviour
 
     private void ShowMaxHealthMessage()
     {
-        maxHealthMessage.text = "Player at Max Health";
-        maxHealthMessage.alpha = 100;
+        //maxHealthMessage.text = "Player at Max Health";
+        backgroundText.SetActive(true);
+        maxHealthMessage.SetActive(true);
     }
+
     private void ShowPlayerHealedMessage()
     {
-        maxHealthMessage.text = "Player Healed";
-        maxHealthMessage.alpha = 100;
+        //maxHealthMessage.text = "Player Healed";
+        backgroundText.SetActive(true);
+        maxHealthMessage.SetActive(true);
     }
 }

@@ -7,6 +7,11 @@ public class ShipExit : MonoBehaviour
 {
     public Vector2 shipExteriorPosition;
     public HUDHandler hudHandler;
+    public GameObject mainCamera;
+
+    public delegate void ShipExitAction();
+    public static event ShipExitAction OnExit;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,12 +26,19 @@ public class ShipExit : MonoBehaviour
 
     IEnumerator TeleportToShipExterior(GameObject gameObjectTeleported)
     {
+        PlayerInputs.instance.ignoreLights = true;
+        if (OnExit != null) OnExit();
+
         hudHandler.DoFadeToBlack();
         PlayerInputs.instance.canMove = false;
 
         yield return new WaitForSeconds(1f);
         gameObjectTeleported.transform.position = shipExteriorPosition;
+        mainCamera.transform.position = shipExteriorPosition;
+        
+        yield return new WaitForSeconds(1f);
         hudHandler.RestoreFades();
         PlayerInputs.instance.canMove = true;
+        PlayerInputs.instance.ignoreLights = false;
     }
 }

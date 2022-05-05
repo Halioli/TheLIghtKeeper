@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b69bf5647856226448733f6dfdba890c, type: 3}
+  m_Name: LightGenerator
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 2707959531317661483, guid: 44a7555b6df4ad343959bc7f2ce1bf94, type: 3}
+  itemName: Light Generator
+  description: 'Generates a permanent Electric Light Source and a Crafting Station.
+
+    Needs
+    to be placed on top of a Light Fisure.'
+  ID: 23
+  itemType: 1
+  isSpecial: 0
+  stackSize: 1
+  sprite: {fileID: 21300000, guid: 5d374d90b0bf43f44b6dfcd2e55cf7a5, type: 3}

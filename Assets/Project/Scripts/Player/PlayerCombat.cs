@@ -22,7 +22,7 @@ public class PlayerCombat : PlayerBase
     protected HealthSystem healthSystem;
 
     // Public Attributes
-    public GameObject attackArea;
+    //public GameObject attackArea;
     public HUDHandler hudHandler;
     public bool targetWasHitAlready = false;
 
@@ -36,7 +36,8 @@ public class PlayerCombat : PlayerBase
     public static event PlayerAttackSound playerMissesAttackEvent;
     public static event PlayerAttackSound playerReceivesDamageEvent;
 
-
+    public delegate void PlayerReceivesDamage();
+    public static event PlayerReceivesDamage OnReceivesDamage;
 
     private void Start()
     {
@@ -44,16 +45,20 @@ public class PlayerCombat : PlayerBase
         attackSystem = GetComponent<AttackSystem>();
         healthSystem = GetComponent<HealthSystem>();
         inGameHUD = GetComponentInChildren<InGameHUDHandler>();
+        animator = GetComponent<Animator>();
         playerBlood.Stop();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        if (PlayerInputs.instance.PlayerClickedAttackButton() && canAttack && playerStates.PlayerStateIsFree())
-        {
-            StartAttacking();
-        }
+        DarknessFaint.OnFaintEndRespawn += ReceiveFaintDamage;
     }
+
+    private void OnDisable()
+    {
+        DarknessFaint.OnFaintEndRespawn -= ReceiveFaintDamage;
+    }
+
 
     private void StartAttacking()
     {
@@ -100,8 +105,12 @@ public class PlayerCombat : PlayerBase
         else
         {
             StartCoroutine(Invulnerability());
-            inGameHUD.DoRecieveDamageFadeAndShake();
-            hudHandler.ShowRecieveDamageFades();
+
+            if(OnReceivesDamage != null)
+                OnReceivesDamage();
+            
+            //inGameHUD.DoReceiveDamageFadeAndShake();
+            //hudHandler.ShowRecieveDamageFades();
         }
 
         healthSystem.ReceiveDamage(damageValue);
@@ -117,7 +126,7 @@ public class PlayerCombat : PlayerBase
     IEnumerator Invulnerability()
     {
         isInvulnerable = true;
-        gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
+        //gameObject.layer = LayerMask.NameToLayer("Default"); // Enemies layer can't collide with Default layer
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         Color original = spriteRenderer.color;
@@ -135,7 +144,7 @@ public class PlayerCombat : PlayerBase
         spriteRenderer.color = original;
         currentInvulnerabilityTime = INVULNERABILITY_TIME;
         isInvulnerable = false;
-        gameObject.layer = LayerMask.NameToLayer("Player");
+        //gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
     private void FlipPlayerSpriteFacingWhereToAttack()
@@ -173,5 +182,18 @@ public class PlayerCombat : PlayerBase
         //    playerAttackEvent();
         //}
     }
+
+
+    private void ReceiveFaintDamage()
+    {
+        int faintDamage = 2;
+
+        if (healthSystem.health > faintDamage)
+        {
+            healthSystem.ReceiveDamage(faintDamage);
+        }
+
+    }
+
 
 }
