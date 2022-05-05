@@ -116,10 +116,12 @@ public class UpgradesSystem : MonoBehaviour
 
     private void RemoveUpgradeRequiredItems(Upgrade upgrade)
     {
-        foreach (KeyValuePair<Item, int> requiredItem in upgrade.requiredItems)
-        {
-            playerInventory.SubstractNItemsFromInventory(requiredItem.Key, requiredItem.Value);
-        }
+        //foreach (KeyValuePair<Item, int> requiredItem in upgrade.requiredItems)
+        //{
+        //    playerInventory.SubstractNItemsFromInventory(requiredItem.Key, requiredItem.Value);
+        //}
+
+        playerInventory.ProgressiveSubstractNItemsFromInventory(upgrade.requiredItemsList.ToArray(), upgrade.requiredAmountsList.ToArray());
     }
 
     public void DoOnUpgardeFail()

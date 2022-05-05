@@ -269,6 +269,7 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+
     public void SubstractItemFromInventorySlot(int inventorySlot)
     {
         inventory[inventorySlot].SubstractOneItemFromStack();
@@ -287,6 +288,43 @@ public class Inventory : MonoBehaviour
 
         gotChanged = true;
     }
+
+
+    // Call ONLY IF can substract all items
+    public void ProgressiveSubstractNItemsFromInventory(Item[] itemsToSubstract, int[] amountsToSubstract)
+    {
+        // Find biggest amount to sbstract
+        int biggestAmount = amountsToSubstract[0];
+        for (int i = 1; i < amountsToSubstract.Length; ++i)
+        {
+            biggestAmount = biggestAmount < amountsToSubstract[i] ? amountsToSubstract[i] : biggestAmount;
+        }
+
+
+        StartCoroutine(ProgressivelySubstractItems(itemsToSubstract, amountsToSubstract, biggestAmount));
+    }
+
+    IEnumerator ProgressivelySubstractItems(Item[] itemsToSubstract, int[] amountsToSubstract, int biggestAmount)
+    {
+        for (int count = 0; count < biggestAmount; ++count)
+        {
+            for (int i = 0; i < amountsToSubstract.Length; ++i)
+            {
+                if (amountsToSubstract[i] > 0)
+                {
+                    SubstractItemFromInventory(itemsToSubstract[i]);
+                    --amountsToSubstract[i];
+                }
+            }
+
+            yield return new WaitForSeconds(0.02f);
+
+        }
+
+
+    }
+
+
 
     // Other Methods
     public List<ItemStack.itemStackToDisplay> Get3ItemsToDisplayInHUD()

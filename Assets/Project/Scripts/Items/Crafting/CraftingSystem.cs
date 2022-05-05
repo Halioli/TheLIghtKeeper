@@ -10,7 +10,6 @@ public class CraftingSystem : MonoBehaviour
 
     private Inventory playerInventory;
     private Dictionary<Item, int> playerInventoryItems;
-    private int numberOfEmptySlotsInPlayerInventory;
 
     private Vector2 droppedItemPosition;
 
@@ -99,15 +98,10 @@ public class CraftingSystem : MonoBehaviour
     private void UpdatePlayerInventoryData()
     {
         playerInventoryItems.Clear();
-        numberOfEmptySlotsInPlayerInventory = 0;
 
         foreach (ItemStack playerInventoryItemStack in playerInventory.inventory)
         {
-            if (playerInventoryItemStack.StackIsEmpty())
-            {
-                ++numberOfEmptySlotsInPlayerInventory;
-            }
-            else
+            if (!playerInventoryItemStack.StackIsEmpty())
             {
                 if (!playerInventoryItems.ContainsKey(playerInventoryItemStack.itemInStack))
                 {
