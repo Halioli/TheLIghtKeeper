@@ -28,7 +28,6 @@ public class InteractStation : MonoBehaviour
     private void Awake()
     {
         playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
-        Debug.Log(playerInventory);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

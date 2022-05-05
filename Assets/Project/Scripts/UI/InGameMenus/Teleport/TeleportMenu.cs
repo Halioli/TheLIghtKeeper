@@ -30,6 +30,9 @@ public class TeleportMenu : MonoBehaviour
     {
         Teleporter.OnActivation += UpdateTeleportSelectionMenu;
         Teleporter.OnInteraction += UpdateTeleportSelectionMenu;
+        
+        Teleporter.OnMenuEnter += UpdateTeleportSelectionMenu;
+        Teleporter.OnMenuExit += DeactivateSelf;
 
         TeleportButton.OnSelection += DeactivateSelf;
     }
@@ -38,7 +41,10 @@ public class TeleportMenu : MonoBehaviour
     {
         Teleporter.OnActivation -= UpdateTeleportSelectionMenu;
         Teleporter.OnInteraction -= UpdateTeleportSelectionMenu;
-
+        
+        Teleporter.OnMenuEnter -= UpdateTeleportSelectionMenu;
+        Teleporter.OnMenuExit -= DeactivateSelf;
+        
         TeleportButton.OnSelection -= DeactivateSelf;
     }
 
@@ -50,8 +56,6 @@ public class TeleportMenu : MonoBehaviour
         {
             if (teleportSystem.teleports[i].activated)
             {
-                teleportButtonsGameObjects[i].interactable = true;
-
                 if (i == teleportSystem.currentTeleportInUse)
                 {
                     teleportButtonsGameObjects[i].GetComponent<Button>().interactable = false;
@@ -60,11 +64,47 @@ public class TeleportMenu : MonoBehaviour
                 {
                     teleportButtonsGameObjects[i].GetComponent<Button>().interactable = true;
                 }
+                else 
+                {
+                    teleportButtonsGameObjects[i].interactable = true;
+                }
+            }
+        }
+    }
+
+    public void UpdateTeleportSelectionMenu()
+    {
+        currentTeleportRuneImage.sprite = currentTeleportSprites[teleportSystem.currentTeleportInUse];
+
+        for (int i = 0; i < teleportSystem.teleports.Count; ++i)
+        {
+            if (teleportSystem.teleports[i].activated)
+            {
+                if (i == teleportSystem.currentTeleportInUse)
+                {
+                    teleportButtonsGameObjects[i].GetComponent<Button>().interactable = false;
+                }
+                else if (!teleportButtonsGameObjects[i].GetComponent<Button>().interactable)
+                {
+                    teleportButtonsGameObjects[i].GetComponent<Button>().interactable = true;
+                }
+                else
+                {
+                    teleportButtonsGameObjects[i].interactable = true;
+                }
             }
         }
     }
 
     private void DeactivateSelf(int teleportIndex)
+    {
+        hudGameObject.SetActive(true);
+        PauseMenu.gameIsPaused = false;
+
+        gameObject.SetActive(false);
+    }
+
+    private void DeactivateSelf()
     {
         hudGameObject.SetActive(true);
         PauseMenu.gameIsPaused = false;

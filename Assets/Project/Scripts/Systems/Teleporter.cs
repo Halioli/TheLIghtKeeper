@@ -8,6 +8,8 @@ public class Teleporter : InteractStation
     // Private Attributes
     private Vector2 spawnPosition;
     private Animator animator;
+    private bool updatedSystem = false;
+    private bool updatedActivation = false;
 
     // Public Attributes
     //Station
@@ -54,8 +56,13 @@ public class Teleporter : InteractStation
     {
         if (playerInsideTriggerArea)
         {
-            if (OnInteraction != null)
-                OnInteraction(teleportName);
+            if (!updatedSystem)
+            {
+                if (OnInteraction != null)
+                    OnInteraction(teleportName);
+
+                updatedSystem = true;
+            }            
 
             GetInput();
             PopUpAppears();
@@ -63,6 +70,7 @@ public class Teleporter : InteractStation
         else
         {
             PopUpDisappears();
+            updatedSystem = false;
         }
     }
 
@@ -109,19 +117,16 @@ public class Teleporter : InteractStation
         {
             if (!canvasTeleportSelection.activeInHierarchy)
             {
-                hudGameObject.SetActive(false);
                 canvasTeleportSelection.SetActive(true);
+
+                hudGameObject.SetActive(false);
                 PauseMenu.gameIsPaused = true;
 
                 if (OnMenuEnter != null) 
                     OnMenuEnter();
             }
-            else
+            else if (canvasTeleportSelection.activeInHierarchy)
             {
-                hudGameObject.SetActive(true);
-                canvasTeleportSelection.SetActive(false);
-                PauseMenu.gameIsPaused = false;
-
                 if (OnMenuExit != null) 
                     OnMenuExit();
             }
