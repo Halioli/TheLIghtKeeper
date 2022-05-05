@@ -135,17 +135,39 @@ public class Inventory : MonoBehaviour
         bool hasEnough = false;
         int i = 0;
         int amountInInventory = 0;
-        while (!hasEnough && i < numberOfInventorySlots)
+        while (i < numberOfInventorySlots)
         {
             if (inventory[i].StackContainsItem(itemToCompare))
             {
                 amountInInventory += inventory[i].GetAmountInStack();
             }
-            hasEnough = amountInInventory >= requiredAmount;
             i++;
         }
+
+        hasEnough = amountInInventory >= requiredAmount;
+
         return hasEnough;
     }
+
+    public bool InventoryContainsItemAndAmount(Item itemToCompare, int requiredAmount, out int amountInInventory)
+    {
+        bool hasEnough = false;
+        int i = 0;
+        amountInInventory = 0;
+        while (i < numberOfInventorySlots)
+        {
+            if (inventory[i].StackContainsItem(itemToCompare))
+            {
+                amountInInventory += inventory[i].GetAmountInStack();
+            }
+            ++i;
+        }
+        
+        hasEnough = amountInInventory >= requiredAmount;
+
+        return hasEnough;
+    }
+
 
     public bool AddItemToInventory(Item itemToAdd)
     {
