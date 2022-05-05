@@ -142,13 +142,8 @@ public class Teleporter : InteractStation
         PlayerInputs.instance.canMove = true;
         popUp.GetComponent<PopUp>().HideMessage();
 
-        if (!updatedActivation)
-        {
-            if (OnActivation != null)
-                OnActivation(teleportName);
-
-            updatedActivation = true;
-        }
+        if (OnActivation != null)
+            OnActivation(teleportName);
     }
 
     private void DesactivateSprite()
