@@ -56,12 +56,14 @@ public class CraftingMenu : MonoBehaviour
     {
         CraftableItemButton.OnHoverRecepieButton += ResetRecepieDisplayer;
         CraftableItemButton.OnRecepieButtonHoverExit += HideRecepieDisplayer;
+        CraftingSystem.OnReceipeCraftingSuccess += ResetRecepieDisplayer;
     }
 
     private void OnDisable()
     {
         CraftableItemButton.OnHoverRecepieButton -= ResetRecepieDisplayer;
         CraftableItemButton.OnRecepieButtonHoverExit -= HideRecepieDisplayer;
+        CraftingSystem.OnReceipeCraftingSuccess -= ResetRecepieDisplayer;
     }
 
 
@@ -123,17 +125,25 @@ public class CraftingMenu : MonoBehaviour
     }
 
 
+    // Called on hover && after click and craft success
     private void ResetRecepieDisplayer(int recepieIndex)
     {
+        int[] amountsInInventory = new int[3];
+
+        craftingSystem.TestSelectedReceipe(recepieIndex, amountsInInventory);
+
+
+
         craftingRecepieDisplayerGameObject.SetActive(true);
 
         Recepie recepie = craftingSystem.availableRecepies[recepieIndex];
         craftingRecepieDisplayer.SetRecepieResultingItem(recepie.resultingItemUnit.ID, recepie.resultingAmountUnit);
 
 
+
         for (int i = 0; i < recepie.requiredItemsList.Count; ++i)
         {
-            craftingRecepieDisplayer.AddRequiredMaterial(i, recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i]);
+            craftingRecepieDisplayer.AddRequiredMaterial(i, recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i], amountsInInventory[i]);
         }
         for (int i = recepie.requiredItemsList.Count; i < MAX_REQUIRED_MATERIALS; ++i)
         {

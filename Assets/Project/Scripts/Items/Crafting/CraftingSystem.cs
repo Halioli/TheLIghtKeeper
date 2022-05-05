@@ -14,6 +14,8 @@ public class CraftingSystem : MonoBehaviour
 
     private Vector2 droppedItemPosition;
 
+    private bool canCraft = false;
+
     [SerializeField] Inventory storageStationInventory;
 
     // Public Attributes
@@ -26,6 +28,9 @@ public class CraftingSystem : MonoBehaviour
     public delegate void CraftAction();
     public static event CraftAction OnCrafting;
     public static event CraftAction OnCraftingFail;
+
+    public delegate void CraftAction2(int receipeIndex);
+    public static event CraftAction2 OnReceipeCraftingSuccess;
 
     public delegate void ItemCraftedAction(int itemID);
     public static event ItemCraftedAction OnItemCraft;
@@ -114,16 +119,23 @@ public class CraftingSystem : MonoBehaviour
 
     }
 
-    private bool PlayerHasEnoughItemsToCraftRecepie(Recepie recepieToCraft)
+    private bool PlayerHasEnoughItemsToCraftRecepie(Recepie recepieToCraft, int[] amountsInInventory)
     {
+        bool hasEnoughItems = true;
+        int i = 0;
+
         foreach (KeyValuePair<Item, int> requiredItem in recepieToCraft.requiredItems)
         {
-            if (!playerInventory.InventoryContainsItemAndAmount(requiredItem.Key, requiredItem.Value))
+            amountsInInventory[i] = 0;
+
+            if (!playerInventory.InventoryContainsItemAndAmount(requiredItem.Key, requiredItem.Value, out amountsInInventory[i]))
             {
-                return false;
+                hasEnoughItems = false;
             }
+
+            ++i;
         }
-        return true;
+        return hasEnoughItems;
     }
 
     private void RemoveRecepieRequiredItems(Recepie recepieToCraft)
@@ -164,15 +176,23 @@ public class CraftingSystem : MonoBehaviour
     }
 
 
+    public void TestSelectedReceipe(int selectedRecepieIndex, int[] amountsInInventory)
+    {
+        UpdatePlayerInventoryData();
+
+        canCraft = PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex], amountsInInventory);        
+    }
+
 
     public void RecepieWasSelected(int selectedRecepieIndex)
     {
         UpdatePlayerInventoryData();
-        if (PlayerHasEnoughItemsToCraftRecepie(availableRecepies[selectedRecepieIndex]))
+        if (canCraft)
         {
             RemoveRecepieRequiredItems(availableRecepies[selectedRecepieIndex]);
             AddRecepieResultingItems(availableRecepies[selectedRecepieIndex]);
             if (OnCrafting != null) OnCrafting();
+            if (OnReceipeCraftingSuccess != null) OnReceipeCraftingSuccess(selectedRecepieIndex);
         }
         else
         {
