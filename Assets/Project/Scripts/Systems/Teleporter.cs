@@ -117,19 +117,16 @@ public class Teleporter : InteractStation
         {
             if (!canvasTeleportSelection.activeInHierarchy)
             {
-                hudGameObject.SetActive(false);
                 canvasTeleportSelection.SetActive(true);
+
+                hudGameObject.SetActive(false);
                 PauseMenu.gameIsPaused = true;
 
                 if (OnMenuEnter != null) 
                     OnMenuEnter();
             }
-            else
+            else if (canvasTeleportSelection.activeInHierarchy)
             {
-                hudGameObject.SetActive(true);
-                canvasTeleportSelection.SetActive(false);
-                PauseMenu.gameIsPaused = false;
-
                 if (OnMenuExit != null) 
                     OnMenuExit();
             }
