@@ -42,7 +42,7 @@ public class UpgradeButton : HoverButton
 
     public void DisplayUpgrade() // called on hover enter
     {
-        upgradeMenuCanvas.DisplayUpgrade(upgrade, isCompleted);
+        upgradeMenuCanvas.DisplayUpgrade(upgrade, isCompleted, upgradeBranchIndex, upgradeIndex);
     }
 
     public void HideDisplay() // called on hover exit
@@ -82,7 +82,7 @@ public class UpgradeButton : HoverButton
         GetComponent<Button>().enabled = true;
         GetComponent<Button>().interactable = true;
 
-        activeNodeImage.SetActive(true);
+        //activeNodeImage.SetActive(true);
 
         iconImage.color = new Color(255, 255, 255, 255);
 
@@ -94,6 +94,7 @@ public class UpgradeButton : HoverButton
     {
         GetComponent<Button>().enabled = false;
 
+        activeNodeImage.SetActive(true);
         doneText.SetActive(true);
         floatingItem.StopFloating();
 

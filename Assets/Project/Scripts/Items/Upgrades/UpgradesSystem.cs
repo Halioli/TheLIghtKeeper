@@ -14,6 +14,10 @@ public class UpgradesSystem : MonoBehaviour
     public static event UpgardeAction OnUpgrade;
     public static event UpgardeAction OnUpgradeFail;
 
+
+    private bool canUpgrade = false;
+
+
     private void Awake()
     {
         playerInventoryItems = new Dictionary<Item, int>();
@@ -30,13 +34,23 @@ public class UpgradesSystem : MonoBehaviour
         this.playerInventory = playerInventory;
     }
 
+
+    // 1st Test upgrade to check // Tested on button hover
+    public void UpgradeBranchIsTested (int upgradeBranchIndex, int upgradeIndex, int[] amountsInInventory)
+    {
+        if (upgradeBranches[upgradeBranchIndex].IsCompleted()) return;
+
+        UpdatePlayerInventoryData();
+
+        canUpgrade = PlayerHasEnoughItemsToUpgrade(upgradeBranches[upgradeBranchIndex].upgrades[upgradeIndex], amountsInInventory);
+    }
+
+    // 2nd Upgrade can be selected
     public bool UpgradeBranchIsSelected(int index)
     {
         if (upgradeBranches[index].IsCompleted()) return false;
 
-        UpdatePlayerInventoryData();
-
-        if (PlayerHasEnoughItemsToUpgrade(upgradeBranches[index].GetCurrentUpgrade()))
+        if (canUpgrade)
         {
             RemoveUpgradeRequiredItems(upgradeBranches[index].GetCurrentUpgrade());
 
@@ -52,6 +66,9 @@ public class UpgradesSystem : MonoBehaviour
         
         return false;
     }
+
+
+
 
     public void AlwaysCompleteUpgradeBranchIsSelected(int index)
     {
@@ -80,16 +97,21 @@ public class UpgradesSystem : MonoBehaviour
 
     }
 
-    public bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade)
+    public bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade, int[] amountsInInventory)
     {
+        int i = 0;
+        bool hasEnoughItems = true;
+
         foreach (KeyValuePair<Item, int> requiredItem in upgrade.requiredItems)
         {
-            if (!playerInventory.InventoryContainsItemAndAmount(requiredItem.Key, requiredItem.Value))
+            if (!playerInventory.InventoryContainsItemAndAmount(requiredItem.Key, requiredItem.Value, out amountsInInventory[i]))
             {
-                return false;
+                hasEnoughItems = false; 
             }
+
+            ++i;
         }
-        return true;
+        return hasEnoughItems;
     }
 
     private void RemoveUpgradeRequiredItems(Upgrade upgrade)
