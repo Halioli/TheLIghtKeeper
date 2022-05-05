@@ -21,14 +21,36 @@ public class UpgradeMenuCanvas : MonoBehaviour
         HideDisplay();
     }
 
-    public void DisplayUpgrade(Upgrade upgrade, bool isCompleted)
+    public void DisplayUpgrade(Upgrade upgrade, bool isCompleted, int upgradeBranchIndex, int upgradeIndex)
     {
         upgradeDisplayer.gameObject.SetActive(true);
 
         upgradeDisplayer.SetUpgradeNameAndDescription(upgrade.upgradeName, upgrade.upgradeDescription, upgrade.longDescription);
-        upgradeDisplayer.SetRequiredMaterials(upgrade.requiredItemsList, upgrade.requiredAmountsList);
 
         upgradeDisplayer.DisplayIsCompletedText(isCompleted);
+
+
+        if (isCompleted)
+        {
+            upgradeDisplayer.HideRequiredMaterials();
+        }
+        else
+        {
+            int[] amountsInInventory = new int[3];
+            upgradesSystem.UpgradeBranchIsTested(upgradeBranchIndex, upgradeIndex, amountsInInventory);
+
+            upgradeDisplayer.SetRequiredMaterials(upgrade.requiredItemsList, upgrade.requiredAmountsList, amountsInInventory);
+        }
+
+        if (upgradeIndex > upgradesSystem.upgradeBranches[upgradeBranchIndex].GetCurrentUpgradeIndex())
+        {
+            upgradeDisplayer.DisplayLockedText();
+        }
+        else
+        {
+            upgradeDisplayer.HideLockedText();
+        }
+
     }
 
     public void HideDisplay()
