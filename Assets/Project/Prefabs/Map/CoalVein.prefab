@@ -129,6 +129,8 @@ MonoBehaviour:
   autoMiner: {fileID: 11400000, guid: 8664a6aa2a793bd4f8f66c2c7c80f2d6, type: 2}
   autoMinerGameObject: {fileID: 2557148486600764343}
   popUp: {fileID: 8750114191167513616}
+  veinParticlesSystems: []
+  itemCellGameObject: {fileID: 0}
 --- !u!1001 &3230086007951231448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -249,6 +251,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4104793620379642766}
     m_Modifications:
+    - target: {fileID: 142945997110251023, guid: 61823cd192aa3c945b1b5d1e6bea21d2, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e9e04cadda1aef45823a41e3d4e15b5, type: 2}
+    - target: {fileID: 142945997110251023, guid: 61823cd192aa3c945b1b5d1e6bea21d2, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 157331182179208759, guid: 5e9e04cadda1aef45823a41e3d4e15b5, type: 2}
     - target: {fileID: 5307794506832149860, guid: 61823cd192aa3c945b1b5d1e6bea21d2, type: 3}
       propertyPath: m_Name
       value: AutoMiner

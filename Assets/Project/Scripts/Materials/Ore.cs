@@ -62,6 +62,7 @@ public class Ore : MonoBehaviour
 
         if (healthSystem.IsDead())
         {
+            hasBeenMined = true;
             breakState = OreState.BROKEN;
             OnDeathDamageTake();
 

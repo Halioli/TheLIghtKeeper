@@ -66,7 +66,9 @@ public class HotbarInventory : Inventory
 
     public void UseSelectedConsumibleItem()
     {
-        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
+        Debug.Log(PlayerInputs.instance.isInGameMenu);
+
+        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE && !PlayerInputs.instance.isInGameMenu)
         {
             inventory[indexOfSelectedInventorySlot].itemInStack.prefab.GetComponent<ItemGameObject>().DoFunctionality();
             //GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);

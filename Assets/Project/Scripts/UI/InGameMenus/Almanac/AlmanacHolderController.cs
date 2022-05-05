@@ -11,10 +11,21 @@ public class AlmanacHolderController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetItemImages();
+    }
+
+    private void OnEnable()
+    {
+        SetItemImages();
+    }
+
+
+    public void SetItemImages()
+    {
         int index = 0;
-        foreach(AlmanacScriptableObject item in items)
+        foreach (AlmanacScriptableObject item in items)
         {
-            if(item.hasFound)
+            if (item.hasBeenFound)
             {
                 itemImages[index].color = new Color(252, 252, 252);
             }
@@ -25,4 +36,6 @@ public class AlmanacHolderController : MonoBehaviour
             index++;
         }
     }
+
+
 }
