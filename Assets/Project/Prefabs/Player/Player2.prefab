@@ -1342,7 +1342,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 6.74
+      scalar: 4.6
       minScalar: 1.74
       maxCurve:
         serializedVersion: 2
@@ -1396,7 +1396,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 1, b: 0.93612885, a: 1}
+      maxColor: {r: 1, g: 0.1051434, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1458,7 +1458,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.41
+      scalar: 0.25
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5932,7 +5932,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ead410474997fe14fa5028c1479ea985, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6005,6 +6005,7 @@ GameObject:
   - component: {fileID: 5727223543676621844}
   - component: {fileID: 4791727984393774442}
   - component: {fileID: 222604397228054894}
+  - component: {fileID: 6204099272675308366}
   - component: {fileID: 1543562946031534957}
   - component: {fileID: 3101832250444032047}
   - component: {fileID: 1870523755677931703}
@@ -6354,6 +6355,20 @@ MonoBehaviour:
   luxuniteMineral: {fileID: 7714621029357433215, guid: 7461ed4bdba6971478fd42f02a924fed, type: 3}
   enrichedMetalMineral: {fileID: 2871625915605558219, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
   electricOrbMineral: {fileID: 1859072525634567739, guid: aa4847c0ecc101a4ca85c5fa862ae0f6, type: 3}
+  healingFlowerMineral: {fileID: 3777398970541934755, guid: 962646ab30c45734fa4dd29c91e0482c, type: 3}
+--- !u!114 &6204099272675308366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3747971617821116011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ffd16cee0a3ef04d98c91202a02190b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healingParticles: {fileID: 7052917051805304467}
 --- !u!95 &1543562946031534957
 Animator:
   serializedVersion: 3
@@ -16646,6 +16661,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
+--- !u!4 &4794162805128572503 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8959189161861645736, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
+  m_PrefabInstance: {fileID: 4529819374594239487}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4794162805128572496 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8959189161861645743, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
@@ -16657,11 +16677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b148d9204e595488eb1dae06a89e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4794162805128572503 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8959189161861645736, guid: 776e079e7b3b4b44b8164b248798c2cd, type: 3}
-  m_PrefabInstance: {fileID: 4529819374594239487}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6628071326382921694
 PrefabInstance:
   m_ObjectHideFlags: 0
