@@ -8,8 +8,6 @@ public class UpgradesSystem : MonoBehaviour
     private Dictionary<Item, int> playerInventoryItems;
     Inventory playerInventory;
     [SerializeField] public List<UpgradeBranch> upgradeBranches;
-    [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
-
 
     // Events
     public delegate void UpgardeAction();
@@ -17,9 +15,13 @@ public class UpgradesSystem : MonoBehaviour
     public static event UpgardeAction OnUpgradeFail;
 
 
-    private void Start()
+    private bool canUpgrade = false;
+
+
+    private void Awake()
     {
         playerInventoryItems = new Dictionary<Item, int>();
+
 
         for (int i = 0; i < upgradeBranches.Count; ++i)
         {
@@ -32,26 +34,49 @@ public class UpgradesSystem : MonoBehaviour
         this.playerInventory = playerInventory;
     }
 
-    public void UpgradeBranchIsSelected(int index)
+
+    // 1st Test upgrade to check // Tested on button hover
+    public void UpgradeBranchIsTested (int upgradeBranchIndex, int upgradeIndex, int[] amountsInInventory)
     {
-        if (upgradeBranches[index].IsCompleted()) return;
+        if (upgradeBranches[upgradeBranchIndex].IsCompleted()) return;
 
         UpdatePlayerInventoryData();
-        if (PlayerHasEnoughItemsToUpgrade(upgradeBranches[index].GetCurrentUpgrade()))
+
+        canUpgrade = PlayerHasEnoughItemsToUpgrade(upgradeBranches[upgradeBranchIndex].upgrades[upgradeIndex], amountsInInventory);
+    }
+
+    // 2nd Upgrade can be selected
+    public bool UpgradeBranchIsSelected(int index)
+    {
+        if (upgradeBranches[index].IsCompleted()) return false;
+
+        if (canUpgrade)
         {
             RemoveUpgradeRequiredItems(upgradeBranches[index].GetCurrentUpgrade());
 
             upgradeBranches[index].Upgrade();
 
             if (OnUpgrade != null) OnUpgrade();
-        }
-        else
-        {
-            if (OnUpgradeFail != null) OnUpgradeFail();
-        }
-        UpdatePlayerInventoryData();
-        upgradeMenuCanvas.UpdateUpgradeButton(index);
 
+            return true;
+        }
+
+
+        if (OnUpgradeFail != null) OnUpgradeFail();
+        
+        return false;
+    }
+
+
+
+
+    public void AlwaysCompleteUpgradeBranchIsSelected(int index)
+    {
+        if (upgradeBranches[index].IsCompleted()) return;
+
+
+        upgradeBranches[index].Upgrade();
+        //if (OnUpgrade != null) OnUpgrade();
     }
 
     public void UpdatePlayerInventoryData()
@@ -72,16 +97,21 @@ public class UpgradesSystem : MonoBehaviour
 
     }
 
-    public bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade)
+    public bool PlayerHasEnoughItemsToUpgrade(Upgrade upgrade, int[] amountsInInventory)
     {
+        int i = 0;
+        bool hasEnoughItems = true;
+
         foreach (KeyValuePair<Item, int> requiredItem in upgrade.requiredItems)
         {
-            if (!playerInventory.InventoryContainsItemAndAmount(requiredItem.Key, requiredItem.Value))
+            if (!playerInventory.InventoryContainsItemAndAmount(requiredItem.Key, requiredItem.Value, out amountsInInventory[i]))
             {
-                return false;
+                hasEnoughItems = false; 
             }
+
+            ++i;
         }
-        return true;
+        return hasEnoughItems;
     }
 
     private void RemoveUpgradeRequiredItems(Upgrade upgrade)
@@ -96,5 +126,12 @@ public class UpgradesSystem : MonoBehaviour
     {
         if (OnUpgradeFail != null) OnUpgradeFail();
     }
+
+
+    public bool UpgradeBranchIsCompleted(int upgradeBranchIndex)
+    {
+        return upgradeBranches[upgradeBranchIndex].IsCompleted();
+    }
+
 
 }
