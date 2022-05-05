@@ -8,6 +8,8 @@ public class Teleporter : InteractStation
     // Private Attributes
     private Vector2 spawnPosition;
     private Animator animator;
+    private bool updatedSystem = false;
+    private bool updatedActivation = false;
 
     // Public Attributes
     //Station
@@ -54,8 +56,13 @@ public class Teleporter : InteractStation
     {
         if (playerInsideTriggerArea)
         {
-            if (OnInteraction != null)
-                OnInteraction(teleportName);
+            if (!updatedSystem)
+            {
+                if (OnInteraction != null)
+                    OnInteraction(teleportName);
+
+                updatedSystem = true;
+            }            
 
             GetInput();
             PopUpAppears();
@@ -63,6 +70,7 @@ public class Teleporter : InteractStation
         else
         {
             PopUpDisappears();
+            updatedSystem = false;
         }
     }
 
@@ -134,8 +142,13 @@ public class Teleporter : InteractStation
         PlayerInputs.instance.canMove = true;
         popUp.GetComponent<PopUp>().HideMessage();
 
-        if (OnActivation != null)
-            OnActivation(teleportName);
+        if (!updatedActivation)
+        {
+            if (OnActivation != null)
+                OnActivation(teleportName);
+
+            updatedActivation = true;
+        }
     }
 
     private void DesactivateSprite()

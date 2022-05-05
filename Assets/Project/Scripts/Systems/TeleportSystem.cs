@@ -72,6 +72,7 @@ public class TeleportSystem : MonoBehaviour
 
     private void SetPlayerInCurrentTeleport(string teleportName)
     {
+        Debug.Log(currentTeleportInUse + " - " + teleportName);
         currentTeleportInUse = teleportIdentifier[teleportName];
     }
 
