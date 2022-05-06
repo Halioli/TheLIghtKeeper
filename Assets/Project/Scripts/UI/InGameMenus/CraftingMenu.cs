@@ -9,10 +9,8 @@ public class CraftingMenu : MonoBehaviour
     private readonly int MAX_REQUIRED_MATERIALS = 3;
 
     // Private Attribute
-    private Inventory playerInventory;
     [SerializeField] private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
-    private RectTransform craftingListRectTransform;
     private bool updatedCraftingMenu;
 
     // Public Attribute
@@ -26,9 +24,7 @@ public class CraftingMenu : MonoBehaviour
 
     private void Start()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         recepieButtonsGameObjects = new List<GameObject>();
-        craftingListRectTransform = craftingList.GetComponent<RectTransform>();
         updatedCraftingMenu = false;
 
         craftingRecepieDisplayer = craftingRecepieDisplayerGameObject.GetComponent<CraftingRecepieDisplayer>();
@@ -86,32 +82,8 @@ public class CraftingMenu : MonoBehaviour
             recepieButtonsGameObjects.Add(gameObjectButton);
             gameObjectButton.GetComponent<CraftableItemButton>().Init(buttonNumber, recepie.resultingItemUnit.ID);
 
-            //RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
-            //craftingListRectTransform.sizeDelta = new Vector2(craftingListRectTransform.sizeDelta.x,
-            //    craftingListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
-
-            //gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumber;
-            //gameObjectButton.GetComponent<CraftableItemButton>().SetDescription(recepie.resultingItemUnit.description);
-            //gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
-            //gameObjectButton.GetComponentsInChildren<Image>()[1].sprite = recepie.resultingItemUnit.GetItemSprite();
-            //gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[1].text = recepie.resultingAmountUnit.ToString();
-
-            //craftingRecepieDisplayer.SetRecepieResultingItem(recepie.resultingItemUnit.ID);
-
-            //craftingRecepieDisplayer.ClearCurrentRequiredMaterials();
-            //for (int i = 0; i < recepie.requiredItemsList.Count; ++i)
-            //{
-            //    craftingRecepieDisplayer.AddRequiredMaterial(recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i]);
-
-            //    //GameObject requiredMaterial = Instantiate(requiredMaterialPrefab, gameObjectButton.GetComponentInChildren<HorizontalLayoutGroup>().transform);
-
-            //    //requiredMaterial.GetComponentInChildren<Image>().sprite = recepie.requiredItemsList[i].GetItemSprite();
-            //    //requiredMaterial.GetComponentInChildren<TextMeshProUGUI>().text = recepie.requiredAmountsList[i].ToString();
-            //}
-
             ++buttonNumber;
         }
-        //craftingList.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, buttonPrefab.GetComponent<RectTransform>().sizeDelta.y * recepieButtonsGameObjects.Count);
     }
 
     private void SetFirstElemtTextToRed()
