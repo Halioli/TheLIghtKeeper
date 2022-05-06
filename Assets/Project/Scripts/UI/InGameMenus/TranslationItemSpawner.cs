@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TranslationItemSpawner : MonoBehaviour
 {
-    [SerializeField] TranslationItem translationItem;
+    [SerializeField] GameObject translationItem;
     [SerializeField] float randomSpawnOffset = 10.0f;
 
 
@@ -12,10 +12,10 @@ public class TranslationItemSpawner : MonoBehaviour
     {
         for (int i = 0; i < itemAndAmount.Value; ++i)
         {
-            TranslationItem spawnedTranslationItem = Instantiate(translationItem, transform);
+            GameObject spawnedTranslationItem = Instantiate(translationItem, transform);
 
             startPosition += Random.insideUnitCircle * randomSpawnOffset;
-            spawnedTranslationItem.Init(itemAndAmount.Key.sprite, startPosition, endPosition);
+            spawnedTranslationItem.GetComponent<TranslationItem>().Init(itemAndAmount.Key.sprite, startPosition, endPosition);
         }
 
     }

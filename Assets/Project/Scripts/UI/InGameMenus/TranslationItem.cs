@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TranslationItem : MonoBehaviour
 {
@@ -11,13 +12,15 @@ public class TranslationItem : MonoBehaviour
     // Must be called on instantiate
     public void Init(Sprite sprite, Vector2 startPosition, Vector2 endPosition, float duration = 0.5f)
     {
-        GetComponent<SpriteRenderer>().sprite = sprite;
+        GetComponent<Image>().sprite = sprite;
 
         this.startPosition = startPosition;
         this.endPosition = endPosition;
 
         interpolator = new Interpolator(duration, Interpolator.Type.SIN);
         interpolator.ToMax();
+
+        Debug.Log("init");
     }
 
     void Update()
@@ -26,11 +29,13 @@ public class TranslationItem : MonoBehaviour
         
         if (interpolator.isMaxPrecise)
         {
+            Debug.Log("destroy");
             Destroy(gameObject);
             return;
         }
 
-        transform.position = Vector2.Lerp(startPosition, endPosition, interpolator.Value);       
+        transform.position = Vector2.Lerp(startPosition, endPosition, interpolator.Value);
+
     }
 
 }

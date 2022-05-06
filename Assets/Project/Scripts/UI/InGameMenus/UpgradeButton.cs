@@ -48,7 +48,7 @@ public class UpgradeButton : HoverButton
     {
         upgradeMenuCanvas.DisplayUpgrade(upgrade, isCompleted, upgradeBranchIndex, upgradeIndex);
 
-        if (OnUpgradeNodeHover != null) OnUpgradeNodeHover(transform.position);
+        if (OnUpgradeNodeHover != null) OnUpgradeNodeHover(GetComponent<RectTransform>().position);
     }
 
     public void HideDisplay() // called on hover exit

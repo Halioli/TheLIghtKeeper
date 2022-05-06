@@ -277,11 +277,14 @@ public class Inventory : MonoBehaviour
         // value: substracted stack amount
         Dictionary<int, int> data = new Dictionary<int, int>();
 
+        Debug.Log("numberOfItemsToSubstract " + numberOfItemsToSubstract);
+
         while (numberOfItemsToSubstract > 0)
         {
             // key: stackIndex
             // value: amount substracted from stack
             KeyValuePair<int, int> stackData = GetStackDataAndSubstractItemFromInventory(itemToSubstract, numberOfItemsToSubstract);
+            data.Add(stackData.Key, stackData.Value);
 
             numberOfItemsToSubstract -= stackData.Value;
         }

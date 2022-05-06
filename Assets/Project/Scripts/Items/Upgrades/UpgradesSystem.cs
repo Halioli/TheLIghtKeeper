@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class UpgradesSystem : MonoBehaviour
 {
-    [SerializeField] TranslationItemSpawner translationItemSpawner; // TODO set in inspector
+    [SerializeField] TranslationItemSpawner translationItemSpawner;
 
     private Dictionary<Item, int> playerInventoryItems;
     HotbarInventory playerInventory;
@@ -162,6 +162,7 @@ public class UpgradesSystem : MonoBehaviour
                 // build KeyValuePair with
                 //  key: item 
                 //  value: subtracted amount from the stack
+
                 translationItemSpawner.Spawn(new KeyValuePair<Item, int>(requiredItem.Key, stackData.Value), stackTransformPosition, currentNodeTransformPosition);
             }
 

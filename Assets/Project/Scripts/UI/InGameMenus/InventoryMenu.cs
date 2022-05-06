@@ -119,8 +119,8 @@ public class InventoryMenu : MonoBehaviour
 
 
     public Vector2 GetItemCellTransformPosition(int cellIndex)
-    {
-        return itemCellsList[cellIndex].transform.position;
+    {       
+        return itemCellsList[cellIndex].GetComponent<RectTransform>().position;
     }
 
 

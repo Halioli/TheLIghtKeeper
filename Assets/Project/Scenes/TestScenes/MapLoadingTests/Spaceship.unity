@@ -2028,7 +2028,7 @@ PrefabInstance:
     - target: {fileID: 908183378706180822, guid: 5a394cc85581fc041bf6c78ba04b355c, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 611511317}
+      objectReference: {fileID: 626775150}
     - target: {fileID: 949437759476097365, guid: 5a394cc85581fc041bf6c78ba04b355c, type: 3}
       propertyPath: m_Tiles.Array.size
       value: 4
@@ -2885,6 +2885,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6124173119231325205, guid: 5a394cc85581fc041bf6c78ba04b355c, type: 3}
+      propertyPath: translationItemSpawner
+      value: 
+      objectReference: {fileID: 828047142312933087, guid: b1f685e35782d224282cec5cb81feaaf, type: 3}
     - target: {fileID: 6287946279389701213, guid: 5a394cc85581fc041bf6c78ba04b355c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3697,7 +3701,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5524036754591810007, guid: 8ad5f18f7855c9045b9f82e1bc7f7b5d, type: 3}
   m_PrefabInstance: {fileID: 590269694}
   m_PrefabAsset: {fileID: 0}
---- !u!43 &611511317
+--- !u!1 &614810258 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5524036754591810001, guid: 8ad5f18f7855c9045b9f82e1bc7f7b5d, type: 3}
+  m_PrefabInstance: {fileID: 2067004407}
+  m_PrefabAsset: {fileID: 0}
+--- !u!43 &626775150
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3861,11 +3870,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &614810258 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5524036754591810001, guid: 8ad5f18f7855c9045b9f82e1bc7f7b5d, type: 3}
-  m_PrefabInstance: {fileID: 2067004407}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &630560656
 GameObject:
   m_ObjectHideFlags: 0
