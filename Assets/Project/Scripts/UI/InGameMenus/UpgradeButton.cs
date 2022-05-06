@@ -17,6 +17,10 @@ public class UpgradeButton : HoverButton
     UpgradeMenuCanvas upgradeMenuCanvas;
 
 
+    // Events
+    public delegate void UpgradeNodeHoverAction(Vector2 transformPosition);
+    public static event UpgradeNodeHoverAction OnUpgradeNodeHover;
+
 
 
     public void Init(bool isEnabled, int upgradeBranchIndex, int upgradeIndex, UpgradeMenuCanvas upgradeMenuCanvas)
@@ -43,6 +47,8 @@ public class UpgradeButton : HoverButton
     public void DisplayUpgrade() // called on hover enter
     {
         upgradeMenuCanvas.DisplayUpgrade(upgrade, isCompleted, upgradeBranchIndex, upgradeIndex);
+
+        if (OnUpgradeNodeHover != null) OnUpgradeNodeHover(transform.position);
     }
 
     public void HideDisplay() // called on hover exit
