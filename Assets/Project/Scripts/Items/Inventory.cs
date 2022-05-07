@@ -211,6 +211,52 @@ public class Inventory : MonoBehaviour
         return couldAddItem;
     }
 
+
+    public bool AddItemToInventory(Item itemToAdd, out int outStackIndex)
+    {
+        bool couldAddItem = false;
+
+        // Check if the inventory is empty, to add item directly
+        if (InventoryIsEmpty())
+        {
+            inventory[0].InitStack(itemToAdd);
+
+            numberOfOccuppiedInventorySlots++;
+            inventoryIsEmpty = false;
+            couldAddItem = true;
+            outStackIndex = 0;
+        }
+        else
+        {
+            outStackIndex = NextInventorySlotWithAvailableSpaceToAddItem(itemToAdd);
+            if (outStackIndex != -1)
+            {
+                // Add to slot in use
+                inventory[outStackIndex].AddOneItemToStack();
+                couldAddItem = true;
+            }
+            else
+            {
+                outStackIndex = NextEmptyInventorySlot();
+                if (outStackIndex != -1)
+                {
+                    inventory[outStackIndex].InitStack(itemToAdd);
+                    numberOfOccuppiedInventorySlots++;
+                    couldAddItem = true;
+                }
+            }
+        }
+
+        if (couldAddItem)
+        {
+            gotChanged = true;
+        }
+
+        return couldAddItem;
+    }
+
+
+
     public bool AddNItemsToInventory(Item itemToAdd, int numberOfItemsToAdd)
     {
         for (int i = 0; i < numberOfItemsToAdd; ++i)
@@ -268,6 +314,56 @@ public class Inventory : MonoBehaviour
         }
         return true;
     }
+
+
+    // Call only if can substract items, need previous check
+    public Dictionary<int, int> GetDataAndSubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
+    {
+        // key: stackIndex
+        // value: substracted stack amount
+        Dictionary<int, int> data = new Dictionary<int, int>();
+
+        while (numberOfItemsToSubstract > 0)
+        {
+            // key: stackIndex
+            // value: amount substracted from stack
+            KeyValuePair<int, int> stackData = GetStackDataAndSubstractItemFromInventory(itemToSubstract, numberOfItemsToSubstract);
+            data.Add(stackData.Key, stackData.Value);
+
+            numberOfItemsToSubstract -= stackData.Value;
+        }
+
+        return data;
+    }
+
+    public KeyValuePair<int, int> GetStackDataAndSubstractItemFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
+    {
+        // Check get next stack index with item
+        int index = NextInventorySlotWithAvailableItemToSubstract(itemToSubstract);
+
+        int amountInStack = inventory[index].GetAmountInStack();
+
+        // if stack contains less than numberOfItemsToSubstract, only substract amountInStack
+        // else substract numberOfItemsToSubstract
+        int amountToSubstract = amountInStack < numberOfItemsToSubstract ? amountInStack : numberOfItemsToSubstract;
+
+
+        if (index != -1)
+        {
+            for (int i = 0; i < amountToSubstract; ++i)
+            {
+                SubstractItemFromInventorySlot(index);
+            }
+        }
+
+
+        // key: stackIndex
+        // value: amount substracted from stack
+        KeyValuePair<int, int> stackData = new KeyValuePair<int, int>(index, amountToSubstract);
+
+        return stackData;
+    }
+
 
 
     public void SubstractItemFromInventorySlot(int inventorySlot)

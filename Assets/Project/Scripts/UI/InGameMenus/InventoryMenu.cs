@@ -116,4 +116,12 @@ public class InventoryMenu : MonoBehaviour
         lastSelectedInventorySlot = newLastSelectedInventorySlot;
         itemCellsList[newLastSelectedInventorySlot].DoOnSelect();
     }
+
+
+    public Vector2 GetItemCellTransformPosition(int cellIndex)
+    {       
+        return itemCellsList[cellIndex].GetComponent<RectTransform>().position;
+    }
+
+
 }

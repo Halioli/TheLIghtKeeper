@@ -121,4 +121,13 @@ public class HotbarInventory : Inventory
     }
 
 
+
+    // Other
+
+    public Vector2 GetStackTransformPosition(int stackIndex)
+    {
+        return hotbarInventoryMenu.GetItemCellTransformPosition(stackIndex);
+    }
+
+
 }

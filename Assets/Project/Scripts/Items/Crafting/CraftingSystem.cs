@@ -8,7 +8,7 @@ public class CraftingSystem : MonoBehaviour
     private const int MAX_LEVEL = 5;
     private int currentLevel;
 
-    private Inventory playerInventory;
+    private HotbarInventory playerInventory;
     private Dictionary<Item, int> playerInventoryItems;
 
     private Vector2 droppedItemPosition;
@@ -21,6 +21,11 @@ public class CraftingSystem : MonoBehaviour
     public List<RecepieCollection> recepiesLvl;
     public List<Recepie> availableRecepies;
     // public ParticleSystem[] craftingParticles;
+
+
+    Vector2 currentButtonTransformPosition;
+    [SerializeField] TranslationItemSpawner translationItemSpawner;
+
 
     //Events
 
@@ -48,7 +53,7 @@ public class CraftingSystem : MonoBehaviour
 
         droppedItemPosition = new Vector2(transform.position.x, transform.position.y - 1f);
 
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<HotbarInventory>();
         playerInventoryItems = new Dictionary<Item, int>();
 
 
@@ -61,12 +66,14 @@ public class CraftingSystem : MonoBehaviour
 
     private void OnEnable()
     {
+        CraftableItemButton.OnCraftButtonHover += SetCurrentButtonTransformPosition;
         CraftableItemButton.OnClickedRecepieButton += RecepieWasSelected;
         CoreUpgrade.OnCoreUpgrade += LevelUp;
     }
 
     private void OnDisable()
     {
+        CraftableItemButton.OnCraftButtonHover -= SetCurrentButtonTransformPosition;
         CraftableItemButton.OnClickedRecepieButton -= RecepieWasSelected;
         CoreUpgrade.OnCoreUpgrade -= LevelUp;
     }
@@ -134,19 +141,52 @@ public class CraftingSystem : MonoBehaviour
 
     private void RemoveRecepieRequiredItems(Recepie recepieToCraft)
     {
+        // Method 1
+        //foreach (KeyValuePair<Item, int> requiredItem in recepieToCraft.requiredItems)
+        //{
+        //    playerInventory.SubstractNItemsFromInventory(requiredItem.Key, requiredItem.Value);
+        //}
+
+
+        // Method 2
         foreach (KeyValuePair<Item, int> requiredItem in recepieToCraft.requiredItems)
         {
-            playerInventory.SubstractNItemsFromInventory(requiredItem.Key, requiredItem.Value);
+            // key: stackIndex
+            // value: substracted stack amount
+            Dictionary<int, int> data = playerInventory.GetDataAndSubstractNItemsFromInventory(requiredItem.Key, requiredItem.Value);
+
+            foreach (KeyValuePair<int, int> stackData in data)
+            {
+                // 1st get player inventory stack position
+                Vector2 stackTransformPosition = playerInventory.GetStackTransformPosition(stackData.Key);
+
+                // 2nd get upgrade node position
+                // --> set via CraftableItemButton event to currentButtonTransformPosition attribute variable
+
+                // 3rd call TranslationItemSpawner Spawn()
+                // build KeyValuePair with
+                //  key: item 
+                //  value: subtracted amount from the stack
+
+                translationItemSpawner.Spawn(new KeyValuePair<Item, int>(requiredItem.Key, stackData.Value), stackTransformPosition, currentButtonTransformPosition);
+            }
+
         }
+
     }
 
     private void AddRecepieResultingItems(Recepie recepieToCraft)
     {
         for (int i = 0; i < recepieToCraft.resultingItem.Value; ++i)
         {
-            if (playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key))
+            int stackIndex = 0;
+
+            if (playerInventory.AddItemToInventory(recepieToCraft.resultingItem.Key, out stackIndex))
             {
                 InvokeOnItemCraft(recepieToCraft.resultingItemUnit.ID);
+
+                Vector2 stackTransformPosition = playerInventory.GetStackTransformPosition(stackIndex);
+                translationItemSpawner.DelayedSpawn(recepieToCraft.resultingItem, currentButtonTransformPosition, stackTransformPosition);
             }
             else
             {
@@ -205,4 +245,12 @@ public class CraftingSystem : MonoBehaviour
         if (OnItemSentToStorage != null) 
             OnItemSentToStorage(); //I put the items you crafted in the Storage, since you had no inventory space.
     }
+
+
+    private void SetCurrentButtonTransformPosition(Vector2 currentButtonTransformPosition)
+    {
+        this.currentButtonTransformPosition = currentButtonTransformPosition;
+    }
+
+
 }
