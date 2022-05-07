@@ -26,14 +26,6 @@ public class TeleportMenu : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (PlayerInputs.instance.PlayerPressedPauseButton() || PlayerInputs.instance.PlayerPressedInteractButton())// && gameObject.activeInHierarchy)
-        {
-            DeactivateSelf();
-        }
-    }
-
     private void OnEnable()
     {
         Teleporter.OnActivation += UpdateTeleportSelectionMenu;
@@ -104,7 +96,7 @@ public class TeleportMenu : MonoBehaviour
         }
     }
 
-    private void DeactivateSelf(int teleportIndex)
+    public void DeactivateSelf(int teleportIndex)
     {
         hudGameObject.SetActive(true);
         PauseMenu.gameIsPaused = false;
@@ -112,10 +104,11 @@ public class TeleportMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void DeactivateSelf()
+    public void DeactivateSelf()
     {
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
+
         hudGameObject.SetActive(true);
-        PauseMenu.gameIsPaused = false;
 
         gameObject.SetActive(false);
     }

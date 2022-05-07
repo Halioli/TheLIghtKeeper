@@ -9,7 +9,6 @@ public class Teleporter : InteractStation
     private Vector2 spawnPosition;
     private Animator animator;
     private bool updatedSystem = false;
-    private bool updatedActivation = false;
 
     // Public Attributes
     //Station
@@ -74,6 +73,21 @@ public class Teleporter : InteractStation
         }
     }
 
+    public override void GetInput()
+    {
+        if (PlayerInputs.instance.PlayerPressedInteractButton())
+        {
+            StationFunction();
+            isCanvasOpen = !isCanvasOpen;
+        }
+
+        if (isCanvasOpen && PlayerInputs.instance.PlayerPressedInteractExitButton() && canvasTeleportSelection.activeInHierarchy)
+        {
+            StationFunction();
+            isCanvasOpen = !isCanvasOpen;
+        }
+    }
+
     // Interactive pop up disappears
     private void PopUpAppears()
     {
@@ -115,20 +129,13 @@ public class Teleporter : InteractStation
         }
         else
         {
-            if (!canvasTeleportSelection.activeInHierarchy)
+            if (!isCanvasOpen)
             {
-                canvasTeleportSelection.SetActive(true);
-
-                hudGameObject.SetActive(false);
-                PauseMenu.gameIsPaused = true;
-
-                if (OnMenuEnter != null) 
-                    OnMenuEnter();
+                ActivateTeleportMenu();
             }
-            else if (canvasTeleportSelection.activeInHierarchy)
+            else if (isCanvasOpen)
             {
-                if (OnMenuExit != null) 
-                    OnMenuExit();
+                DeactivateTeleportMenu();
             }
         }
     }
@@ -146,5 +153,28 @@ public class Teleporter : InteractStation
     private void DesactivateSprite()
     {
         teleportSprite.SetActive(false);
+    }
+
+    private void ActivateTeleportMenu()
+    {
+        canvasTeleportSelection.SetActive(true);
+
+        hudGameObject.SetActive(false);
+
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
+
+        if (OnMenuEnter != null)
+            OnMenuEnter();
+    }
+
+    private void DeactivateTeleportMenu()
+    {
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
+
+        hudGameObject.SetActive(true);
+        canvasTeleportSelection.SetActive(false);
+
+        //if (OnMenuExit != null)
+        //    OnMenuExit();
     }
 }
