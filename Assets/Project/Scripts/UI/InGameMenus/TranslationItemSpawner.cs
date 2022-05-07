@@ -6,8 +6,10 @@ public class TranslationItemSpawner : MonoBehaviour
 {
     [SerializeField] List<GameObject> translationItems;
     [SerializeField] float randomSpawnOffset = 10.0f;
+    [SerializeField] float translationTime = 0.5f;
 
     int index = 0;
+
 
     private void Awake()
     {
@@ -26,9 +28,8 @@ public class TranslationItemSpawner : MonoBehaviour
         for (int i = 0; i < itemAndAmount.Value; ++i)
         {
             Vector2 offsetStartPosition = startPosition + (Random.insideUnitCircle * randomSpawnOffset);
-            Debug.Log(gameObject.transform.name);
             translationItems[index].SetActive(true);
-            translationItems[index].GetComponent<TranslationItem>().Init(itemAndAmount.Key.sprite, offsetStartPosition, endPosition);
+            translationItems[index].GetComponent<TranslationItem>().Init(itemAndAmount.Key.sprite, offsetStartPosition, endPosition, translationTime);
 
             index = ++index % translationItems.Count;
 
@@ -36,6 +37,27 @@ public class TranslationItemSpawner : MonoBehaviour
         }
     }
 
+
+    public void DelayedSpawn(KeyValuePair<Item, int> itemAndAmount, Vector2 startPosition, Vector2 endPosition)
+    {
+        StartCoroutine(DelayedProgressiveSpawn(itemAndAmount, startPosition, endPosition));
+    }
+
+    IEnumerator DelayedProgressiveSpawn(KeyValuePair<Item, int> itemAndAmount, Vector2 startPosition, Vector2 endPosition)
+    {
+        yield return new WaitForSeconds(translationTime);
+
+        for (int i = 0; i < itemAndAmount.Value; ++i)
+        {
+            Vector2 offsetStartPosition = startPosition + (Random.insideUnitCircle * randomSpawnOffset);
+            translationItems[index].SetActive(true);
+            translationItems[index].GetComponent<TranslationItem>().Init(itemAndAmount.Key.sprite, offsetStartPosition, endPosition, translationTime);
+
+            index = ++index % translationItems.Count;
+
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
 
 
 
