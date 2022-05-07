@@ -28,7 +28,7 @@ public class TeleportMenu : MonoBehaviour
 
     private void Update()
     {
-        if ((PlayerInputs.instance.PlayerPressedPauseButton() || PlayerInputs.instance.PlayerPressedInteractButton()) && gameObject.activeInHierarchy)
+        if (PlayerInputs.instance.PlayerPressedPauseButton() || PlayerInputs.instance.PlayerPressedInteractButton())// && gameObject.activeInHierarchy)
         {
             DeactivateSelf();
         }
