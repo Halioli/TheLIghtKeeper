@@ -23,6 +23,9 @@ public class CraftableItemButton : HoverButton
     public delegate void ExitRecepieButtonAction();
     public static event ExitRecepieButtonAction OnRecepieButtonHoverExit;
 
+    public delegate void CraftingButtonHoverAction(Vector2 transformPosition);
+    public static event CraftingButtonHoverAction OnCraftButtonHover;
+
 
     private void Awake()
     {
@@ -42,9 +45,11 @@ public class CraftableItemButton : HoverButton
         if (OnClickedRecepieButton != null) OnClickedRecepieButton(buttonNumber);
     }
 
-    public void DoOnHoverRecepieButton()
+    public void DoOnHoverRecepieButton() // on hover
     {
         if (OnHoverRecepieButton != null) OnHoverRecepieButton(buttonNumber);
+
+        if (OnCraftButtonHover != null) OnCraftButtonHover(transform.position);
     }
 
     public void DoOnHoverExitRecepieButton()

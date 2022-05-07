@@ -211,6 +211,52 @@ public class Inventory : MonoBehaviour
         return couldAddItem;
     }
 
+
+    public bool AddItemToInventory(Item itemToAdd, out int outStackIndex)
+    {
+        bool couldAddItem = false;
+
+        // Check if the inventory is empty, to add item directly
+        if (InventoryIsEmpty())
+        {
+            inventory[0].InitStack(itemToAdd);
+
+            numberOfOccuppiedInventorySlots++;
+            inventoryIsEmpty = false;
+            couldAddItem = true;
+            outStackIndex = 0;
+        }
+        else
+        {
+            outStackIndex = NextInventorySlotWithAvailableSpaceToAddItem(itemToAdd);
+            if (outStackIndex != -1)
+            {
+                // Add to slot in use
+                inventory[outStackIndex].AddOneItemToStack();
+                couldAddItem = true;
+            }
+            else
+            {
+                outStackIndex = NextEmptyInventorySlot();
+                if (outStackIndex != -1)
+                {
+                    inventory[outStackIndex].InitStack(itemToAdd);
+                    numberOfOccuppiedInventorySlots++;
+                    couldAddItem = true;
+                }
+            }
+        }
+
+        if (couldAddItem)
+        {
+            gotChanged = true;
+        }
+
+        return couldAddItem;
+    }
+
+
+
     public bool AddNItemsToInventory(Item itemToAdd, int numberOfItemsToAdd)
     {
         for (int i = 0; i < numberOfItemsToAdd; ++i)
@@ -276,8 +322,6 @@ public class Inventory : MonoBehaviour
         // key: stackIndex
         // value: substracted stack amount
         Dictionary<int, int> data = new Dictionary<int, int>();
-
-        Debug.Log("numberOfItemsToSubstract " + numberOfItemsToSubstract);
 
         while (numberOfItemsToSubstract > 0)
         {
