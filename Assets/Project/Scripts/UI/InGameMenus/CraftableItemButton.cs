@@ -23,6 +23,9 @@ public class CraftableItemButton : HoverButton
     public delegate void ExitRecepieButtonAction();
     public static event ExitRecepieButtonAction OnRecepieButtonHoverExit;
 
+    public delegate void CraftingButtonHoverAction(Vector2 transformPosition);
+    public static event CraftingButtonHoverAction OnCraftButtonHover;
+
 
     private void Awake()
     {
@@ -32,16 +35,21 @@ public class CraftableItemButton : HoverButton
 
     public void OnClick()
     {
-        if (isClicked) return;
+        //if (isClicked) return;
 
-        StartCoroutine(OnClickCooldown());
+        //StartCoroutine(OnClickCooldown());
+
+        transform.DOComplete();
+        transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), clickCooldownDuration);
 
         if (OnClickedRecepieButton != null) OnClickedRecepieButton(buttonNumber);
     }
 
-    public void DoOnHoverRecepieButton()
+    public void DoOnHoverRecepieButton() // on hover
     {
         if (OnHoverRecepieButton != null) OnHoverRecepieButton(buttonNumber);
+
+        if (OnCraftButtonHover != null) OnCraftButtonHover(transform.position);
     }
 
     public void DoOnHoverExitRecepieButton()
@@ -59,6 +67,7 @@ public class CraftableItemButton : HoverButton
     IEnumerator OnClickCooldown()
     {
         isClicked = true;
+        transform.DOComplete();
         transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), clickCooldownDuration);
 
         yield return new WaitForSeconds(clickCooldownDuration);
