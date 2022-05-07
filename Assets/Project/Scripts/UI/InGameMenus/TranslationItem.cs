@@ -9,7 +9,21 @@ public class TranslationItem : MonoBehaviour
     Vector2 startPosition;
     Vector2 endPosition;
 
-    // Must be called on instantiate
+    void Update()
+    {
+        interpolator.Update(Time.deltaTime);
+        
+        if (interpolator.isMaxPrecise)
+        {
+            End();
+            return;
+        }
+
+        transform.position = Vector2.Lerp(startPosition, endPosition, interpolator.Value);
+    }
+
+
+    // Must be called on instantiate/activation
     public void Init(Sprite sprite, Vector2 startPosition, Vector2 endPosition, float duration = 0.5f)
     {
         GetComponent<Image>().sprite = sprite;
@@ -17,25 +31,16 @@ public class TranslationItem : MonoBehaviour
         this.startPosition = startPosition;
         this.endPosition = endPosition;
 
-        interpolator = new Interpolator(duration, Interpolator.Type.SIN);
+        interpolator = new Interpolator(duration, Interpolator.Type.QUADRATIC);
         interpolator.ToMax();
 
-        Debug.Log("init");
+        //gameObject.SetActive(true);
     }
 
-    void Update()
+    private void End()
     {
-        interpolator.Update(Time.deltaTime);
-        
-        if (interpolator.isMaxPrecise)
-        {
-            Debug.Log("destroy");
-            Destroy(gameObject);
-            return;
-        }
-
-        transform.position = Vector2.Lerp(startPosition, endPosition, interpolator.Value);
-
+        gameObject.SetActive(false);
     }
+
 
 }
