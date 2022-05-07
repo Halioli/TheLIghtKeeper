@@ -270,6 +270,58 @@ public class Inventory : MonoBehaviour
     }
 
 
+    // Call only if can substract items, need previous check
+    public Dictionary<int, int> GetDataAndSubstractNItemsFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
+    {
+        // key: stackIndex
+        // value: substracted stack amount
+        Dictionary<int, int> data = new Dictionary<int, int>();
+
+        Debug.Log("numberOfItemsToSubstract " + numberOfItemsToSubstract);
+
+        while (numberOfItemsToSubstract > 0)
+        {
+            // key: stackIndex
+            // value: amount substracted from stack
+            KeyValuePair<int, int> stackData = GetStackDataAndSubstractItemFromInventory(itemToSubstract, numberOfItemsToSubstract);
+            data.Add(stackData.Key, stackData.Value);
+
+            numberOfItemsToSubstract -= stackData.Value;
+        }
+
+        return data;
+    }
+
+    public KeyValuePair<int, int> GetStackDataAndSubstractItemFromInventory(Item itemToSubstract, int numberOfItemsToSubstract)
+    {
+        // Check get next stack index with item
+        int index = NextInventorySlotWithAvailableItemToSubstract(itemToSubstract);
+
+        int amountInStack = inventory[index].GetAmountInStack();
+
+        // if stack contains less than numberOfItemsToSubstract, only substract amountInStack
+        // else substract numberOfItemsToSubstract
+        int amountToSubstract = amountInStack < numberOfItemsToSubstract ? amountInStack : numberOfItemsToSubstract;
+
+
+        if (index != -1)
+        {
+            for (int i = 0; i < amountToSubstract; ++i)
+            {
+                SubstractItemFromInventorySlot(index);
+            }
+        }
+
+
+        // key: stackIndex
+        // value: amount substracted from stack
+        KeyValuePair<int, int> stackData = new KeyValuePair<int, int>(index, amountToSubstract);
+
+        return stackData;
+    }
+
+
+
     public void SubstractItemFromInventorySlot(int inventorySlot)
     {
         inventory[inventorySlot].SubstractOneItemFromStack();
