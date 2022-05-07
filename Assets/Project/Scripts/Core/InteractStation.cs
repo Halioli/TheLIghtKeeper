@@ -10,7 +10,7 @@ public class InteractStation : MonoBehaviour
     protected bool playerInsideTriggerArea;
     protected HotbarInventory playerInventory;
 
-    private bool isCanvasOpen = false;
+    protected bool isCanvasOpen = false;
 
     // Action
     public delegate void InteractStationAction();
@@ -48,7 +48,7 @@ public class InteractStation : MonoBehaviour
         }
     }
 
-    public void GetInput()
+    public virtual void GetInput()
     {
         if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
