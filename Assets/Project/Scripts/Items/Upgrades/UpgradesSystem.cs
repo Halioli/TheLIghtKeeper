@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class UpgradesSystem : MonoBehaviour
 {
     [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
-    [SerializeField] UpgardesDataSaver upgardesDataSaver;
+    [SerializeField] UpgradesDataSaver upgardesDataSaver;
     [SerializeField] TranslationItemSpawner translationItemSpawner;
 
     private Dictionary<Item, int> playerInventoryItems;

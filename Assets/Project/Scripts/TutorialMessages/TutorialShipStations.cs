@@ -16,6 +16,12 @@ public class TutorialShipStations : TutorialMessages
 
     private bool mssgSent = false;
 
+
+    private void Awake()
+    {
+        if (IsTutorialFinished()) Destroy(gameObject);
+    }
+
     private void Start()
     {
         if (worldMark != null) worldMark.Disappear();

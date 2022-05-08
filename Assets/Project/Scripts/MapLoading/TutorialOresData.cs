@@ -15,7 +15,8 @@ public class TutorialOresData : ScriptableObject
 
         for (int i = 0; i < ores.Length; ++i)
         {
-            oresExist[i] = ores[i] != null;
+            oresExist[i] = ores[i].activeInHierarchy;
+
         }
     }
 
