@@ -7,7 +7,7 @@ public class Teleporter : InteractStation
 {
     // Private Attributes
     private Vector2 spawnPosition;
-    private Animator animator;
+    public Animator animator;
     private bool updatedSystem = false;
 
     // Public Attributes
@@ -22,9 +22,11 @@ public class Teleporter : InteractStation
     public Item darkEssence;
     public string teleportName;
     public Vector3 teleportTransformPosition;
-    public bool activated = false;
+    public bool activated;
     public GameObject teleportSprite;
     public GameObject teleportLight;
+    public SpriteRenderer teleportSpriteRenderer;
+    public Sprite teleportActivatedSprite;
 
     [SerializeField] AudioSource teleportAudioSource;
 
@@ -71,6 +73,8 @@ public class Teleporter : InteractStation
             PopUpDisappears();
             updatedSystem = false;
         }
+
+        
     }
 
     public override void GetInput()
