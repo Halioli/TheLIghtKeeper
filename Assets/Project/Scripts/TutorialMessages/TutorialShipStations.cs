@@ -18,12 +18,12 @@ public class TutorialShipStations : TutorialMessages
 
     private void Start()
     {
-        worldMark.Disappear();
+        if (worldMark != null) worldMark.Disappear();
     }
 
     private void Update()
     {
-        if (mssgSent)
+        if (mssgSent && worldMark != null)
         {
             MarkSpaceshipElements();
         }
