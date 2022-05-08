@@ -35,7 +35,16 @@ public class UpgradesSystem : MonoBehaviour
         }
 
 
-        upgradeMenuCanvas.SetAllLastCompletedButtonIndex(upgardesDataSaver.GetLoadedUpgradesData());
+        int[] allLastCompletedButtonIndex = upgardesDataSaver.GetLoadedUpgradesData();
+        if (allLastCompletedButtonIndex == null)
+        {
+            upgradeMenuCanvas.FirstTimeSetAllLastCompletedButtonIndex();
+        }
+        else
+        {
+            upgradeMenuCanvas.SetAllLastCompletedButtonIndex(allLastCompletedButtonIndex);
+        }
+        
     }
 
 
