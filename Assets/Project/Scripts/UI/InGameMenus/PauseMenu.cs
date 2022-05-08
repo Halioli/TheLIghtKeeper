@@ -16,6 +16,7 @@ public class PauseMenu : MonoBehaviour
 
     public delegate void PauseMenuAction();
     public static event PauseMenuAction OnPaused;
+    public static event PauseMenuAction OnGameExit;
 
     public delegate void ToggleCheatsAction(bool toggle);
     public static event ToggleCheatsAction OnToggleCheats;
@@ -112,6 +113,8 @@ public class PauseMenu : MonoBehaviour
     }
     public void ClickedMainMenuButton(int sceneIndex)
     {
+        if (OnGameExit != null) OnGameExit();
+
         gameIsPaused = false;
         loadingGroup.alpha = 1f;
         StartCoroutine(AsyncLoading(sceneIndex));
@@ -119,6 +122,8 @@ public class PauseMenu : MonoBehaviour
 
     public void ClickedExitButton()
     {
+        if (OnGameExit != null) OnGameExit();
+
         PlayerInputs.instance.QuitGame();
     }
 
