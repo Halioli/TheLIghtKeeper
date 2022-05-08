@@ -9,7 +9,7 @@ using UnityEngine;
 public class InventoryData : ScriptableObject
 {
     public bool firstTime = true;
-    [SerializeField] ItemStack emptyItemStack;
+    //[SerializeField] ItemStack emptyItemStack;
 
     public List<Item> itemsData;
     public List<int> itemAmountsData;

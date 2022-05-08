@@ -10,7 +10,9 @@ public class LightRodGameObject : ItemGameObject
 
     public override void DoFunctionality()
     {
-        Instantiate(lightRodAuxiliar, PlayerInputs.instance.transform.position, Quaternion.identity);
+        Vector2 spawnPosition = PlayerInputs.instance.transform.position;
+        spawnPosition.y -= 0.5f;
+        Instantiate(lightRodAuxiliar, spawnPosition, Quaternion.identity);
     }
 
 

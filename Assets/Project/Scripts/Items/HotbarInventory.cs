@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HotbarInventory : Inventory
+public class HotbarInventory : DataSavingInventory
 {
     [SerializeField] InventoryMenu hotbarInventoryMenu;
     [SerializeField] RectTransform hotbarRectTransform;
@@ -11,7 +11,6 @@ public class HotbarInventory : Inventory
     private int[] extraSlotsOnUpgrade = { 1, 1, 2 };
     private float[] hotbarWidthOnUpgrade = { 674f, 798f, 1042f };
 
-    [SerializeField] InventoryData playerInventoryData;
 
 
     public delegate void HotbarInventoryUse();
@@ -20,32 +19,22 @@ public class HotbarInventory : Inventory
 
 
 
-    private void OnEnable()
+    private new void OnEnable()
     {
+        BrokenFurnace.OnTutorialFinish += SaveInventory;
+        PauseMenu.OnGameExit += SaveInventory;
+
         OnItemMove += SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting += SetInventroyMenuSelectedSlotIndex;
-        BrokenFurnace.OnTutorialFinish += SaveInventory;
     }
 
-    private void OnDisable()
+    protected new void OnDisable()
     {
+        BrokenFurnace.OnTutorialFinish -= SaveInventory;
+        PauseMenu.OnGameExit -= SaveInventory;
+
         OnItemMove -= SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
-        BrokenFurnace.OnTutorialFinish -= SaveInventory;
-    }
-
-    public void SaveInventory()
-    {
-        playerInventoryData.SaveInventoryItems(inventory);
-    }
-
-    public override void InitInventory()
-    {
-        base.InitInventory();
-        playerInventoryData.LoadInventoryItems(this);
-
-        gotChanged = true;
-        inventoryIsEmpty = false;
     }
 
 
@@ -118,6 +107,15 @@ public class HotbarInventory : Inventory
             hotbarRectTransform.sizeDelta = new Vector2(hotbarWidthOnUpgrade[currentUpgrade], hotbarRectTransform.sizeDelta.y);
             gotChanged = true;
         }
+    }
+
+
+
+    // Other
+
+    public Vector2 GetStackTransformPosition(int stackIndex)
+    {
+        return hotbarInventoryMenu.GetItemCellTransformPosition(stackIndex);
     }
 
 
