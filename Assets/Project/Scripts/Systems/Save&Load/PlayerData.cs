@@ -19,8 +19,8 @@ public class PlayerData
 
     public float[] cameraPos;
 
-    public int[] inventoryItemQuantity;
-    public int[] inventoryItemID;
+    //public int[] inventoryItemQuantity;
+    //public int[] inventoryItemID;
 
     public bool[] luxiniteMined;
 
@@ -29,30 +29,31 @@ public class PlayerData
     public bool[] oreMined;
 
     public int[] upgrades;
-    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, Dictionary<int,int> inventoryData)
+
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch)//, Dictionary<int,int> inventoryData)
     {
+        // == PLAYER ==
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
         playerPos[1] = player.transform.position.y;
         playerPos[2] = player.transform.position.z;
 
+        // == CAMERA ==
         cameraPos = new float[3];
         cameraPos[0] = cam.transform.position.x;
         cameraPos[1] = cam.transform.position.y;
         cameraPos[2] = cam.transform.position.z;
 
+        // == HEALTH ==
         health = player.GetComponent<HealthSystem>().GetHealth();
 
+        // == LAMP ==
         lampTime = player.GetComponentInChildren<Lamp>().GetLampTimeRemaining();
         activeLamp = player.GetComponentInChildren<Lamp>().active;
         coneActiveLamp = player.GetComponentInChildren<Lamp>().coneIsActive;
 
-        enableTeleport = new bool[sizeTeleports];
-        torchTurnedOn = new bool[sizeTorch];
-
-        //luxiniteMined = new bool[sizeLuxinites];
-
-        inventoryItemQuantity = new int[inventoryData.Count];
+        // == INVENTORY ==
+        /*inventoryItemQuantity = new int[inventoryData.Count];
         inventoryItemID = new int[inventoryData.Count];
         
         int i = 0;
@@ -61,7 +62,13 @@ public class PlayerData
             inventoryItemQuantity[i] = inventoryPair.Value;
             inventoryItemID[i] = inventoryPair.Key;
             i++;
-        }
+        }*/
+
+        // == MAP ELEMENTS ==
+        enableTeleport = new bool[sizeTeleports];
+        torchTurnedOn = new bool[sizeTorch];
+
+        //luxiniteMined = new bool[sizeLuxinites];
 
         //constructedBridges = new bool[sizeBridges];
 
