@@ -37,8 +37,7 @@ public class PlayerData
 
 
     public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, int sizeLuxinites, 
-        int sizeOres, int sizeBridges/*, int sizeUpgrades, Dictionary<int, int> inventoryData*/, 
-        int sizeGeckos, int sizeLightFisures, int sizeOreVeins)
+        int sizeOres, int sizeBridges, int sizeGeckos, int sizeLightFisures, int sizeOreVeins)
     {
         // == PLAYER ==
         playerPos = new float[3];
