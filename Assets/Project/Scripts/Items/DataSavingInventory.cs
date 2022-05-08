@@ -76,6 +76,8 @@ public class DataSavingInventory : Inventory
 
     public void LoadInventory()
     {
+        if (!File.Exists(GetFilePath())) return;
+
         string json = File.ReadAllText(GetFilePath());
         InventoryFileData loadedInventoryFileData = JsonUtility.FromJson<InventoryFileData>(json);
 
