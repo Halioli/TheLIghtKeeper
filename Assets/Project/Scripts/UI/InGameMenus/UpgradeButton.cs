@@ -17,6 +17,10 @@ public class UpgradeButton : HoverButton
     UpgradeMenuCanvas upgradeMenuCanvas;
 
 
+    // Events
+    public delegate void UpgradeNodeHoverAction(Vector2 transformPosition);
+    public static event UpgradeNodeHoverAction OnUpgradeNodeHover;
+
 
 
     public void Init(bool isEnabled, int upgradeBranchIndex, int upgradeIndex, UpgradeMenuCanvas upgradeMenuCanvas)
@@ -42,7 +46,9 @@ public class UpgradeButton : HoverButton
 
     public void DisplayUpgrade() // called on hover enter
     {
-        upgradeMenuCanvas.DisplayUpgrade(upgrade, isCompleted);
+        upgradeMenuCanvas.DisplayUpgrade(upgrade, isCompleted, upgradeBranchIndex, upgradeIndex);
+
+        if (OnUpgradeNodeHover != null) OnUpgradeNodeHover(GetComponent<RectTransform>().position);
     }
 
     public void HideDisplay() // called on hover exit
@@ -82,7 +88,7 @@ public class UpgradeButton : HoverButton
         GetComponent<Button>().enabled = true;
         GetComponent<Button>().interactable = true;
 
-        activeNodeImage.SetActive(true);
+        //activeNodeImage.SetActive(true);
 
         iconImage.color = new Color(255, 255, 255, 255);
 
@@ -94,6 +100,7 @@ public class UpgradeButton : HoverButton
     {
         GetComponent<Button>().enabled = false;
 
+        activeNodeImage.SetActive(true);
         doneText.SetActive(true);
         floatingItem.StopFloating();
 

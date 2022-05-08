@@ -15,10 +15,9 @@ public class AlmanacEnvironmentTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && other.IsTouching(colliderTrigger))
         //if (other.CompareTag("Player") && colliderTrigger.IsTouchingLayers(LayerMask.NameToLayer("Player")))
+        if (other.CompareTag("Player") && other.IsTouching(colliderTrigger))
         {
-            Debug.Log("OnEnvironmentTrigger " + environmentID);
             if (OnEnvironmentTrigger != null) OnEnvironmentTrigger(environmentID);
         }
     }
