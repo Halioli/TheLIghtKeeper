@@ -7,7 +7,8 @@ public class Teleporter : InteractStation
 {
     // Private Attributes
     private Vector2 spawnPosition;
-    private Animator animator;
+    public Animator animator;
+    private bool updatedSystem = false;
 
     // Public Attributes
     //Station
@@ -21,9 +22,11 @@ public class Teleporter : InteractStation
     public Item darkEssence;
     public string teleportName;
     public Vector3 teleportTransformPosition;
-    public bool activated = false;
+    public bool activated;
     public GameObject teleportSprite;
     public GameObject teleportLight;
+    public SpriteRenderer teleportSpriteRenderer;
+    public Sprite teleportActivatedSprite;
 
     [SerializeField] AudioSource teleportAudioSource;
 
@@ -54,8 +57,13 @@ public class Teleporter : InteractStation
     {
         if (playerInsideTriggerArea)
         {
-            if (OnInteraction != null)
-                OnInteraction(teleportName);
+            if (!updatedSystem)
+            {
+                if (OnInteraction != null)
+                    OnInteraction(teleportName);
+
+                updatedSystem = true;
+            }            
 
             GetInput();
             PopUpAppears();
@@ -63,6 +71,24 @@ public class Teleporter : InteractStation
         else
         {
             PopUpDisappears();
+            updatedSystem = false;
+        }
+
+        
+    }
+
+    public override void GetInput()
+    {
+        if (PlayerInputs.instance.PlayerPressedInteractButton())
+        {
+            StationFunction();
+            isCanvasOpen = !isCanvasOpen;
+        }
+
+        if (isCanvasOpen && PlayerInputs.instance.PlayerPressedInteractExitButton() && canvasTeleportSelection.activeInHierarchy)
+        {
+            StationFunction();
+            isCanvasOpen = !isCanvasOpen;
         }
     }
 
@@ -107,23 +133,13 @@ public class Teleporter : InteractStation
         }
         else
         {
-            if (!canvasTeleportSelection.activeInHierarchy)
+            if (!isCanvasOpen)
             {
-                hudGameObject.SetActive(false);
-                canvasTeleportSelection.SetActive(true);
-                PauseMenu.gameIsPaused = true;
-
-                if (OnMenuEnter != null) 
-                    OnMenuEnter();
+                ActivateTeleportMenu();
             }
-            else
+            else if (isCanvasOpen)
             {
-                hudGameObject.SetActive(true);
-                canvasTeleportSelection.SetActive(false);
-                PauseMenu.gameIsPaused = false;
-
-                if (OnMenuExit != null) 
-                    OnMenuExit();
+                DeactivateTeleportMenu();
             }
         }
     }
@@ -141,5 +157,28 @@ public class Teleporter : InteractStation
     private void DesactivateSprite()
     {
         teleportSprite.SetActive(false);
+    }
+
+    private void ActivateTeleportMenu()
+    {
+        canvasTeleportSelection.SetActive(true);
+
+        hudGameObject.SetActive(false);
+
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
+
+        if (OnMenuEnter != null)
+            OnMenuEnter();
+    }
+
+    private void DeactivateTeleportMenu()
+    {
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
+
+        hudGameObject.SetActive(true);
+        canvasTeleportSelection.SetActive(false);
+
+        //if (OnMenuExit != null)
+        //    OnMenuExit();
     }
 }
