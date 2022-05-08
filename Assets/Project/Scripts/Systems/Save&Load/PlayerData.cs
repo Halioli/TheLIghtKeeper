@@ -19,8 +19,8 @@ public class PlayerData
 
     public float[] cameraPos;
 
-    public int[] inventoryItemQuantity;
-    public int[] inventoryItemID;
+    //public int[] inventoryItemQuantity;
+    //public int[] inventoryItemID;
 
     public bool[] luxiniteMined;
 
@@ -40,18 +40,22 @@ public class PlayerData
         int sizeOres, int sizeBridges/*, int sizeUpgrades, Dictionary<int, int> inventoryData*/, 
         int sizeGeckos, int sizeLightFisures, int sizeOreVeins)
     {
+        // == PLAYER ==
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
         playerPos[1] = player.transform.position.y;
         playerPos[2] = player.transform.position.z;
 
+        // == CAMERA ==
         cameraPos = new float[3];
         cameraPos[0] = cam.transform.position.x;
         cameraPos[1] = cam.transform.position.y;
         cameraPos[2] = cam.transform.position.z;
 
+        // == HEALTH ==
         health = player.GetComponent<HealthSystem>().GetHealth();
 
+        // == LAMP ==
         lampTime = player.GetComponentInChildren<Lamp>().GetLampTimeRemaining();
         activeLamp = player.GetComponentInChildren<Lamp>().active;
         coneActiveLamp = player.GetComponentInChildren<Lamp>().coneIsActive;
