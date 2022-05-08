@@ -44,7 +44,22 @@ public class SaveSystem : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    private void OnEnable()
+    {
+        PauseMenu.OnGameExit += DoSave;
+    }
+
+    private void OnDisable()
+    {
+        PauseMenu.OnGameExit -= DoSave;
+    }
+
+    /*private void OnApplicationQuit()
+    {
+        SavePlayerData(player, cam);
+    }*/
+
+    private void DoSave()
     {
         SavePlayerData(player, cam);
     }
@@ -57,7 +72,7 @@ public class SaveSystem : MonoBehaviour
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, playerInventory.GetInventoryData());
+        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count);//, playerInventory.GetInventoryData());
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -99,7 +114,6 @@ public class SaveSystem : MonoBehaviour
 
         formatter.Serialize(stream, data);
         stream.Close();
-        Debug.Log("Saved " + data.lampTime);
     }
 
     public PlayerData LoadPlayerOnStart()
@@ -114,6 +128,8 @@ public class SaveSystem : MonoBehaviour
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
 
             playerHealthSystem.health = playerData.health;
+
+            // == POSITION ==
             Vector3 position;
             position.x = playerData.playerPos[0];
             position.y = playerData.playerPos[1];
@@ -125,6 +141,27 @@ public class SaveSystem : MonoBehaviour
             position.z = playerData.cameraPos[2];
             cam.transform.position = position;
 
+            // == INVENTORY ==
+            /*for (int i = 0; i < playerData.inventoryItemID.Length; i++)
+            {
+                playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
+            }*/
+
+            // == LAMP ==
+            playerLamp.lampTime = playerData.lampTime;
+            playerLamp.active = playerData.activeLamp;
+            playerLamp.turnedOn = playerData.coneActiveLamp;
+            if (playerData.coneActiveLamp)
+            {
+                playerLamp.ActivateConeLight();
+            }
+            
+            if(playerData.activeLamp)
+            {
+                playerLamp.ActivateCircleLight();
+            }
+
+            // == MAP ELEMENTS ==
             for (int i = 0; i < torches.Count; i++)
             {
                 torches[i].turnedOn = playerData.torchTurnedOn[i];
@@ -148,24 +185,7 @@ public class SaveSystem : MonoBehaviour
             //{
             //    bridges[i].constructed = playerData.constructedBridges[i];
             //}
-
-            playerLamp.lampTime = playerData.lampTime;
-            playerLamp.active = playerData.activeLamp;
-            playerLamp.turnedOn = playerData.coneActiveLamp;
-
-            if (playerData.coneActiveLamp)
-            {
-                playerLamp.ActivateConeLight();
-            }
-            if(playerData.activeLamp)
-            {
-                playerLamp.ActivateCircleLight();
-            }
-            for (int i = 0; i < playerData.inventoryItemID.Length; i++)
-            {
-                playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
-            }
-
+            //
             //for (int i = 0; i < luxinites.Count; i++)
             //{
             //    luxinites[i].hasBeenMined = playerData.luxiniteMined[i];
@@ -183,7 +203,7 @@ public class SaveSystem : MonoBehaviour
             //for (int i = 0; i < ores.Count; i++)
             //{
             //    ores[i].hasBeenMined = playerData.oreMined[i];
-
+            //
             //    if (ores[i].hasBeenMined)
             //    {
             //        ores[i].gameObject.SetActive(false);
@@ -204,6 +224,7 @@ public class SaveSystem : MonoBehaviour
     public PlayerData LoadPlayerOnAwake()
     {
         string path = Application.persistentDataPath + "player.dat";
+
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
