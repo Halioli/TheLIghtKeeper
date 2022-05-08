@@ -34,12 +34,14 @@ public class PostTutorialSceneOreLoader : MonoBehaviour
     {
         LoadBaseScenes.OnKeepBlackFade += LoadOreData;
         BrokenFurnace.OnTutorialFinish += SaveOreData;
+        PauseMenu.OnGameExit += SaveOreData;
     }
 
     private void OnDisable()
     {
         LoadBaseScenes.OnKeepBlackFade -= LoadOreData;
         BrokenFurnace.OnTutorialFinish -= SaveOreData;
+        PauseMenu.OnGameExit -= SaveOreData;
     }
 
     private string GetFilePath()
