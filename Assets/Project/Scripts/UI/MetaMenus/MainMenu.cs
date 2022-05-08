@@ -92,6 +92,11 @@ public class MainMenu : MonoBehaviour
         SetFirstTimeTrue();
     }
 
+    public void QuestionareButtonClick()
+    {
+        Application.OpenURL("https://forms.gle/cW2EM7tgWYezGHgP6");
+    }
+
     IEnumerator AsyncLoading(int sceneIndex)
     {
         // LoadSceneMode.Single unloads current scene

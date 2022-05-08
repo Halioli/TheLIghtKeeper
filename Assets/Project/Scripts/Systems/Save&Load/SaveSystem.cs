@@ -84,7 +84,8 @@ public class SaveSystem : MonoBehaviour
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count);//, playerInventory.GetInventoryData());
+        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, luxinites.Count,
+            ores.Count, bridges.Count, geckos.Count, lightFisures.Count, oreVeins.Count);
 
         Debug.Log("Player: " + player);
         foreach(Teleporter tp in teleporters)
@@ -187,6 +188,7 @@ public class SaveSystem : MonoBehaviour
             playerLamp.lampTime = playerData.lampTime;
             playerLamp.active = playerData.activeLamp;
             playerLamp.turnedOn = playerData.coneActiveLamp;
+
             if (playerData.coneActiveLamp)
             {
                 playerLamp.ActivateConeLight();
@@ -229,25 +231,34 @@ public class SaveSystem : MonoBehaviour
 
             }
 
-            //for (int i = 0; i < bridges.Count; i++)
-            //{
-            //    bridges[i].constructed = playerData.constructedBridges[i];
-            //}
-            //
+            for (int i = 0; i < bridges.Count; i++)
+            {
+                bridges[i].constructed = playerData.constructedBridges[i];
+            }
+
             //for (int i = 0; i < luxinites.Count; i++)
             //{
-            //    playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
+            //    luxinites[i].hasBeenMinedLux = playerData.luxiniteMined[i];
             //}
 
-            //for (int i = 0; i < ores.Count; i++)
-            //{
-            //    ores[i].hasBeenMined = playerData.oreMined[i];
-            //
-            //    if (ores[i].hasBeenMined)
-            //    {
-            //        ores[i].gameObject.SetActive(false);
-            //    }
-            //}
+            for (int i = 0; i < ores.Count; i++)
+            {
+                ores[i].hasBeenMined = playerData.oreMined[i];
+                //if (ores[i].hasBeenMined)
+                //{
+                //    ores[i].gameObject.SetActive(false);
+                //}
+            }
+
+            for (int i = 0; i < lightFisures.Count; i++)
+            {
+                lightFisures[i].activated = playerData.lightFisuresActive[i];
+            }
+
+            for (int i = 0; i < oreVeins.Count; i++)
+            {
+                oreVeins[i].activated = playerData.oreVeinActivated[i];
+            }
 
             strm.Close();
             return playerData;

@@ -7,7 +7,7 @@ public class Teleporter : InteractStation
 {
     // Private Attributes
     private Vector2 spawnPosition;
-    private Animator animator;
+    public Animator animator;
     private bool updatedSystem = false;
 
     // Public Attributes
