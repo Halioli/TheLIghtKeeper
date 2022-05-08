@@ -17,11 +17,8 @@ public class OreSaveData
         for (int i = 0; i < ores.Length; ++i)
         {
             oresExist[i] = ores[i].activeInHierarchy;
-
-            Debug.Log(i + " " + oresExist[i]);
         }
     }
-
 
     public bool[] oresExist;
 
