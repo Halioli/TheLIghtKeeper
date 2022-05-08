@@ -15,8 +15,12 @@ public class OreVein : InteractStation
 
     // Private Attributes
     private string[] messagesToShow = { "", "No Auto-Miner found" };
-    private bool activated = false;
+    public bool activated = false;
 
+    private void Awake()
+    {
+        SaveSystem.oreVeins.Add(this);
+    }
     private void Start()
     {
         autoMinerGameObject.SetActive(activated);

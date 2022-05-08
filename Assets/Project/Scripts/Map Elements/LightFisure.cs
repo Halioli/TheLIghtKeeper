@@ -25,9 +25,13 @@ public class LightFisure : InteractStation
 
     // Private Attributes
     private string[] messagesToShow = { "", "No <b>Light Generator</b> found" };
-    private bool activated = false;
+    public bool activated = false;
     private bool inCoroutine = false;
 
+    private void Awake()
+    {
+        SaveSystem.lightFisures.Add(this);
+    }
     private void Start()
     {
         lightGeneratorGameObject.SetActive(activated);
@@ -127,8 +131,4 @@ public class LightFisure : InteractStation
         audioSource.pitch = Random.Range(0.8f, 1.3f);
         audioSource.Play();
     }
-
-
-
-
 }

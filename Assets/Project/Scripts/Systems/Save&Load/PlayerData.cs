@@ -28,10 +28,17 @@ public class PlayerData
 
     public bool[] oreMined;
 
+    public bool[] lightFisuresActive;
+    public bool[] oreVeinActivated;
+
     public bool[] geckosDead;
 
     public int[] upgrades;
-    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, int sizeLuxinites, int sizeOres, int sizeBridges, int sizeUpgrades, Dictionary<int, int> inventoryData, int sizeGeckos)
+
+
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, int sizeLuxinites, 
+        int sizeOres, int sizeBridges/*, int sizeUpgrades, Dictionary<int, int> inventoryData*/, 
+        int sizeGeckos, int sizeLightFisures, int sizeOreVeins)
     {
         playerPos = new float[3];
         playerPos[0] = player.transform.position.x;
@@ -54,16 +61,19 @@ public class PlayerData
 
         luxiniteMined = new bool[sizeLuxinites];
 
-        inventoryItemQuantity = new int[inventoryData.Count];
-        inventoryItemID = new int[inventoryData.Count];
+        lightFisuresActive = new bool[sizeLightFisures];
+        oreVeinActivated = new bool[sizeOreVeins];
 
-        int i = 0;
-        foreach (KeyValuePair<int, int> inventoryPair in inventoryData)
-        {
-            inventoryItemQuantity[i] = inventoryPair.Value;
-            inventoryItemID[i] = inventoryPair.Key;
-            i++;
-        }
+        //inventoryItemQuantity = new int[inventoryData.Count];
+        //inventoryItemID = new int[inventoryData.Count];
+
+        //int i = 0;
+        //foreach (KeyValuePair<int, int> inventoryPair in inventoryData)
+        //{
+        //    inventoryItemQuantity[i] = inventoryPair.Value;
+        //    inventoryItemID[i] = inventoryPair.Key;
+        //    i++;
+        //}
 
         constructedBridges = new bool[sizeBridges];
 
@@ -71,7 +81,7 @@ public class PlayerData
 
         geckosDead = new bool[sizeGeckos];
 
-        upgrades = new int[sizeUpgrades];
+        //upgrades = new int[sizeUpgrades];
     }
 
 }

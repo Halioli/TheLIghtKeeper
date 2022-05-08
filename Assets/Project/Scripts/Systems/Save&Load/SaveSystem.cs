@@ -11,7 +11,9 @@ public class SaveSystem : MonoBehaviour
     public static List<BridgeManager> bridges = new List<BridgeManager>();
     public static List<Ore> ores = new List<Ore>();
     public static List<Gecko> geckos = new List<Gecko>();
-
+    public static List<LightFisure> lightFisures = new List<LightFisure>();
+    public static List<OreVein> oreVeins = new List<OreVein>();
+   
     public static int[] upgradesLevels;
 
     public GameObject player;
@@ -72,7 +74,9 @@ public class SaveSystem : MonoBehaviour
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera,torches.Count, luxinites.Count, ores.Count, bridges.Count, upgradesLevels.Length, playerInventory.GetInventoryData(), geckos.Count);
+        PlayerData data = new PlayerData(player, teleporters.Count, camera,torches.Count, luxinites.Count, 
+            ores.Count, bridges.Count, /*upgradesLevels.Length, playerInventory.GetInventoryData(),*/ 
+            geckos.Count, lightFisures.Count, oreVeins.Count);
 
         Debug.Log("Player: " + player);
         foreach(Teleporter tp in teleporters)
@@ -80,10 +84,10 @@ public class SaveSystem : MonoBehaviour
             Debug.Log("Teleports: " + tp.activated);
         }
 
-        foreach (Torch torch in torches)
-        {
-            Debug.Log("Torches: " + torch.turnedOn);
-        }
+        //foreach (Torch torch in torches)
+        //{
+        //    Debug.Log("Torches: " + torch.turnedOn);
+        //}
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -114,10 +118,22 @@ public class SaveSystem : MonoBehaviour
             Debug.Log("Ores: " + ores[i].hasBeenMined);
         }
 
-        for (int i = 0; i < upgradesLevels.Length; i++)
+        for (int i = 0; i < lightFisures.Count; i++)
         {
-            data.upgrades[i] = upgradesLevels[i];
+            data.lightFisuresActive[i] = lightFisures[i].activated;
+            Debug.Log("LightFisures: " + lightFisures[i].activated);
         }
+
+        for (int i = 0; i < oreVeins.Count; i++)
+        {
+            data.oreVeinActivated[i] = oreVeins[i].activated;
+            Debug.Log("OreVeins: " + oreVeins[i].activated);
+        }
+
+        //for (int i = 0; i < upgradesLevels.Length; i++)
+        //{
+        //    data.upgrades[i] = upgradesLevels[i];
+        //}
 
         for (int i = 0; i < geckos.Count; i++)
         {
@@ -126,7 +142,7 @@ public class SaveSystem : MonoBehaviour
 
         formatter.Serialize(stream, data);
         stream.Close();
-        Debug.Log("Saved lamptime: " + data.lampTime);
+        //Debug.Log("Saved lamptime: " + data.lampTime);
     }
 
     public PlayerData LoadPlayerOnStart()
@@ -156,6 +172,17 @@ public class SaveSystem : MonoBehaviour
             for (int i = 0; i < ores.Count; i++)
             {
                 ores[i].hasBeenMined = playerData.oreMined[i];
+            }
+
+
+            for (int i = 0; i < lightFisures.Count; i++)
+            {
+                lightFisures[i].activated = playerData.lightFisuresActive[i];
+            }
+
+            for (int i = 0; i < oreVeins.Count; i++)
+            {
+                oreVeins[i].activated = playerData.oreVeinActivated[i];
             }
 
             for (int i = 0; i < torches.Count; i++)
@@ -207,14 +234,14 @@ public class SaveSystem : MonoBehaviour
                 playerLamp.ActivateCircleLight();
             }
 
-            for (int i = 0; i < playerData.inventoryItemID.Length; i++)
-            {
-                playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
-            }
+            //for (int i = 0; i < playerData.inventoryItemID.Length; i++)
+            //{
+            //    playerInventory.AddNItemsToInventory(ItemLibrary.instance.GetItem(playerData.inventoryItemID[i]), playerData.inventoryItemQuantity[i]);
+            //}
+
 
             strm.Close();
             return playerData;
-
         }
         else
         {
@@ -234,7 +261,7 @@ public class SaveSystem : MonoBehaviour
 
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
 
-            upgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades);
+            //upgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades);
             
             for (int i = 0; i < luxinites.Count; i++)
             {
