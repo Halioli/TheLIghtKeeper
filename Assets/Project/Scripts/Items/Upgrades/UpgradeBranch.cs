@@ -48,6 +48,10 @@ public class UpgradeBranch : ScriptableObject
     {
         return upgrades[currentUpgrade];
     }
+    public int GetCurrentUpgradeIndex()
+    {
+        return currentUpgrade;
+    }
 
     public bool IsCompleted()
     {
