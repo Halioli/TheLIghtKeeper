@@ -35,7 +35,6 @@ public class InteractStation : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInsideTriggerArea = true;
-            
         }
         
     }
