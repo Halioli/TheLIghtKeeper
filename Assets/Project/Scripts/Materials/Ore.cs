@@ -169,4 +169,5 @@ public class Ore : MonoBehaviour
             particleSystem.Stop();
         }
     }
+
 }

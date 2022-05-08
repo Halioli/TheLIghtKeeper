@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 
 
+
 public class TutoralSceneOreDataSaver : MonoBehaviour
 {
     [SerializeField] string fileName;
@@ -20,17 +21,13 @@ public class TutoralSceneOreDataSaver : MonoBehaviour
         BrokenFurnace.OnTutorialFinish -= SaveOreData;
     }
 
-    private string GetFilePath()
-    {
-        return Application.dataPath + "/safeData/" + fileName + ".json";
-    }
 
     private void SaveOreData()
     {
-        OreSaveData saveInventoryFileData = new OreSaveData(ores);
+        OreSaveData saveOresData = new OreSaveData(ores);
 
-        string json = JsonUtility.ToJson(saveInventoryFileData);
-        File.WriteAllText(GetFilePath(), json);
+        string json = JsonUtility.ToJson(saveOresData);
+        File.WriteAllText(DataSavingUtils.GetJsonFilePath(fileName), json);
     }
 
 
