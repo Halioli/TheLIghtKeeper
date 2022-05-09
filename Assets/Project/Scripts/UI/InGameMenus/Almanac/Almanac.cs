@@ -12,6 +12,7 @@ public class Almanac : MonoBehaviour
     [SerializeField] GameObject[] almanacScalator;
     [SerializeField] Animator[] almanacAnimator;
     public Image[] itemImages;
+    public Image[] scalatorImages;
 
     private int emptyAnimId = 16;
 
@@ -32,6 +33,10 @@ public class Almanac : MonoBehaviour
         SetItemToEmptyID();
         ChangeToEmptyAnimator();
         environmentMenu.SetActive(false);
+        //for(int i = 0; i <= almanacScalator.Length; i++)
+        //{
+        //    scalatorImages[i] = almanacScalator[i].GetComponent<Image>();
+        //}
     }
 
     private void Update()
@@ -79,8 +84,16 @@ public class Almanac : MonoBehaviour
         }
         else
         {
-            SetItemSpriteImage(item);
-            SetDiscoveredInfo(item);
+            if(item.ID == 12)
+            {
+                ChangeToSpiderAndPlantsAnimator();
+                ChangeIdAnimator(item);
+            }
+            else
+            {
+                SetItemSpriteImage(item);
+                SetDiscoveredInfo(item);
+            }
         }
     }
 
@@ -150,6 +163,11 @@ public class Almanac : MonoBehaviour
         almanacAnimator[1].SetInteger("Id", item.ID);
         almanacAnimator[2].SetInteger("Id", item.ID);
         almanacAnimator[3].SetInteger("Id", item.ID);
+        //foreach(Image image in scalatorImages)
+        //{
+        //    //image.sprite = item.sprite;
+        //    image.SetNativeSize();
+        //}
     }
 
     private void SetItemToEmptyID()
