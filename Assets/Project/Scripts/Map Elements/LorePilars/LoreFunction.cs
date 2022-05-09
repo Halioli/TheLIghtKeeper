@@ -5,12 +5,20 @@ using UnityEngine;
 public class LoreFunction : InteractStation
 {
     private Animator lorePilarAnimator;
+    private ResetableFloatingItem floatingItem;
 
     public bool activated;
-
     public PopUp popUp;
-    private ResetableFloatingItem floatingItem;
-    // Start is called before the first frame update
+
+    public string tittle;
+    [TextArea(5, 20)] public string text;
+
+    public delegate void LorePilarActive();
+    public static event LorePilarActive OnLorePilarActive;
+
+    public delegate void LorePilarInteract(string tittle, string text);
+    public static event LorePilarInteract OnPilarInteract;
+
     void Start()
     {
         lorePilarAnimator = GetComponent<Animator>();
@@ -18,15 +26,20 @@ public class LoreFunction : InteractStation
         floatingItem.isFloating = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(playerInsideTriggerArea)
         {
-            lorePilarAnimator.SetBool("_isActivate", true);
+            if (!floatingItem.isFloating)
+            {
+                lorePilarAnimator.SetBool("_isActivate", true);
+                floatingItem.isFloating = true;
+
+                if (OnLorePilarActive != null) 
+                    OnLorePilarActive();
+            }
+            GetInput();
             PopUpAppears();
-            floatingItem.isFloating = true;
-            Debug.Log(floatingItem.isFloating);
         }
         else
         {
@@ -37,7 +50,8 @@ public class LoreFunction : InteractStation
 
     public override void StationFunction()
     {
-        
+        if (OnPilarInteract != null) 
+            OnPilarInteract(tittle, text);
     }
 
     private void PopUpAppears()
