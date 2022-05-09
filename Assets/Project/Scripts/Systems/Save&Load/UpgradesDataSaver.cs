@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 
 
-public class UpgardesDataSaver : MonoBehaviour
+public class UpgradesDataSaver : MonoBehaviour
 {
     [SerializeField] string fileName;
 
@@ -26,19 +26,13 @@ public class UpgardesDataSaver : MonoBehaviour
 
 
 
-    private string GetFilePath()
-    {
-        return Application.dataPath + "/safeData/" + fileName + ".json";
-    }
-
-
 
 
     public int[] GetLoadedUpgradesData()
     {
-        if (!File.Exists(GetFilePath())) return null;
+        if (!File.Exists(DataSavingUtils.GetJsonFilePath(fileName))) return null;
 
-        string json = File.ReadAllText(GetFilePath());
+        string json = File.ReadAllText(DataSavingUtils.GetJsonFilePath(fileName));
         UpgardesData loadedUpgardesData = JsonUtility.FromJson<UpgardesData>(json);
 
         if (loadedUpgardesData == null) return null;
@@ -59,7 +53,7 @@ public class UpgardesDataSaver : MonoBehaviour
         UpgardesData saveInventoryFileData = new UpgardesData(upgardesData);
 
         string json = JsonUtility.ToJson(saveInventoryFileData);
-        File.WriteAllText(GetFilePath(), json);        
+        File.WriteAllText(DataSavingUtils.GetJsonFilePath(fileName), json);        
     }
 
 

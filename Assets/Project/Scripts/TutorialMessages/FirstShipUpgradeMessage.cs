@@ -8,6 +8,7 @@ public class FirstShipUpgradeMessage : TutorialMessages
     private void Awake()
     {
         DisableSelf();
+        if (IsTutorialFinished()) Destroy(gameObject);
     }
 
 
@@ -21,4 +22,8 @@ public class FirstShipUpgradeMessage : TutorialMessages
         base.SendMessage();
         Destroy(gameObject);
     }
+
+
+
+
 }
