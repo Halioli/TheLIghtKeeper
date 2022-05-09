@@ -22,6 +22,15 @@ public class TranslationItem : MonoBehaviour
         transform.position = Vector2.Lerp(startPosition, endPosition, interpolator.Value);
     }
 
+    private void OnEnable()
+    {
+        InteractStation.OnInteractClose += End;
+    }
+
+    private void OnDisable()
+    {
+        InteractStation.OnInteractClose -= End;
+    }
 
     // Must be called on instantiate/activation
     public void Init(Sprite sprite, Vector2 startPosition, Vector2 endPosition, float duration = 0.5f)

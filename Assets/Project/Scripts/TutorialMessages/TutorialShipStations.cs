@@ -16,14 +16,20 @@ public class TutorialShipStations : TutorialMessages
 
     private bool mssgSent = false;
 
+
+    private void Awake()
+    {
+        if (IsTutorialFinished()) Destroy(gameObject);
+    }
+
     private void Start()
     {
-        worldMark.Disappear();
+        if (worldMark != null) worldMark.Disappear();
     }
 
     private void Update()
     {
-        if (mssgSent)
+        if (mssgSent && worldMark != null)
         {
             MarkSpaceshipElements();
         }

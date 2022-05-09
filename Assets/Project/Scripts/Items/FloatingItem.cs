@@ -10,7 +10,6 @@ public class FloatingItem : MonoBehaviour
     private float halfLerpDistance = 0.15f;
     private float startYLerp;
 
-
     void Awake()
     {
         Init();

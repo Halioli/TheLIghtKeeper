@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class UpgradesSystem : MonoBehaviour
 {
+    [SerializeField] UpgradeMenuCanvas upgradeMenuCanvas;
+    [SerializeField] UpgradesDataSaver upgardesDataSaver;
     [SerializeField] TranslationItemSpawner translationItemSpawner;
 
     private Dictionary<Item, int> playerInventoryItems;
@@ -31,16 +33,30 @@ public class UpgradesSystem : MonoBehaviour
         {
             upgradeBranches[i].Init(i);
         }
+
+
+        int[] allLastCompletedButtonIndex = upgardesDataSaver.GetLoadedUpgradesData();
+        if (allLastCompletedButtonIndex == null)
+        {
+            upgradeMenuCanvas.FirstTimeSetAllLastCompletedButtonIndex();
+        }
+        else
+        {
+            upgradeMenuCanvas.SetAllLastCompletedButtonIndex(allLastCompletedButtonIndex);
+        }
+        
     }
 
 
     private void OnEnable()
     {
         UpgradeButton.OnUpgradeNodeHover += SetCurrentNodeTransformPosition;
+        PauseMenu.OnGameExit += SaveUpgardesData;
     }
     private void OnDisable()
     {
         UpgradeButton.OnUpgradeNodeHover -= SetCurrentNodeTransformPosition;
+        PauseMenu.OnGameExit += SaveUpgardesData;
     }
 
 
@@ -187,6 +203,13 @@ public class UpgradesSystem : MonoBehaviour
     private void SetCurrentNodeTransformPosition(Vector2 currentNodeTransformPosition)
     {
         this.currentNodeTransformPosition = currentNodeTransformPosition;
+    }
+
+
+
+    private void SaveUpgardesData()
+    {
+        upgardesDataSaver.SaveUpgradesData(upgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex());
     }
 
 }
