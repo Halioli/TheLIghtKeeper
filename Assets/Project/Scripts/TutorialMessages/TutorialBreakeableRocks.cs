@@ -7,6 +7,12 @@ public class TutorialBreakeableRocks : TutorialMessages
     public delegate void TutorialBreakeableRocksDone();
     public static event TutorialBreakeableRocksDone DoTutorialBreakeableRocks;
 
+    private void Awake()
+    {
+        if (IsTutorialFinished()) Destroy(gameObject);
+    }
+
+
     private void OnEnable()
     {
         DoTutorialBreakeableRocks += DisableSelf;
