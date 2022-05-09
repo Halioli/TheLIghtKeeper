@@ -20,6 +20,13 @@ public class Almanac : MonoBehaviour
     public GameObject previousMenuGameObject;
     public Image almanacImage;
 
+
+
+    public delegate void AlmanacMenuAction();
+    public static event AlmanacMenuAction OnAlmanacMenuExit;
+
+
+
     private void Start()
     {
         SetItemToEmptyID();
@@ -30,6 +37,8 @@ public class Almanac : MonoBehaviour
     private void Update()
     {
         CloseAlmanac();
+
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
 
     public void ShowInfo(AlmanacScriptableObject item)
@@ -178,17 +187,21 @@ public class Almanac : MonoBehaviour
 
     private void CloseAlmanac()
     {
-        if(this.gameObject.activeInHierarchy && PlayerInputs.instance.PlayerPressedPauseButton())
+        if(this.gameObject.activeInHierarchy && (PlayerInputs.instance.PlayerPressedInteractExitButton() || PlayerInputs.instance.PlayerPressedAlmanacButton()))
         {
-            this.gameObject.SetActive(false);
+            PressedBackButton();
         }
     }
 
     public void PressedBackButton()
     {
-        previousMenuGameObject.SetActive(true);
+        if (OnAlmanacMenuExit != null) OnAlmanacMenuExit();
+
+        //previousMenuGameObject.SetActive(true);
+        //PlayerInputs.instance.SetInGameMenuCloseInputs();
 
         gameObject.SetActive(false);
+
     }
 
     //public void SubmenuMaterialsActive()
