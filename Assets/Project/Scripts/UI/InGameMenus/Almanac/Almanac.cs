@@ -189,6 +189,7 @@ public class Almanac : MonoBehaviour
     {
         if(this.gameObject.activeInHierarchy && (PlayerInputs.instance.PlayerPressedInteractExitButton() || PlayerInputs.instance.PlayerPressedAlmanacButton()))
         {
+            Debug.Log("exit almanac");
             PressedBackButton();
         }
     }
