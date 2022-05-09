@@ -151,7 +151,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedAlmanacButton()
     {
-        return canPause && Input.GetKeyDown(KeyCode.Tab);
+        return Input.GetKeyDown(KeyCode.Tab);
     }
 
 
