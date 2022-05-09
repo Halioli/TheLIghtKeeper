@@ -19,8 +19,9 @@ public abstract class Item : ScriptableObject
     public int stackSize;
 
 
-    // Private Attributes
     public Sprite sprite;
+
+    public bool existsInAlmanac = true;
 
 
     // Getter Methods

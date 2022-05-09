@@ -32,6 +32,9 @@ public class AlmanacMaterialsChecker : MonoBehaviour
 
     private void CheckItemID(int itemID)
     {
+
+        if (!ItemLibrary.instance.GetItem(itemID).existsInAlmanac) return;
+
         bool isNew = !materialsChecklist[itemID].hasBeenFound;
 
         if (isNew)
