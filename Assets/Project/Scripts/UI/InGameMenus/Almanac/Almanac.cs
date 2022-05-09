@@ -25,6 +25,7 @@ public class Almanac : MonoBehaviour
 
     public delegate void AlmanacMenuAction();
     public static event AlmanacMenuAction OnAlmanacMenuExit;
+    public static event AlmanacMenuAction OnAlmanacMenuEnter;
 
 
 
@@ -45,6 +46,12 @@ public class Almanac : MonoBehaviour
 
         PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
+
+    private void OnEnable()
+    {
+        if (OnAlmanacMenuEnter != null) OnAlmanacMenuEnter();
+    }
+
 
     public void ShowInfo(AlmanacScriptableObject item)
     {
@@ -200,6 +207,8 @@ public class Almanac : MonoBehaviour
 
     public void OpenAlmanac()
     {
+        if (OnAlmanacMenuEnter != null) OnAlmanacMenuEnter();
+
         this.gameObject.SetActive(true);
     }
 
@@ -207,6 +216,7 @@ public class Almanac : MonoBehaviour
     {
         if(this.gameObject.activeInHierarchy && (PlayerInputs.instance.PlayerPressedInteractExitButton() || PlayerInputs.instance.PlayerPressedAlmanacButton()))
         {
+            Debug.Log("exit almanac");
             PressedBackButton();
         }
     }
