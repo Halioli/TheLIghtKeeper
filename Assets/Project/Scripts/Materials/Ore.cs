@@ -22,7 +22,7 @@ public class Ore : MonoBehaviour
     public ItemGameObject mineralItemToDrop;
     public ParticleSystem[] oreParticleSystem;
 
-    public bool hasBeenMined;
+    public bool hasBeenMined = true;
 
     public delegate void OreGetsMinedAction();
     public static event OreGetsMinedAction playerMinesOreEvent;
@@ -32,19 +32,28 @@ public class Ore : MonoBehaviour
     private void Awake()
     {
         SaveSystem.ores.Add(this);
-    }
-
-    private void Start()
-    {
-        breakState = OreState.WHOLE;
-
+       
         currentSpriteIndex = 0;
         currentSprite = spriteList[currentSpriteIndex];
 
         healthSystem = GetComponent<HealthSystem>();
+    }
+
+    private void Start()
+    {
+        
         foreach (ParticleSystem particleSystem in oreParticleSystem)
         {
             particleSystem.Stop();
+        }
+    }
+
+    private void Update()
+    {
+        if (hasBeenMined)
+        {
+            gameObject.SetActive(false);
+            breakState = OreState.BROKEN;
         }
     }
 
@@ -144,7 +153,8 @@ public class Ore : MonoBehaviour
         spriteRenderer.material.color = transparentColor;
         yield return new WaitForSeconds(0.2f);
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 
     protected IEnumerator PlayBreakParticles()
@@ -159,4 +169,5 @@ public class Ore : MonoBehaviour
             particleSystem.Stop();
         }
     }
+
 }

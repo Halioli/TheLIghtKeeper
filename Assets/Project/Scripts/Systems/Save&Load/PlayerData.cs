@@ -28,9 +28,16 @@ public class PlayerData
 
     public bool[] oreMined;
 
+    public bool[] lightFisuresActive;
+    public bool[] oreVeinActivated;
+
+    public bool[] geckosDead;
+
     public int[] upgrades;
 
-    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch)//, Dictionary<int,int> inventoryData)
+
+    public PlayerData(GameObject player, int sizeTeleports, GameObject cam, int sizeTorch, int sizeLuxinites, 
+        int sizeOres, int sizeBridges, int sizeGeckos, int sizeLightFisures, int sizeOreVeins)
     {
         // == PLAYER ==
         playerPos = new float[3];
@@ -52,27 +59,30 @@ public class PlayerData
         activeLamp = player.GetComponentInChildren<Lamp>().active;
         coneActiveLamp = player.GetComponentInChildren<Lamp>().coneIsActive;
 
-        // == INVENTORY ==
-        /*inventoryItemQuantity = new int[inventoryData.Count];
-        inventoryItemID = new int[inventoryData.Count];
-        
-        int i = 0;
-        foreach(KeyValuePair<int,int> inventoryPair in inventoryData)
-        {
-            inventoryItemQuantity[i] = inventoryPair.Value;
-            inventoryItemID[i] = inventoryPair.Key;
-            i++;
-        }*/
-
-        // == MAP ELEMENTS ==
         enableTeleport = new bool[sizeTeleports];
         torchTurnedOn = new bool[sizeTorch];
 
-        //luxiniteMined = new bool[sizeLuxinites];
+        luxiniteMined = new bool[sizeLuxinites];
 
-        //constructedBridges = new bool[sizeBridges];
+        lightFisuresActive = new bool[sizeLightFisures];
+        oreVeinActivated = new bool[sizeOreVeins];
 
-        //oreMined = new bool[sizeOres];
+        //inventoryItemQuantity = new int[inventoryData.Count];
+        //inventoryItemID = new int[inventoryData.Count];
+
+        //int i = 0;
+        //foreach (KeyValuePair<int, int> inventoryPair in inventoryData)
+        //{
+        //    inventoryItemQuantity[i] = inventoryPair.Value;
+        //    inventoryItemID[i] = inventoryPair.Key;
+        //    i++;
+        //}
+
+        constructedBridges = new bool[sizeBridges];
+
+        oreMined = new bool[sizeOres];
+
+        geckosDead = new bool[sizeGeckos];
 
         //upgrades = new int[sizeUpgrades];
     }

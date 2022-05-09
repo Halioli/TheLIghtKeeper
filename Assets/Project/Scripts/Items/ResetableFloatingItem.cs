@@ -9,8 +9,6 @@ public class ResetableFloatingItem : FloatingItem
     public bool isFloating;
     Vector3 startPosition;
 
-
-
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();

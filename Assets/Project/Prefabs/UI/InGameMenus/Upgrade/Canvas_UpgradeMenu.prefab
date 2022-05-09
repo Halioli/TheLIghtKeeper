@@ -8190,6 +8190,7 @@ MonoBehaviour:
   - {fileID: 5869632207706275714}
   - {fileID: 5746614860235419224}
   randomSpawnOffset: 10
+  translationTime: 0.5
 --- !u!1 &4177444094247784844
 GameObject:
   m_ObjectHideFlags: 0
@@ -10081,7 +10082,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1754608618862074851
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12489,7 +12490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8779037476763855166
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13919,6 +13920,9 @@ MonoBehaviour:
   - {fileID: 5639609116207290620}
   - {fileID: 2988179469540585671}
   upgradesSystem: {fileID: 0}
+  CoreSubmenu: {fileID: 3966248686285574059}
+  LanternSubmenu: {fileID: 5055338357825894338}
+  PickaxeInventorySubmenu: {fileID: 6317575126307984575}
 --- !u!1 &7084117190775612312
 GameObject:
   m_ObjectHideFlags: 0

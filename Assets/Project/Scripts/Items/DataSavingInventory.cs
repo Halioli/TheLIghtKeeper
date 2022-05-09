@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+public class DataSavingUtils
+{
+    public static string GetJsonFilePath(string fileName)
+    {
+        //return Application.dataPath + "/LightKeeper_Data/" + fileName + ".json";
+        return Application.dataPath + "/" + fileName + ".json";
+    }
+}
+
 public class DataSavingInventory : Inventory
 {
     [SerializeField] string storeFileName;
@@ -59,24 +68,20 @@ public class DataSavingInventory : Inventory
     }
 
 
-    private string GetFilePath()
-    {
-        return Application.dataPath + "/safeData/" + storeFileName + ".json";
-    }
-
-
     public void SaveInventory()
     {
         InventoryFileData saveInventoryFileData = new InventoryFileData(GetInventoryData());
 
         string json = JsonUtility.ToJson(saveInventoryFileData);
-        File.WriteAllText(GetFilePath(), json);
+        File.WriteAllText(DataSavingUtils.GetJsonFilePath(storeFileName), json);
 
     }
 
     public void LoadInventory()
     {
-        string json = File.ReadAllText(GetFilePath());
+        if (!File.Exists(DataSavingUtils.GetJsonFilePath(storeFileName))) return;
+
+        string json = File.ReadAllText(DataSavingUtils.GetJsonFilePath(storeFileName));
         InventoryFileData loadedInventoryFileData = JsonUtility.FromJson<InventoryFileData>(json);
 
         if (loadedInventoryFileData == null) return;
