@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CraftingSystem : MonoBehaviour
 {
     // Private Attributes
@@ -15,6 +16,7 @@ public class CraftingSystem : MonoBehaviour
 
     private bool canCraft = false;
 
+    [SerializeField] CraftingMenu craftingMenu;
     [SerializeField] Inventory storageStationInventory;
 
     // Public Attributes
@@ -49,7 +51,7 @@ public class CraftingSystem : MonoBehaviour
         InitAllRecepies();
 
         availableRecepies = new List<Recepie>();
-        AddAvailableRecepies();
+        AddAvailableRecepies(); // for now adds all recepies to available array
 
         droppedItemPosition = new Vector2(transform.position.x, transform.position.y - 1f);
 
@@ -61,6 +63,10 @@ public class CraftingSystem : MonoBehaviour
         //{
         //    particle.Stop();
         //}
+
+
+        craftingMenu.Init();
+
     }
 
 
@@ -89,17 +95,31 @@ public class CraftingSystem : MonoBehaviour
 
     private void AddAvailableRecepies()
     {
-        foreach (Recepie recepie in recepiesLvl[currentLevel].recepies)
+        //foreach (Recepie recepie in recepiesLvl[currentLevel].recepies)
+        //{
+        //    availableRecepies.Add(recepie);
+        //}
+
+        foreach (RecepieCollection recepieCollection in recepiesLvl)
         {
-            availableRecepies.Add(recepie);
+            foreach (Recepie recepie in recepieCollection.recepies)
+            {
+                availableRecepies.Add(recepie);
+            }
         }
+
     }
     
+
+    /// TO REMOVE
     public void LevelUp()
     {
-        if (++currentLevel >= MAX_LEVEL) return;
+        //if (++currentLevel >= MAX_LEVEL) return;
 
-        AddAvailableRecepies();
+        //AddAvailableRecepies();
+
+
+        craftingMenu.LevelUp();
     }
 
     private void UpdatePlayerInventoryData()
@@ -250,6 +270,21 @@ public class CraftingSystem : MonoBehaviour
     private void SetCurrentButtonTransformPosition(Vector2 currentButtonTransformPosition)
     {
         this.currentButtonTransformPosition = currentButtonTransformPosition;
+    }
+
+
+
+    // Used by CraftingMenu to init values
+    public int[] GetCraftsPerUpgrade()
+    {
+        int[] craftsPerUpgrade = new int[recepiesLvl.Count];
+
+        for (int i = 0; i < recepiesLvl.Count; ++i)
+        {
+            craftsPerUpgrade[i] = recepiesLvl[i].recepies.Count;
+        }
+
+        return craftsPerUpgrade;
     }
 
 

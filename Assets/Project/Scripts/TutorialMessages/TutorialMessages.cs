@@ -71,6 +71,8 @@ public class TutorialMessages : MonoBehaviour
 
     protected bool IsTutorialFinished()
     {
+        //return false;
+
         if (PlayerPrefs.HasKey("TutorialFinished"))
         {
             return PlayerPrefs.GetInt("TutorialFinished") == 1;
