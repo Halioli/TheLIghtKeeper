@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,11 @@ public class UpgradeMenuCanvas : MonoBehaviour
 
     [SerializeField] UpgradeButtonBranch[] upgradeButtonBranches;
     [SerializeField] UpgradesSystem upgradesSystem;
-    
+
+    [SerializeField] GameObject CoreSubmenu;
+    [SerializeField] GameObject LanternSubmenu;
+    [SerializeField] GameObject PickaxeInventorySubmenu;
+
 
     public delegate void UpgradeMenuAction();
     public static event UpgradeMenuAction OnSubmenuEnter;
@@ -21,14 +26,41 @@ public class UpgradeMenuCanvas : MonoBehaviour
         HideDisplay();
     }
 
-    public void DisplayUpgrade(Upgrade upgrade, bool isCompleted)
+    private void OnEnable()
+    {
+        ResetSubmenus();
+    }
+
+    public void DisplayUpgrade(Upgrade upgrade, bool isCompleted, int upgradeBranchIndex, int upgradeIndex)
     {
         upgradeDisplayer.gameObject.SetActive(true);
 
         upgradeDisplayer.SetUpgradeNameAndDescription(upgrade.upgradeName, upgrade.upgradeDescription, upgrade.longDescription);
-        upgradeDisplayer.SetRequiredMaterials(upgrade.requiredItemsList, upgrade.requiredAmountsList);
 
         upgradeDisplayer.DisplayIsCompletedText(isCompleted);
+
+
+        if (isCompleted)
+        {
+            upgradeDisplayer.HideRequiredMaterials();
+        }
+        else
+        {
+            int[] amountsInInventory = new int[3];
+            upgradesSystem.UpgradeBranchIsTested(upgradeBranchIndex, upgradeIndex, amountsInInventory);
+
+            upgradeDisplayer.SetRequiredMaterials(upgrade.requiredItemsList, upgrade.requiredAmountsList, amountsInInventory);
+        }
+
+        if (upgradeIndex > upgradesSystem.upgradeBranches[upgradeBranchIndex].GetCurrentUpgradeIndex())
+        {
+            upgradeDisplayer.DisplayLockedText();
+        }
+        else
+        {
+            upgradeDisplayer.HideLockedText();
+        }
+
     }
 
     public void HideDisplay()
@@ -121,6 +153,24 @@ public class UpgradeMenuCanvas : MonoBehaviour
         upgradeButtonBranches[upgradeBranchIndex].GetUpgradeNameAndIcon(upgradeIndex, out upgradeName, out upgradeIcon);
         upgradeUnlockedDisplayer.DisplayUpgradeBanner(isMaxCompleted, upgradeName, upgradeIcon);
     }
+
+
+
+    void ResetSubmenus()
+    {
+        StartCoroutine("DelayedResetSubmenus");
+    }
+
+
+    IEnumerator DelayedResetSubmenus()
+    {
+
+        yield return null;// new WaitForSeconds(0.2f);
+        CoreSubmenu.SetActive(true);
+        LanternSubmenu.SetActive(false);
+        PickaxeInventorySubmenu.SetActive(false);
+    }
+
 
 
 }

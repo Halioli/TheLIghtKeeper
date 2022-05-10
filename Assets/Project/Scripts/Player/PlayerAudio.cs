@@ -33,8 +33,6 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] AudioClip refillLanternSound;
     [SerializeField] AudioClip fullLanternRechargeSound;
 
-
-
     private void OnEnable()
     {
         // Walking sound

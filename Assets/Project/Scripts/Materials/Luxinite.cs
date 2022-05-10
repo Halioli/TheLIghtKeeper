@@ -12,21 +12,22 @@ public class Luxinite : Ore
     private float initialIntensity;
     private float maxIntensity;
     private float time;
-
-    public bool hasBeenMined;
+    public bool hasBeenMinedLux;
 
     private void Awake()
     {
         SaveSystem.luxinites.Add(this);
-    }
-    void Start()
-    {
+
         breakState = OreState.WHOLE;
 
         currentSpriteIndex = 0;
         currentSprite = spriteList[currentSpriteIndex];
 
         healthSystem = GetComponent<HealthSystem>();
+    }
+    void Start()
+    {
+      
         foreach (ParticleSystem particleSystem in oreParticleSystem)
         {
             particleSystem.Stop();
@@ -34,6 +35,21 @@ public class Luxinite : Ore
 
         initialIntensity = 0f;
         maxIntensity = 3f;
+
+        if (hasBeenMinedLux)
+        {
+            this.gameObject.SetActive(false);
+            breakState = OreState.BROKEN;
+        }
+    }
+
+    private void Update()
+    {
+        if (hasBeenMinedLux)
+        {
+            this.gameObject.SetActive(false);
+            breakState = OreState.BROKEN;
+        }
     }
 
     public override void GetsMined(int damageAmount, int numberOfDrops)
@@ -44,7 +60,7 @@ public class Luxinite : Ore
 
         if(healthSystem.GetHealth() <= 0)
         {
-            hasBeenMined = true;
+            hasBeenMinedLux = true;
         }
     }
 

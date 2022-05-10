@@ -9,59 +9,62 @@ public class CraftingMenu : MonoBehaviour
     private readonly int MAX_REQUIRED_MATERIALS = 3;
 
     // Private Attribute
-    private Inventory playerInventory;
     [SerializeField] private CraftingSystem craftingSystem;
     private List<GameObject> recepieButtonsGameObjects;
-    private RectTransform craftingListRectTransform;
     private bool updatedCraftingMenu;
 
     // Public Attribute
     public GameObject craftingList;
     public GameObject buttonPrefab;
+
+    [SerializeField] GameObject[] craftingButtons;
+    [SerializeField] GameObject[] lockedTexts;
+    int[] craftsPerUpgrade;
+    int craftingButtonCount;
+    private const int MAX_LEVEL = 5;
+    private int currentLevel = 0;
+
     //public GameObject requiredMaterialPrefab;
-    
-    CraftingRecepieDisplayer craftingRecepieDisplayer;
+
+    [SerializeField] CraftingRecepieDisplayer craftingRecepieDisplayer;
     [SerializeField] GameObject craftingRecepieDisplayerGameObject;
 
 
     private void Start()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
         recepieButtonsGameObjects = new List<GameObject>();
-        craftingListRectTransform = craftingList.GetComponent<RectTransform>();
         updatedCraftingMenu = false;
-
-        craftingRecepieDisplayer = craftingRecepieDisplayerGameObject.GetComponent<CraftingRecepieDisplayer>();
 
         HideRecepieDisplayer();
     }
 
-    private void Update()
-    {
-        if (!updatedCraftingMenu)
-        {
-            UpdateCraftingMenu();
-            updatedCraftingMenu = true;
-        }
+    //private void Update()
+    //{
+    //    if (!updatedCraftingMenu)
+    //    {
+    //        UpdateCraftingMenu();
+    //        updatedCraftingMenu = true;
+    //    }
 
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SetFirstElemtTextToRed();
-        }
-
-    }
+    //}
 
 
     private void OnEnable()
     {
         CraftableItemButton.OnHoverRecepieButton += ResetRecepieDisplayer;
         CraftableItemButton.OnRecepieButtonHoverExit += HideRecepieDisplayer;
+        CraftingSystem.OnReceipeCraftingSuccess += ResetRecepieDisplayer;
+
+        //CoreUpgrade.OnCoreUpgrade += LevelUp;
     }
 
     private void OnDisable()
     {
         CraftableItemButton.OnHoverRecepieButton -= ResetRecepieDisplayer;
         CraftableItemButton.OnRecepieButtonHoverExit -= HideRecepieDisplayer;
+        CraftingSystem.OnReceipeCraftingSuccess -= ResetRecepieDisplayer;
+
+        //CoreUpgrade.OnCoreUpgrade += LevelUp;
     }
 
 
@@ -84,37 +87,8 @@ public class CraftingMenu : MonoBehaviour
             recepieButtonsGameObjects.Add(gameObjectButton);
             gameObjectButton.GetComponent<CraftableItemButton>().Init(buttonNumber, recepie.resultingItemUnit.ID);
 
-            //RectTransform gameObjectButtonRectTransform = gameObjectButton.GetComponent<RectTransform>();
-            //craftingListRectTransform.sizeDelta = new Vector2(craftingListRectTransform.sizeDelta.x,
-            //    craftingListRectTransform.sizeDelta.y + gameObjectButtonRectTransform.sizeDelta.y);
-
-            //gameObjectButton.GetComponent<CraftableItemButton>().buttonNumber = buttonNumber;
-            //gameObjectButton.GetComponent<CraftableItemButton>().SetDescription(recepie.resultingItemUnit.description);
-            //gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[0].text = recepie.recepieName;
-            //gameObjectButton.GetComponentsInChildren<Image>()[1].sprite = recepie.resultingItemUnit.GetItemSprite();
-            //gameObjectButton.GetComponentsInChildren<TextMeshProUGUI>()[1].text = recepie.resultingAmountUnit.ToString();
-
-            //craftingRecepieDisplayer.SetRecepieResultingItem(recepie.resultingItemUnit.ID);
-
-            //craftingRecepieDisplayer.ClearCurrentRequiredMaterials();
-            //for (int i = 0; i < recepie.requiredItemsList.Count; ++i)
-            //{
-            //    craftingRecepieDisplayer.AddRequiredMaterial(recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i]);
-
-            //    //GameObject requiredMaterial = Instantiate(requiredMaterialPrefab, gameObjectButton.GetComponentInChildren<HorizontalLayoutGroup>().transform);
-
-            //    //requiredMaterial.GetComponentInChildren<Image>().sprite = recepie.requiredItemsList[i].GetItemSprite();
-            //    //requiredMaterial.GetComponentInChildren<TextMeshProUGUI>().text = recepie.requiredAmountsList[i].ToString();
-            //}
-
             ++buttonNumber;
         }
-        //craftingList.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, buttonPrefab.GetComponent<RectTransform>().sizeDelta.y * recepieButtonsGameObjects.Count);
-    }
-
-    private void SetFirstElemtTextToRed()
-    {
-        recepieButtonsGameObjects[0].GetComponentsInChildren<TextMeshProUGUI>()[2].color = Color.red;
     }
 
     public void ShowRecepies()
@@ -123,17 +97,25 @@ public class CraftingMenu : MonoBehaviour
     }
 
 
+    // Called on hover && after click and craft success
     private void ResetRecepieDisplayer(int recepieIndex)
     {
+        int[] amountsInInventory = new int[3];
+
+        craftingSystem.TestSelectedReceipe(recepieIndex, amountsInInventory);
+
+
+
         craftingRecepieDisplayerGameObject.SetActive(true);
 
         Recepie recepie = craftingSystem.availableRecepies[recepieIndex];
         craftingRecepieDisplayer.SetRecepieResultingItem(recepie.resultingItemUnit.ID, recepie.resultingAmountUnit);
 
 
+
         for (int i = 0; i < recepie.requiredItemsList.Count; ++i)
         {
-            craftingRecepieDisplayer.AddRequiredMaterial(i, recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i]);
+            craftingRecepieDisplayer.AddRequiredMaterial(i, recepie.requiredItemsList[i].ID, recepie.requiredAmountsList[i], amountsInInventory[i]);
         }
         for (int i = recepie.requiredItemsList.Count; i < MAX_REQUIRED_MATERIALS; ++i)
         {
@@ -147,6 +129,82 @@ public class CraftingMenu : MonoBehaviour
         craftingRecepieDisplayerGameObject.SetActive(false);
     }
 
+
+
+
+    // Must be called by CraftingSystem after initializing crafting receipes
+    public void Init()
+    {
+        InitCraftsPerUpgrade();
+        InitAllCrafts();
+        InitCraftingButtons();
+    }
+
+
+    // Used by CraftingSystem to init values
+    private void InitCraftsPerUpgrade()
+    {
+        craftsPerUpgrade = craftingSystem.GetCraftsPerUpgrade();
+        //Example: craftsPerUpgrade = { 1, 2, 2, 1 }
+    }
+
+    private void InitAllCrafts()
+    {
+        int buttonNumber = 0;
+
+        foreach (RecepieCollection recepieCollection in craftingSystem.recepiesLvl)
+        {
+            foreach (Recepie recepie in recepieCollection.recepies)
+            {
+                //Debug.Log("buttonNumber: "+buttonNumber);
+                //Debug.Log("recepie: " + recepie.recepieName);
+                //Debug.Log("resultingItem: " + recepie.resultingItemUnit.itemName);
+                //Debug.Log("resultingItem: " + ItemLibrary.instance.GetItem(recepie.resultingItemUnit.ID).itemName);
+
+                craftingButtons[buttonNumber].GetComponent<CraftableItemButton>().Init(buttonNumber, recepie.resultingItemUnit.ID);
+
+                ++buttonNumber;
+            }
+        }
+
+    }
+
+
+    private void InitCraftingButtons()
+    {
+        currentLevel = 0;
+        craftingButtonCount = craftsPerUpgrade[currentLevel];
+
+        for (int i = 0; i < craftingButtonCount; ++i)
+        {
+            craftingButtons[i].GetComponent<Button>().interactable = true;
+        }
+
+        for (int i = craftingButtonCount; i < craftingButtons.Length; ++i)
+        {
+            craftingButtons[i].GetComponent<Button>().interactable = false;
+        }
+
+        lockedTexts[currentLevel].SetActive(false);
+    }
+
+
+    public void LevelUp()
+    {
+        if (currentLevel >= MAX_LEVEL) return;
+
+        ++currentLevel;
+
+        craftingButtonCount += craftsPerUpgrade[currentLevel];
+
+        for (int i = 0; i < craftingButtonCount; ++i)
+        {
+            craftingButtons[i].GetComponent<Button>().interactable = true;
+        }
+
+
+        lockedTexts[currentLevel].SetActive(false);
+    }
 
 
 

@@ -410,6 +410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 2334290291206200889}
+  playerInventory: {fileID: 0}
   craftingMenu: {fileID: 9067862640948864614}
   interactText: {fileID: 5125334697238817726}
   backgroundText: {fileID: 2402521578211243530}
@@ -429,6 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aefeb397b6dd86b4f908a3082049e9cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craftingMenu: {fileID: 9067862640948864614}
   storageStationInventory: {fileID: 0}
   recepiesLvl:
   - {fileID: 11400000, guid: 30da73a7d5184d545bb4aaf40c4f4988, type: 2}
@@ -437,6 +439,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1017f73966f1a3549b415fb4d2bc62a1, type: 2}
   - {fileID: 11400000, guid: 46a6de354841688458bfc4e29e4b1dd1, type: 2}
   availableRecepies: []
+  translationItemSpawner: {fileID: 8294538816889077780}
 --- !u!1 &2402521578211243530
 GameObject:
   m_ObjectHideFlags: 0
@@ -10598,5 +10601,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8f641f06edadc1419e48b3a405c35f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8294538816889077780 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8183595852023145927, guid: e70851d9fd4d2e347a67442ff8862693, type: 3}
+  m_PrefabInstance: {fileID: 184056091178427859}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76643a9c7f01974ba20a1de24b20311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

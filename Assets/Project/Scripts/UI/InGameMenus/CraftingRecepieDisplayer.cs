@@ -34,10 +34,10 @@ public class CraftingRecepieDisplayer : MonoBehaviour
         requiredItems[index].SetActive(false);
     }
 
-    public void AddRequiredMaterial(int index, int itemID, int itemAmount)
+    public void AddRequiredMaterial(int index, int itemID, int itemAmount, int amountInInventory)
     {
         requiredItems[index].SetActive(true);
-        requiredItems[index].GetComponent<RequiredItemDisplay>().Init(itemID, itemAmount);
+        requiredItems[index].GetComponent<RequiredItemDisplay>().Init(itemID, itemAmount, amountInInventory);
     }
     
 }

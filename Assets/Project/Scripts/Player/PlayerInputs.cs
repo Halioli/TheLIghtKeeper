@@ -23,6 +23,8 @@ public class PlayerInputs : MonoBehaviour
 
     public bool ignoreLights = false;
 
+    public bool isInGameMenu = false;
+
     public GameObject selectSpotGameObject;
 
     private void Awake()
@@ -40,6 +42,8 @@ public class PlayerInputs : MonoBehaviour
     // Methods
     public void SetInGameMenuOpenInputs()
     {
+        isInGameMenu = true;
+        
         canMine = false;
         canAttack = false;
         canPause = false;
@@ -48,6 +52,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void SetInGameMenuCloseInputs()
     {
+        isInGameMenu = false;
+
         canMine = true;
         canAttack = true;
         //canPause = true;
@@ -128,7 +134,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedPauseButton()
     {
-        return canPause && Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        return canPause && Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()
@@ -142,6 +148,12 @@ public class PlayerInputs : MonoBehaviour
             return Vector2.zero;
         }
     }
+
+    public bool PlayerPressedAlmanacButton()
+    {
+        return Input.GetKeyDown(KeyCode.Tab);
+    }
+
 
     public Vector2 PlayerMouseScroll()
     {
