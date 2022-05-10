@@ -73,6 +73,7 @@ public class AlmanacMenuButton : HoverMovableButton
         if (OnAlmanacMenuEnter != null) OnAlmanacMenuEnter();
 
         DisableButton();
+        DisableAttention();
     }
 
 
@@ -88,6 +89,13 @@ public class AlmanacMenuButton : HoverMovableButton
 
     private void ResetInputs()
     {
+        StartCoroutine(LateResetInputs());
+    }
+
+    IEnumerator LateResetInputs()
+    {
+        yield return null;
         PlayerInputs.instance.SetInGameMenuCloseInputs();
     }
+
 }
