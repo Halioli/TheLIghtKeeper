@@ -99,8 +99,10 @@ public class Teleporter : InteractStation
         {
             popUp.ShowInteraction();
         }
-
-        popUp.ShowMessage();
+        else
+        {
+            popUp.ShowMessage();
+        }
     }
 
     // Interactive pop up disappears
@@ -127,7 +129,7 @@ public class Teleporter : InteractStation
         }
         else if (!activated && !inventory.InventoryContainsItem(darkEssence))
         {
-            popUp.GetComponent<PopUp>().ShowMessage();
+            //popUp.GetComponent<PopUp>().ShowMessage();
 
             InvokeOnNotEnoughMaterials();
         }
