@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ResetableFloatingItem : FloatingItem
 {
-    RectTransform rectTransform;
+    private RectTransform rectTransform;
+    private Transform transform;
+    private bool hasRectTransform;
 
     public bool isFloating;
     Vector3 startPosition;
@@ -12,7 +14,17 @@ public class ResetableFloatingItem : FloatingItem
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        startPosition = rectTransform.position;
+        if (rectTransform == null)
+        {
+            hasRectTransform = false;
+            transform = GetComponent<Transform>();
+            startPosition = transform.position;
+        }
+        else
+        {
+            hasRectTransform = true;
+            startPosition = rectTransform.position;
+        }
 
         Init();
     }
@@ -24,7 +36,15 @@ public class ResetableFloatingItem : FloatingItem
 
     public void StopFloating()
     {
-        rectTransform.position = startPosition;
+        if (hasRectTransform)
+        {
+            rectTransform.position = startPosition;
+        }
+        else
+        {
+            transform.position = startPosition;
+        }
+        
         isFloating = false;
     }
 
