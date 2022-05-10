@@ -33,10 +33,12 @@ public class LoreFunction : InteractStation
             if (!floatingItem.isFloating)
             {
                 lorePilarAnimator.SetBool("_isActivate", true);
-                floatingItem.isFloating = true;
             }
-            GetInput();
-            PopUpAppears();
+            else
+            {
+                GetInput();
+                PopUpAppears();
+            }
         }
         else
         {
@@ -49,6 +51,8 @@ public class LoreFunction : InteractStation
     {
         if (OnLorePilarActive != null)
             OnLorePilarActive();
+
+        floatingItem.isFloating = true;
     }
 
     public override void StationFunction()
