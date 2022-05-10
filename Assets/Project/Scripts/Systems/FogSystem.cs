@@ -43,7 +43,6 @@ public class FogSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(playerDead);
         if (playerInFog)
         {
             fogAreaAudioSource.Play();
