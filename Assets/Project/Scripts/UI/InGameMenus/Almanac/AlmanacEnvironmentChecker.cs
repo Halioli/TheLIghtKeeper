@@ -9,6 +9,12 @@ public class AlmanacEnvironmentChecker : MonoBehaviour
     public int[] IDs;
     public AlmanacScriptableObject[] almanacScriptableObjectMaterials;
 
+
+    public delegate void AlmanacEnvirnomentCheckAction();
+    public static event AlmanacEnvirnomentCheckAction OnNewItemFound;
+
+
+
     private void Awake()
     {
         materialsChecklist = new Dictionary<int, AlmanacScriptableObject>();
@@ -16,6 +22,7 @@ public class AlmanacEnvironmentChecker : MonoBehaviour
         {
             materialsChecklist.Add(IDs[i], almanacScriptableObjectMaterials[i]);
         }
+
     }
 
 
@@ -37,8 +44,24 @@ public class AlmanacEnvironmentChecker : MonoBehaviour
         if (isNew)
         {
             materialsChecklist[ID].hasBeenFound = true;
+
+            if (OnNewItemFound != null) OnNewItemFound();
         }
 
+    }
+
+
+    public AlmanacScriptableObject[] GetItems()
+    {
+        return almanacScriptableObjectMaterials;
+    }
+
+    public void InitItems(bool[] itemsHasBeenFound)
+    {
+        for (int i = 0; i < almanacScriptableObjectMaterials.Length; ++i)
+        {
+            almanacScriptableObjectMaterials[i].hasBeenFound = itemsHasBeenFound[i];
+        }
     }
 
 

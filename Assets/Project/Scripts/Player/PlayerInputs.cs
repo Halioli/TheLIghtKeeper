@@ -134,7 +134,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedPauseButton()
     {
-        return canPause && Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        return canPause && Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()
@@ -148,6 +148,12 @@ public class PlayerInputs : MonoBehaviour
             return Vector2.zero;
         }
     }
+
+    public bool PlayerPressedAlmanacButton()
+    {
+        return Input.GetKeyDown(KeyCode.Tab);
+    }
+
 
     public Vector2 PlayerMouseScroll()
     {
