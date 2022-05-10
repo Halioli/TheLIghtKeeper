@@ -9,6 +9,8 @@ public class DarknessFaint : MonoBehaviour
     [SerializeField] float respawnTime = 5f;
     [SerializeField] float middleRespawnTime = 4.0f;
 
+    [SerializeField] AudioSource darkHoleaudioSource;
+
     bool hasFainted = false;
 
     [SerializeField] Vector2 teleportPosition;
@@ -71,6 +73,7 @@ public class DarknessFaint : MonoBehaviour
 
         playerAnimator.SetBool("isDeadByDarkness", true);
         PlayerInputs.instance.canMove = false;
+        darkHoleaudioSource.Play();
 
         yield return new WaitForSeconds(3.5f);
 
