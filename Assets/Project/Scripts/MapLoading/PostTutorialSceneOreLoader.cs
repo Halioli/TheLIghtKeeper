@@ -16,10 +16,9 @@ public class OreSaveData
 
         for (int i = 0; i < ores.Length; ++i)
         {
-            oresExist[i] = ores[i] != null;
+            oresExist[i] = ores[i].activeInHierarchy;
         }
     }
-
 
     public bool[] oresExist;
 
@@ -35,6 +34,8 @@ public class PostTutorialSceneOreLoader : MonoBehaviour
         LoadBaseScenes.OnKeepBlackFade += LoadOreData;
         BrokenFurnace.OnTutorialFinish += SaveOreData;
         PauseMenu.OnGameExit += SaveOreData;
+
+        LoadOreData();
     }
 
     private void OnDisable()
@@ -44,17 +45,11 @@ public class PostTutorialSceneOreLoader : MonoBehaviour
         PauseMenu.OnGameExit -= SaveOreData;
     }
 
-    private string GetFilePath()
-    {
-        return Application.dataPath + "/safeData/" + fileName + ".json";
-    }
-
-
 
 
     private void LoadOreData()
     {
-        string json = File.ReadAllText(GetFilePath());
+        string json = File.ReadAllText(DataSavingUtils.GetJsonFilePath(fileName));
         OreSaveData loadedOreData = JsonUtility.FromJson<OreSaveData>(json);
 
         if (loadedOreData == null) return;
@@ -70,7 +65,7 @@ public class PostTutorialSceneOreLoader : MonoBehaviour
         OreSaveData saveInventoryFileData = new OreSaveData(ores);
 
         string json = JsonUtility.ToJson(saveInventoryFileData);
-        File.WriteAllText(GetFilePath(), json);
+        File.WriteAllText(DataSavingUtils.GetJsonFilePath(fileName), json);
     }
 
 }

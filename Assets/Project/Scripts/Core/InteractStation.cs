@@ -8,7 +8,7 @@ public class InteractStation : MonoBehaviour
     public BoxCollider2D triggerArea;
 
     protected bool playerInsideTriggerArea;
-    protected HotbarInventory playerInventory;
+    [SerializeField] protected HotbarInventory playerInventory;
 
     protected bool isCanvasOpen = false;
 
@@ -27,7 +27,7 @@ public class InteractStation : MonoBehaviour
 
     private void Awake()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<HotbarInventory>();
+        if (playerInventory == null) playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<HotbarInventory>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,7 +35,6 @@ public class InteractStation : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInsideTriggerArea = true;
-            
         }
         
     }

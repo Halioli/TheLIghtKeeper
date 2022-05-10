@@ -460,7 +460,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1bd4fa5279371b64ca2f0c1c1fe50674, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -2450,8 +2450,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -9, y: -87}
-  m_SizeDelta: {x: 625, y: 1250}
+  m_AnchoredPosition: {x: -9, y: -0}
+  m_SizeDelta: {x: 431, y: 550}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7052748026166926807
 CanvasRenderer:
@@ -2503,7 +2503,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1bd4fa5279371b64ca2f0c1c1fe50674, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -3674,6 +3674,8 @@ GameObject:
   - component: {fileID: 5982918680016394370}
   - component: {fileID: 1516214904361923063}
   - component: {fileID: 8506124542265556095}
+  - component: {fileID: 6590338011374259220}
+  - component: {fileID: 1841734864696892968}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -3795,6 +3797,63 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6590338011374259220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5199955926387663284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17eba31649680dd4e9b9e948913b6f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1841734864696892968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5199955926387663284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6590338011374259220}
+          m_TargetAssemblyTypeName: ClickProtector, Assembly-CSharp
+          m_MethodName: DoOnPointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6590338011374259220}
+          m_TargetAssemblyTypeName: ClickProtector, Assembly-CSharp
+          m_MethodName: DoOnPointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5567791640172984296
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,7 +4326,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1bd4fa5279371b64ca2f0c1c1fe50674, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -4650,6 +4709,12 @@ MonoBehaviour:
   - {fileID: 2860410162373499548}
   - {fileID: 1045347148550464950}
   itemImages: []
+  scalatorImages:
+  - {fileID: 9083526910199650452}
+  - {fileID: 2780580114852847394}
+  - {fileID: 2940367580519119067}
+  - {fileID: 7994698443438502565}
+  - {fileID: 2432235444163725399}
   submenus:
   - {fileID: 2505012900228375196}
   - {fileID: 2554757055519147881}
@@ -4744,7 +4809,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1bd4fa5279371b64ca2f0c1c1fe50674, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 

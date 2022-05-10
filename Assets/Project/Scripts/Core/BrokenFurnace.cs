@@ -20,6 +20,11 @@ public class BrokenFurnace : InteractStation
     public delegate void BrokenFurnaceAction();
     public static event BrokenFurnaceAction OnTutorialFinish;
 
+    private void Awake()
+    {
+        PlayerPrefs.SetInt("TutorialFinished", 0);
+    }
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -61,6 +66,7 @@ public class BrokenFurnace : InteractStation
             popUp.ChangeMessageText("Materials added");
             playerInventory.SubstractNItemsFromInventory(coal, COAL_REPAIR_AMOUNT);
             PlayerInputs.instance.canMove = false;
+
             StartCoroutine(FurnaceParticles());
             StartCoroutine(StartFurnace());
         }

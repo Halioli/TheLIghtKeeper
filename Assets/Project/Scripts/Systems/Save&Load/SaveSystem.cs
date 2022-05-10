@@ -10,6 +10,10 @@ public class SaveSystem : MonoBehaviour
     public static List<Luxinite> luxinites = new List<Luxinite>();
     public static List<BridgeManager> bridges = new List<BridgeManager>();
     public static List<Ore> ores = new List<Ore>();
+    public static List<Gecko> geckos = new List<Gecko>();
+    public static List<LightFisure> lightFisures = new List<LightFisure>();
+    public static List<OreVein> oreVeins = new List<OreVein>();
+   
     public static int[] upgradesLevels;
 
     public GameObject player;
@@ -64,15 +68,35 @@ public class SaveSystem : MonoBehaviour
         SavePlayerData(player, cam);
     }
 
+    private void SaveKeyEvent()
+    {
+       if(PlayerInputs.instance.PlayerPressedPauseButton())
+        {
+            SavePlayerData(player, cam);
+        }
+    }
+
     public void SavePlayerData(GameObject player, GameObject camera)
     {
-        //upgradesLevels = upgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
+        upgradesLevels = upgradeMenuCanvas.GetAllUpgardesLastActiveButtonIndex();
 
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "player.dat";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count);//, playerInventory.GetInventoryData());
+        PlayerData data = new PlayerData(player, teleporters.Count, camera, torches.Count, luxinites.Count,
+            ores.Count, bridges.Count, geckos.Count, lightFisures.Count, oreVeins.Count);
+
+        Debug.Log("Player: " + player);
+        foreach(Teleporter tp in teleporters)
+        {
+            Debug.Log("Teleports: " + tp.activated);
+        }
+
+        //foreach (Torch torch in torches)
+        //{
+        //    Debug.Log("Torches: " + torch.turnedOn);
+        //}
 
         for (int i = 0; i < torches.Count; i++)
         {
@@ -84,33 +108,46 @@ public class SaveSystem : MonoBehaviour
             data.enableTeleport[i] = teleporters[i].activated;
         }
 
-        //for(int i = 0; i < luxinites.Count; i++)
-        //{
-        //    data.luxiniteMined[i] = luxinites[i].hasBeenMined;
-        //    if(luxinites[i].hasBeenMined)
-        //    {
-        //        Debug.Log("Luxinite Mined");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Luxinites Not Mined");
-        //    }
-        //}
+        for (int i = 0; i < luxinites.Count; i++)
+        {
+            data.luxiniteMined[i] = luxinites[i].hasBeenMined;
+            Debug.Log("Luxinites: " + luxinites[i].hasBeenMinedLux);
+        }
 
-        //for (int i = 0; i < bridges.Count; i++)
-        //{
-        //    data.constructedBridges[i] = bridges[i].constructed;
-        //}
+        for (int i = 0; i < bridges.Count; i++)
+        {
+            data.constructedBridges[i] = bridges[i].constructed;
+            Debug.Log("Bridges: " + bridges[i].constructed);
 
-        //for (int i = 0; i < ores.Count; i++)
-        //{
-        //    data.oreMined[i] = ores[i].hasBeenMined;
-        //}
+        }
+
+        for (int i = 0; i < ores.Count; i++)
+        {
+            data.oreMined[i] = ores[i].hasBeenMined;
+            Debug.Log("Ores: " + ores[i].hasBeenMined);
+        }
+
+        for (int i = 0; i < lightFisures.Count; i++)
+        {
+            data.lightFisuresActive[i] = lightFisures[i].activated;
+            Debug.Log("LightFisures: " + lightFisures[i].activated);
+        }
+
+        for (int i = 0; i < oreVeins.Count; i++)
+        {
+            data.oreVeinActivated[i] = oreVeins[i].activated;
+            Debug.Log("OreVeins: " + oreVeins[i].activated);
+        }
 
         //for (int i = 0; i < upgradesLevels.Length; i++)
         //{
         //    data.upgrades[i] = upgradesLevels[i];
         //}
+
+        for (int i = 0; i < geckos.Count; i++)
+        {
+            data.geckosDead[i] = geckos[i].geckoDead;
+        }
 
         formatter.Serialize(stream, data);
         stream.Close();
@@ -151,6 +188,7 @@ public class SaveSystem : MonoBehaviour
             playerLamp.lampTime = playerData.lampTime;
             playerLamp.active = playerData.activeLamp;
             playerLamp.turnedOn = playerData.coneActiveLamp;
+
             if (playerData.coneActiveLamp)
             {
                 playerLamp.ActivateConeLight();
@@ -170,49 +208,60 @@ public class SaveSystem : MonoBehaviour
                 {
                     torches[i].SetTorchLightOn();
                 }
-                //    //else
-                //    //{
-                //    //    torches[i].SetTorchLightOff();
-                //    //}
+                    //else
+                    //{
+                    //    torches[i].SetTorchLightOff();
+                    //}
+            }
+
+            for(int i = 0; i < geckos.Count; i++)
+            {
+                geckos[i].geckoDead = playerData.geckosDead[i];
             }
 
             for (int i = 0; i < teleporters.Count; i++)
             {
                 teleporters[i].activated = playerData.enableTeleport[i];
+                if (teleporters[i].activated)
+                {
+                    teleporters[i].teleportSpriteRenderer.sprite = teleporters[i].teleportActivatedSprite;
+                    teleporters[i].animator.SetBool("isActivated", true);
+                    teleporters[i].animator.Play("Ends", 0, 0.25f);
+                }
+
             }
 
-            //for (int i = 0; i < bridges.Count; i++)
-            //{
-            //    bridges[i].constructed = playerData.constructedBridges[i];
-            //}
-            //
+            for (int i = 0; i < bridges.Count; i++)
+            {
+                bridges[i].constructed = playerData.constructedBridges[i];
+            }
+
             //for (int i = 0; i < luxinites.Count; i++)
             //{
-            //    luxinites[i].hasBeenMined = playerData.luxiniteMined[i];
-            //    if (luxinites[i].hasBeenMined)
-            //    {
-            //        Debug.Log("mined");
-            //        luxinites[i].gameObject.SetActive(false);
-            //    }
-            //    else
-            //    {
-            //        Debug.Log(" not mined");
-            //    }
+            //    luxinites[i].hasBeenMinedLux = playerData.luxiniteMined[i];
             //}
 
-            //for (int i = 0; i < ores.Count; i++)
-            //{
-            //    ores[i].hasBeenMined = playerData.oreMined[i];
-            //
-            //    if (ores[i].hasBeenMined)
-            //    {
-            //        ores[i].gameObject.SetActive(false);
-            //    }
-            //}
+            for (int i = 0; i < ores.Count; i++)
+            {
+                ores[i].hasBeenMined = playerData.oreMined[i];
+                //if (ores[i].hasBeenMined)
+                //{
+                //    ores[i].gameObject.SetActive(false);
+                //}
+            }
+
+            for (int i = 0; i < lightFisures.Count; i++)
+            {
+                lightFisures[i].activated = playerData.lightFisuresActive[i];
+            }
+
+            for (int i = 0; i < oreVeins.Count; i++)
+            {
+                oreVeins[i].activated = playerData.oreVeinActivated[i];
+            }
 
             strm.Close();
             return playerData;
-
         }
         else
         {
@@ -234,7 +283,16 @@ public class SaveSystem : MonoBehaviour
             PlayerData playerData = formatter.Deserialize(strm) as PlayerData;
 
             //upgradeMenuCanvas.SetAllLastCompletedButtonIndex(playerData.upgrades);
-
+            
+            for (int i = 0; i < luxinites.Count; i++)
+            {
+                luxinites[i].hasBeenMinedLux = playerData.luxiniteMined[i];
+                if (luxinites[i].hasBeenMinedLux)
+                {
+                    luxinites[i].gameObject.SetActive(false);
+                }
+            }
+            //Debug.Log(player.transform.position.x);
             strm.Close();
             return playerData;
         }
