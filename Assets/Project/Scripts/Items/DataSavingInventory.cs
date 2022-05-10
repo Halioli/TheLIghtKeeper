@@ -89,9 +89,28 @@ public class DataSavingInventory : Inventory
         for (int i = 0; i < loadedInventoryFileData.itemIDs.Length; ++i)
         {
             Item item = ItemLibrary.instance.GetItem(loadedInventoryFileData.itemIDs[i]);
-            AddNItemsToInventory(item, loadedInventoryFileData.itemAmounts[i]);
-            //Debug.Log("Item: " + item.itemName + " x" + loadedInventoryFileData.itemAmounts[i]);
+            Debug.Log("Item: " + item.itemName + " x" + loadedInventoryFileData.itemAmounts[i]);
+            if (!AddNItemsToInventory(item, loadedInventoryFileData.itemAmounts[i]))
+            {
+                StartCoroutine(LateLoadInventory(loadedInventoryFileData, i));
+                break;
+            }         
+
         }
     }
+
+
+    IEnumerator LateLoadInventory(InventoryFileData loadedInventoryFileData, int startI)
+    {
+        yield return null;
+
+        for (int i = startI; i < loadedInventoryFileData.itemIDs.Length; ++i)
+        {
+            Item item = ItemLibrary.instance.GetItem(loadedInventoryFileData.itemIDs[i]);
+            Debug.Log("Item: " + item.itemName + " x" + loadedInventoryFileData.itemAmounts[i]);
+            AddNItemsToInventory(item, loadedInventoryFileData.itemAmounts[i]);
+        }
+    }
+
 
 }
