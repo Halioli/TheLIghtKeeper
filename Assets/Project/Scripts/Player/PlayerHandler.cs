@@ -108,10 +108,11 @@ public class PlayerHandler : PlayerBase
         PlayerInputs.instance.canMove = false;
         animator.SetBool("isDead", true);
 
-        while (!animationEnds)
+        yield return new WaitForSeconds(2f);
+        /*while (!animationEnds)
         {
             yield return null;
-        }
+        }*/
 
         yield return new WaitForSeconds(2f);
         RestoreHUD();
@@ -122,7 +123,6 @@ public class PlayerHandler : PlayerBase
         PlayerInputs.instance.canMove = true;
         inCoroutine = false;
     }
-
 
     private void SetPlayerInvulnerable()
     {
