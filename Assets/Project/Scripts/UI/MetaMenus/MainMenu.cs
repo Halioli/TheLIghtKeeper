@@ -18,7 +18,11 @@ public class MainMenu : MonoBehaviour
     private void Awake()
     {
         InitFirstTime();
-        if(IsFirstTime())
+    }
+
+    private void Start()
+    {
+        if (IsFirstTime())
         {
             continueButtonGameObject.SetActive(false);
         }
