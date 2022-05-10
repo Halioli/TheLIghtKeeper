@@ -26,6 +26,9 @@ public class UIAudio : MonoBehaviour
         InteractStation.OnInteractOpen += PlayInteractStationOpenSound;
         InteractStation.OnInteractClose += PlayInteractStationCloseSound;
 
+        Almanac.OnAlmanacMenuEnter += PlayInteractStationOpenSound;
+        Almanac.OnAlmanacMenuExit += PlayInteractStationCloseSound;
+
         HoverButton.OnHover += PlayButtonHoverSound;
 
         UpgradeMenuCanvas.OnSubmenuEnter += PlayMenuButtonClickSound;
@@ -45,6 +48,9 @@ public class UIAudio : MonoBehaviour
         Inventory.OnItemMoveFail -= PlayItemMoveFailSound;
         InteractStation.OnInteractOpen -= PlayInteractStationOpenSound;
         InteractStation.OnInteractClose -= PlayInteractStationCloseSound;
+
+        Almanac.OnAlmanacMenuEnter -= PlayInteractStationOpenSound;
+        Almanac.OnAlmanacMenuExit -= PlayInteractStationCloseSound;
 
         HoverButton.OnHover -= PlayButtonHoverSound;
 

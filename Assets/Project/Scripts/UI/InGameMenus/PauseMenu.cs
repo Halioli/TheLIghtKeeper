@@ -46,6 +46,17 @@ public class PauseMenu : MonoBehaviour
         //}
     }
 
+
+    private void OnEnable()
+    {
+        AlmanacMenuButton.OnAlmanacMenuEnter += ClickedAlmanacButton;
+    }
+
+    private void OnDisable()
+    {
+        AlmanacMenuButton.OnAlmanacMenuEnter -= ClickedAlmanacButton;
+    }
+
     private void Resume()
     {
         pauseMenu.SetActive(false);
@@ -107,9 +118,10 @@ public class PauseMenu : MonoBehaviour
     }
     public void ClickedAlmanacButton()
     {
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
         almanacMenu.SetActive(true);
 
-        pauseMenu.SetActive(false);
+        //pauseMenu.SetActive(false);
     }
     public void ClickedMainMenuButton(int sceneIndex)
     {
