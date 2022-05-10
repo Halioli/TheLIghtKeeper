@@ -53,6 +53,12 @@ public class LoreFunction : InteractStation
 
     }
 
+    public override void StationFunction()
+    {
+        if (OnPilarInteract != null)
+            OnPilarInteract(tittle, text);
+    }
+
     public void LorePilarActivated()
     {
         if (OnLorePilarActive != null)
@@ -60,12 +66,6 @@ public class LoreFunction : InteractStation
 
         floatingItem.isFloating = true;
         idlAudioSource.Play();
-    }
-
-    public override void StationFunction()
-    {
-        if (OnPilarInteract != null) 
-            OnPilarInteract(tittle, text);
     }
 
     public void StartActivateAudio()
