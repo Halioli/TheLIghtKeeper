@@ -98,14 +98,17 @@ public class TeleportMenu : MonoBehaviour
 
     public void DeactivateSelf(int teleportIndex)
     {
+        PlayerInputs.instance.canMove = true;
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
+
         hudGameObject.SetActive(true);
-        PauseMenu.gameIsPaused = false;
 
         gameObject.SetActive(false);
     }
 
     public void DeactivateSelf()
     {
+        PlayerInputs.instance.canMove = true;
         PlayerInputs.instance.SetInGameMenuCloseInputs();
 
         hudGameObject.SetActive(true);
