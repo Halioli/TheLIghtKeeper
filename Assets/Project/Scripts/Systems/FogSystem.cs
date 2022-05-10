@@ -58,6 +58,7 @@ public class FogSystem : MonoBehaviour
                     //Debug.Log(timer);
                     skullEnemy.SetActive(true);
                     PlayerInputs.instance.canMove = false;
+                    acidAudioSource.Play();
                 }
                 else
                 {
