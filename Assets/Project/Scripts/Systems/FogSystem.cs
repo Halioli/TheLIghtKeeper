@@ -5,13 +5,19 @@ using UnityEngine;
 public class FogSystem : MonoBehaviour
 {
     private GameObject player;
+    private Animator playerAnimator;
 
     private bool playerInFog = false;
     private bool hasFaded = false;
+    private bool playerDead = false;
+    
     [SerializeField] private HUDHandler hudHandler;
 
     public PlayerLightChecker playerLightChecker;
-    public float timer;
+    private float timer;
+    private float deathTimer;
+    
+
     public Vector3 respawnPosition;
 
     public GameObject skullEnemy;
@@ -29,19 +35,20 @@ public class FogSystem : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerAnimator = player.GetComponent<Animator>();
         skullEnemy.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
         if (playerInFog)
         {
             fogAreaAudioSource.Play();
             skullEnemy.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 0);
             player.GetComponentInChildren<Lamp>().lampTime = 0;
-            if (!playerLightChecker.IsPlayerInLight())
+            
+            if (!playerLightChecker.IsPlayerInLight() || playerLightChecker.IsPlayerInLight() && playerDead)
             {
                 timer -= Time.deltaTime;
                 if (timer > 0f)
@@ -52,13 +59,19 @@ public class FogSystem : MonoBehaviour
                 }
                 else
                 {
-                    if (!hasFaded)
+                    playerAnimator.SetBool("isDeadByAcid", true);
+                    playerDead = true;
+                    deathTimer -= Time.deltaTime;
+                    if(deathTimer < 0f)
                     {
-                        StartCoroutine(RespawnFade());
-                    }
+                        if (!hasFaded)
+                        {
+                            StartCoroutine(RespawnFade());
+                        }
+                    }     
                 }
             }
-            else
+            else if(playerLightChecker.IsPlayerInLight() && !playerDead)
             {
                 PlayerInputs.instance.canMove = true;
                 ResetTimer();
@@ -93,10 +106,13 @@ public class FogSystem : MonoBehaviour
     private void ResetTimer()
     {
         timer = 1f;
+        deathTimer = 2.1f;
+        playerAnimator.SetBool("isDeadByAcid", false);
     }
 
-    IEnumerator RespawnFade()
+IEnumerator RespawnFade()
     {
+        playerAnimator.SetBool("isDeadByAcid", false);
         hasFaded = true;
         hudHandler.DoFadeToBlack();
 
