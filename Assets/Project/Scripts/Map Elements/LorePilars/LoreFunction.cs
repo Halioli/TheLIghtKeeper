@@ -61,8 +61,8 @@ public class LoreFunction : InteractStation
 
     public void LorePilarActivated()
     {
-        if (OnLorePilarActive != null)
-            OnLorePilarActive();
+        //if (OnLorePilarActive != null)
+        //    OnLorePilarActive();
 
         floatingItem.isFloating = true;
         idlAudioSource.Play();
