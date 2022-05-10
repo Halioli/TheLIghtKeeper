@@ -7,6 +7,8 @@ public class LoreFunction : InteractStation
     private Animator lorePilarAnimator;
     private ResetableFloatingItem floatingItem;
 
+    public GameObject pilarLight;
+
     public bool activated;
     public PopUp popUp;
 
@@ -27,6 +29,7 @@ public class LoreFunction : InteractStation
         lorePilarAnimator = GetComponent<Animator>();
         floatingItem = GetComponent<ResetableFloatingItem>();
         floatingItem.isFloating = false;
+        pilarLight.SetActive(false);
     }
 
     void Update()
@@ -70,6 +73,10 @@ public class LoreFunction : InteractStation
         activeAudioSource.Play();
     }
 
+    public void ActiveLight()
+    {
+        pilarLight.SetActive(true);
+    }
     private void PopUpAppears()
     {
         if (!activated)
