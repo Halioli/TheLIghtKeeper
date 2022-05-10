@@ -10,6 +10,9 @@ public class LoreFunction : InteractStation
     public bool activated;
     public PopUp popUp;
 
+    [SerializeField] AudioSource idlAudioSource;
+    [SerializeField] AudioSource activeAudioSource;
+
     public string tittle;
     [TextArea(5, 20)] public string text;
 
@@ -53,12 +56,18 @@ public class LoreFunction : InteractStation
             OnLorePilarActive();
 
         floatingItem.isFloating = true;
+        idlAudioSource.Play();
     }
 
     public override void StationFunction()
     {
         if (OnPilarInteract != null) 
             OnPilarInteract(tittle, text);
+    }
+
+    public void StartActivateAudio()
+    {
+        activeAudioSource.Play();
     }
 
     private void PopUpAppears()
