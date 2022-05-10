@@ -7,8 +7,13 @@ public class LoreFunction : InteractStation
     private Animator lorePilarAnimator;
     private ResetableFloatingItem floatingItem;
 
+    public GameObject pilarLight;
+
     public bool activated;
     public PopUp popUp;
+
+    [SerializeField] AudioSource idlAudioSource;
+    [SerializeField] AudioSource activeAudioSource;
 
     public string tittle;
     [TextArea(5, 20)] public string text;
@@ -24,6 +29,7 @@ public class LoreFunction : InteractStation
         lorePilarAnimator = GetComponent<Animator>();
         floatingItem = GetComponent<ResetableFloatingItem>();
         floatingItem.isFloating = false;
+        pilarLight.SetActive(false);
     }
 
     void Update()
@@ -33,13 +39,12 @@ public class LoreFunction : InteractStation
             if (!floatingItem.isFloating)
             {
                 lorePilarAnimator.SetBool("_isActivate", true);
-                floatingItem.isFloating = true;
-
-                if (OnLorePilarActive != null) 
-                    OnLorePilarActive();
             }
-            GetInput();
-            PopUpAppears();
+            else
+            {
+                GetInput();
+                PopUpAppears();
+            }
         }
         else
         {
@@ -50,10 +55,28 @@ public class LoreFunction : InteractStation
 
     public override void StationFunction()
     {
-        if (OnPilarInteract != null) 
+        if (OnPilarInteract != null)
             OnPilarInteract(tittle, text);
     }
 
+    public void LorePilarActivated()
+    {
+        //if (OnLorePilarActive != null)
+        //    OnLorePilarActive();
+
+        floatingItem.isFloating = true;
+        idlAudioSource.Play();
+    }
+
+    public void StartActivateAudio()
+    {
+        activeAudioSource.Play();
+    }
+
+    public void ActiveLight()
+    {
+        pilarLight.SetActive(true);
+    }
     private void PopUpAppears()
     {
         if (!activated)
