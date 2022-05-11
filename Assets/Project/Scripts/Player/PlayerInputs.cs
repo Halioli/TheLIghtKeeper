@@ -39,6 +39,7 @@ public class PlayerInputs : MonoBehaviour
         //DontDestroyOnLoad(gameObject);
     }
 
+
     // Methods
     public void SetInGameMenuOpenInputs()
     {

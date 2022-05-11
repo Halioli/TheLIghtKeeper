@@ -191,9 +191,10 @@ public class CraftingMenu : MonoBehaviour
 
     public void LevelUp()
     {
+        ++currentLevel;
+
         if (currentLevel >= MAX_LEVEL) return;
 
-        ++currentLevel;
 
         craftingButtonCount += craftsPerUpgrade[currentLevel];
 
@@ -203,7 +204,7 @@ public class CraftingMenu : MonoBehaviour
         }
 
 
-        lockedTexts[currentLevel].SetActive(false);
+        if (currentLevel < lockedTexts.Length) lockedTexts[currentLevel].SetActive(false);
     }
 
 
