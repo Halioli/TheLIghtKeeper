@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 3937169726214562500}
+  playerInventory: {fileID: 0}
   inventory: {fileID: 4778857781199468595}
   storageCanvasGameObject: {fileID: 3937169727522368032}
   storageInventoryMenu: {fileID: 3937169727773229117}
@@ -315,7 +316,6 @@ MonoBehaviour:
   gotChanged: 0
   numberOfInventorySlots: 16
   maxNumberOfSlots: 16
-  inventoryData: {fileID: 11400000, guid: 3d4b060d14580ef4aa41e49dd0f92212, type: 2}
   storeFileName: storageInventoryData
 --- !u!1 &3937169727353439655
 GameObject:
@@ -740,6 +740,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5273450592707977566, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
       propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5360499896374597832, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
