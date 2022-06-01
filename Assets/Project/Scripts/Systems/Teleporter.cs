@@ -45,6 +45,10 @@ public class Teleporter : InteractStation
     void Awake()
     {
         SaveSystem.teleporters.Add(this);
+    }
+
+    private void Start()
+    {
         teleportTransformPosition = GetComponent<Transform>().position;
         teleportTransformPosition.y -= 1.3f;
         spawnPosition = transform.position;
@@ -99,8 +103,10 @@ public class Teleporter : InteractStation
         {
             popUp.ShowInteraction();
         }
-
-        popUp.ShowMessage();
+        else
+        {
+            popUp.ShowMessage();
+        }
     }
 
     // Interactive pop up disappears
@@ -127,7 +133,7 @@ public class Teleporter : InteractStation
         }
         else if (!activated && !inventory.InventoryContainsItem(darkEssence))
         {
-            popUp.GetComponent<PopUp>().ShowMessage();
+            //popUp.GetComponent<PopUp>().ShowMessage();
 
             InvokeOnNotEnoughMaterials();
         }
@@ -165,6 +171,7 @@ public class Teleporter : InteractStation
 
         hudGameObject.SetActive(false);
 
+        PlayerInputs.instance.canMove = false;
         PlayerInputs.instance.SetInGameMenuOpenInputs();
 
         if (OnMenuEnter != null)
@@ -173,6 +180,7 @@ public class Teleporter : InteractStation
 
     private void DeactivateTeleportMenu()
     {
+        PlayerInputs.instance.canMove = true;
         PlayerInputs.instance.SetInGameMenuCloseInputs();
 
         hudGameObject.SetActive(true);

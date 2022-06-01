@@ -47,21 +47,12 @@ public class Gecko : MonoBehaviour
 
     void Update()
     {
-        if (coroutineAllowed && touched && !reachedEnd)
+        if (coroutineAllowed && touched && !reachedEnd && !geckoHealthSystem.IsDead())
         {
             geckoAnimator.SetBool("running", true);
             StartCoroutine(GoByTheRoute(routeToGo));
         }
 
-        if(geckoHealthSystem.health == 0)
-        {
-            geckoDead = true;
-        }
-
-        if(geckoDead)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
     private IEnumerator GoByTheRoute(int routeNumber)
@@ -130,5 +121,10 @@ public class Gecko : MonoBehaviour
         touched = true;
     }
 
+
+    public void DeactivateSelf()
+    {
+        gameObject.SetActive(false);
+    }
 
 }

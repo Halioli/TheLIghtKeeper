@@ -33,7 +33,12 @@ public class Inventory : MonoBehaviour
 
 
     // Initializer Methods
-    public void Awake()
+    //public void Awake()
+    //{
+        
+    //}
+
+    private void Start()
     {
         Init();
     }

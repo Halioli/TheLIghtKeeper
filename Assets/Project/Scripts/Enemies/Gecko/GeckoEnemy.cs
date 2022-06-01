@@ -48,6 +48,8 @@ public class GeckoEnemy : EnemyMonster
 
     protected override void OnDeathStart()
     {
+        Debug.Log("OnDeathStart Gecko");
+
         isDyingAlready = true;
 
         geckoAnimator.SetBool("death", true);
@@ -56,6 +58,8 @@ public class GeckoEnemy : EnemyMonster
         enemyAudio.PlayDeathAudio();
         enemyAudio.PlayScaredAudio();
     }
+
+
 
     protected override void OnDeathEnd()
     {

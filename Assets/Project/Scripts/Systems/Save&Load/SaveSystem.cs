@@ -217,6 +217,7 @@ public class SaveSystem : MonoBehaviour
             for(int i = 0; i < geckos.Count; i++)
             {
                 geckos[i].geckoDead = playerData.geckosDead[i];
+                if (geckos[i].geckoDead) geckos[i].DeactivateSelf();
             }
 
             for (int i = 0; i < teleporters.Count; i++)
