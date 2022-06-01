@@ -7,7 +7,7 @@ public class OreRespawner : Spawner
     // Private Attributes
     private const float OVERLAP_CIRCLE_RADIUS = 1f;
 
-    private bool playerInArea = false;
+    private bool playerInArea = true;
     private Vector3 respawnPosition;
     private Quaternion respawnRotation;
     private Collider2D returnedCollider;
