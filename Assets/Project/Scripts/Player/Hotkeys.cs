@@ -7,7 +7,9 @@ public class Hotkeys : MonoBehaviour
     private HealthSystem playerHealthSystem;
     private PlayerCombat playerCombat;
     private Lamp playerLamp;
+    private PlayerMovement playerMovement;
     private bool canUseCheats = false;
+    private bool zooming = false;
 
     public GameObject coalMineral;
     public GameObject ironMineral;
@@ -25,6 +27,7 @@ public class Hotkeys : MonoBehaviour
         playerCombat = GetComponent<PlayerCombat>();
         playerHealthSystem = GetComponent<HealthSystem>();
         playerLamp = GetComponentInChildren<Lamp>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Update()
@@ -86,6 +89,19 @@ public class Hotkeys : MonoBehaviour
             {
                 // -5 lantern
                 playerLamp.ConsumeSpecificLampTime(5f);
+            }
+            else if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                if (!zooming)
+                {
+                    playerMovement.moveSpeed = 1000;
+                    zooming = true;
+                }
+                else
+                {
+                    playerMovement.moveSpeed = 200;
+                    zooming = false;
+                }
             }
         }
     }
