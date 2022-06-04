@@ -19855,7 +19855,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3893941681463630631}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.32, y: -1.54, z: 0}
+  m_LocalPosition: {x: -0.32, y: -2.59, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6899471998435074313}
@@ -19928,10 +19928,10 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.74}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 3.5, y: 1.5625}
     newSize: {x: 0.19, y: 0.19}
     adaptiveTilingThreshold: 0.5
@@ -19956,8 +19956,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4688e625cba7f43924b0f1387115e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
-  spriteTransform: {fileID: 0}
+  spriteRenderer: {fileID: 3893941681463630629}
+  spriteTransform: {fileID: 3893941681463630628}
   hardness: 2
   spriteList:
   - {fileID: -7482350933226251498, guid: 250aa0fb288b0f34990c81c9561c3a60, type: 3}
@@ -19966,7 +19966,9 @@ MonoBehaviour:
   - {fileID: 7593626184748392740, guid: 250aa0fb288b0f34990c81c9561c3a60, type: 3}
   - {fileID: 7593626184748392740, guid: 250aa0fb288b0f34990c81c9561c3a60, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
-  oreParticleSystem: []
+  oreParticleSystem:
+  - {fileID: 8477111272355385488}
+  - {fileID: 1243259679347210923}
   hasBeenMined: 0
 --- !u!114 &3893941681463630627
 MonoBehaviour:
@@ -20121,8 +20123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4688e625cba7f43924b0f1387115e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
-  spriteTransform: {fileID: 0}
+  spriteRenderer: {fileID: 5625835236896110712}
+  spriteTransform: {fileID: 5625835236896110713}
   hardness: 2
   spriteList:
   - {fileID: 3286209853322809080, guid: cee18eaf3b53d884b8b0c8ebae80a593, type: 3}
@@ -20130,7 +20132,9 @@ MonoBehaviour:
   - {fileID: -3835323758262323254, guid: cee18eaf3b53d884b8b0c8ebae80a593, type: 3}
   - {fileID: -9183036345152552500, guid: cee18eaf3b53d884b8b0c8ebae80a593, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
-  oreParticleSystem: []
+  oreParticleSystem:
+  - {fileID: 989749351647065037}
+  - {fileID: 7590823855315556854}
   hasBeenMined: 0
 --- !u!114 &5625835236896110718
 MonoBehaviour:
@@ -20285,8 +20289,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4688e625cba7f43924b0f1387115e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
-  spriteTransform: {fileID: 0}
+  spriteRenderer: {fileID: 5836114365259491744}
+  spriteTransform: {fileID: 5836114365259491745}
   hardness: 2
   spriteList:
   - {fileID: 5411391179415432664, guid: 2863d780668fd3b4ab86c9692b027d71, type: 3}
@@ -20295,7 +20299,9 @@ MonoBehaviour:
   - {fileID: -5173250694769030277, guid: 2863d780668fd3b4ab86c9692b027d71, type: 3}
   - {fileID: -5173250694769030277, guid: 2863d780668fd3b4ab86c9692b027d71, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
-  oreParticleSystem: []
+  oreParticleSystem:
+  - {fileID: 1391818468190413333}
+  - {fileID: 8625790058322774062}
   hasBeenMined: 0
 --- !u!114 &5836114365259491750
 MonoBehaviour:
@@ -20349,7 +20355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7011256441309323883}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3893941681463630628}
@@ -25211,7 +25217,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9065805942230550719}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3893941681463630628}
@@ -30210,7 +30216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5862608219131059999, guid: ebc2b3b62a3fb3647a1acb888c3d2efd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: 5862608219131059999, guid: ebc2b3b62a3fb3647a1acb888c3d2efd, type: 3}
       propertyPath: m_LocalPosition.z
