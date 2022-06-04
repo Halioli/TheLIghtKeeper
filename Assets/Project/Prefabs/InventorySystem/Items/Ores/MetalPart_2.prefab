@@ -9815,7 +9815,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6668915079882635276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8007040967369617636}
@@ -9962,7 +9962,10 @@ MonoBehaviour:
   - {fileID: 7593626184748392740, guid: 250aa0fb288b0f34990c81c9561c3a60, type: 3}
   - {fileID: 7593626184748392740, guid: 250aa0fb288b0f34990c81c9561c3a60, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
-  oreParticleSystem: []
+  oreParticleSystem:
+  - {fileID: 3220084504938494800}
+  - {fileID: 5211865527481569643}
+  hasBeenMined: 0
 --- !u!114 &8007040967369617635
 MonoBehaviour:
   m_ObjectHideFlags: 0

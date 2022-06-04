@@ -5675,6 +5675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 8097868287973391094}
+  playerInventory: {fileID: 0}
   materialVein: {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
   autoMiner: {fileID: 11400000, guid: 8664a6aa2a793bd4f8f66c2c7c80f2d6, type: 2}
   autoMinerGameObject: {fileID: 3087034155683260803}
@@ -5682,7 +5683,8 @@ MonoBehaviour:
   veinParticlesSystems:
   - {fileID: 6791610757381138672}
   - {fileID: 3503968482304961513}
-  itemCellGameObject: {fileID: 0}
+  itemCellGameObject: {fileID: 3854381679134863054}
+  activated: 0
 --- !u!1 &6288399207938909806
 GameObject:
   m_ObjectHideFlags: 0

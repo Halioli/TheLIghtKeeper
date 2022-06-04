@@ -18,7 +18,11 @@ public class MainMenu : MonoBehaviour
     private void Awake()
     {
         InitFirstTime();
-        if(IsFirstTime())
+    }
+
+    private void Start()
+    {
+        if (IsFirstTime())
         {
             continueButtonGameObject.SetActive(false);
         }
@@ -90,6 +94,11 @@ public class MainMenu : MonoBehaviour
     public void NewGame()
     {
         SetFirstTimeTrue();
+    }
+
+    public void QuestionareButtonClick()
+    {
+        Application.OpenURL("https://forms.gle/cW2EM7tgWYezGHgP6");
     }
 
     IEnumerator AsyncLoading(int sceneIndex)

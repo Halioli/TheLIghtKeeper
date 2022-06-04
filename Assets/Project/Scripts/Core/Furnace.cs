@@ -304,6 +304,7 @@ public class Furnace : InteractStation
         {
             firstShipUpgradeMessage.EnableFirstShipUpgradeMessege();
             PlayerPrefs.SetInt("FirstTime", 0);
+            PlayerPrefs.SetInt("TutorialFinished", 1);
         }
         else if (lightLevel == MAX_CORE_LEVEL)
         {

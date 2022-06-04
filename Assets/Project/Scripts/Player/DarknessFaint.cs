@@ -9,6 +9,8 @@ public class DarknessFaint : MonoBehaviour
     [SerializeField] float respawnTime = 5f;
     [SerializeField] float middleRespawnTime = 4.0f;
 
+    [SerializeField] AudioSource darkHoleaudioSource;
+
     bool hasFainted = false;
 
     [SerializeField] Vector2 teleportPosition;
@@ -23,6 +25,12 @@ public class DarknessFaint : MonoBehaviour
     public delegate void DarknessFaintTeleportAction(Vector3 position);
     public static event DarknessFaintTeleportAction OnFaintTeleport;
 
+    private Animator playerAnimator;
+
+    private void Start()
+    {
+        playerAnimator = GetComponentInParent<Animator>();
+    }
 
     private void OnEnable()
     {
@@ -39,8 +47,6 @@ public class DarknessFaint : MonoBehaviour
 
         PlayerLightChecker.OnPlayerInDarknessNoLantern -= StartFaintTimer;
     }
-
-
 
     private void StartFaintTimer()
     {
@@ -62,18 +68,26 @@ public class DarknessFaint : MonoBehaviour
         yield return new WaitForSeconds(timeBeforeBeatStart);
 
         if (OnHeartBeatsStart != null) OnHeartBeatsStart();
+        
         yield return new WaitForSeconds(totalFaintTime - timeBeforeBeatStart);
 
+        playerAnimator.SetBool("isDeadByDarkness", true);
+        PlayerInputs.instance.canMove = false;
+        darkHoleaudioSource.Play();
+
+        yield return new WaitForSeconds(3.5f);
 
         if (OnFaintEnd != null) OnFaintEnd();
         hasFainted = true;
-        PlayerInputs.instance.canMove = false;
+       
+
         yield return new WaitForSeconds(middleRespawnTime);
 
 
         if (OnFaintTeleport != null) OnFaintTeleport(teleportPosition);
         yield return new WaitForSeconds(respawnTime - middleRespawnTime);
 
+        playerAnimator.SetBool("isDeadByDarkness", false);
 
         hasFainted = false;
         PlayerInputs.instance.canMove = true;

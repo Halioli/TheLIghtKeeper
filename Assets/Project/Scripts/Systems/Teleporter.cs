@@ -7,7 +7,7 @@ public class Teleporter : InteractStation
 {
     // Private Attributes
     private Vector2 spawnPosition;
-    private Animator animator;
+    public Animator animator;
     private bool updatedSystem = false;
 
     // Public Attributes
@@ -22,9 +22,11 @@ public class Teleporter : InteractStation
     public Item darkEssence;
     public string teleportName;
     public Vector3 teleportTransformPosition;
-    public bool activated = false;
+    public bool activated;
     public GameObject teleportSprite;
     public GameObject teleportLight;
+    public SpriteRenderer teleportSpriteRenderer;
+    public Sprite teleportActivatedSprite;
 
     [SerializeField] AudioSource teleportAudioSource;
 
@@ -43,6 +45,10 @@ public class Teleporter : InteractStation
     void Awake()
     {
         SaveSystem.teleporters.Add(this);
+    }
+
+    private void Start()
+    {
         teleportTransformPosition = GetComponent<Transform>().position;
         teleportTransformPosition.y -= 1.3f;
         spawnPosition = transform.position;
@@ -71,6 +77,8 @@ public class Teleporter : InteractStation
             PopUpDisappears();
             updatedSystem = false;
         }
+
+        
     }
 
     public override void GetInput()
@@ -95,8 +103,10 @@ public class Teleporter : InteractStation
         {
             popUp.ShowInteraction();
         }
-
-        popUp.ShowMessage();
+        else
+        {
+            popUp.ShowMessage();
+        }
     }
 
     // Interactive pop up disappears
@@ -123,7 +133,7 @@ public class Teleporter : InteractStation
         }
         else if (!activated && !inventory.InventoryContainsItem(darkEssence))
         {
-            popUp.GetComponent<PopUp>().ShowMessage();
+            //popUp.GetComponent<PopUp>().ShowMessage();
 
             InvokeOnNotEnoughMaterials();
         }
@@ -161,6 +171,7 @@ public class Teleporter : InteractStation
 
         hudGameObject.SetActive(false);
 
+        PlayerInputs.instance.canMove = false;
         PlayerInputs.instance.SetInGameMenuOpenInputs();
 
         if (OnMenuEnter != null)
@@ -169,6 +180,7 @@ public class Teleporter : InteractStation
 
     private void DeactivateTeleportMenu()
     {
+        PlayerInputs.instance.canMove = true;
         PlayerInputs.instance.SetInGameMenuCloseInputs();
 
         hudGameObject.SetActive(true);

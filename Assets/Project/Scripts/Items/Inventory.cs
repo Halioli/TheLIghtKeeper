@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class Inventory : MonoBehaviour
 {
     // Public Attributes
@@ -34,7 +33,12 @@ public class Inventory : MonoBehaviour
 
 
     // Initializer Methods
-    public void Awake()
+    //public void Awake()
+    //{
+        
+    //}
+
+    private void Start()
     {
         Init();
     }

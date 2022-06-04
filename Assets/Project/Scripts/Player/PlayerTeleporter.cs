@@ -14,7 +14,8 @@ public class PlayerTeleporter : MonoBehaviour
         TeleportSystem.OnTeleportPlayer += TeleportToPosition;
 
         DarknessFaint.OnFaintTeleport += TeleportToPosition;
-
+        
+        Hotkeys.OnCheatTeleport += TeleportToPosition;
     }
 
     private void OnDisable()
@@ -24,6 +25,8 @@ public class PlayerTeleporter : MonoBehaviour
         TeleportSystem.OnTeleportPlayer -= TeleportToPosition;
 
         DarknessFaint.OnFaintTeleport -= TeleportToPosition;
+        
+        Hotkeys.OnCheatTeleport -= TeleportToPosition;
     }
 
     private void TeleportToPosition(Vector3 position)

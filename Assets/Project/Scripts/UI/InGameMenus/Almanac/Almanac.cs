@@ -12,6 +12,7 @@ public class Almanac : MonoBehaviour
     [SerializeField] GameObject[] almanacScalator;
     [SerializeField] Animator[] almanacAnimator;
     public Image[] itemImages;
+    public Image[] scalatorImages;
 
     private int emptyAnimId = 16;
 
@@ -20,17 +21,37 @@ public class Almanac : MonoBehaviour
     public GameObject previousMenuGameObject;
     public Image almanacImage;
 
+
+
+    public delegate void AlmanacMenuAction();
+    public static event AlmanacMenuAction OnAlmanacMenuExit;
+    public static event AlmanacMenuAction OnAlmanacMenuEnter;
+
+
+
     private void Start()
     {
         SetItemToEmptyID();
         ChangeToEmptyAnimator();
         environmentMenu.SetActive(false);
+        //for(int i = 0; i <= almanacScalator.Length; i++)
+        //{
+        //    scalatorImages[i] = almanacScalator[i].GetComponent<Image>();
+        //}
     }
 
     private void Update()
     {
         CloseAlmanac();
+
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
+
+    private void OnEnable()
+    {
+        if (OnAlmanacMenuEnter != null) OnAlmanacMenuEnter();
+    }
+
 
     public void ShowInfo(AlmanacScriptableObject item)
     {
@@ -70,8 +91,16 @@ public class Almanac : MonoBehaviour
         }
         else
         {
-            SetItemSpriteImage(item);
-            SetDiscoveredInfo(item);
+            if(item.ID == 12)
+            {
+                ChangeToSpiderAndPlantsAnimator();
+                ChangeIdAnimator(item);
+            }
+            else
+            {
+                SetItemSpriteImage(item);
+                SetDiscoveredInfo(item);
+            }
         }
     }
 
@@ -141,6 +170,11 @@ public class Almanac : MonoBehaviour
         almanacAnimator[1].SetInteger("Id", item.ID);
         almanacAnimator[2].SetInteger("Id", item.ID);
         almanacAnimator[3].SetInteger("Id", item.ID);
+        //foreach(Image image in scalatorImages)
+        //{
+        //    //image.sprite = item.sprite;
+        //    image.SetNativeSize();
+        //}
     }
 
     private void SetItemToEmptyID()
@@ -173,22 +207,29 @@ public class Almanac : MonoBehaviour
 
     public void OpenAlmanac()
     {
+        if (OnAlmanacMenuEnter != null) OnAlmanacMenuEnter();
+
         this.gameObject.SetActive(true);
     }
 
     private void CloseAlmanac()
     {
-        if(this.gameObject.activeInHierarchy && PlayerInputs.instance.PlayerPressedPauseButton())
+        if(this.gameObject.activeInHierarchy && (PlayerInputs.instance.PlayerPressedInteractExitButton() || PlayerInputs.instance.PlayerPressedAlmanacButton()))
         {
-            this.gameObject.SetActive(false);
+            Debug.Log("exit almanac");
+            PressedBackButton();
         }
     }
 
     public void PressedBackButton()
     {
-        previousMenuGameObject.SetActive(true);
+        if (OnAlmanacMenuExit != null) OnAlmanacMenuExit();
+
+        //previousMenuGameObject.SetActive(true);
+        //PlayerInputs.instance.SetInGameMenuCloseInputs();
 
         gameObject.SetActive(false);
+
     }
 
     //public void SubmenuMaterialsActive()
