@@ -49,6 +49,7 @@ public class PlayerInputs : MonoBehaviour
         canAttack = false;
         canPause = false;
         canMoveLantern = false;
+        isLanternPaused = true;
     }
 
     public void SetInGameMenuCloseInputs()
@@ -60,6 +61,7 @@ public class PlayerInputs : MonoBehaviour
         //canPause = true;
         StartCoroutine(lateCanPause(true));
         canMoveLantern = true;
+        isLanternPaused = false;
     }
 
     IEnumerator lateCanPause(bool canPause)
@@ -121,7 +123,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedUseButton()
     {
-        if (PauseMenu.gameIsPaused) { return false; }
+        if (PauseMenu.gameIsPaused || !canMove) { return false; }
 
         return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button0);
     }

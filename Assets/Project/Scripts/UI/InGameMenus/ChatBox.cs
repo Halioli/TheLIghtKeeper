@@ -91,6 +91,7 @@ public class ChatBox : MonoBehaviour
         NextText();
 
         PlayerInputs.instance.isLanternPaused = true;
+        //PlayerInputs.instance.
     }
 
     private void DisplayText()
