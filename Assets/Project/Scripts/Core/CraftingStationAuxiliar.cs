@@ -16,10 +16,12 @@ public class CraftingStationAuxiliar : InteractStation
     public bool isUsingThisAuxiliar = false;
 
 
+    [SerializeField] Animator animator;
+
+
     public delegate void CraftingStationAuxiliarAction();
     public static event CraftingStationAuxiliarAction OnMenuOpen;
     public static event CraftingStationAuxiliarAction OnMenuClose;
-
 
 
     private void Start()
@@ -58,11 +60,13 @@ public class CraftingStationAuxiliar : InteractStation
     private void OnEnable()
     {
         CraftingSystem.OnCrafting += PlayCraftingParticles;
+        CraftingStation.OnCraftAnimationPlay += PlayCraftAnimation;
     }
 
     private void OnDisable()
     {
         CraftingSystem.OnCrafting -= PlayCraftingParticles;
+        CraftingStation.OnCraftAnimationPlay -= PlayCraftAnimation;
     }
 
     //From InteractStation script
@@ -115,5 +119,10 @@ public class CraftingStationAuxiliar : InteractStation
     }
 
 
+
+    void PlayCraftAnimation()
+    {
+        animator.SetTrigger("craft");
+    }
 
 }
