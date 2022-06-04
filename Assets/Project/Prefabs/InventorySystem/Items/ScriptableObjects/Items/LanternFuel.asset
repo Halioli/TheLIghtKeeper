@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: LanternFuel
   m_EditorClassIdentifier: 
   prefab: {fileID: 2404674692941011119, guid: 8d77cb8e231231d4f835717e765ddc14, type: 3}
-  itemName: Lantern Fuel
-  description: Consume this item while the Lantern is active to gain 5 extra seconds
-    of light.
+  itemName: Battery
+  description: Battery that recharges the lantern for 20 seconds.
   ID: 21
   itemType: 2
+  isSpecial: 0
   stackSize: 8
   sprite: {fileID: 21300000, guid: 4101dea545f45314ba2fa740bc3153d6, type: 3}
+  existsInAlmanac: 0

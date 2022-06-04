@@ -5,17 +5,14 @@ using UnityEngine;
 public class FloatingItem : MonoBehaviour
 {
     private Interpolator lerp;
-    private float lerpDistance = 0.3f;
+    [SerializeField] private float lerpTime = 1f;
+    [SerializeField] private float lerpDistance = 0.3f;
     private float halfLerpDistance = 0.15f;
     private float startYLerp;
 
-
     void Awake()
     {
-        lerp = new Interpolator(1f, Interpolator.Type.SMOOTH);
-        startYLerp = transform.position.y;
-
-        RandomFloatStart();
+        Init();
     }
 
     void Update()
@@ -24,7 +21,17 @@ public class FloatingItem : MonoBehaviour
     }
 
 
-    private void ItemFloating()
+    protected void Init()
+    {
+        halfLerpDistance = lerpDistance / 2;
+        lerp = new Interpolator(lerpTime, Interpolator.Type.SMOOTH);
+        startYLerp = transform.position.y;
+
+        RandomFloatStart();
+    }
+
+
+    protected void ItemFloating()
     {
         lerp.Update(Time.deltaTime);
         if (lerp.isMinPrecise)

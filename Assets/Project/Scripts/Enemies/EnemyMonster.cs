@@ -27,10 +27,6 @@ public class EnemyMonster : MonoBehaviour
     [SerializeField] protected int dropRatePercent = 100;
     public ItemGameObject dropOnDeathItem;
 
-
-
-
-
     private void OnEnable()
     {
         DarknessSystem.OnPlayerNotInLight += OnPlayerNotInLight;
@@ -74,6 +70,12 @@ public class EnemyMonster : MonoBehaviour
         playerGameObject.GetComponent<PlayerCombat>().ReceiveDamage(attackSystem.attackValue);
     }
 
+    protected void PushPlayer()
+    {
+        Vector2 pushDiretion = playerGameObject.transform.position - transform.position;
+        playerGameObject.GetComponent<PlayerMovement>().GetsPushed(pushDiretion.normalized, attackSystem.pushValue);
+    }
+
 
     protected virtual void OnDeathStart()
     {
@@ -85,12 +87,12 @@ public class EnemyMonster : MonoBehaviour
         Destroy(gameObject);
     }
 
-    protected void DropItem()
+    protected virtual void DropItem(bool willDespawn = true)
     {
         if (Random.Range(0, 100) > dropRatePercent) return;
 
         ItemGameObject item = Instantiate(dropOnDeathItem, transform.position, Quaternion.identity);
-        item.DropsRandom();
+        item.DropsRandom(willDespawn);
     }
 
 
@@ -107,17 +109,17 @@ public class EnemyMonster : MonoBehaviour
         isGettingPushed = false;
     }
 
-    IEnumerator HurtedFlashEffect()
+    protected IEnumerator HurtedFlashEffect()
     {
-        transform.DOComplete();
+        //transform.DOComplete();
 
-        transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
+        //transform.DOPunchScale(new Vector3(-0.4f, -0.4f, 0), damagedTime);
 
-        //spriteRenderer.color = transparent;
-        yield return new WaitForSeconds(damagedTime / 2);
+        spriteRenderer.color = transparent;
+        yield return new WaitForSeconds(0.1f);
 
         spriteRenderer.color = normal;
-        yield return new WaitForSeconds(damagedTime / 2);
+        yield return new WaitForSeconds(0.1f);
         
         spriteRenderer.color = normal;
     }

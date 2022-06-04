@@ -13,7 +13,8 @@ public enum EnemyStates
     LIGHT_ENTER,
     SCARED,
     DEATH,
-    DESTROY
+    DESTROY,
+    STUCK
 }
 
 public class EnemyState : MonoBehaviour

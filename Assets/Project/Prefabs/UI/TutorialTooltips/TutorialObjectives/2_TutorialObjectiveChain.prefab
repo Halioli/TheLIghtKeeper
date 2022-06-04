@@ -1,0 +1,192 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2459170653308382131
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2459170653308382129}
+  - component: {fileID: 2459170653308382130}
+  m_Layer: 0
+  m_Name: 2_TutorialObjectiveChain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2459170653308382129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2459170653308382131}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7482947083572697194}
+  - {fileID: 7482947082665179167}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2459170653308382130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2459170653308382131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54c53cf3e1d3a94895d331c4f818d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialObjectives:
+  - {fileID: 5359524632019099647}
+  - {fileID: 5359524631111581578}
+--- !u!1001 &2459170653615380146
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2459170653308382129}
+    m_Modifications:
+    - target: {fileID: 3478207012750796337, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: messege
+      value: Upgrade the Pickaxe to break Heavy Rocks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 300.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512111861382973773, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_Name
+      value: TutorialObjective_UpgradeThePickaxe
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+--- !u!1 &5359524632019099647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7512111861382973773, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+  m_PrefabInstance: {fileID: 2459170653615380146}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7482947083572697194 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+  m_PrefabInstance: {fileID: 2459170653615380146}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2459170654791382727
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2459170653308382129}
+    m_Modifications:
+    - target: {fileID: 3478207012750796337, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: messege
+      value: Bring Luxinite to the Upgrade Station
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 303.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512111861382973773, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+      propertyPath: m_Name
+      value: TutorialObjective_BringLuxiniteToTheCore
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+--- !u!1 &5359524631111581578 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7512111861382973773, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+  m_PrefabInstance: {fileID: 2459170654791382727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7482947082665179167 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5041918423440428760, guid: af57d7f89630f664cac638e39f05049f, type: 3}
+  m_PrefabInstance: {fileID: 2459170654791382727}
+  m_PrefabAsset: {fileID: 0}

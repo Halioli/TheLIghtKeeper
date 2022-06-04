@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryMenu : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class InventoryMenu : MonoBehaviour
 
     public void InitInventoryCellsList()
     {
+        itemCellsList = new List<ItemCell>();
         for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
             AddNewEmptyCell();
@@ -62,6 +64,8 @@ public class InventoryMenu : MonoBehaviour
 
     public void UpdateInventory()
     {
+        if (itemCellsList == null) return;
+
         if (itemCellsList.Count < inventory.GetInventorySize())
         {
             for (int i = itemCellsList.Count; i < inventory.GetInventorySize(); ++i)
@@ -73,15 +77,24 @@ public class InventoryMenu : MonoBehaviour
         SpriteRenderer sr;
         for (int i = 0; i < inventory.GetInventorySize(); ++i)
         {
-            sr = inventory.inventory[i].itemInStack.prefab.GetComponentInChildren<SpriteRenderer>();
-            itemCellsList[i].SetItemImage(sr.sprite);
-
             int amount = inventory.inventory[i].amountInStack;
-            itemCellsList[i].SetItemAmount(amount);
+            int ID = inventory.inventory[i].itemInStack.ID;
+
+            bool itemChanged = itemCellsList[i].HasChanged(amount, ID);
+
+            if (itemChanged)
+            {
+                sr = inventory.inventory[i].itemInStack.prefab.GetComponentInChildren<SpriteRenderer>();
+                itemCellsList[i].SetItemImage(sr.sprite);
+                itemCellsList[i].SetItemID(ID);
+                itemCellsList[i].SetItemAmount(amount);
+            }
+
 
             if (!inventory.inventory[i].StackIsEmpty())
             {
-                itemCellsList[i].GetComponent<HoverButton>().SetDescription(inventory.inventory[i].itemInStack.description);
+                itemCellsList[i].GetComponent<HoverButton>().SetDescription("<b>"+inventory.inventory[i].itemInStack.itemName+ ":</b>" + "\n\n" 
+                    + inventory.inventory[i].itemInStack.description);
             }
         }
     }
@@ -104,4 +117,12 @@ public class InventoryMenu : MonoBehaviour
         lastSelectedInventorySlot = newLastSelectedInventorySlot;
         itemCellsList[newLastSelectedInventorySlot].DoOnSelect();
     }
+
+
+    public Vector2 GetItemCellTransformPosition(int cellIndex)
+    {       
+        return itemCellsList[cellIndex].GetComponent<RectTransform>().position;
+    }
+
+
 }

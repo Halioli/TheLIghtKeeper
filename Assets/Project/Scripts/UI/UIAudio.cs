@@ -9,12 +9,12 @@ public class UIAudio : MonoBehaviour
     [SerializeField] AudioClip openInventoryClickAudioClip;
     [SerializeField] AudioClip closeInventoryClickAudioClip;
 
-    [SerializeField] AudioSource upgardeAndCraftAudioSource;
+    [SerializeField] AudioSource upgradeAndCraftAudioSource;
     [SerializeField] AudioSource buttonHoverAudioSource;
     [SerializeField] AudioClip upgradeAudioClip;
     [SerializeField] AudioClip craftAudioClip;
     [SerializeField] AudioClip failCraftAudioClip;
-
+    [SerializeField] AudioClip nextMessageAudioClip;
 
     bool canPlaybuttonHoverSound = true;
     float buttonHoverSoundCooldown = 0.1f;
@@ -26,13 +26,19 @@ public class UIAudio : MonoBehaviour
         InteractStation.OnInteractOpen += PlayInteractStationOpenSound;
         InteractStation.OnInteractClose += PlayInteractStationCloseSound;
 
+        Almanac.OnAlmanacMenuEnter += PlayInteractStationOpenSound;
+        Almanac.OnAlmanacMenuExit += PlayInteractStationCloseSound;
+
         HoverButton.OnHover += PlayButtonHoverSound;
 
-        UpgradesSystem.OnUpgrade += PlayUpgardeSound;
+        UpgradeMenuCanvas.OnSubmenuEnter += PlayMenuButtonClickSound;
+        UpgradesSystem.OnUpgrade += PlayUpgradeSound;
         UpgradesSystem.OnUpgradeFail += PlayFailCraftingSound;
 
         CraftingSystem.OnCrafting += PlayCraftingSound;
         CraftingSystem.OnCraftingFail += PlayFailCraftingSound;
+
+        ChatBox.OnChatNextInput += PlayNextMessageSound;
     }
 
 
@@ -43,13 +49,19 @@ public class UIAudio : MonoBehaviour
         InteractStation.OnInteractOpen -= PlayInteractStationOpenSound;
         InteractStation.OnInteractClose -= PlayInteractStationCloseSound;
 
+        Almanac.OnAlmanacMenuEnter -= PlayInteractStationOpenSound;
+        Almanac.OnAlmanacMenuExit -= PlayInteractStationCloseSound;
+
         HoverButton.OnHover -= PlayButtonHoverSound;
 
-        UpgradesSystem.OnUpgrade -= PlayUpgardeSound;
+        UpgradeMenuCanvas.OnSubmenuEnter -= PlayMenuButtonClickSound;
+        UpgradesSystem.OnUpgrade -= PlayUpgradeSound;
         UpgradesSystem.OnUpgradeFail -= PlayFailCraftingSound;
 
         CraftingSystem.OnCrafting -= PlayCraftingSound;
         CraftingSystem.OnCraftingFail -= PlayFailCraftingSound;
+
+        ChatBox.OnChatNextInput -= PlayNextMessageSound;
     }
 
 
@@ -81,34 +93,34 @@ public class UIAudio : MonoBehaviour
         inventoryAudioSource.Play();
     }
 
-    private void PlayUpgardeSound()
+    private void PlayUpgradeSound()
     {
-        if (upgardeAndCraftAudioSource.isPlaying) return;
+        //if (upgradeAndCraftAudioSource.isPlaying) return;
 
-        upgardeAndCraftAudioSource.volume = 0.5f;
-        upgardeAndCraftAudioSource.clip = upgradeAudioClip;
-        upgardeAndCraftAudioSource.pitch = 1f;
-        upgardeAndCraftAudioSource.Play();
+        upgradeAndCraftAudioSource.volume = 0.5f;
+        upgradeAndCraftAudioSource.clip = upgradeAudioClip;
+        upgradeAndCraftAudioSource.pitch = 1f;
+        upgradeAndCraftAudioSource.Play();
     }
 
     private void PlayCraftingSound()
     {
-        if (upgardeAndCraftAudioSource.isPlaying) return;
+        //if (upgradeAndCraftAudioSource.isPlaying) return;
 
-        upgardeAndCraftAudioSource.volume = 1f;
-        upgardeAndCraftAudioSource.clip = craftAudioClip;
-        upgardeAndCraftAudioSource.pitch = 0.7f;
-        upgardeAndCraftAudioSource.Play();
+        upgradeAndCraftAudioSource.volume = 1f;
+        upgradeAndCraftAudioSource.clip = craftAudioClip;
+        upgradeAndCraftAudioSource.pitch = 0.7f;
+        upgradeAndCraftAudioSource.Play();
     }
 
     private void PlayFailCraftingSound()
     {
-        if (upgardeAndCraftAudioSource.isPlaying) return;
+        //if (upgradeAndCraftAudioSource.isPlaying) return;
 
-        upgardeAndCraftAudioSource.volume = 0.3f;
-        upgardeAndCraftAudioSource.clip = failCraftAudioClip;
-        upgardeAndCraftAudioSource.pitch = 1f;
-        upgardeAndCraftAudioSource.Play();
+        upgradeAndCraftAudioSource.volume = 0.3f;
+        upgradeAndCraftAudioSource.clip = failCraftAudioClip;
+        upgradeAndCraftAudioSource.pitch = 1f;
+        upgradeAndCraftAudioSource.Play();
     }
 
     private void PlayButtonHoverSound()
@@ -120,6 +132,26 @@ public class UIAudio : MonoBehaviour
         buttonHoverAudioSource.volume = 0.1f;
         buttonHoverAudioSource.pitch = Random.Range(1.3f, 1.4f);
         buttonHoverAudioSource.Play();
+    }
+
+    private void PlayMenuButtonClickSound()
+    {
+        upgradeAndCraftAudioSource.volume = 0.2f;
+        upgradeAndCraftAudioSource.clip = openInventoryClickAudioClip;
+        upgradeAndCraftAudioSource.pitch = 1f;
+        upgradeAndCraftAudioSource.Play();
+    }
+
+
+
+    private void PlayNextMessageSound()
+    {
+        if (upgradeAndCraftAudioSource.isPlaying) return;
+
+        upgradeAndCraftAudioSource.volume = 0.05f;
+        upgradeAndCraftAudioSource.clip = nextMessageAudioClip;
+        upgradeAndCraftAudioSource.pitch = 1.0f;
+        upgradeAndCraftAudioSource.Play();
     }
 
     IEnumerator ButtonHoverSoundCooldown()

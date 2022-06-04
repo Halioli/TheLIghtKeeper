@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b69bf5647856226448733f6dfdba890c, type: 3}
+  m_Name: MedicKit
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 5165023498640493636, guid: b0459480de121aa41b19ff6014f7f8e7, type: 3}
+  itemName: Medic Kit
+  description: Medic utensile that recovers full health.
+  ID: 25
+  itemType: 2
+  isSpecial: 0
+  stackSize: 8
+  sprite: {fileID: 21300000, guid: ac867d5fdaee4034e846a35ae43ca373, type: 3}
+  existsInAlmanac: 0

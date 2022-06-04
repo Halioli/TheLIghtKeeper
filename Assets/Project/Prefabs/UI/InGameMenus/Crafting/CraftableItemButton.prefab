@@ -176,7 +176,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+    m_NormalColor: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_SelectedColor: {r: 0.7254902, g: 0.7254902, b: 0.7254902, a: 1}
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonNumber: 0
-  itemImage: {fileID: 0}
+  itemImage: {fileID: 5242686089245924974}
 --- !u!114 &3697358500018850161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,13 +254,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
         - m_Target: {fileID: 2175897013734550380}
-          m_TargetAssemblyTypeName: CraftableItemButton, Assembly-CSharp
-          m_MethodName: DoOnHoverExitRecepieButton
+          m_TargetAssemblyTypeName: HoverButton, Assembly-CSharp
+          m_MethodName: DoOnHover
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

@@ -12,12 +12,32 @@ public class MainMenu : MonoBehaviour
     public GameObject optionsMenuGameObject;
     public GameObject creditsMenuGameObject;
 
+    [SerializeField] GameObject continueButtonGameObject;
+    [SerializeField] GameObject newGameButtonGameObject;
+
+    private void Awake()
+    {
+        InitFirstTime();
+    }
+
+    private void Start()
+    {
+        if (IsFirstTime())
+        {
+            continueButtonGameObject.SetActive(false);
+        }
+        else
+        {
+            continueButtonGameObject.SetActive(true);
+        }
+    }
+
     public void PlayButtonClick(int sceneIndex)
     {
         StopRespawns();
-        introductionMenuGameObject.SetActive(true);
-        //loadingGroup.alpha = 1f;
-        //StartCoroutine(AsyncLoading(sceneIndex));
+        //introductionMenuGameObject.SetActive(true);
+        loadingGroup.alpha = 1f;
+        StartCoroutine(AsyncLoading(sceneIndex));
     }
 
     public void OptionsButtonClick()
@@ -51,6 +71,34 @@ public class MainMenu : MonoBehaviour
         {
             mainMenuEnemies[i].SetActive(true);
         }
+    }
+
+    public bool IsFirstTime()
+    {
+        return PlayerPrefs.GetInt("FirstTime") == 1;
+    }
+
+    private void InitFirstTime()
+    {
+        if (!PlayerPrefs.HasKey("FirstTime"))
+        {
+            PlayerPrefs.SetInt("FirstTime", 1);
+        }
+    }
+
+    public void SetFirstTimeTrue()
+    {
+        PlayerPrefs.SetInt("FirstTime", 1);      
+    }
+
+    public void NewGame()
+    {
+        SetFirstTimeTrue();
+    }
+
+    public void QuestionareButtonClick()
+    {
+        Application.OpenURL("https://forms.gle/cW2EM7tgWYezGHgP6");
     }
 
     IEnumerator AsyncLoading(int sceneIndex)

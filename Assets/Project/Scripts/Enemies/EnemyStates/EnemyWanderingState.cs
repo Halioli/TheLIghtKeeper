@@ -20,7 +20,7 @@ public class EnemyWanderingState : EnemyState
     Vector2 targetPosition;
 
     [SerializeField] float distanceToAggro;
-
+    float distanceToStartBanishing = 45f;
     bool isTouchingLight;
 
     bool isPlayerInLight;
@@ -84,6 +84,11 @@ public class EnemyWanderingState : EnemyState
             nextState = EnemyStates.AGGRO;
             return true;
         }
+        else if(distanceToStartBanishing < Vector2.Distance(transform.position, playerTransform.position))
+        {
+            nextState = EnemyStates.SCARED;
+            return true;
+        }
 
         return false;
     }
@@ -111,7 +116,7 @@ public class EnemyWanderingState : EnemyState
     private void SetWanderingTargetPosition()
     {
         do {
-            targetPosition = wanderingCentrePosition + Random.insideUnitCircle * wanderingRadius;
+            targetPosition = wanderingCentrePosition + (Random.insideUnitCircle * wanderingRadius);
         } while (Vector2.Distance(targetPosition, transform.position) < minimumWanderDistance);
     }
 
@@ -132,7 +137,7 @@ public class EnemyWanderingState : EnemyState
         animator.SetTrigger("triggerMove");
         SetWanderingTargetPosition();
 
-        wanderingTime = Vector2.Distance(targetPosition, transform.position) % moveSpeed;
+        wanderingTime = Vector2.Distance(targetPosition, transform.position) / moveSpeed;
         yield return new WaitForSeconds(wanderingTime);
         isWanderingDone = true;
     }

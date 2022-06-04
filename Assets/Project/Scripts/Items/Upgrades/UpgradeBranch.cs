@@ -17,12 +17,12 @@ public class UpgradeBranch : ScriptableObject
     private int currentUpgrade;
     private int branchIndex;
     private bool branchCompleted;
-    [SerializeField] List<Upgrade> upgrades;
+    public List<Upgrade> upgrades;
 
 
     public void Init(int index)
     {
-        numberOfUpgrades = upgrades.Capacity;
+        numberOfUpgrades = upgrades.Count;
         currentUpgrade = 0;
         branchIndex = index;
         branchCompleted = false;
@@ -36,18 +36,21 @@ public class UpgradeBranch : ScriptableObject
     public void Upgrade()
     {
         upgrades[currentUpgrade++].InvokeResultEvent();
-        
+
         if (currentUpgrade >= numberOfUpgrades)
         {
             branchCompleted = true;
-            if (OnBranchComplete != null)
-                OnBranchComplete(branchIndex);
+            if (OnBranchComplete != null) OnBranchComplete(branchIndex);
         }
     }
 
     public Upgrade GetCurrentUpgrade()
     {
         return upgrades[currentUpgrade];
+    }
+    public int GetCurrentUpgradeIndex()
+    {
+        return currentUpgrade;
     }
 
     public bool IsCompleted()

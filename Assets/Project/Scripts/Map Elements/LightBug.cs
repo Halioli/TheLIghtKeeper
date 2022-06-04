@@ -18,6 +18,8 @@ public class LightBug : Enemy
 
     public LightBugMovement lightBugMovement;
 
+    public ParticleSystem lightBugParticleSystem;
+
     //Linear Movement Parameters
     public float timeToReachEachPoint;
     public float initialPositionX;
@@ -48,6 +50,8 @@ public class LightBug : Enemy
         FlipSprite();
 
         FlyingSound();
+        lightBugParticleSystem.Play();
+
     }
 
     void Update()
@@ -150,8 +154,7 @@ public class LightBug : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(player.GetComponent<PlayerLightChecker>().numberOfLights);
-
+        //Debug.Log(player.GetComponent<PlayerLightChecker>().numberOfLights);
     }
 }
 

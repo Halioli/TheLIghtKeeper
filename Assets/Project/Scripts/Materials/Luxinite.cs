@@ -12,15 +12,22 @@ public class Luxinite : Ore
     private float initialIntensity;
     private float maxIntensity;
     private float time;
+    public bool hasBeenMinedLux;
 
-    void Start()
+    private void Awake()
     {
+        SaveSystem.luxinites.Add(this);
+
         breakState = OreState.WHOLE;
 
         currentSpriteIndex = 0;
         currentSprite = spriteList[currentSpriteIndex];
 
         healthSystem = GetComponent<HealthSystem>();
+    }
+    void Start()
+    {
+      
         foreach (ParticleSystem particleSystem in oreParticleSystem)
         {
             particleSystem.Stop();
@@ -28,30 +35,33 @@ public class Luxinite : Ore
 
         initialIntensity = 0f;
         maxIntensity = 3f;
+
+        if (hasBeenMinedLux)
+        {
+            this.gameObject.SetActive(false);
+            breakState = OreState.BROKEN;
+        }
+    }
+
+    private void Update()
+    {
+        if (hasBeenMinedLux)
+        {
+            this.gameObject.SetActive(false);
+            breakState = OreState.BROKEN;
+        }
     }
 
     public override void GetsMined(int damageAmount, int numberOfDrops)
     {
         StartCoroutine(FlashLightAppears());
 
-        transform.DOPunchScale(new Vector3(-0.6f, -0.6f, 0), 0.40f);
-        // Damage the Ore
-        healthSystem.ReceiveDamage(damageAmount);
-        // Update ore Sprite
-        ProgressNAmountOfSprites(damageAmount);
+        base.GetsMined(damageAmount, 1);
 
-        if (healthSystem.IsDead())
+        if(healthSystem.GetHealth() <= 0)
         {
-            breakState = OreState.BROKEN;
-
-            // Drop mineralItemToDrop
-            DropMineralItem();
-
-            // Start disappear coroutine
-            StartCoroutine("Disappear");
+            hasBeenMinedLux = true;
         }
-        UpdateCurrentSprite();
-        StartCoroutine("PlayBreakParticles");
     }
 
     IEnumerator FlashLightAppears()
@@ -71,4 +81,11 @@ public class Luxinite : Ore
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }
+
+    protected override void DropMineralItem()
+    {
+        ItemGameObject droppedMineralItem = Instantiate(mineralItemToDrop, GetDropSpawnPosition(), Quaternion.identity);
+        droppedMineralItem.DropsRandom(false);
+    }
+
 }

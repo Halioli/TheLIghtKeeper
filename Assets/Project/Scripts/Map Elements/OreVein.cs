@@ -10,11 +10,17 @@ public class OreVein : InteractStation
     public Item autoMiner;
     public GameObject autoMinerGameObject;
     public PopUp popUp;
+    public ParticleSystem[] veinParticlesSystems;
+    public GameObject itemCellGameObject;
 
     // Private Attributes
     private string[] messagesToShow = { "", "No Auto-Miner found" };
-    private bool activated = false;
+    public bool activated = false;
 
+    private void Awake()
+    {
+        SaveSystem.oreVeins.Add(this);
+    }
     private void Start()
     {
         autoMinerGameObject.SetActive(activated);
@@ -49,15 +55,16 @@ public class OreVein : InteractStation
     public override void StationFunction()
     {
         if (activated) return;
-        activated = true;
 
         popUp.ShowMessage();
         if (playerInventory.InventoryContainsItem(autoMiner))
         {
             activated = true;
+            itemCellGameObject.SetActive(false);
 
             playerInventory.SubstractItemFromInventory(autoMiner);
             popUp.ChangeMessageText(messagesToShow[0]);
+            StartCoroutine(VeinParticleSystem());
             autoMinerGameObject.SetActive(true);
 
             autoMinerGameObject.GetComponent<AutoMiner>().GetsPlacedDown(materialVein);
@@ -65,6 +72,21 @@ public class OreVein : InteractStation
         else
         {
             popUp.ChangeMessageText(messagesToShow[1]);
+
+            InvokeOnNotEnoughMaterials();
+        }
+    }
+
+    private IEnumerator VeinParticleSystem()
+    {
+        foreach (ParticleSystem system in veinParticlesSystems)
+        {
+            system.Play();
+        }
+        yield return new WaitForSeconds(1f);
+        foreach (ParticleSystem system in veinParticlesSystems)
+        {
+            system.Stop();
         }
     }
 }

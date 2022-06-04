@@ -8,6 +8,7 @@ public class AutoMiner : InteractStation
     [SerializeField] Inventory inventory;
     [SerializeField] GameObject autoMinerCanvasGameObject;
     [SerializeField] InventoryMenu autoMinerInventoryMenu;
+    [SerializeField] Transform spriteTransform;
     private bool inventoryIsOpen = false;
 
 
@@ -91,7 +92,7 @@ public class AutoMiner : InteractStation
         playerInventory.SetOtherInventory(this.inventory);
         this.inventory.SetOtherInventory(playerInventory);
 
-        PauseMenu.PauseMineAndAttack();
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
     }
 
     private void CloseInventory()
@@ -104,7 +105,8 @@ public class AutoMiner : InteractStation
         playerInventory.SetOtherInventory(null);
         this.inventory.SetOtherInventory(null);
 
-        PauseMenu.ResumeMineAndAttack();
+        //PauseMenu.ResumeMineAndAttack();
+        PlayerInputs.instance.SetInGameMenuCloseInputs();
     }
 
     public void GetsPlacedDown(Item itemToMine)
@@ -163,7 +165,7 @@ public class AutoMiner : InteractStation
 
     private void PlacedAnimation()
     {
-        transform.DOPunchScale(animationScale, animationTime, 10, 10);
+        spriteTransform.DOPunchScale(animationScale, animationTime, 10, 10);
 
         if (OnAutoMinerPlaced != null)
         {
@@ -173,7 +175,7 @@ public class AutoMiner : InteractStation
 
     private void MineAnimation()
     {
-        transform.DOPunchScale(animationScale, animationTime, 10, 10);
+        spriteTransform.DOPunchScale(animationScale, animationTime, 10, 10);
 
         if (OnMine != null)
         {

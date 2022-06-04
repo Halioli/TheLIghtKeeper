@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HotbarInventory : Inventory
+public class HotbarInventory : DataSavingInventory
 {
     [SerializeField] InventoryMenu hotbarInventoryMenu;
     [SerializeField] RectTransform hotbarRectTransform;
@@ -12,14 +12,27 @@ public class HotbarInventory : Inventory
     private float[] hotbarWidthOnUpgrade = { 674f, 798f, 1042f };
 
 
-    private void OnEnable()
+
+    public delegate void HotbarInventoryUse();
+    public static event HotbarInventoryUse OnInventoryItemDrop;
+
+
+
+
+    private new void OnEnable()
     {
+        BrokenFurnace.OnTutorialFinish += SaveInventory;
+        PauseMenu.OnGameExit += SaveInventory;
+
         OnItemMove += SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting += SetInventroyMenuSelectedSlotIndex;
     }
 
-    private void OnDisable()
+    protected new void OnDisable()
     {
+        BrokenFurnace.OnTutorialFinish -= SaveInventory;
+        PauseMenu.OnGameExit -= SaveInventory;
+
         OnItemMove -= SetInventroyMenuSelectedSlotIndex;
         CraftingSystem.OnCrafting -= SetInventroyMenuSelectedSlotIndex;
     }
@@ -42,10 +55,13 @@ public class HotbarInventory : Inventory
 
     public void UseSelectedConsumibleItem()
     {
-        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE)
+        Debug.Log(PlayerInputs.instance.isInGameMenu);
+
+        if (inventory[indexOfSelectedInventorySlot].itemInStack.itemType == ItemType.CONSUMIBLE && !PlayerInputs.instance.isInGameMenu)
         {
-            GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
-            consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
+            inventory[indexOfSelectedInventorySlot].itemInStack.prefab.GetComponent<ItemGameObject>().DoFunctionality();
+            //GameObject consumibleItem = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform.position, Quaternion.identity);
+            //consumibleItem.GetComponent<ItemGameObject>().DoFunctionality();
 
             SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
             SetInventroyMenuSelectedSlotIndex();
@@ -57,6 +73,24 @@ public class HotbarInventory : Inventory
     {
         hotbarInventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
     }
+
+
+    public void DropSelectedItem()
+    {
+        if (!inventory[indexOfSelectedInventorySlot].StackIsEmpty())
+        {
+            ItemGameObject itemGameObject = Instantiate(inventory[indexOfSelectedInventorySlot].itemInStack.prefab, transform).GetComponent<ItemGameObject>();
+
+            itemGameObject.DropsRandom(!itemGameObject.item.isSpecial, 1.5f, 20f);
+            itemGameObject.MakeNotPickupableForDuration(2f);
+
+            SubstractItemFromInventorySlot(indexOfSelectedInventorySlot);
+            SetInventroyMenuSelectedSlotIndex();
+
+            if (OnInventoryItemDrop != null) OnInventoryItemDrop();
+        }
+    }
+
 
 
     // Modifier Methods
@@ -73,6 +107,15 @@ public class HotbarInventory : Inventory
             hotbarRectTransform.sizeDelta = new Vector2(hotbarWidthOnUpgrade[currentUpgrade], hotbarRectTransform.sizeDelta.y);
             gotChanged = true;
         }
+    }
+
+
+
+    // Other
+
+    public Vector2 GetStackTransformPosition(int stackIndex)
+    {
+        return hotbarInventoryMenu.GetItemCellTransformPosition(stackIndex);
     }
 
 

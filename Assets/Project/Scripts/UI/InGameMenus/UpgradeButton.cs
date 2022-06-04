@@ -1,118 +1,120 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using DG.Tweening;
 
 public class UpgradeButton : HoverButton
 {
-    [SerializeField] TMP_Text descriptionText;
-    [SerializeField] Image[] upgradeStatus;
-    [SerializeField] GameObject[] requiredMaterials;
+    int upgradeBranchIndex;
+    int upgradeIndex;
+    protected bool isCompleted = false;
+    [SerializeField] Upgrade upgrade;
+    [SerializeField] GameObject activeNodeImage;
+    [SerializeField] GameObject doneText;
+    [SerializeField] Image iconImage;
+    [SerializeField] ResetableFloatingItem floatingItem;
 
-    private int currentUpgradeStatus = 0;
-    public bool canBeClicked = true;
+    UpgradeMenuCanvas upgradeMenuCanvas;
 
 
-    public void GetsClicked()
+    // Events
+    public delegate void UpgradeNodeHoverAction(Vector2 transformPosition);
+    public static event UpgradeNodeHoverAction OnUpgradeNodeHover;
+
+
+
+    public void Init(bool isEnabled, int upgradeBranchIndex, int upgradeIndex, UpgradeMenuCanvas upgradeMenuCanvas)
     {
-        if (canBeClicked)
-        {
-            transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
-        }
+        if (isEnabled) EnableButton();
+        else DisableButton();
+
+        this.upgradeBranchIndex = upgradeBranchIndex;
+        this.upgradeIndex = upgradeIndex;
+        this.upgradeMenuCanvas = upgradeMenuCanvas;
+
+        doneText.SetActive(false);
     }
 
 
-    public void InitUpdateButtonElements(string descriptionText, Sprite[] requiredMaterialImages, string[] requiredMaterialAmountTexts)
+
+    private void ClickedAnimation()
     {
-        SetDescriptionText(descriptionText);
-
-        UpdateRequiredMaterials(requiredMaterialImages.Length);
-        SetRequiredMaterialImages(requiredMaterialImages);
-        SetRequiredMaterialAmountTexts(requiredMaterialAmountTexts);
+        transform.DOComplete();
+        transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.25f, 3);
     }
 
-    public void UpdateButtonElements(string descriptionText, Sprite[] requiredMaterialImages, string[] requiredMaterialAmountTexts)
+
+    public void DisplayUpgrade() // called on hover enter
     {
-        if (!canBeClicked) return;
+        upgradeMenuCanvas.DisplayUpgrade(upgrade, isCompleted, upgradeBranchIndex, upgradeIndex);
 
-        CheckSquare();
-
-        SetDescriptionText(descriptionText);
-
-        UpdateRequiredMaterials(requiredMaterialImages.Length);
-        SetRequiredMaterialImages(requiredMaterialImages);
-        SetRequiredMaterialAmountTexts(requiredMaterialAmountTexts);
+        if (OnUpgradeNodeHover != null) OnUpgradeNodeHover(GetComponent<RectTransform>().position);
     }
 
-    public void CheckSquare(){
-        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
-        ++currentUpgradeStatus;
-    }
-
-    private void SetDescriptionText(string descriptionText)
+    public void HideDisplay() // called on hover exit
     {
-        this.descriptionText.text = descriptionText;
+        upgradeMenuCanvas.HideDisplay();
     }
 
-    private void SetRequiredMaterialImages(Sprite[] requiredMaterialImages)
+    public virtual void UpgradeSelected() // called on click
     {
-        for (int i = 0; i < requiredMaterialImages.Length; ++i)
-        {
-            requiredMaterials[i].GetComponentInChildren<Image>().sprite = requiredMaterialImages[i];
-        }
-        
+        isCompleted = upgradeMenuCanvas.UpgradeSelected(upgradeBranchIndex, upgradeIndex);
+
+        if (isCompleted) DisplayUpgrade();
+
+        ClickedAnimation();
     }
 
-    private void SetRequiredMaterialAmountTexts(string[] requiredMaterialAmountTexts)
+    public virtual void AlwaysProgressUpgradeSelected()
     {
-        for (int i = 0; i < requiredMaterialAmountTexts.Length; ++i)
-        {
-            requiredMaterials[i].GetComponentInChildren<TMP_Text>().text = requiredMaterialAmountTexts[i];
-        }
+        upgradeMenuCanvas.AlwaysProgressUpgradeSelected(upgradeBranchIndex);
     }
 
-    private void UpdateRequiredMaterials(int amount)
-    {
-        for (int i = 0; i < requiredMaterials.Length; ++i)
-        {
-            if (i < amount)
-            {
-                requiredMaterials[i].GetComponent<CanvasGroup>().alpha = 1;
-            }
-            else
-            {
-                requiredMaterials[i].GetComponent<CanvasGroup>().alpha = 0;
-            }
-        }
 
-    }
 
-    IEnumerator ClickCooldown(bool canBeClicked)
-    {
-        this.canBeClicked = false;
-        yield return new WaitForSeconds(1f);
-        this.canBeClicked = canBeClicked;
-    }
-
-    public void StartClickCooldown(bool canBeClicked)
-    {
-        StartCoroutine(ClickCooldown(canBeClicked));
-    }
 
     public void DisableButton()
     {
-        upgradeStatus[currentUpgradeStatus].color = Color.cyan;
-        ClearButton();
         GetComponent<Button>().enabled = false;
+        GetComponent<Button>().interactable = false;
+
+        activeNodeImage.SetActive(false);
+
+        floatingItem.StopFloating();
     }
 
-    private void ClearButton()
+    public void EnableButton()
     {
-        UpdateRequiredMaterials(0);
-        SetDescriptionText("Branch completed");
+        GetComponent<Button>().enabled = true;
+        GetComponent<Button>().interactable = true;
+
+        //activeNodeImage.SetActive(true);
+
+        iconImage.color = new Color(255, 255, 255, 255);
+
+        floatingItem.StartFloating();
     }
+
+
+    public void SetDone()
+    {
+        GetComponent<Button>().enabled = false;
+
+        activeNodeImage.SetActive(true);
+        doneText.SetActive(true);
+        floatingItem.StopFloating();
+
+        isCompleted = true;
+    }
+
+
+
+    public void GetNameAndIcon(out string upgradeName, out Image upgradeIcon)
+    {
+        upgradeName = upgrade.upgradeName + " " + upgrade.upgradeDescription;
+        upgradeIcon = iconImage;
+    }
+
+
 
 }

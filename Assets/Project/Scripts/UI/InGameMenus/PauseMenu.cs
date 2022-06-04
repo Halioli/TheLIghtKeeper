@@ -11,7 +11,15 @@ public class PauseMenu : MonoBehaviour
     public CanvasGroup loadingGroup;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
-    public InGameToolTips inGameTooltips;
+    public GameObject controllsMenu;
+    public GameObject almanacMenu;
+
+    public delegate void PauseMenuAction();
+    public static event PauseMenuAction OnPaused;
+    public static event PauseMenuAction OnGameExit;
+
+    public delegate void ToggleCheatsAction(bool toggle);
+    public static event ToggleCheatsAction OnToggleCheats;
 
     void Update()
     {
@@ -23,18 +31,30 @@ public class PauseMenu : MonoBehaviour
             } 
             else
             {
+                if(OnPaused != null) OnPaused();
                 Pause();
             }
         }
 
-        if (gameIsPaused)
-        {
-            PauseGame();
-        }
-        else
-        {
-            Resume();
-        }
+        //if (gameIsPaused)
+        //{
+        //    PauseGame();
+        //}
+        //else
+        //{
+        //    Resume();
+        //}
+    }
+
+
+    private void OnEnable()
+    {
+        AlmanacMenuButton.OnAlmanacMenuEnter += ClickedAlmanacButton;
+    }
+
+    private void OnDisable()
+    {
+        AlmanacMenuButton.OnAlmanacMenuEnter -= ClickedAlmanacButton;
     }
 
     private void Resume()
@@ -90,20 +110,39 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
     }
 
+    public void ClickedControllsButton()
+    {
+        controllsMenu.SetActive(true);
+
+        pauseMenu.SetActive(false);
+    }
+    public void ClickedAlmanacButton()
+    {
+        PlayerInputs.instance.SetInGameMenuOpenInputs();
+        almanacMenu.SetActive(true);
+
+        //pauseMenu.SetActive(false);
+    }
     public void ClickedMainMenuButton(int sceneIndex)
     {
+        if (OnGameExit != null) OnGameExit();
+
+        gameIsPaused = false;
         loadingGroup.alpha = 1f;
         StartCoroutine(AsyncLoading(sceneIndex));
     }
 
     public void ClickedExitButton()
     {
+        if (OnGameExit != null) OnGameExit();
+
         PlayerInputs.instance.QuitGame();
     }
 
-    public void SetTooltips(bool toolTipsState)
+    public void ToggleCheats(bool value)
     {
-        inGameTooltips.SetTooltipsState(toolTipsState);
+        if (OnToggleCheats != null)
+            OnToggleCheats(value);
     }
 
     IEnumerator AsyncLoading(int sceneIndex)

@@ -12,12 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bbba2dc9db08cb4681de84fb10c7215, type: 3}
   m_Name: LanternSource_Upgrade_1
   m_EditorClassIdentifier: 
-  upgradeDescription: +Light reach
-  longDescription: 'Lantern Light - Tier 1/5:
-
-
-    Lantern''s light size and reach
-    increases.'
+  upgradeName: Lantern Light
+  upgradeDescription: (Tier 1/4)
+  longDescription: Increases the Lantern's light size and reach.
   requiredItemsList:
-  - {fileID: 11400000, guid: 381500f2bf001d846a9b27848ee92027, type: 2}
-  requiredAmountsList: 04000000
+  - {fileID: 11400000, guid: 3ad1a6f564b80f743a80f5b6a541cd25, type: 2}
+  requiredAmountsList: 08000000

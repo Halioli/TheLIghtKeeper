@@ -8,7 +8,9 @@ public class InteractStation : MonoBehaviour
     public BoxCollider2D triggerArea;
 
     protected bool playerInsideTriggerArea;
-    protected Inventory playerInventory;
+    [SerializeField] protected HotbarInventory playerInventory;
+
+    protected bool isCanvasOpen = false;
 
     // Action
     public delegate void InteractStationAction();
@@ -19,10 +21,13 @@ public class InteractStation : MonoBehaviour
     public static event InteractStationAction OnDescriptionOpen;
     public static event InteractStationDescriptionAction OnDescriptionSet;
 
+    public delegate void InteractStationRequiredItems();
+    public static event InteractStationRequiredItems OnNotEnoughMaterials;
+
 
     private void Awake()
     {
-        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Inventory>();
+        if (playerInventory == null) playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<HotbarInventory>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -30,7 +35,6 @@ public class InteractStation : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInsideTriggerArea = true;
-            
         }
         
     }
@@ -43,11 +47,17 @@ public class InteractStation : MonoBehaviour
         }
     }
 
-    public void GetInput()
+    public virtual void GetInput()
     {
         if (PlayerInputs.instance.PlayerPressedInteractButton())
         {
             StationFunction();
+            isCanvasOpen = !isCanvasOpen;
+        }
+        if (isCanvasOpen && PlayerInputs.instance.PlayerPressedInteractExitButton())
+        {
+            StationFunction();
+            isCanvasOpen = !isCanvasOpen;
         }
     }
 
@@ -83,6 +93,12 @@ public class InteractStation : MonoBehaviour
         {
             OnDescriptionOpen();
         }
+    }
+
+
+    protected void InvokeOnNotEnoughMaterials()
+    {
+        if (OnNotEnoughMaterials != null) OnNotEnoughMaterials();
     }
 
 }

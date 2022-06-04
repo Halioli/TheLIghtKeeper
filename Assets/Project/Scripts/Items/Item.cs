@@ -15,11 +15,13 @@ public abstract class Item : ScriptableObject
 
     public int ID; // item identifier
     public ItemType itemType;
+    public bool isSpecial;
     public int stackSize;
 
 
-    // Private Attributes
     public Sprite sprite;
+
+    public bool existsInAlmanac = true;
 
 
     // Getter Methods

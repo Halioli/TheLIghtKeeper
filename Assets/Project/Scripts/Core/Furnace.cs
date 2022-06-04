@@ -10,35 +10,27 @@ public class Furnace : InteractStation
     // Public Attributes
     public bool countdownActive { get; set; }
 
-    public Item fuelItem;
-    public Item repairsItem;
-    public Item upgradeItem;
-    public GameObject player;
+    //public Item fuelItem;
+    //public Item repairsItem;
+    public GameObject liftOffButtonGameObject;
 
     //TextMesh gameobjects
     public GameObject popUpGameObject;
-    public GameObject warning;
-    public GameObject endGameMessage;
     public ParticleSystem addCoalParticleSystem;
 
-    //Text references
-    public TextMeshProUGUI currentFuelText;
-    public TextMeshProUGUI eventText;
-
     //Core light 
-    public GameObject coreLight;
+    [SerializeField] ConeLightCircleInteriorLight coneCoreLight;
+    [SerializeField] FirstShipUpgradeMessage firstShipUpgradeMessage;
 
     // Private Attributes
+    private enum FurnaceEvents { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
+    FurnaceEvents furnaceEvents;
     private const int MAX_FUEL_AMOUNT = 150;
     private const int STARTING_FUEL_AMOUNT = 50;
     private const int LOW_FUEL_AMOUNT = 30;
-    private const int MAX_CORE_LEVEL = 5;
-    private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f; 
-    private enum FurnaceEvents { CALM, NEEDS_COAL, NEEDS_REPAIRS, STABILIZING };
-    FurnaceEvents furnaceEvents;
-
-    //Core light 
-    private int lightLevel = 0;
+    [SerializeField] private const int MAX_CORE_LEVEL = 5;
+    private const float MAX_TIME_TEXT_ON_SCREEN = 1.5f;
+    
 
     //Fuel variables
     private int currentFuel = STARTING_FUEL_AMOUNT;
@@ -49,7 +41,12 @@ public class Furnace : InteractStation
     private bool couroutineStartedConsumeCoal = false;
 
     //Scalation variables
-    private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
+    public int lightLevel = 0;
+    private float[] UPGRADE_LIGHT_DISTANCE = { 15f, 20f, 25f, 30f, 35f };
+    private float START_UPGRADE_LIGHT_DISTANCE = 10f;
+    private float currentColliderRadius;
+    //[SerializeField] private CircleCollider2D coreLightCollider;
+    //private Vector3 scaleChange = new Vector3(0.5f, 0.5f, 0f);
 
     private float fuelDurationInSeconds = 2.5f;
     private int fuelConsumedByTime = 1;
@@ -63,24 +60,29 @@ public class Furnace : InteractStation
     private string[] numElementAddedTextsToDisplay = { " NULL", " Coal", " Iron", " NULL" };
 
     // Methods
-    private void Start()
+    private void Awake()
     {
         furnaceEvents = FurnaceEvents.CALM;
+        //coreLightCollider = coreLight.GetComponent<CircleCollider2D>();
         popUp = popUpGameObject.GetComponent<PopUp>();
         addCoalParticleSystem.Stop();
         popUp.ChangeMessageText("");
 
         popUp.HideAll();
         popUpGameObject.SetActive(false);
-        warning.SetActive(false);
-        endGameMessage.SetActive(false);
+
+
+        currentColliderRadius = START_UPGRADE_LIGHT_DISTANCE;
+        coneCoreLight.SetDistance(currentColliderRadius);
+        coneCoreLight.Expand(1f);
+
     }
+
+
 
     void Update()
     {
-        SwitchFurnaceEvents();
-
-        CheckForEndGame();
+        //SwitchFurnaceEvents();
 
         //If player enters the trigger area the interactionText will appears
         if (playerInsideTriggerArea)
@@ -104,27 +106,27 @@ public class Furnace : InteractStation
             case FurnaceEvents.STABILIZING:
                 break;
 
-            case FurnaceEvents.NEEDS_COAL:
-                if (playerInventory.SubstractItemFromInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
-                {
-                    FuelAdded((int)furnaceEvents);
-                }
-                else
-                {
-                    NoFuelToAdd((int)furnaceEvents);
-                }
-                break;
+            //case FurnaceEvents.NEEDS_COAL:
+            //    if (playerInventory.SubstractItemFromInventory(fuelItem) && currentFuel < MAX_FUEL_AMOUNT)
+            //    {
+            //        FuelAdded((int)furnaceEvents);
+            //    }
+            //    else
+            //    {
+            //        NoFuelToAdd((int)furnaceEvents);
+            //    }
+            //    break;
 
-            case FurnaceEvents.NEEDS_REPAIRS:
-                if (playerInventory.SubstractItemFromInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
-                {
-                    FuelAdded((int)furnaceEvents);
-                }
-                else
-                {
-                    NoFuelToAdd((int)furnaceEvents);
-                }
-                break;
+            //case FurnaceEvents.NEEDS_REPAIRS:
+            //    if (playerInventory.SubstractItemFromInventory(repairsItem) && currentFuel < MAX_FUEL_AMOUNT)
+            //    {
+            //        FuelAdded((int)furnaceEvents);
+            //    }
+            //    else
+            //    {
+            //        NoFuelToAdd((int)furnaceEvents);
+            //    }
+            //    break;
 
             default:
                 break;
@@ -205,100 +207,63 @@ public class Furnace : InteractStation
 
     private bool CheckIfMaxCoreLevel()
     {
-        return lightLevel >= 3;//MAX_CORE_LEVEL;
+        return lightLevel >= MAX_CORE_LEVEL;
     }
 
-    private void CheckForEndGame()
-    {
-        if (CheckIfNoFuelLeft())
-        {
-            endGameMessage.SetActive(true);
-            endGameMessage.GetComponent<TextMeshProUGUI>().text = "GAME OVER";
-            currentTextTime += Time.deltaTime;
-            if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
-            {
-                SceneManager.LoadScene(1);
-            }
-        }
-        else if (CheckIfMaxCoreLevel())
-        {
-            endGameMessage.SetActive(true);
-            endGameMessage.GetComponent<TextMeshProUGUI>().text = "YOU WIN";
-            currentTextTime += Time.deltaTime;
-            if (currentTextTime >= MAX_TIME_TEXT_ON_SCREEN)
-            {
-                SceneManager.LoadScene(0);
-            }
-        }
-    }
+    //private void SwitchFurnaceEvents()
+    //{
+    //    switch (furnaceEvents)
+    //    {
+    //        case FurnaceEvents.CALM:
+    //            countdownActive = false;
+    //            eventText.text = eventTextToDisplay[0];
+    //            break;
 
-    private void CheckWarningMessageAppears()
-    {
-        //Warning if currentFuel is low
-        if (currentFuel <= LOW_FUEL_AMOUNT)
-        {
-            warning.SetActive(true);
-        }
-        else
-        {
-            warning.SetActive(false);
-        }
-    }
+    //        case FurnaceEvents.NEEDS_COAL:
+    //            countdownActive = true;
+    //            eventText.text = eventTextToDisplay[1];
 
-    private void SwitchFurnaceEvents()
-    {
-        switch (furnaceEvents)
-        {
-            case FurnaceEvents.CALM:
-                countdownActive = false;
-                eventText.text = eventTextToDisplay[0];
-                break;
+    //            ConsumesFuel();
+    //            CheckWarningMessageAppears();
 
-            case FurnaceEvents.NEEDS_COAL:
-                countdownActive = true;
-                eventText.text = eventTextToDisplay[1];
+    //            if (currentFuel >= MAX_FUEL_AMOUNT)
+    //            {
+    //                furnaceEvents = FurnaceEvents.STABILIZING;
+    //            }
+    //            break;
 
-                ConsumesFuel();
-                CheckWarningMessageAppears();
+    //        case FurnaceEvents.NEEDS_REPAIRS:
+    //            countdownActive = true;
+    //            eventText.text = eventTextToDisplay[2];
 
-                if (currentFuel >= MAX_FUEL_AMOUNT)
-                {
-                    furnaceEvents = FurnaceEvents.STABILIZING;
-                }
-                break;
+    //            ConsumesFuel();
+    //            CheckWarningMessageAppears();
 
-            case FurnaceEvents.NEEDS_REPAIRS:
-                countdownActive = true;
-                eventText.text = eventTextToDisplay[2];
+    //            if (currentFuel >= MAX_FUEL_AMOUNT)
+    //            {
+    //                furnaceEvents = FurnaceEvents.STABILIZING;
+    //            }
+    //            break;
 
-                ConsumesFuel();
-                CheckWarningMessageAppears();
+    //        case FurnaceEvents.STABILIZING:
+    //            countdownActive = false;
+    //            eventText.text = eventTextToDisplay[3];
 
-                if (currentFuel >= MAX_FUEL_AMOUNT)
-                {
-                    furnaceEvents = FurnaceEvents.STABILIZING;
-                }
-                break;
+    //            if (couroutineStartedConsumeCoal)
+    //            {
+    //                couroutineStartedConsumeCoal = false;
+    //                StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
+    //            }
 
-            case FurnaceEvents.STABILIZING:
-                countdownActive = false;
-                eventText.text = eventTextToDisplay[3];
+    //            currentFuel = STARTING_FUEL_AMOUNT;
+    //            furnaceEvents = FurnaceEvents.CALM;
+    //            break;
 
-                if (couroutineStartedConsumeCoal)
-                {
-                    couroutineStartedConsumeCoal = false;
-                    StopCoroutine(UsingYieldCosumeCoal(fuelDurationInSeconds));
-                }
-
-                currentFuel = STARTING_FUEL_AMOUNT;
-                furnaceEvents = FurnaceEvents.CALM;
-                break;
-
-            default:
-                furnaceEvents = FurnaceEvents.STABILIZING;
-                break;
-        }
-    }
+    //        default:
+    //            furnaceEvents = FurnaceEvents.STABILIZING;
+    //            break;
+    //    }
+    //}
 
     private void OnEnable()
     {
@@ -313,17 +278,42 @@ public class Furnace : InteractStation
     // Public Methods
     public override void UpgradeFunction()
     {
-        if(lightLevel < MAX_CORE_LEVEL)
-        {
-            popUp.ChangeMessageText("Luxinite Added");
-            coreLight.transform.localScale += scaleChange;
-            ++lightLevel;
+        if (lightLevel >= MAX_CORE_LEVEL) return;
 
-            if (!couroutineStartedAddCoal)
+
+        //popUp.ChangeMessageText("Luxinite Added");
+        //coreLightCollider.radius = currentColliderRadius;
+
+        currentColliderRadius = UPGRADE_LIGHT_DISTANCE[lightLevel];
+
+
+        coneCoreLight.SetDistance(currentColliderRadius);
+        coneCoreLight.ExtraExpand(400, 400, 0.8f);
+
+        if (!couroutineStartedAddCoal)
+        {
+            StartCoroutine(UsingYieldAddCoal(1));
+        }
+
+
+        ++lightLevel;
+
+
+
+        if (lightLevel == 1)
+        {
+            firstShipUpgradeMessage.EnableFirstShipUpgradeMessege();
+            PlayerPrefs.SetInt("FirstTime", 0);
+            PlayerPrefs.SetInt("TutorialFinished", 1);
+        }
+        else if (lightLevel == MAX_CORE_LEVEL)
+        {
+            if (!liftOffButtonGameObject.activeInHierarchy)
             {
-                StartCoroutine(UsingYieldAddCoal(1));
+                liftOffButtonGameObject.SetActive(true);
             }
         }
+
     }
 
     public void StartEvent(int eventID)

@@ -126,7 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 3937169726214562500}
-  inventory: {fileID: 3937169726789685988}
+  playerInventory: {fileID: 0}
+  inventory: {fileID: 4778857781199468595}
   storageCanvasGameObject: {fileID: 3937169727522368032}
   storageInventoryMenu: {fileID: 3937169727773229117}
   popUp: {fileID: 5636092685011406147}
@@ -273,7 +274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3937169726789685989}
-  - component: {fileID: 3937169726789685988}
+  - component: {fileID: 4778857781199468595}
   m_Layer: 0
   m_Name: StorageItemInventory
   m_TagString: Untagged
@@ -296,7 +297,7 @@ Transform:
   m_Father: {fileID: 3937169726214562522}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3937169726789685988
+--- !u!114 &4778857781199468595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,7 +306,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3937169726789685991}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8ffeb2e8eb1e17468abb16d8ec51714, type: 3}
+  m_Script: {fileID: 11500000, guid: 252fb5b5198223c42a46af6c39e77e6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemNull: {fileID: 11400000, guid: 56ea98fd605d8bb4eac0b03cc45dc452, type: 2}
@@ -315,6 +316,7 @@ MonoBehaviour:
   gotChanged: 0
   numberOfInventorySlots: 16
   maxNumberOfSlots: 16
+  storeFileName: storageInventoryData
 --- !u!1 &3937169727353439655
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd53ad7466e75ed4cacff496a646a117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 3937169726789685988}
+  inventory: {fileID: 4778857781199468595}
   referenceItemCell: {fileID: 4738176345804067161, guid: 0e24dccad47b1d0409cea3d3ce41176b, type: 3}
 --- !u!1001 &1984495398366486667
 PrefabInstance:
@@ -628,6 +630,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3937169726214562522}
     m_Modifications:
+    - target: {fileID: 2586038134900613034, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2586038134900613034, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3417665906946473464, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -713,16 +723,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3727417999959650978, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3727417999959650978, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3727417999959650978, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4637657586883626451, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
       propertyPath: m_Name
       value: Canvas_PopUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5273450592707977566, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5360499896374597832, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aba2c0f0f0d01c941965732ef96ba447, type: 3}
