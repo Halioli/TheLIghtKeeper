@@ -9962,7 +9962,10 @@ MonoBehaviour:
   - {fileID: 4188154579355272487, guid: 483668bacd252e04699549f4b68d1545, type: 3}
   - {fileID: 4188154579355272487, guid: 483668bacd252e04699549f4b68d1545, type: 3}
   mineralItemToDrop: {fileID: 2871625915605558217, guid: 5f0ce105135d5ce4393596ae023524c8, type: 3}
-  oreParticleSystem: []
+  oreParticleSystem:
+  - {fileID: 1374076114954135130}
+  - {fileID: 8644095627590700129}
+  hasBeenMined: 0
 --- !u!114 &5818371921828998633
 MonoBehaviour:
   m_ObjectHideFlags: 0
