@@ -9,6 +9,14 @@ public class TranslationItem : MonoBehaviour
     Vector2 startPosition;
     Vector2 endPosition;
 
+    Image spriteImage;
+
+    private void Awake()
+    {
+        spriteImage = GetComponent<Image>();
+    }
+
+
     void Update()
     {
         interpolator.Update(Time.deltaTime);
@@ -35,7 +43,7 @@ public class TranslationItem : MonoBehaviour
     // Must be called on instantiate/activation
     public void Init(Sprite sprite, Vector2 startPosition, Vector2 endPosition, float duration = 0.5f)
     {
-        GetComponent<Image>().sprite = sprite;
+        spriteImage.sprite = sprite;
 
         this.startPosition = startPosition;
         this.endPosition = endPosition;
@@ -44,7 +52,22 @@ public class TranslationItem : MonoBehaviour
         interpolator.ToMax();
 
         //gameObject.SetActive(true);
+        StartCoroutine(LateShow());
     }
+
+    IEnumerator LateShow()
+    {
+        Color color = spriteImage.color;
+        color.a = 0.0f;
+        spriteImage.color = color;
+
+        yield return null;
+
+        color.a = 1.0f;
+        spriteImage.color = color;
+    }
+
+
 
     private void End()
     {
