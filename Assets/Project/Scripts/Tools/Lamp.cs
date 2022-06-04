@@ -10,7 +10,7 @@ public class Lamp : MonoBehaviour
     private const float LIGHT_INTENSITY_OFF = 0.3f;
     private const float LIGHT_INTENSITY_HIGH = 2f;
 
-    private const int MAX_SOURCE_LEVELS = 6;
+    private const int MAX_SOURCE_LEVELS = 5;
     private int sourceLevel = 0;
     private float[] LIGHT_ANGLE_LVL = { 50f, 60f, 70f, 80f, 90f };
     private float[] LIGHT_DISTANCE_LVL = { 10f, 12.5f, 15f, 20f, 25f };
@@ -20,7 +20,7 @@ public class Lamp : MonoBehaviour
     private const int MAX_TIME_LEVELS = 3;
     private int timeLevel = 0;
     public float lampTime;
-    private float[] LAMP_TIME_LVL = { 5f, 5f, 10f };
+    private float[] LAMP_TIME_LVL = { 10f, 15f, 20f };
 
     public bool coneIsActive = false;
     public bool intenseCircleIsActive = false;

@@ -14,16 +14,17 @@ public class TutorialEnterShip : TutorialMessages
     private bool mssgSent = false;
     private bool mssgSent1stSent = true;
 
+
     private void Update()
     {
         if (mssgSent)
         {
 
-            worldMark.AppearAtPosition(furnaceStationTransform.position);
+            //worldMark.AppearAtPosition(furnaceStationTransform.position);
 
             if (chatBox.currentTextNum == 2)
             {
-                worldMark.gameObject.SetActive(false);
+                //worldMark.gameObject.SetActive(false);
             }
         }
     }

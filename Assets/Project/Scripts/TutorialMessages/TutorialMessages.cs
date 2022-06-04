@@ -66,4 +66,20 @@ public class TutorialMessages : MonoBehaviour
             GetComponent<Collider2D>().enabled = true;
         }
     }
+
+
+
+    protected bool IsTutorialFinished()
+    {
+        //return false;
+
+        if (PlayerPrefs.HasKey("TutorialFinished"))
+        {
+            return PlayerPrefs.GetInt("TutorialFinished") == 1;
+        }
+
+        return false;
+    }
+
+
 }

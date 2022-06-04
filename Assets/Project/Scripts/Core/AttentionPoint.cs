@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class AttentionPoint : MonoBehaviour
 {
+    [SerializeField] protected bool deactivatesAfterFirstTime = false;
     [SerializeField] protected bool isActive = true;
     [SerializeField] protected GameObject exclamationObject;
     SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
+        if (IsTutorialFinished() && deactivatesAfterFirstTime) OnFadeEnd();
+
+
         spriteRenderer = exclamationObject.GetComponent<SpriteRenderer>();
     }
 
@@ -58,5 +62,15 @@ public class AttentionPoint : MonoBehaviour
         Destroy(gameObject);
     }
 
+
+    protected bool IsTutorialFinished()
+    {
+        if (PlayerPrefs.HasKey("TutorialFinished"))
+        {
+            return PlayerPrefs.GetInt("TutorialFinished") == 1;
+        }
+
+        return false;
+    }
 
 }

@@ -23,6 +23,8 @@ public class PlayerInputs : MonoBehaviour
 
     public bool ignoreLights = false;
 
+    public bool isInGameMenu = false;
+
     public GameObject selectSpotGameObject;
 
     private void Awake()
@@ -37,22 +39,29 @@ public class PlayerInputs : MonoBehaviour
         //DontDestroyOnLoad(gameObject);
     }
 
+
     // Methods
     public void SetInGameMenuOpenInputs()
     {
+        isInGameMenu = true;
+        
         canMine = false;
         canAttack = false;
         canPause = false;
         canMoveLantern = false;
+        isLanternPaused = true;
     }
 
     public void SetInGameMenuCloseInputs()
     {
+        isInGameMenu = false;
+
         canMine = true;
         canAttack = true;
         //canPause = true;
         StartCoroutine(lateCanPause(true));
         canMoveLantern = true;
+        isLanternPaused = false;
     }
 
     IEnumerator lateCanPause(bool canPause)
@@ -114,7 +123,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedUseButton()
     {
-        if (PauseMenu.gameIsPaused) { return false; }
+        if (PauseMenu.gameIsPaused || !canMove) { return false; }
 
         return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button0);
     }
@@ -128,7 +137,7 @@ public class PlayerInputs : MonoBehaviour
 
     public bool PlayerPressedPauseButton()
     {
-        return canPause && Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Joystick1Button7);
+        return canPause && Input.GetKeyDown(KeyCode.Escape) ||  Input.GetKeyDown(KeyCode.Joystick1Button7);
     }
 
     public Vector2 PlayerPressedMovementButtons()
@@ -142,6 +151,12 @@ public class PlayerInputs : MonoBehaviour
             return Vector2.zero;
         }
     }
+
+    public bool PlayerPressedAlmanacButton()
+    {
+        return Input.GetKeyDown(KeyCode.Tab);
+    }
+
 
     public Vector2 PlayerMouseScroll()
     {

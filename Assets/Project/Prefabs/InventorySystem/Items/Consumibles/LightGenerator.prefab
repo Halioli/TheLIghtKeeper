@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
-  m_LightCookieSprite: {fileID: 21300000, guid: 5d374d90b0bf43f44b6dfcd2e55cf7a5, type: 3}
+  m_LightCookieSprite: {fileID: 21300000, guid: f0a477bbd65dfd24e80855fe222757d7, type: 3}
   m_UseNormalMap: 0
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 1
@@ -160,7 +160,7 @@ MonoBehaviour:
   canBePickedUp: 1
   isPickedUpAlready: 0
   currentDespawnTimeInSeconds: 10
-  item: {fileID: 11400000, guid: ab803e7f322436842be80135b79da431, type: 2}
+  item: {fileID: 11400000, guid: bfaeeba3a2cb35a4fb18fbc057cec8dd, type: 2}
   audioSource: {fileID: 6955191015509942083}
   itemIsDropped: {fileID: 8300000, guid: 941b816f226d14a4ab8a9d539dbaeec6, type: 3}
 --- !u!82 &6955191015509942083
@@ -332,12 +332,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 5d374d90b0bf43f44b6dfcd2e55cf7a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0a477bbd65dfd24e80855fe222757d7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.3809524, y: 0.3809524}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -357,4 +357,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerpTime: 1
   lerpDistance: 0.3
-  halfLerpDistance: 0.15

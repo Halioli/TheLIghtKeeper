@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62de23e39df4b86469a43cdb95d45e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deactivatesAfterFirstTime: 1
   isActive: 1
   exclamationObject: {fileID: 8243047267557035188}
 --- !u!1 &8243047266154863452
@@ -241,3 +242,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b609c2651d940144954983652ee4ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lerpTime: 1
+  lerpDistance: 0.3

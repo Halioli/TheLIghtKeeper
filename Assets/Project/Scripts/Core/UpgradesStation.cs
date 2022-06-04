@@ -93,13 +93,13 @@ public class UpgradesStation : InteractStation
 
     private void CloseUpgradesMenu()
     {
+        DoOnInteractClose();
+
         isOpen = false;
         hudGameObject.SetActive(true);
         upgradesCanvasGameObject.SetActive(false);
         PauseMenu.ResumeMineAndAttack();
 
         PlayerInputs.instance.SetInGameMenuCloseInputs();
-
-        DoOnInteractClose();
     }
 }

@@ -9,6 +9,12 @@ public class AlmanacMaterialsChecker : MonoBehaviour
     public Item[] items;
     public AlmanacScriptableObject[] almanacScriptableObjectMaterials;
 
+
+    public delegate void AlmanacMaterialsCheckAction();
+    public static event AlmanacMaterialsCheckAction OnNewItemFound;
+
+
+
     private void Awake()
     {
         materialsChecklist = new Dictionary<int, AlmanacScriptableObject>();
@@ -16,6 +22,7 @@ public class AlmanacMaterialsChecker : MonoBehaviour
         {
             materialsChecklist.Add(items[i].ID, almanacScriptableObjectMaterials[i]);
         }
+
     }
 
 
@@ -32,13 +39,31 @@ public class AlmanacMaterialsChecker : MonoBehaviour
 
     private void CheckItemID(int itemID)
     {
+
+        if (!ItemLibrary.instance.GetItem(itemID).existsInAlmanac) return;
+
         bool isNew = !materialsChecklist[itemID].hasBeenFound;
 
         if (isNew)
         {
             materialsChecklist[itemID].hasBeenFound = true;
+
+            if (OnNewItemFound != null) OnNewItemFound();
         }
 
+    }
+
+    public AlmanacScriptableObject[] GetItems()
+    {
+        return almanacScriptableObjectMaterials;
+    }
+
+    public void InitItems(bool[] itemsHasBeenFound)
+    {
+        for (int i = 0; i < almanacScriptableObjectMaterials.Length; ++i)
+        {
+            almanacScriptableObjectMaterials[i].hasBeenFound = itemsHasBeenFound[i];
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryMenu : MonoBehaviour
 {
@@ -116,4 +117,12 @@ public class InventoryMenu : MonoBehaviour
         lastSelectedInventorySlot = newLastSelectedInventorySlot;
         itemCellsList[newLastSelectedInventorySlot].DoOnSelect();
     }
+
+
+    public Vector2 GetItemCellTransformPosition(int cellIndex)
+    {       
+        return itemCellsList[cellIndex].GetComponent<RectTransform>().position;
+    }
+
+
 }
