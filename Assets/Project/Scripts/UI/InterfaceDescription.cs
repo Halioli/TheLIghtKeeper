@@ -13,8 +13,6 @@ public class InterfaceDescription : MonoBehaviour
         CloseDescription();
     }
 
-
-
     private void OnEnable()
     {
         PlayerInventory.OnInventoryClose += CloseDescription;

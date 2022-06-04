@@ -6,6 +6,7 @@ public class LoreFunction : InteractStation
 {
     private Animator lorePilarAnimator;
     private ResetableFloatingItem floatingItem;
+    private bool isShowing = false;
 
     public GameObject pilarLight;
 
@@ -49,12 +50,19 @@ public class LoreFunction : InteractStation
         else
         {
             PopUpDisappears();
+            if (isShowing)
+            {
+                isShowing = false;
+                if (OnPilarInteract != null)
+                    OnPilarInteract(tittle, text);
+            }
         }
 
     }
 
     public override void StationFunction()
     {
+        isShowing = !isShowing;
         if (OnPilarInteract != null)
             OnPilarInteract(tittle, text);
     }
@@ -77,6 +85,7 @@ public class LoreFunction : InteractStation
     {
         pilarLight.SetActive(true);
     }
+
     private void PopUpAppears()
     {
         if (!activated)
