@@ -18,9 +18,15 @@ public class Hotkeys : MonoBehaviour
     public GameObject enrichedMetalMineral;
     public GameObject electricOrbMineral;
     public GameObject healingFlowerMineral;
+    public GameObject autoMiner;
+    public GameObject lightBeacon;
+    public GameObject bomb;
 
     public delegate void PlayerHealed(int healthToAdd);
     public static event PlayerHealed OnHealed;
+
+    public delegate void CheatTeleport(Vector3 position);
+    public static event CheatTeleport OnCheatTeleport;
 
     void Start()
     {
@@ -103,6 +109,14 @@ public class Hotkeys : MonoBehaviour
                     zooming = false;
                 }
             }
+            else if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                StartCoroutine(TeleportToFogZone());
+            }
+            else if (Input.GetKeyDown(KeyCode.RightControl))
+            {
+                StartCoroutine(TeleportToMountain());
+            }
         }
     }
 
@@ -119,5 +133,32 @@ public class Hotkeys : MonoBehaviour
     private void SetCheatsEnabled(bool value)
     {
         canUseCheats = value;
+    }
+
+    IEnumerator TeleportToFogZone()
+    {
+        Vector3 fogZoneLanding = new Vector3(75, -120, 0);
+
+        if (OnCheatTeleport != null)
+            OnCheatTeleport(fogZoneLanding);
+
+        yield return null;
+
+        Instantiate(autoMiner, transform);
+        Instantiate(lightBeacon, transform);
+    }
+
+    IEnumerator TeleportToMountain()
+    {
+        Vector3 mountainZoneLanding = new Vector3(123, 144, 0);
+
+        if (OnCheatTeleport != null)
+            OnCheatTeleport(mountainZoneLanding);
+
+        yield return null;
+
+        Instantiate(bomb, transform);
+        Instantiate(bomb, transform);
+        Instantiate(bomb, transform);
     }
 }

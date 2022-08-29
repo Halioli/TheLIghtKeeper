@@ -78,12 +78,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -1498187572274371787, guid: afbda6c39b7e00244a683526b161229e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dfac07542c7205e49a1f2ac0e3bbb9fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.3809524, y: 0.3809524}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBeforeExplode: 1.5
   timeBeforeDetonation: 1.25
-  hardness: 0
+  hardness: 2
   light: {fileID: 3887412345079390549}
   audioSource: {fileID: 5891813700500917588}
   bombUseSound: {fileID: 8300000, guid: 2d5f1ac81cf348f46b344e312208fca9, type: 3}
