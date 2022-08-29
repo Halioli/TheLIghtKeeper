@@ -74,6 +74,12 @@ public class HotbarInventory : DataSavingInventory
         hotbarInventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
     }
 
+    public void SetInventroyMenuSelectedSlotIndex(int i)
+    {
+        indexOfSelectedInventorySlot = i;
+        hotbarInventoryMenu.SetSelectedInventorySlotIndex(indexOfSelectedInventorySlot);
+    }
+
 
     public void DropSelectedItem()
     {

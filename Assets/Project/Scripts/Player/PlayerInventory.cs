@@ -49,6 +49,12 @@ public class PlayerInventory : MonoBehaviour
             hotbarInventory.CycleLeftSelectedItemIndex();
         }
 
+        int keyNum = PlayerInputs.instance.PlayerKeyNum();
+        if (keyNum != -1 && keyNum < hotbarInventory.inventory.Count)
+        {
+            hotbarInventory.SetInventroyMenuSelectedSlotIndex(keyNum);
+        }
+
         if (PlayerInputs.instance.PlayerPressedUseButton())
         {
             hotbarInventory.UseSelectedConsumibleItem();
