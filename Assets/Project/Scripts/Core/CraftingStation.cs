@@ -13,6 +13,8 @@ public class CraftingStation : InteractStation
 
     bool isUsingAuxiliar = false;
 
+    bool hasCrafted;
+
     // Public Attributes
     public GameObject interactText;
     public GameObject backgroundText;
@@ -20,9 +22,12 @@ public class CraftingStation : InteractStation
 
     public ParticleSystem[] craftingParticles;
 
+    [SerializeField] Animator animator;
+
 
     public delegate void ItemSentToStorageMessegeAction();
     public static event ItemSentToStorageMessegeAction OnItemSentToStorage;
+    public static event ItemSentToStorageMessegeAction OnCraftAnimationPlay;
 
 
 
@@ -34,6 +39,7 @@ public class CraftingStation : InteractStation
         }
 
         particleTime = 1.89f;
+        hasCrafted = false;
     }
     void Update()
     {
@@ -58,6 +64,7 @@ public class CraftingStation : InteractStation
     private void OnEnable()
     {
         CraftingSystem.OnCrafting += PlayCraftingParticles;
+        CraftingSystem.OnCrafting += SetHasCraftedTrue;
         CraftingSystem.OnItemSentToStorage += () => itemsWereSentToStorage = true;
 
         CraftingStationAuxiliar.OnMenuOpen += AuxiliarOpenCraftingInventory;
@@ -67,6 +74,7 @@ public class CraftingStation : InteractStation
     private void OnDisable()
     {
         CraftingSystem.OnCrafting -= PlayCraftingParticles;
+        CraftingSystem.OnCrafting += SetHasCraftedTrue;
         CraftingSystem.OnItemSentToStorage -= () => itemsWereSentToStorage = true;
 
         CraftingStationAuxiliar.OnMenuOpen -= AuxiliarOpenCraftingInventory;
@@ -150,6 +158,14 @@ public class CraftingStation : InteractStation
             itemsWereSentToStorage = false;
             if (OnItemSentToStorage != null) OnItemSentToStorage();
         }
+
+        if (hasCrafted)
+        {
+            hasCrafted = false;
+            animator.SetTrigger("craft");
+
+            if (OnCraftAnimationPlay != null) OnCraftAnimationPlay();
+        }
     }
 
 
@@ -168,5 +184,10 @@ public class CraftingStation : InteractStation
         //CloseCraftingInventory();
     }
 
+
+    void SetHasCraftedTrue()
+    {
+        hasCrafted = true;
+    }
 
 }
