@@ -27,6 +27,20 @@ public class PlayerInputs : MonoBehaviour
 
     public GameObject selectSpotGameObject;
 
+    private KeyCode[] numKeys = {
+         KeyCode.Alpha1,
+         KeyCode.Alpha2,
+         KeyCode.Alpha3,
+         KeyCode.Alpha4,
+         KeyCode.Alpha5,
+         KeyCode.Alpha6,
+         KeyCode.Alpha7,
+         KeyCode.Alpha8,
+         KeyCode.Alpha9,
+     };
+
+
+
     private void Awake()
     {
         if (instance != null)
@@ -161,6 +175,16 @@ public class PlayerInputs : MonoBehaviour
     public Vector2 PlayerMouseScroll()
     {
         return Input.mouseScrollDelta;
+    }
+
+    public int PlayerKeyNum()
+    {
+        for (int i = 0; i < numKeys.Length; ++i)
+        {
+            if (Input.GetKeyDown(numKeys[i]))
+                return i;
+        }
+        return -1;
     }
 
     public void SpawnSelectSpotAtTransform(Transform transform)
