@@ -12,12 +12,14 @@ public class HealingFlower : ItemGameObject
 
     private void FunctionalitySound()
     {
+        return;
         if (onHealingFlowerUse != null)
             onHealingFlowerUse();
     }
 
     public override void DoFunctionality()
     {
+        return;
         Instantiate(healingFlowerAuxiliar, PlayerInputs.instance.transform);
         FunctionalitySound();
     }

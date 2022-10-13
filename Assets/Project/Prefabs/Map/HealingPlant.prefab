@@ -136,7 +136,7 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 0, b: 0.009047508, a: 1}
+  m_Color: {r: 0.7921569, g: 0.99607843, b: 0.99607843, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
@@ -509,6 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerArea: {fileID: 4649128092522551693}
+  playerInventory: {fileID: 0}
   cooldown: 30
   interactText: {fileID: 4649128092058438480}
   healingFlower: {fileID: 3777398970541934755, guid: 962646ab30c45734fa4dd29c91e0482c, type: 3}
@@ -1057,7 +1058,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0, b: 0, a: 1}
+      maxColor: {r: 0.7921569, g: 0.99607843, b: 0.99607843, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
